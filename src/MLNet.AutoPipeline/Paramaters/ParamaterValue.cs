@@ -1,20 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿// <copyright file="ParamaterValue.cs" company="BigMiao">
+// Copyright (c) BigMiao. All rights reserved.
+// </copyright>
 
-namespace Microsoft.ML.AutoPipeline
+using MLNet.Sweeper;
+
+namespace MLNet.AutoPipeline
 {
     internal class ParamaterValue : IParameterValue
     {
         public string Name { get; set; }
 
-        public string ValueText { get => RawValue.ToString(); }
+        public string ValueText => this.RawValue.ToString();
 
         public object RawValue { get; set; }
 
         public bool Equals(IParameterValue other)
         {
-            return RawValue != null && Name == other.Name && ValueText == other.ValueText;
+            return this.RawValue != null && this.Name == other.Name && this.ValueText == other.ValueText;
         }
     }
 }

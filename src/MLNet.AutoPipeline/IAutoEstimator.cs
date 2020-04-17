@@ -2,9 +2,10 @@
 // Copyright (c) BigMiao. All rights reserved.
 // </copyright>
 
+using Microsoft.ML;
 using System;
 
-namespace Microsoft.ML.AutoPipeline
+namespace MLNet.AutoPipeline
 {
     internal interface IAutoEstimator
     {

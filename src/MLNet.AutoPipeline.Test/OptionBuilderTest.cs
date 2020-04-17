@@ -1,9 +1,12 @@
-﻿using System;
+﻿// <copyright file="OptionBuilderTest.cs" company="BigMiao">
+// Copyright (c) BigMiao. All rights reserved.
+// </copyright>
+
+using System;
 using System.Collections.Generic;
 using System.Text;
 using FluentAssertions;
 using Microsoft.ML.AutoPipeline;
-using Microsoft.ML.Sweeper;
 using Xunit;
 
 namespace Microsoft.ML.AutoPipeline.Test

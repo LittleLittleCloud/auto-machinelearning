@@ -1,14 +1,15 @@
-﻿using System;
+﻿// <copyright file="RandomSweeper.cs" company="BigMiao">
+// Copyright (c) BigMiao. All rights reserved.
+// </copyright>
+
+using Microsoft.ML;
+using MLNet.Sweeper;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using Microsoft.ML.Sweeper;
 
-namespace Microsoft.ML.AutoPipeline
+namespace MLNet.AutoPipeline
 {
-    internal class RandomSweeper: ISweeper
+    internal class RandomSweeper : ISweeper
     {
         private ParameterSet _next;
         private int _maximum;
@@ -17,13 +18,13 @@ namespace Microsoft.ML.AutoPipeline
 
         public RandomSweeper(MLContext mlContext, IValueGenerator[] valueGenerators, int maximum = 100)
         {
-            _maximum = maximum;
-            _uniformSweeper = new UniformRandomSweeper(mlContext, new SweeperBase.OptionsBase(), valueGenerators);
+            this._maximum = maximum;
+            this._uniformSweeper = new UniformRandomSweeper(mlContext, new OptionsBase(), valueGenerators);
         }
 
-        public ParameterSet Current => _next;
+        public ParameterSet Current => this._next;
 
-        object IEnumerator.Current => Current;
+        object IEnumerator.Current => this.Current;
 
         public void Dispose()
         {
@@ -37,14 +38,14 @@ namespace Microsoft.ML.AutoPipeline
 
         public bool MoveNext()
         {
-            if(_maximum <= 0)
+            if (this._maximum <= 0)
             {
                 return false;
             }
 
-            _maximum -= 1;
+            this._maximum -= 1;
             var nextArray = this._uniformSweeper.ProposeSweeps(1);
-            _next = nextArray[0];
+            this._next = nextArray[0];
             return true;
         }
 
@@ -55,7 +56,7 @@ namespace Microsoft.ML.AutoPipeline
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return GetEnumerator();
+            return this.GetEnumerator();
         }
 
         public void AddRunHistory(IRunResult input)

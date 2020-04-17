@@ -1,18 +1,18 @@
-﻿using System;
+﻿// <copyright file="RandomSweeperTest.cs" company="BigMiao">
+// Copyright (c) BigMiao. All rights reserved.
+// </copyright>
+
+using FluentAssertions;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using FluentAssertions;
-using Microsoft.ML.AutoPipeline;
-using Microsoft.ML.TestFramework;
 using Xunit;
 using Xunit.Abstractions;
 
 namespace Microsoft.ML.AutoPipeline.Test
 {
-    public class RandomSweeperTest : BaseTestClass
+    public class RandomSweeperTest
     {
-        public RandomSweeperTest(ITestOutputHelper output) : base(output)
+        public RandomSweeperTest(ITestOutputHelper output)
         {
         }
 
@@ -27,10 +27,10 @@ namespace Microsoft.ML.AutoPipeline.Test
 
             var randomSweeper = new RandomSweeper(context, param.Select(x => x.ValueGenerator).ToArray(), 10);
             var attempts = 0;
-            foreach(var option in randomSweeper)
+            foreach (var option in randomSweeper)
             {
                 attempts += 1;
-                
+
                 (option["key1"].RawValue as int?)?
                     .Should()
                     .BeLessOrEqualTo(10)
@@ -50,4 +50,3 @@ namespace Microsoft.ML.AutoPipeline.Test
         }
     }
 }
-

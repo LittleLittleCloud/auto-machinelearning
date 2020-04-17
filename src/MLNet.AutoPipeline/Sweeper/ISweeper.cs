@@ -1,10 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿// <copyright file="ISweeper.cs" company="BigMiao">
+// Copyright (c) BigMiao. All rights reserved.
+// </copyright>
 
-namespace Microsoft.ML.AutoPipeline
+using MLNet.Sweeper;
+using System.Collections.Generic;
+
+namespace MLNet.AutoPipeline
 {
-    internal interface ISweeper:  IEnumerable<ParameterSet>, IEnumerator<ParameterSet>
+    internal interface ISweeper : IEnumerable<ParameterSet>, IEnumerator<ParameterSet>
     {
         /// <summary>
         /// For trainable Sweeper.
@@ -18,5 +21,4 @@ namespace Microsoft.ML.AutoPipeline
     {
         public double Score { get; set; }
     }
-
 }

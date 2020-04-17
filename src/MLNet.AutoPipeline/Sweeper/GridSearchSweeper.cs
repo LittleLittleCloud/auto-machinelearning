@@ -1,11 +1,13 @@
-﻿using System;
+﻿// <copyright file="GridSearchSweeper.cs" company="BigMiao">
+// Copyright (c) BigMiao. All rights reserved.
+// </copyright>
+
+using Microsoft.ML;
+using MLNet.Sweeper;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Microsoft.ML.Sweeper;
 
-namespace Microsoft.ML.AutoPipeline
+namespace MLNet.AutoPipeline
 {
     internal class GridSearchSweeper : ISweeper
     {
@@ -17,14 +19,14 @@ namespace Microsoft.ML.AutoPipeline
         public GridSearchSweeper(MLContext context, IValueGenerator[] valueGenerators, int maximum = 10000)
         {
             var option = new RandomGridSweeper.Options();
-            _maximum = maximum;
-            _gridSweeper = new RandomGridSweeper(context, option, valueGenerators);
-            _results = _gridSweeper.ProposeSweeps(maximum);
+            this._maximum = maximum;
+            this._gridSweeper = new RandomGridSweeper(context, option, valueGenerators);
+            this._results = this._gridSweeper.ProposeSweeps(maximum);
         }
 
-        public ParameterSet Current => _next;
+        public ParameterSet Current => this._next;
 
-        object IEnumerator.Current => _next;
+        object IEnumerator.Current => this._next;
 
         public void Dispose()
         {
@@ -38,12 +40,12 @@ namespace Microsoft.ML.AutoPipeline
 
         public bool MoveNext()
         {
-            if(_maximum <= 0)
+            if (this._maximum <= 0)
             {
                 return false;
             }
-            _next = _results[_maximum-1];
-            _maximum -= 1;
+            this._next = this._results[this._maximum - 1];
+            this._maximum -= 1;
             return true;
         }
 

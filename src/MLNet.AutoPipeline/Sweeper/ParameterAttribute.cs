@@ -1,12 +1,14 @@
-﻿using System;
+﻿// <copyright file="ParameterAttribute.cs" company="BigMiao">
+// Copyright (c) BigMiao. All rights reserved.
+// </copyright>
+
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using Microsoft.ML.AutoPipeline.Paramaters;
-using Microsoft.ML.Sweeper;
+using MLNet.Sweeper;
 
-namespace Microsoft.ML.AutoPipeline
+namespace MLNet.AutoPipeline
 {
     internal class ParameterAttribute : Attribute
     {
@@ -15,15 +17,15 @@ namespace Microsoft.ML.AutoPipeline
 
         public ParameterAttribute(string name, int min, int max, int step = 1)
         {
-            _meta = typeof(int);
+            this._meta = typeof(int);
             var intList = new List<int>();
-            for (var i = min; i <= max; i+=step)
+            for (var i = min; i <= max; i += step)
             {
                 intList.Add(i);
             }
 
             intList.Add(max);
-            _value = intList;
+            this._value = intList;
 
             var option = new IntParamOptions()
             {
@@ -33,12 +35,12 @@ namespace Microsoft.ML.AutoPipeline
                 StepSize = step,
             };
 
-            ValueGenerator = new Int32ValueGenerator(option);
+            this.ValueGenerator = new Int32ValueGenerator(option);
         }
 
         public ParameterAttribute(string name, float min, float max, float step = 1f)
         {
-            _meta = typeof(float);
+            this._meta = typeof(float);
             var intList = new List<float>();
             for (var i = min; i <= max; i += step)
             {
@@ -46,7 +48,7 @@ namespace Microsoft.ML.AutoPipeline
             }
 
             intList.Add(max);
-            _value = intList;
+            this._value = intList;
 
             var option = new FloatParamOptions()
             {
@@ -56,28 +58,28 @@ namespace Microsoft.ML.AutoPipeline
                 StepSize = step,
             };
 
-            ValueGenerator = new FloatValueGenerator(option);
+            this.ValueGenerator = new FloatValueGenerator(option);
         }
 
         public ParameterAttribute(string name, string[] candidates)
         {
-            _meta = typeof(string);
-            _value = candidates.ToList();
+            this._meta = typeof(string);
+            this._value = candidates.ToList();
 
             var option = new DiscreteParamOptions()
             {
                 Name = name,
-                Values = candidates
+                Values = candidates,
             };
 
-            ValueGenerator = new DiscreteValueGenerator(option);
+            this.ValueGenerator = new DiscreteValueGenerator(option);
         }
 
-        public IList Value { get => _value; }
+        public IList Value => this._value;
 
-        public Type Meta { get => _meta; }
+        public Type Meta => this._meta;
 
-        public Microsoft.ML.IValueGenerator ValueGenerator { get; }
+        public IValueGenerator ValueGenerator { get; }
 
     }
 }

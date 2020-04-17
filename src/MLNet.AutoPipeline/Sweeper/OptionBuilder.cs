@@ -1,14 +1,18 @@
-﻿using System;
+﻿// <copyright file="OptionBuilder.cs" company="BigMiao">
+// Copyright (c) BigMiao. All rights reserved.
+// </copyright>
+
+using MLNet.Sweeper;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
-namespace Microsoft.ML.AutoPipeline
+namespace MLNet.AutoPipeline
 {
     internal abstract class OptionBuilder<TOption>
-        where TOption: class
+        where TOption : class
     {
-        public IValueGenerator[] ValueGenerators { get => this.GetParameterAttributes().Select(kv => kv.Value.ValueGenerator).ToArray(); }
+        public IValueGenerator[] ValueGenerators => this.GetParameterAttributes().Select(kv => kv.Value.ValueGenerator).ToArray();
 
         public TOption CreateDefaultOption()
         {
@@ -17,7 +21,7 @@ namespace Microsoft.ML.AutoPipeline
 
             // set up fields
             var fields = this.GetType().GetFields(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance);
-            foreach(var field in fields)
+            foreach (var field in fields)
             {
                 var value = field.GetValue(this);
                 option.GetType().GetField(field.Name)?.SetValue(option, value);
@@ -26,10 +30,10 @@ namespace Microsoft.ML.AutoPipeline
             return option;
         }
 
-        public TOption BuildOption(Microsoft.ML.ParameterSet parameters)
+        public TOption BuildOption(ParameterSet parameters)
         {
-            var option = CreateDefaultOption();
-            foreach(var param in parameters)
+            var option = this.CreateDefaultOption();
+            foreach (var param in parameters)
             {
                 var value = param.RawValue;
                 typeof(TOption).GetField(param.Name)?.SetValue(option, value);
