@@ -1,0 +1,72 @@
+trigger:
+  branches:
+    exclude: 
+    - u/*
+pr:
+  branches:
+    include:
+    - master
+    - feature/*
+
+jobs:
+ 
+- job: Windows
+  pool:
+    name: VSEng-MicroBuildVS2017
+    demands: Cmd
+  strategy:
+    maxParallel: 4
+    matrix:
+      # only run debug in public builds
+      ${{ if ne(variables['SigningType'], 'real') }}:
+        Debug:
+          _configuration: Debug
+      Release:
+        _configuration: Release
+  steps:
+    # Should only run if not real-signing
+    - script: eng\common\CIBuild.cmd -configuration $(_configuration) -prepareMachine -warnAsError 0
+      displayName: Build and Test
+      condition: and(succeeded(), not(and(eq(variables['SigningType'], 'real'), eq(variables['_configuration'], 'Release'))))
+    
+    # Should always run
+    - task: PublishBuildArtifacts@1
+      inputs:
+        PathtoPublish: '$(Build.SourcesDirectory)\artifacts\log\$(_configuration)'
+        ArtifactName: '$(_configuration) log folder'
+        publishLocation: Container
+      continueOnError: true
+      condition: failed()
+
+    - task: PublishTestResults@2
+      inputs:
+        testRunner: 'xUnit'
+        testResultsFiles: '**/*.xml' 
+        searchFolder: '$(Build.SourcesDirectory)\artifacts\TestResults\$(_configuration)'
+        configuration: '$(_configuration)'
+        publishRunAttachments: true
+      continueOnError: true
+      displayName: Publish test results
+      condition: always()
+
+    - task: PublishBuildArtifacts@1
+      inputs:
+        PathtoPublish: '$(Build.SourcesDirectory)\artifacts\bin'
+        ArtifactName: '$(_configuration) bin folder'
+        publishLocation: Container
+      displayName: Publish bin directory
+      continueOnError: true
+      condition: failed()
+
+    - task: PublishBuildArtifacts@1
+      inputs:
+        PathtoPublish: '$(Build.SourcesDirectory)\artifacts\packages\$(_configuration)'
+        ArtifactName: '$(_configuration) packages folder'
+        publishLocation: Container
+      displayName: Publish packages folder
+      continueOnError: true
+      condition: eq(variables['_configuration'], 'Release')
+
+    - task: ms-vseng.MicroBuildTasks.521a94ea-9e68-468a-8167-6dcf361ea776.MicroBuildCleanup@1
+      displayName: 'Execute cleanup tasks'
+      condition: and(succeeded(), eq(variables['SigningType'], 'real'), eq(variables['_configuration'], 'Release'))
