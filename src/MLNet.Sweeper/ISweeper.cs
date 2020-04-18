@@ -2,11 +2,8 @@
 // Copyright (c) BigMiao. All rights reserved.
 // </copyright>
 
-using Microsoft.ML.Internal.Utilities;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace MLNet.Sweeper
 {

@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29430.225
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MLNet.AutoPipeline.Test", "src\MLNet.AutoPipeline.Test\MLNet.AutoPipeline.Test.csproj", "{2DCB846E-8AFD-4A1F-AAE7-9CC9022AE784}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MLNet.AutoPipeline", "src\MLNet.AutoPipeline\MLNet.AutoPipeline.csproj", "{4F671A15-42C6-4D3C-8084-2CB57BC24700}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{7ACF472D-8C03-48CA-9805-3D3BAC7627C6}"
@@ -14,16 +12,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MLNet.Sweeper", "src\MLNet.Sweeper\MLNet.Sweeper.csproj", "{FE4AE1A1-AE2F-450C-8428-2FBC6B3DCB7E}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MLNet.AutoPipeline.Tests", "src\MLNet.AutoPipeline.Tests\MLNet.AutoPipeline.Tests.csproj", "{A9211845-B7AC-4691-9194-27A205209E0C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{2DCB846E-8AFD-4A1F-AAE7-9CC9022AE784}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2DCB846E-8AFD-4A1F-AAE7-9CC9022AE784}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2DCB846E-8AFD-4A1F-AAE7-9CC9022AE784}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2DCB846E-8AFD-4A1F-AAE7-9CC9022AE784}.Release|Any CPU.Build.0 = Release|Any CPU
 		{4F671A15-42C6-4D3C-8084-2CB57BC24700}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{4F671A15-42C6-4D3C-8084-2CB57BC24700}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4F671A15-42C6-4D3C-8084-2CB57BC24700}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -32,6 +28,10 @@ Global
 		{FE4AE1A1-AE2F-450C-8428-2FBC6B3DCB7E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FE4AE1A1-AE2F-450C-8428-2FBC6B3DCB7E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FE4AE1A1-AE2F-450C-8428-2FBC6B3DCB7E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A9211845-B7AC-4691-9194-27A205209E0C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A9211845-B7AC-4691-9194-27A205209E0C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A9211845-B7AC-4691-9194-27A205209E0C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A9211845-B7AC-4691-9194-27A205209E0C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

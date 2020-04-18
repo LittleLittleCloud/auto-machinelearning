@@ -11,7 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <InternalsVisibleTo Include="MLNet.AutoPipeline.Test" />
+    <InternalsVisibleTo Include="MLNet.AutoPipeline.Tests" />
   </ItemGroup>
 
   <ItemGroup>
