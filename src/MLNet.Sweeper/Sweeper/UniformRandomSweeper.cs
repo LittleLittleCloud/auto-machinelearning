@@ -12,12 +12,12 @@ namespace MLNet.Sweeper
     /// </summary>
     public sealed class UniformRandomSweeper : SweeperBase
     {
-        public UniformRandomSweeper(IHostEnvironment env, OptionsBase options)
+        public UniformRandomSweeper(IHostEnvironment env, SweeperOptionBase options)
             : base(options, env, "UniformRandom")
         {
         }
 
-        public UniformRandomSweeper(IHostEnvironment env, OptionsBase options, IValueGenerator[] sweepParameters)
+        public UniformRandomSweeper(IHostEnvironment env, SweeperOptionBase options, IValueGenerator[] sweepParameters)
             : base(options, env, sweepParameters, "UniformRandom")
         {
         }

@@ -16,9 +16,9 @@ namespace MLNet.Sweeper
         protected readonly IValueGenerator[] SweepParameters;
         protected readonly IHost Host;
 
-        private readonly OptionsBase _options;
+        private readonly SweeperOptionBase _options;
 
-        protected SweeperBase(OptionsBase options, IHostEnvironment env, string name)
+        protected SweeperBase(SweeperOptionBase options, IHostEnvironment env, string name)
         {
             this.Host = env.Register(name);
             this._options = options;
@@ -26,7 +26,7 @@ namespace MLNet.Sweeper
             this.SweepParameters = options.SweptParameters.Select(p => p.CreateComponent(this.Host)).ToArray();
         }
 
-        protected SweeperBase(OptionsBase options, IHostEnvironment env, IValueGenerator[] sweepParameters, string name)
+        protected SweeperBase(SweeperOptionBase options, IHostEnvironment env, IValueGenerator[] sweepParameters, string name)
         {
             this.Host = env.Register(name);
             this._options = options;

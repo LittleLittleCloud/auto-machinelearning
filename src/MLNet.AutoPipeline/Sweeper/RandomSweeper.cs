@@ -19,7 +19,7 @@ namespace MLNet.AutoPipeline
         public RandomSweeper(MLContext mlContext, IValueGenerator[] valueGenerators, int maximum = 100)
         {
             this._maximum = maximum;
-            this._uniformSweeper = new UniformRandomSweeper(mlContext, new OptionsBase(), valueGenerators);
+            this._uniformSweeper = new UniformRandomSweeper(mlContext, new SweeperOptionBase(), valueGenerators);
         }
 
         public ParameterSet Current => this._next;

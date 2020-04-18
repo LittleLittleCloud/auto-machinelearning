@@ -50,7 +50,7 @@ namespace MLNet.AutoPipeline
             intList.Add(max);
             this._value = intList;
 
-            var option = new FloatParamOptions()
+            var option = new FloatValueGenerator.Option()
             {
                 Name = name,
                 Min = min,
@@ -66,7 +66,7 @@ namespace MLNet.AutoPipeline
             this._meta = typeof(string);
             this._value = candidates.ToList();
 
-            var option = new DiscreteParamOptions()
+            var option = new DiscreteValueGenerator.Option()
             {
                 Name = name,
                 Values = candidates,

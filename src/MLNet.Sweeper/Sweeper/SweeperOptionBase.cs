@@ -8,7 +8,7 @@ using Microsoft.ML.Runtime;
 
 namespace MLNet.Sweeper
 {
-    public class OptionsBase
+    public class SweeperOptionBase
     {
         public IComponentFactory<IValueGenerator>[] SweptParameters;
 

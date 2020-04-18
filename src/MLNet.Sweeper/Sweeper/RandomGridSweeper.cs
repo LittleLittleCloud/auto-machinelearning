@@ -126,7 +126,7 @@ namespace MLNet.Sweeper
             return new ParameterSet(pset);
         }
 
-        public sealed class Options : OptionsBase
+        public sealed class Options : SweeperOptionBase
         {
             public int MaxGridPoints = 1000000;
         }
