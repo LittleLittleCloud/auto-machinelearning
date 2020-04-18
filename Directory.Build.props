@@ -15,8 +15,5 @@
     <AdditionalFiles Include="$(MSBuildThisFileDirectory)stylecop.json">
         <Link>stylecop.json</Link>
     </AdditionalFiles>
-    <AdditionalFiles Include="$(MSBuildThisFileDirectory)GlobalSuppressions.cs">
-        <Link>GlobalSuppressions.cs</Link>
-    </AdditionalFiles>
 </ItemGroup>
 </Project>
