@@ -7,7 +7,6 @@ using System.Collections.Generic;
 
 namespace MLNet.Sweeper
 {
-
     public sealed class StringParameterValue : IParameterValue<string>
     {
         private readonly string _name;

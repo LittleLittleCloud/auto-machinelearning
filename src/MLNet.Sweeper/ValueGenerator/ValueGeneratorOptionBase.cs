@@ -1,4 +1,4 @@
-﻿// <copyright file="Class1.cs" company="BigMiao">
+﻿// <copyright file="ValueGeneratorOptionBase.cs" company="BigMiao">
 // Copyright (c) BigMiao. All rights reserved.
 // </copyright>
 

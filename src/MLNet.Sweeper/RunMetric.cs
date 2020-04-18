@@ -8,7 +8,6 @@ using System.Linq;
 
 namespace MLNet.Sweeper
 {
-
     /// <summary>
     /// The metric class, used by smart sweeping algorithms.
     /// Ideally we would like to move towards a IDataView, this is

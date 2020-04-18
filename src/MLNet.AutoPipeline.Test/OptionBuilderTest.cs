@@ -2,10 +2,10 @@
 // Copyright (c) BigMiao. All rights reserved.
 // </copyright>
 
-using System.Collections.Generic;
 using FluentAssertions;
 using Microsoft.ML;
 using MLNet.Sweeper;
+using System.Collections.Generic;
 using Xunit;
 
 namespace MLNet.AutoPipeline.Test
@@ -94,6 +94,4 @@ namespace MLNet.AutoPipeline.Test
             public string StringOption = "str";
         }
     }
-
-
 }

@@ -2,13 +2,12 @@
 // Copyright (c) BigMiao. All rights reserved.
 // </copyright>
 
-using Microsoft.ML.Runtime;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.ML.Runtime;
 
 namespace MLNet.Sweeper
 {
-
     /// <summary>
     /// Random grid sweeper, it generates random points from the grid.
     /// </summary>
@@ -81,7 +80,7 @@ namespace MLNet.Sweeper
             int tries = 0;
             for (int i = 0; i < maxSweeps; i++)
             {
-                for (; ; )
+                for (; ;)
                 {
                     iPerm = (iPerm + 1) % this._nGridPoints;
                     if (this._cache[iPerm] == null)

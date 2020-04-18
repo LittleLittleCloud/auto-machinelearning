@@ -2,10 +2,10 @@
 // Copyright (c) BigMiao. All rights reserved.
 // </copyright>
 
-using MLNet.Sweeper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using MLNet.Sweeper;
 
 namespace MLNet.AutoPipeline
 {

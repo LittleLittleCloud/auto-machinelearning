@@ -2,18 +2,19 @@
 // Copyright (c) BigMiao. All rights reserved.
 // </copyright>
 
-using Microsoft.ML;
-using MLNet.Sweeper;
 using System.Collections;
 using System.Collections.Generic;
+using Microsoft.ML;
+using MLNet.Sweeper;
 
 namespace MLNet.AutoPipeline
 {
     internal class GridSearchSweeper : ISweeper
     {
+        private readonly RandomGridSweeper _gridSweeper;
+
         private ParameterSet _next;
         private ParameterSet[] _results;
-        private readonly RandomGridSweeper _gridSweeper;
         private int _maximum;
 
         public GridSearchSweeper(MLContext context, IValueGenerator[] valueGenerators, int maximum = 10000)
@@ -44,6 +45,7 @@ namespace MLNet.AutoPipeline
             {
                 return false;
             }
+
             this._next = this._results[this._maximum - 1];
             this._maximum -= 1;
             return true;

@@ -2,9 +2,9 @@
 // Copyright (c) BigMiao. All rights reserved.
 // </copyright>
 
-using Microsoft.ML.Runtime;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.ML.Runtime;
 
 namespace MLNet.Sweeper
 {

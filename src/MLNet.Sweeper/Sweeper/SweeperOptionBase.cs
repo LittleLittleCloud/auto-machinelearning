@@ -1,4 +1,4 @@
-﻿// <copyright file="OptionsBase.cs" company="BigMiao">
+﻿// <copyright file="SweeperOptionBase.cs" company="BigMiao">
 // Copyright (c) BigMiao. All rights reserved.
 // </copyright>
 

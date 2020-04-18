@@ -2,19 +2,19 @@
 // Copyright (c) BigMiao. All rights reserved.
 // </copyright>
 
-using Microsoft.ML;
-using Microsoft.ML.Data;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.ML;
+using Microsoft.ML.Data;
 
 namespace MLNet.AutoPipeline
 {
     internal class AutoEstimatorChain<TLastTransformer>
         where TLastTransformer : class, ITransformer
     {
+        public readonly IEstimator<TLastTransformer> LastEstimator;
         private readonly IList<TransformerScope> _scopes;
         private readonly IList<IEstimator<ITransformer>> _estimators;
-        public readonly IEstimator<TLastTransformer> LastEstimator;
 
         public AutoEstimatorChain(IEstimator<ITransformer>[] estimators, TransformerScope[] scopes)
         {

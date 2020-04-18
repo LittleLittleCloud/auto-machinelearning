@@ -1,4 +1,4 @@
-﻿// <copyright file="ISweeper.cs" company="BigMiao">
+﻿// <copyright file="RunResult.cs" company="BigMiao">
 // Copyright (c) BigMiao. All rights reserved.
 // </copyright>
 
@@ -6,9 +6,8 @@ using System;
 
 namespace MLNet.Sweeper
 {
-
     /// <summary>
-    /// Simple implementation of IRunResult
+    /// Simple implementation of IRunResult.
     /// </summary>
     public sealed class RunResult : IRunResult<double>
     {

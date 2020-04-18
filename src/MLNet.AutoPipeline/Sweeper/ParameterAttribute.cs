@@ -27,7 +27,7 @@ namespace MLNet.AutoPipeline
             intList.Add(max);
             this._value = intList;
 
-            var option = new IntParamOptions()
+            var option = new Int32ValueGenerator.Option()
             {
                 Name = name,
                 Min = min,
@@ -80,6 +80,5 @@ namespace MLNet.AutoPipeline
         public Type Meta => this._meta;
 
         public IValueGenerator ValueGenerator { get; }
-
     }
 }

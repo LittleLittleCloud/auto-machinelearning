@@ -11,11 +11,12 @@ namespace MLNet.AutoPipeline
     internal static class AutoEstimatorExtension
     {
         public static AutoEstimatorChain<TNewTrain>
-            Append<TLastTrain, TNewTrain, TOption>(this EstimatorChain<TLastTrain> estimatorChain,
-                                                   Func<TOption, IEstimator<TNewTrain>> estimatorBuilder,
-                                                   OptionBuilder<TOption> parameters,
-                                                   ISweeper sweeper,
-                                                   TransformerScope scope = TransformerScope.Everything)
+            Append<TLastTrain, TNewTrain, TOption>(
+                this EstimatorChain<TLastTrain> estimatorChain,
+                Func<TOption, IEstimator<TNewTrain>> estimatorBuilder,
+                OptionBuilder<TOption> parameters,
+                ISweeper sweeper,
+                TransformerScope scope = TransformerScope.Everything)
             where TLastTrain : class, ITransformer
             where TNewTrain : class, ITransformer
             where TOption : class

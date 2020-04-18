@@ -2,9 +2,9 @@
 // Copyright (c) BigMiao. All rights reserved.
 // </copyright>
 
-using Microsoft.ML.Runtime;
 using System;
 using System.Collections.Generic;
+using Microsoft.ML.Runtime;
 
 namespace MLNet.Sweeper
 {
@@ -53,76 +53,12 @@ namespace MLNet.Sweeper
             return 0.5 * (1 + ProbabilityFunctions.Erf(x * 1 / Math.Sqrt(2)));
         }
 
-        /// <summary>
-        /// Samples from a Gaussian Normal with mean mu and std dev sigma.
-        /// </summary>
-        /// <param name="numRVs">Number of samples.</param>
-        /// <param name="mu">mean.</param>
-        /// <param name="sigma">standard deviation.</param>
-        /// <returns>NormalRVs.</returns>
-        public double[] NormalRVs(int numRVs, double mu, double sigma)
-        {
-            List<double> rvs = new List<double>();
-            double u1;
-            double u2;
-
-            for (int i = 0; i < numRVs; i++)
-            {
-                u1 = this._rng.NextDouble();
-                u2 = this._rng.NextDouble();
-                rvs.Add(mu + sigma * Math.Sqrt(-2.0 * Math.Log(u1)) * Math.Sin(2.0 * Math.PI * u2));
-            }
-
-            return rvs.ToArray();
-        }
-
-        /// <summary>
-        /// This performs (slow) roulette-wheel sampling of a categorical distribution. Should be swapped for other
-        /// method as soon as one is available.
-        /// </summary>
-        /// <param name="numSamples">Number of samples to draw.</param>
-        /// <param name="weights">Weights for distribution (should sum to 1).</param>
-        /// <returns>A set of indicies indicating which element was chosen for each sample.</returns>
-        public int[] SampleCategoricalDistribution(int numSamples, double[] weights)
-        {
-            // Normalize weights if necessary.
-            double total = Sum(weights);
-            if (Math.Abs(1.0 - total) > 0.0001)
-            {
-                weights = Normalize(weights);
-            }
-
-            // Build roulette wheel.
-            double[] rw = new double[weights.Length];
-            double cs = 0.0;
-            for (int i = 0; i < weights.Length; i++)
-            {
-                cs += weights[i];
-                rw[i] = cs;
-            }
-
-            // Draw samples.
-            int[] results = new int[numSamples];
-            for (int i = 0; i < results.Length; i++)
-            {
-                double u = this._rng.NextDouble();
-                results[i] = this.BinarySearch(rw, u, 0, rw.Length - 1);
-            }
-
-            return results;
-        }
-
-        public double SampleUniform()
-        {
-            return this._rng.NextDouble();
-        }
-
         public static double[] Normalize(double[] weights)
         {
             double total = Sum(weights);
 
             // If all weights equal zero, set to 1 (to avoid divide by zero).
-            if (total <= Double.Epsilon)
+            if (total <= double.Epsilon)
             {
                 weights.SetValue(1, 0, weights.Length);
                 total = weights.Length;
@@ -245,14 +181,78 @@ namespace MLNet.Sweeper
         }
 
         /// <summary>
+        /// Samples from a Gaussian Normal with mean mu and std dev sigma.
+        /// </summary>
+        /// <param name="numRVs">Number of samples.</param>
+        /// <param name="mu">mean.</param>
+        /// <param name="sigma">standard deviation.</param>
+        /// <returns>NormalRVs.</returns>
+        public double[] NormalRVs(int numRVs, double mu, double sigma)
+        {
+            List<double> rvs = new List<double>();
+            double u1;
+            double u2;
+
+            for (int i = 0; i < numRVs; i++)
+            {
+                u1 = this._rng.NextDouble();
+                u2 = this._rng.NextDouble();
+                rvs.Add(mu + sigma * Math.Sqrt(-2.0 * Math.Log(u1)) * Math.Sin(2.0 * Math.PI * u2));
+            }
+
+            return rvs.ToArray();
+        }
+
+        /// <summary>
+        /// This performs (slow) roulette-wheel sampling of a categorical distribution. Should be swapped for other
+        /// method as soon as one is available.
+        /// </summary>
+        /// <param name="numSamples">Number of samples to draw.</param>
+        /// <param name="weights">Weights for distribution (should sum to 1).</param>
+        /// <returns>A set of indicies indicating which element was chosen for each sample.</returns>
+        public int[] SampleCategoricalDistribution(int numSamples, double[] weights)
+        {
+            // Normalize weights if necessary.
+            double total = Sum(weights);
+            if (Math.Abs(1.0 - total) > 0.0001)
+            {
+                weights = Normalize(weights);
+            }
+
+            // Build roulette wheel.
+            double[] rw = new double[weights.Length];
+            double cs = 0.0;
+            for (int i = 0; i < weights.Length; i++)
+            {
+                cs += weights[i];
+                rw[i] = cs;
+            }
+
+            // Draw samples.
+            int[] results = new int[numSamples];
+            for (int i = 0; i < results.Length; i++)
+            {
+                double u = this._rng.NextDouble();
+                results[i] = this.BinarySearch(rw, u, 0, rw.Length - 1);
+            }
+
+            return results;
+        }
+
+        public double SampleUniform()
+        {
+            return this._rng.NextDouble();
+        }
+
+        /// <summary>
         /// Simple binary search method for finding smallest index in array where value
         /// meets or exceeds what you're looking for.
         /// </summary>
-        /// <param name="a">Array to search</param>
-        /// <param name="u">Value to search for</param>
-        /// <param name="low">Left boundary of search</param>
-        /// <param name="high">Right boundary of search</param>
-        /// <returns></returns>
+        /// <param name="a">Array to search.</param>
+        /// <param name="u">Value to search for.</param>
+        /// <param name="low">Left boundary of search.</param>
+        /// <param name="high">Right boundary of search.</param>
+        /// <returns>binary seach result.</returns>
         private int BinarySearch(double[] a, double u, int low, int high)
         {
             int diff = high - low;

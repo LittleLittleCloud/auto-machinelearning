@@ -2,8 +2,8 @@
 // Copyright (c) BigMiao. All rights reserved.
 // </copyright>
 
-using Microsoft.ML;
 using System;
+using Microsoft.ML;
 
 namespace MLNet.AutoPipeline
 {

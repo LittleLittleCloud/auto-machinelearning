@@ -21,7 +21,6 @@ namespace MLNet.Sweeper
 
         public static int[] GetRandomPermutation(Random rand, int size)
         {
-
             var res = GetIdentityPermutation(size);
             Shuffle<int>(rand, res);
             return res;

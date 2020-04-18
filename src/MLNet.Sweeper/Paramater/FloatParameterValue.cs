@@ -2,12 +2,8 @@
 // Copyright (c) BigMiao. All rights reserved.
 // </copyright>
 
-using System;
-using System.Collections.Generic;
-
 namespace MLNet.Sweeper
 {
-
     public sealed class FloatParameterValue : IParameterValue<float>
     {
         private readonly string _name;

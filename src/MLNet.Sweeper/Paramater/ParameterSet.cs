@@ -6,7 +6,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace MLNet.Sweeper
 {
@@ -57,13 +56,6 @@ namespace MLNet.Sweeper
 
         public IParameterValue this[string name] => this._parameterValues[name];
 
-        private bool ContainsParamValue(IParameterValue parameterValue)
-        {
-            IParameterValue value;
-            return this._parameterValues.TryGetValue(parameterValue.Name, out value) &&
-                   parameterValue.Equals(value);
-        }
-
         public bool Equals(ParameterSet other)
         {
             if (other == null || other._hash != this._hash || other._parameterValues.Count != this._parameterValues.Count)
@@ -87,6 +79,13 @@ namespace MLNet.Sweeper
         public override int GetHashCode()
         {
             return this._hash;
+        }
+
+        private bool ContainsParamValue(IParameterValue parameterValue)
+        {
+            IParameterValue value;
+            return this._parameterValues.TryGetValue(parameterValue.Name, out value) &&
+                   parameterValue.Equals(value);
         }
     }
 }

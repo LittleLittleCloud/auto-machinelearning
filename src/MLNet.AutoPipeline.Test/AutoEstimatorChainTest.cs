@@ -78,9 +78,8 @@ namespace MLNet.AutoPipeline.Test
             [Parameter("Alpha", 0.0001f, 1f, 0.1f)]
             public float Alpha = 0.0001f;
 
-            //[Parameter("ApproximationRank", 8, 128, 20)]
-            //public int ApproximationRank = 8;
-
+            // [Parameter("ApproximationRank", 8, 128, 20)]
+            // public int ApproximationRank = 8;
             [Parameter("Lambda", 0.01f, 1f, 0.1f)]
             public double Lambda = 0.01f;
 

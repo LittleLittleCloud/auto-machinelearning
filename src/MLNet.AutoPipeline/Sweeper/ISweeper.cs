@@ -13,7 +13,6 @@ namespace MLNet.AutoPipeline
         /// For trainable Sweeper.
         /// </summary>
         /// <param name="input">Output of Sweeper.</param>
-        /// <param name="Y">Score from model</param>
         void AddRunHistory(IRunResult input);
     }
 
