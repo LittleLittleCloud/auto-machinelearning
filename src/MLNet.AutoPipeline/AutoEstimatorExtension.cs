@@ -22,7 +22,10 @@ namespace MLNet.AutoPipeline
         {
             var autoEstimator = new AutoEstimator<TNewTrain, TOption>(estimatorBuilder, parameters, sweeper);
 
-            return new AutoEstimatorChain<TLastTrain>(estimatorChain.GetEstimators, estimatorChain.GetScopes)
+            var estimators = estimatorChain.GetType().GetField("_estimators", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic).GetValue(estimatorChain) as IEstimator<ITransformer>[];
+            var scopes = estimatorChain.GetType().GetField("_scopes", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic).GetValue(estimatorChain) as TransformerScope[];
+
+            return new AutoEstimatorChain<TLastTrain>(estimators, scopes)
                        .Append(autoEstimator, scope);
         }
     }

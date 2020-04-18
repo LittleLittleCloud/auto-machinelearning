@@ -2,12 +2,15 @@
 // Copyright (c) BigMiao. All rights reserved.
 // </copyright>
 
-using Microsoft.ML.AutoPipeline;
+using Microsoft.ML;
 using Microsoft.ML.Data;
+using Microsoft.ML.Trainers;
+using MLNet.AutoPipeline;
+using MLNet.Sweeper;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace Microsoft.ML.AutoPipeline.Test
+namespace MLNet.AutoPipeline.Test
 {
     public class AutoEstimatorChainTest
     {
@@ -28,7 +31,7 @@ namespace Microsoft.ML.AutoPipeline.Test
             var randomSweeper = new RandomSweeper(context, paramaters.ValueGenerators, 100);
             var pipelines = context.Transforms.Conversion.MapValueToKey("userId", "userId")
                           .Append(context.Transforms.Conversion.MapValueToKey("movieId", "movieId"))
-                          .Append(context.Recommendation().Trainers.MatrixFactorization, paramaters, randomSweeper, Data.TransformerScope.Everything)
+                          .Append(context.Recommendation().Trainers.MatrixFactorization, paramaters, randomSweeper, Microsoft.ML.Data.TransformerScope.Everything)
                           .Append(context.Transforms.CopyColumns("output", "Score"));
 
             foreach (var (model, sweeper) in pipelines.Fits(split.TrainSet))
@@ -50,7 +53,7 @@ namespace Microsoft.ML.AutoPipeline.Test
             var gridSearchSweeper = new GridSearchSweeper(context, paramaters.ValueGenerators, 20);
             var pipelines = context.Transforms.Conversion.MapValueToKey("userId", "userId")
                           .Append(context.Transforms.Conversion.MapValueToKey("movieId", "movieId"))
-                          .Append(context.Recommendation().Trainers.MatrixFactorization, paramaters, gridSearchSweeper, Data.TransformerScope.Everything)
+                          .Append(context.Recommendation().Trainers.MatrixFactorization, paramaters, gridSearchSweeper, Microsoft.ML.Data.TransformerScope.Everything)
                           .Append(context.Transforms.CopyColumns("output", "Score"));
 
             foreach (var (model, sweeper) in pipelines.Fits(split.TrainSet))
@@ -60,30 +63,6 @@ namespace Microsoft.ML.AutoPipeline.Test
                 this._output.WriteLine(sweeper.Current.ToString());
                 this._output.WriteLine($"RMSE: {metrics.RootMeanSquaredError}");
                 var runResult = new RunResult(sweeper.Current, metrics.RootMeanSquaredError, false);
-                sweeper.AddRunHistory(runResult);
-            }
-        }
-
-        [Fact]
-        public void RecommendationE2ETest_SmacSweeper()
-        {
-            var context = new MLContext();
-            var paramaters = new MFOption();
-            var dataset = context.Data.LoadFromTextFile<ModelInput>(@".\TestData\recommendation-ratings-train.csv", separatorChar: ',', hasHeader: true);
-            var split = context.Data.TrainTestSplit(dataset, 0.3);
-            var smacSweeper = new SMACSweeper(context, paramaters.ValueGenerators, 200);
-            var pipelines = context.Transforms.Conversion.MapValueToKey("userId", "userId")
-                          .Append(context.Transforms.Conversion.MapValueToKey("movieId", "movieId"))
-                          .Append(context.Recommendation().Trainers.MatrixFactorization, paramaters, smacSweeper, Data.TransformerScope.Everything)
-                          .Append(context.Transforms.CopyColumns("output", "Score"));
-
-            foreach (var (model, sweeper) in pipelines.Fits(split.TrainSet))
-            {
-                var eval = model.Transform(split.TestSet);
-                var metrics = context.Regression.Evaluate(eval, "rating", "Score");
-                this._output.WriteLine(sweeper.Current.ToString());
-                this._output.WriteLine($"RMSE: {metrics.RootMeanSquaredError}");
-                var runResult = new RunResult(sweeper.Current, metrics.RootMeanSquaredError, true);
                 sweeper.AddRunHistory(runResult);
             }
         }
@@ -114,10 +93,8 @@ namespace Microsoft.ML.AutoPipeline.Test
             [ColumnName("userId"), LoadColumn(0)]
             public float UserId { get; set; }
 
-
             [ColumnName("movieId"), LoadColumn(1)]
             public float MovieId { get; set; }
-
 
             [ColumnName("rating"), LoadColumn(2)]
             public float Rating { get; set; }

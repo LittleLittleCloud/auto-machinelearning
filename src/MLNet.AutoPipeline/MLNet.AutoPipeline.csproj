@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <RootNamespace>Microsoft.ML.AutoPipeline</RootNamespace>
+    <RootNamespace>MLNet.AutoPipeline</RootNamespace>
     <IsPackable>true</IsPackable>
   </PropertyGroup>
 
@@ -12,6 +12,10 @@
 
   <ItemGroup>
     <InternalsVisibleTo Include="MLNet.AutoPipeline.Test" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MLNet.Sweeper\MLNet.Sweeper.csproj" />
   </ItemGroup>
 
 </Project>

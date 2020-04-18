@@ -2,13 +2,15 @@
 // Copyright (c) BigMiao. All rights reserved.
 // </copyright>
 
-using FluentAssertions;
 using System.Collections.Generic;
 using System.Linq;
+using FluentAssertions;
+using Microsoft.ML;
+using MLNet.AutoPipeline;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace Microsoft.ML.AutoPipeline.Test
+namespace MLNet.AutoPipeline.Test
 {
     public class RandomSweeperTest
     {

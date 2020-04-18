@@ -2,14 +2,13 @@
 // Copyright (c) BigMiao. All rights reserved.
 // </copyright>
 
-using System;
 using System.Collections.Generic;
-using System.Text;
 using FluentAssertions;
-using Microsoft.ML.AutoPipeline;
+using Microsoft.ML;
+using MLNet.Sweeper;
 using Xunit;
 
-namespace Microsoft.ML.AutoPipeline.Test
+namespace MLNet.AutoPipeline.Test
 {
     public class OptionBuilderTest
     {
@@ -23,19 +22,18 @@ namespace Microsoft.ML.AutoPipeline.Test
             option.StringOption.Should().Equals("str");
         }
 
-
         [Fact]
         public void OptionBuilder_should_build_optoin_from_parameter_set()
         {
             var builder = new TestOptionBuilder();
-            var input = new List<Microsoft.ML.IParameterValue>()
+            var input = new List<IParameterValue>()
             {
-                new Microsoft.ML.Sweeper.LongParameterValue("LongOption", 2),
-                new Microsoft.ML.Sweeper.FloatParameterValue("FloatOption", 2f),
-                new Microsoft.ML.Sweeper.StringParameterValue("StringOption", "2"),
+                new LongParameterValue("LongOption", 2),
+                new FloatParameterValue("FloatOption", 2f),
+                new StringParameterValue("StringOption", "2"),
             };
 
-            var paramSet = new Microsoft.ML.ParameterSet(input);
+            var paramSet = new ParameterSet(input);
 
             var option = builder.BuildOption(paramSet);
             option.LongOption.Should().Equals(2);
@@ -74,7 +72,6 @@ namespace Microsoft.ML.AutoPipeline.Test
                 maximum.Should().BeGreaterThan(-2);
             }
         }
-
 
         private class TestOption
         {

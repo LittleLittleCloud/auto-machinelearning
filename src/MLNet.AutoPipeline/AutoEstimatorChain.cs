@@ -9,17 +9,17 @@ using System.Linq;
 
 namespace MLNet.AutoPipeline
 {
-    internal class AutoEstimatorChain<TLastTransformer> : IEstimator<TransformerChain<TLastTransformer>>
+    internal class AutoEstimatorChain<TLastTransformer>
         where TLastTransformer : class, ITransformer
     {
-        private readonly TransformerScope[] _scopes;
-        private readonly IEstimator<ITransformer>[] _estimators;
+        private readonly IList<TransformerScope> _scopes;
+        private readonly IList<IEstimator<ITransformer>> _estimators;
         public readonly IEstimator<TLastTransformer> LastEstimator;
 
         public AutoEstimatorChain(IEstimator<ITransformer>[] estimators, TransformerScope[] scopes)
         {
-            this._estimators = estimators ?? new IEstimator<ITransformer>[0];
-            this._scopes = scopes ?? new TransformerScope[0];
+            this._estimators = estimators is null ? new List<IEstimator<ITransformer>>() : estimators.ToList();
+            this._scopes = scopes is null ? new List<TransformerScope>() : scopes.ToList();
             this.LastEstimator = estimators.LastOrDefault() as IEstimator<TLastTransformer>;
         }
 
@@ -30,20 +30,8 @@ namespace MLNet.AutoPipeline
             this.LastEstimator = null;
         }
 
-        public TransformerChain<TLastTransformer> Fit(IDataView input)
-        {
-            GetOutputSchema(SchemaShape.Create(input.Schema));
-
-            while (true)
-            {
-
-            }
-        }
-
         public IEnumerable<(TransformerChain<TLastTransformer>, ISweeper)> Fits(IDataView input)
         {
-            GetOutputSchema(SchemaShape.Create(input.Schema));
-
             // index of autoEstimator
             var autoEstimator = this._estimators.Where(_est => _est is IAutoEstimator).FirstOrDefault() as IAutoEstimator;
             while (true)
@@ -55,8 +43,8 @@ namespace MLNet.AutoPipeline
                 }
 
                 IDataView current = input;
-                var xfs = new ITransformer[this._estimators.Length];
-                for (int i = 0; i < this._estimators.Length; i++)
+                var xfs = new ITransformer[this._estimators.Count];
+                for (int i = 0; i < this._estimators.Count; i++)
                 {
                     var est = this._estimators[i];
                     xfs[i] = est.Fit(current);
@@ -67,21 +55,12 @@ namespace MLNet.AutoPipeline
             }
         }
 
-        public SchemaShape GetOutputSchema(SchemaShape inputSchema)
-        {
-            var s = inputSchema;
-            foreach (var est in this._estimators)
-            {
-                s = est.GetOutputSchema(s);
-            }
-
-            return s;
-        }
-
         public AutoEstimatorChain<TNewTrans> Append<TNewTrans>(IEstimator<TNewTrans> estimator, TransformerScope scope = TransformerScope.Everything)
             where TNewTrans : class, ITransformer
         {
-            return new AutoEstimatorChain<TNewTrans>(this._estimators.AppendElement(estimator), this._scopes.AppendElement(scope));
+            this._estimators.Add(estimator);
+            this._scopes.Add(scope);
+            return new AutoEstimatorChain<TNewTrans>(this._estimators.ToArray(), this._scopes.ToArray());
         }
     }
 }
