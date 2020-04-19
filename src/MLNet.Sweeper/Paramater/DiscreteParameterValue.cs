@@ -4,6 +4,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 namespace MLNet.Sweeper
 {
@@ -20,10 +21,13 @@ namespace MLNet.Sweeper
 
         public object RawValue => this._value;
 
-        public DiscreteParameterValue(string name, object value)
+        public string GroupID { get; private set; }
+
+        public DiscreteParameterValue(string name, object value, string groupID = null)
         {
             this._name = name;
             this._value = value;
+            this.GroupID = groupID;
         }
 
         public bool Equals(IParameterValue other)

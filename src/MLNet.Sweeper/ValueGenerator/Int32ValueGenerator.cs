@@ -25,7 +25,7 @@ namespace MLNet.Sweeper
         {
             var val = Utils.AXPlusB(this._options.Min, this._options.Max, normalizedValue, this._options.LogBase);
 
-            return new Int32ParamaterValue(this._options.Name, Convert.ToInt32(val));
+            return new Int32ParamaterValue(this._options.Name, Convert.ToInt32(val), this._options.GroupID);
         }
 
         public IParameterValue this[int i]

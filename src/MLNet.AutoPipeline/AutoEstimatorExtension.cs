@@ -9,9 +9,9 @@ using System;
 
 namespace MLNet.AutoPipeline
 {
-    internal static class AutoEstimatorExtension
+    public static class AutoEstimatorExtension
     {
-        public static AutoEstimatorChain<TNewTrain>
+        public static AutoEstimatorChain
             Append<TLastTrain, TNewTrain, TOption>(
                 this EstimatorChain<TLastTrain> estimatorChain,
                 Func<TOption, IEstimator<TNewTrain>> estimatorBuilder,
@@ -21,12 +21,12 @@ namespace MLNet.AutoPipeline
             where TNewTrain : class, ITransformer
             where TOption : class
         {
-            var autoEstimator = new AutoEstimator<TNewTrain, TOption>(estimatorBuilder, parameters);
+            var autoEstimator = new EstimatorBuilder<TNewTrain, TOption>(estimatorBuilder, parameters);
 
             var estimators = estimatorChain.GetType().GetField("_estimators", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic).GetValue(estimatorChain) as IEstimator<ITransformer>[];
             var scopes = estimatorChain.GetType().GetField("_scopes", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic).GetValue(estimatorChain) as TransformerScope[];
 
-            return new AutoEstimatorChain<TLastTrain>(estimators, scopes)
+            return new AutoEstimatorChain(estimators, scopes)
                        .Append(autoEstimator, scope);
         }
     }

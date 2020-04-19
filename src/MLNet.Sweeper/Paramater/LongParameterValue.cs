@@ -21,11 +21,14 @@ namespace MLNet.Sweeper
 
         public object RawValue => this._value;
 
-        public LongParameterValue(string name, long value)
+        public string GroupID { get; private set; }
+
+        public LongParameterValue(string name, long value, string groupID = null)
         {
             this._name = name;
             this._value = value;
             this._valueText = this._value.ToString("D");
+            this.GroupID = groupID;
         }
 
         public bool Equals(IParameterValue other)

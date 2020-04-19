@@ -18,6 +18,8 @@ namespace MLNet.Sweeper
         string ValueText { get; }
 
         object RawValue { get; }
+
+        string GroupID { get; }
     }
 
     /// <summary>

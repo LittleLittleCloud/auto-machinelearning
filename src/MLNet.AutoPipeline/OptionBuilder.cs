@@ -9,9 +9,11 @@ using MLNet.Sweeper;
 
 namespace MLNet.AutoPipeline
 {
-    internal abstract class OptionBuilder<TOption>
+    public abstract class OptionBuilder<TOption>
         where TOption : class
     {
+        private readonly HashSet<string> _groupIDs = new HashSet<string>();
+
         public IValueGenerator[] ValueGenerators => this.GetParameterAttributes().Select(kv => kv.Value.ValueGenerator).ToArray();
 
         public TOption CreateDefaultOption()
@@ -35,8 +37,11 @@ namespace MLNet.AutoPipeline
             var option = this.CreateDefaultOption();
             foreach (var param in parameters)
             {
-                var value = param.RawValue;
-                typeof(TOption).GetField(param.Name)?.SetValue(option, value);
+                if (this._groupIDs.Contains(param.GroupID))
+                {
+                    var value = param.RawValue;
+                    typeof(TOption).GetField(param.Name)?.SetValue(option, value);
+                }
             }
 
             return option;
@@ -48,9 +53,12 @@ namespace MLNet.AutoPipeline
                      .Where(x => Attribute.GetCustomAttribute(x, typeof(ParameterAttribute)) != null);
 
             var paramatersDictionary = new Dictionary<string, ParameterAttribute>();
+
             foreach (var param in paramaters)
             {
-                paramatersDictionary.Add(param.Name, Attribute.GetCustomAttribute(param, typeof(ParameterAttribute)) as ParameterAttribute);
+                var paramaterAttribute = Attribute.GetCustomAttribute(param, typeof(ParameterAttribute)) as ParameterAttribute;
+                this._groupIDs.Add(paramaterAttribute.GroupID);
+                paramatersDictionary.Add(param.Name, paramaterAttribute);
             }
 
             return paramatersDictionary;
