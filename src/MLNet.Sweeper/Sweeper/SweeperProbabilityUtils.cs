@@ -161,12 +161,12 @@ namespace MLNet.Sweeper
                             }
                         }
 
-                        parameters.Add(new StringParameterValue(sweepParams[i].Name, parameterDiscrete[hotIndex].ValueText));
+                        parameters.Add(new DiscreteParameterValue(sweepParams[i].Name, parameterDiscrete[hotIndex].ValueText));
                         currentArrayIndex += parameterDiscrete.Count;
                     }
                     else
                     {
-                        parameters.Add(new StringParameterValue(sweepParams[i].Name, parameterDiscrete[(int)array[currentArrayIndex]].ValueText));
+                        parameters.Add(new DiscreteParameterValue(sweepParams[i].Name, parameterDiscrete[(int)array[currentArrayIndex]].ValueText));
                         currentArrayIndex++;
                     }
                 }

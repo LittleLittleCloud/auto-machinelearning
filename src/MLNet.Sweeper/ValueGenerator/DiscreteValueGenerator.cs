@@ -24,16 +24,16 @@ namespace MLNet.Sweeper
         // REVIEW: Is float accurate enough?
         public IParameterValue CreateFromNormalized(double normalizedValue)
         {
-            return new StringParameterValue(this._options.Name, this._options.Values[(int)(this._options.Values.Length * normalizedValue)]);
+            return new DiscreteParameterValue(this._options.Name, this._options.Values[(int)(this._options.Values.Length * normalizedValue)]);
         }
 
-        public IParameterValue this[int i] => new StringParameterValue(this._options.Name, this._options.Values[i]);
+        public IParameterValue this[int i] => new DiscreteParameterValue(this._options.Name, this._options.Values[i]);
 
         public int Count => this._options.Values.Length;
 
         public class Option : ValueGeneratorOptionBase
         {
-            public string[] Values = null;
+            public object[] Values = null;
         }
     }
 }

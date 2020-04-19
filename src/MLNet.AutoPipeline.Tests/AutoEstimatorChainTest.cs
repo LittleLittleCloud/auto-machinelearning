@@ -9,6 +9,7 @@ using MLNet.AutoPipeline;
 using MLNet.Sweeper;
 using Xunit;
 using Xunit.Abstractions;
+using static Microsoft.ML.Trainers.MatrixFactorizationTrainer;
 
 namespace MLNet.AutoPipeline.Test
 {
@@ -75,16 +76,20 @@ namespace MLNet.AutoPipeline.Test
 
             public string LabelColumnName = "rating";
 
-            [Parameter("Alpha", 0.0001f, 1f, 0.1f)]
+            [Parameter("Alpha", 0.0001f, 1f, true)]
             public float Alpha = 0.0001f;
 
-            // [Parameter("ApproximationRank", 8, 128, 20)]
-            // public int ApproximationRank = 8;
-            [Parameter("Lambda", 0.01f, 1f, 0.1f)]
+            [Parameter("ApproximationRank", 8, 128, steps: 20)]
+            public int ApproximationRank = 8;
+
+            [Parameter("Lambda", 0.01f, 1f, true, 20)]
             public double Lambda = 0.01f;
 
-            [Parameter("LearningRate", 0.001f, 0.1f, 0.01f)]
+            [Parameter("LearningRate", 0.001f, 0.1f, true, 100)]
             public double LearningRate = 0.001f;
+
+            [Parameter("LossFunctionType", new object[] { LossFunctionType.SquareLossOneClass, LossFunctionType.SquareLossRegression })]
+            public LossFunctionType LossFunction;
         }
 
         private class ModelInput

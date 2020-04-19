@@ -15,9 +15,7 @@ namespace MLNet.Sweeper
 
     public abstract class NumericValueGeneratorOptionBase : ValueGeneratorOptionBase
     {
-        public int NumSteps = 100;
-
-        public double? StepSize = null;
+        public int Steps = 100;
 
         public bool LogBase = false;
     }

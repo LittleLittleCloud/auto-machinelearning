@@ -30,7 +30,7 @@ namespace MLNet.AutoPipeline.Test
             {
                 new LongParameterValue("LongOption", 2),
                 new FloatParameterValue("FloatOption", 2f),
-                new StringParameterValue("StringOption", "2"),
+                new DiscreteParameterValue("StringOption", "2"),
             };
 
             var paramSet = new ParameterSet(input);
@@ -90,7 +90,7 @@ namespace MLNet.AutoPipeline.Test
             [Parameter("FloatOption", 0f, 100f)]
             public float FloatOption;
 
-            [Parameter("StringOption", new string[] { "str1", "str2", "str3", "str4" })]
+            [Parameter("StringOption", new object[] { "str1", "str2", "str3", "str4" })]
             public string StringOption = "str";
         }
     }

@@ -7,20 +7,20 @@ using System.Collections.Generic;
 
 namespace MLNet.Sweeper
 {
-    public sealed class StringParameterValue : IParameterValue<string>
+    public sealed class DiscreteParameterValue : IParameterValue
     {
         private readonly string _name;
-        private readonly string _value;
+        private readonly object _value;
 
         public string Name => this._name;
 
-        public string ValueText => this._value;
+        public string ValueText => this._value.ToString();
 
-        public string Value => this._value;
+        public object Value => this._value;
 
         public object RawValue => this._value;
 
-        public StringParameterValue(string name, string value)
+        public DiscreteParameterValue(string name, object value)
         {
             this._name = name;
             this._value = value;
@@ -33,7 +33,7 @@ namespace MLNet.Sweeper
 
         public override bool Equals(object obj)
         {
-            var spv = obj as StringParameterValue;
+            var spv = obj as DiscreteParameterValue;
             return spv != null && this.Name == spv.Name && this.ValueText == spv.ValueText;
         }
     }

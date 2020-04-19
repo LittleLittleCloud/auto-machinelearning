@@ -40,5 +40,25 @@ namespace MLNet.Sweeper
             a = b;
             b = temp;
         }
+
+        /// <summary>
+        /// calc (b-a)*x + a.
+        /// </summary>
+        /// <param name="a">A.</param>
+        /// <param name="b">B, which must greater than A.</param>
+        /// <param name="x">X.</param>
+        /// <returns>A*X + B.</returns>
+        public static double AXPlusB(double a, double b, double x, bool log)
+        {
+            if (!log)
+            {
+                return (b - a) * x + a;
+            }
+            else
+            {
+                var lnY = (Math.Log(b) - Math.Log(a)) * x + Math.Log(a);
+                return Math.Exp(lnY);
+            }
+        }
     }
 }

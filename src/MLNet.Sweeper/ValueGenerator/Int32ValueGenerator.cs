@@ -1,22 +1,21 @@
-﻿// <copyright file="LongValueGenerator.cs" company="BigMiao">
+﻿// <copyright file="Int32ValueGenerator.cs" company="BigMiao">
 // Copyright (c) BigMiao. All rights reserved.
 // </copyright>
 
 using System;
 using System.Collections.Generic;
+using Microsoft.ML.Runtime;
+using MLNet.Sweeper;
 
 namespace MLNet.Sweeper
 {
-    /// <summary>
-    /// The integer type parameter sweep.
-    /// </summary>
-    public class LongValueGenerator : INumericValueGenerator
+    public class Int32ValueGenerator : INumericValueGenerator
     {
         private readonly Option _options;
 
         public string Name => this._options.Name;
 
-        public LongValueGenerator(Option options)
+        public Int32ValueGenerator(Option options)
         {
             this._options = options;
         }
@@ -26,7 +25,7 @@ namespace MLNet.Sweeper
         {
             var val = Utils.AXPlusB(this._options.Min, this._options.Max, normalizedValue, this._options.LogBase);
 
-            return new LongParameterValue(this._options.Name, Convert.ToInt64(val));
+            return new Int32ParamaterValue(this._options.Name, Convert.ToInt32(val));
         }
 
         public IParameterValue this[int i]
@@ -47,15 +46,13 @@ namespace MLNet.Sweeper
 
         public float NormalizeValue(IParameterValue value)
         {
-            var valueTyped = value as LongParameterValue;
-
             if (this._options.LogBase)
             {
-                return (float)((Math.Log(valueTyped.Value) - Math.Log(this._options.Min)) / (Math.Log(this._options.Max) - Math.Log(this._options.Min)));
+                return (float)((Math.Log((int)value.RawValue) - Math.Log(this._options.Min)) / (Math.Log(this._options.Max) - Math.Log(this._options.Min)));
             }
             else
             {
-                return (float)(valueTyped.Value - this._options.Min) / (this._options.Max - this._options.Min);
+                return (float)((int)value.RawValue - this._options.Min) / (this._options.Max - this._options.Min);
             }
         }
 
@@ -67,9 +64,9 @@ namespace MLNet.Sweeper
 
         public class Option : NumericValueGeneratorOptionBase
         {
-            public long Min;
+            public int Min;
 
-            public long Max;
+            public int Max;
         }
     }
 }
