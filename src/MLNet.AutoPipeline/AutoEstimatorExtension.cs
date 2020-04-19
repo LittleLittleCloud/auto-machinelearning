@@ -4,6 +4,7 @@
 
 using Microsoft.ML;
 using Microsoft.ML.Data;
+using MLNet.Sweeper;
 using System;
 
 namespace MLNet.AutoPipeline
@@ -15,13 +16,12 @@ namespace MLNet.AutoPipeline
                 this EstimatorChain<TLastTrain> estimatorChain,
                 Func<TOption, IEstimator<TNewTrain>> estimatorBuilder,
                 OptionBuilder<TOption> parameters,
-                ISweeper sweeper,
                 TransformerScope scope = TransformerScope.Everything)
             where TLastTrain : class, ITransformer
             where TNewTrain : class, ITransformer
             where TOption : class
         {
-            var autoEstimator = new AutoEstimator<TNewTrain, TOption>(estimatorBuilder, parameters, sweeper);
+            var autoEstimator = new AutoEstimator<TNewTrain, TOption>(estimatorBuilder, parameters);
 
             var estimators = estimatorChain.GetType().GetField("_estimators", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic).GetValue(estimatorChain) as IEstimator<ITransformer>[];
             var scopes = estimatorChain.GetType().GetField("_scopes", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic).GetValue(estimatorChain) as TransformerScope[];

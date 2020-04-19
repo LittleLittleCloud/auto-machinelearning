@@ -2,6 +2,7 @@
 // Copyright (c) BigMiao. All rights reserved.
 // </copyright>
 
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.ML.Runtime;
@@ -14,45 +15,54 @@ namespace MLNet.Sweeper
     public abstract class SweeperBase : ISweeper
     {
         protected readonly IValueGenerator[] SweepParameters;
-        protected readonly IHost Host;
+        protected IList<IRunResult> _history = new List<IRunResult>();
 
         private readonly SweeperOptionBase _options;
 
-        protected SweeperBase(SweeperOptionBase options, IHostEnvironment env, string name)
-        {
-            this.Host = env.Register(name);
-            this._options = options;
+        public ParameterSet Current { get; private set; }
 
-            this.SweepParameters = options.SweptParameters.Select(p => p.CreateComponent(this.Host)).ToArray();
+        protected SweeperBase(SweeperOptionBase options, string name)
+        {
+            this._options = options;
+            this.SweepParameters = options.SweptParameters;
         }
 
-        protected SweeperBase(SweeperOptionBase options, IHostEnvironment env, IValueGenerator[] sweepParameters, string name)
+        protected SweeperBase(SweeperOptionBase options, IValueGenerator[] sweepParameters, string name)
         {
-            this.Host = env.Register(name);
             this._options = options;
             this.SweepParameters = sweepParameters;
         }
 
-        public virtual ParameterSet[] ProposeSweeps(int maxSweeps, IEnumerable<IRunResult> previousRuns = null)
+        public virtual IEnumerable<ParameterSet> ProposeSweeps(int maxSweeps, IEnumerable<IRunResult> previousRuns = null)
         {
-            var prevParamSets = previousRuns?.Select(r => r.ParameterSet).ToList() ?? new List<ParameterSet>();
-            var result = new HashSet<ParameterSet>();
-            for (int i = 0; i < maxSweeps; i++)
-            {
-                ParameterSet paramSet;
-                int retries = 0;
-                do
-                {
-                    paramSet = this.CreateParamSet();
-                    ++retries;
-                }
-                while (paramSet != null && retries < this._options.Retries &&
-                    (AlreadyGenerated(paramSet, prevParamSets) || AlreadyGenerated(paramSet, result)));
+            ParameterSet candidate;
 
-                result.Add(paramSet);
+            if (previousRuns != null)
+            {
+                this._history.Concat(previousRuns);
             }
 
-            return result.ToArray();
+            var generated = new HashSet<ParameterSet>();
+
+            for (int i = 0; i != maxSweeps; ++i)
+            {
+                var retry = 0;
+                while (true)
+                {
+                    retry++;
+                    candidate = this.CreateParamSet();
+                    if (retry >= this._options.Retry ||
+                        !AlreadyGenerated(candidate, this._history.Select(x => x.ParameterSet)) ||
+                        !generated.Contains(candidate))
+                    {
+                        break;
+                    }
+                }
+
+                generated.Add(candidate);
+                this.Current = candidate;
+                yield return candidate;
+            }
         }
 
         protected static bool AlreadyGenerated(ParameterSet paramSet, IEnumerable<ParameterSet> previousRuns)
@@ -61,5 +71,10 @@ namespace MLNet.Sweeper
         }
 
         protected abstract ParameterSet CreateParamSet();
+
+        public virtual void AddRunHistory(IRunResult input)
+        {
+            this._history.Add(input);
+        }
     }
 }

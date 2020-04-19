@@ -10,8 +10,11 @@ namespace MLNet.Sweeper
 {
     public class SweeperOptionBase
     {
-        public IComponentFactory<IValueGenerator>[] SweptParameters;
+        public IValueGenerator[] SweptParameters;
 
-        public int Retries = 10;
+        /// <summary>
+        /// For RandomSweeper.
+        /// </summary>
+        public int Retry = 10;
     }
 }

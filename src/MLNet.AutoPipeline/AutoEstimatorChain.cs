@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.ML;
 using Microsoft.ML.Data;
+using MLNet.Sweeper;
 
 namespace MLNet.AutoPipeline
 {
@@ -15,6 +16,8 @@ namespace MLNet.AutoPipeline
         public readonly IEstimator<TLastTransformer> LastEstimator;
         private readonly IList<TransformerScope> _scopes;
         private readonly IList<IEstimator<ITransformer>> _estimators;
+
+        private ISweeper _sweeper;
 
         public AutoEstimatorChain(IEstimator<ITransformer>[] estimators, TransformerScope[] scopes)
         {
@@ -30,28 +33,27 @@ namespace MLNet.AutoPipeline
             this.LastEstimator = null;
         }
 
-        public IEnumerable<(TransformerChain<TLastTransformer>, ISweeper)> Fits(IDataView input)
+        public IEnumerable<EstimatorChain<ITransformer>> ProposePipelines(int batch)
         {
             // index of autoEstimator
             var autoEstimator = this._estimators.Where(_est => _est is IAutoEstimator).FirstOrDefault() as IAutoEstimator;
-            while (true)
-            {
-                // check sweeper
-                if (autoEstimator.Sweeper.MoveNext() == false)
-                {
-                    yield break;
-                }
 
-                IDataView current = input;
+            foreach (var parameters in this._sweeper.ProposeSweeps(batch))
+            {
+                autoEstimator.Current = parameters;
+
+                var pipeline = new EstimatorChain<ITransformer>();
                 var xfs = new ITransformer[this._estimators.Count];
                 for (int i = 0; i < this._estimators.Count; i++)
                 {
-                    var est = this._estimators[i];
-                    xfs[i] = est.Fit(current);
-                    current = xfs[i].Transform(current);
+                    pipeline = pipeline.Append(this._estimators[i], this._scopes[i]);
+
+                    //var est = this._estimators[i];
+                    //xfs[i] = est.Fit(current);
+                    //current = xfs[i].Transform(current);
                 }
 
-                yield return (new TransformerChain<TLastTransformer>(xfs, this._scopes), autoEstimator.Sweeper);
+                yield return pipeline;
             }
         }
 
@@ -61,6 +63,11 @@ namespace MLNet.AutoPipeline
             this._estimators.Add(estimator);
             this._scopes.Add(scope);
             return new AutoEstimatorChain<TNewTrans>(this._estimators.ToArray(), this._scopes.ToArray());
+        }
+
+        public void UseSweeper(ISweeper sweeper)
+        {
+            this._sweeper = sweeper;
         }
     }
 }

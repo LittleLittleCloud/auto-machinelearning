@@ -4,44 +4,39 @@
 
 using System;
 using Microsoft.ML;
+using MLNet.Sweeper;
 
 namespace MLNet.AutoPipeline
 {
     internal interface IAutoEstimator
     {
-        ISweeper Sweeper { get; }
+        ParameterSet Current { get; set; }
     }
 
     internal interface IAutoEstimator<out TTransformer> : IEstimator<TTransformer>, IAutoEstimator
         where TTransformer : ITransformer
     {
-        IEstimator<TTransformer> ToEstimator();
+        IEstimator<TTransformer> ToEstimator(ParameterSet parameters);
     }
 
     internal class AutoEstimator<TTransformer, TOption> : IAutoEstimator<TTransformer>
         where TTransformer : ITransformer
         where TOption : class
     {
-        private readonly ISweeper _sweeper;
         private readonly OptionBuilder<TOption> _optionBuilder;
         private readonly Func<TOption, IEstimator<TTransformer>> _estimatorFactory;
-        private IEstimator<TTransformer> _current;
 
-        public AutoEstimator(Func<TOption, IEstimator<TTransformer>> estimatorFactory, OptionBuilder<TOption> optionBuilder, ISweeper sweeper)
+        public AutoEstimator(Func<TOption, IEstimator<TTransformer>> estimatorFactory, OptionBuilder<TOption> optionBuilder)
         {
             this._estimatorFactory = estimatorFactory;
             this._optionBuilder = optionBuilder;
-            this._sweeper = sweeper;
         }
 
-        public ISweeper Sweeper => this._sweeper;
+        public ParameterSet Current { get; set; }
 
         public TTransformer Fit(IDataView input)
         {
-            var sweepOutput = this._sweeper.Current;
-            var option = this._optionBuilder.BuildOption(sweepOutput);
-            this._current = this._estimatorFactory(option);
-            return this._current.Fit(input);
+            return this.ToEstimator(this.Current).Fit(input);
         }
 
         public SchemaShape GetOutputSchema(SchemaShape inputSchema)
@@ -51,19 +46,10 @@ namespace MLNet.AutoPipeline
             return defaultEstimator.GetOutputSchema(inputSchema);
         }
 
-        public bool MoveNext()
+        public IEstimator<TTransformer> ToEstimator(ParameterSet parameters)
         {
-            return this._sweeper?.MoveNext() ?? false;
-        }
-
-        public void Reset()
-        {
-            this._sweeper?.Reset();
-        }
-
-        public IEstimator<TTransformer> ToEstimator()
-        {
-            return this._current;
+            var option = this._optionBuilder.BuildOption(parameters);
+            return this._estimatorFactory(option);
         }
     }
 }

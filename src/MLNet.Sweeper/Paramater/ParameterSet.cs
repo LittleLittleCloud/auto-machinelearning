@@ -1,4 +1,4 @@
-﻿// <copyright file="ParamaterSet.cs" company="BigMiao">
+﻿// <copyright file="ParameterSet.cs" company="BigMiao">
 // Copyright (c) BigMiao. All rights reserved.
 // </copyright>
 

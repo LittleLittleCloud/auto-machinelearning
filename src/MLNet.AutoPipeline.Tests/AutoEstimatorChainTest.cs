@@ -29,17 +29,24 @@ namespace MLNet.AutoPipeline.Test
             var paramaters = new MFOption();
             var dataset = context.Data.LoadFromTextFile<ModelInput>(@".\TestData\recommendation-ratings-train.csv", separatorChar: ',', hasHeader: true);
             var split = context.Data.TrainTestSplit(dataset, 0.3);
-            var randomSweeper = new RandomSweeper(context, paramaters.ValueGenerators, 100);
+            var sweeperOption = new UniformRandomSweeper.Option()
+            {
+                SweptParameters = paramaters.ValueGenerators,
+            };
+
+            var randomSweeper = new UniformRandomSweeper(sweeperOption);
             var pipelines = context.Transforms.Conversion.MapValueToKey("userId", "userId")
                           .Append(context.Transforms.Conversion.MapValueToKey("movieId", "movieId"))
-                          .Append(context.Recommendation().Trainers.MatrixFactorization, paramaters, randomSweeper, Microsoft.ML.Data.TransformerScope.Everything)
+                          .Append(context.Recommendation().Trainers.MatrixFactorization, paramaters, Microsoft.ML.Data.TransformerScope.Everything)
                           .Append(context.Transforms.CopyColumns("output", "Score"));
 
-            foreach (var (model, sweeper) in pipelines.Fits(split.TrainSet))
+            pipelines.UseSweeper(randomSweeper);
+
+            foreach (var pipeline in pipelines.ProposePipelines(100))
             {
-                var eval = model.Transform(split.TestSet);
+                var eval = pipeline.Fit(split.TrainSet).Transform(split.TestSet);
                 var metrics = context.Regression.Evaluate(eval, "rating", "Score");
-                this._output.WriteLine(sweeper.Current.ToString());
+                this._output.WriteLine(randomSweeper.Current.ToString());
                 this._output.WriteLine($"RMSE: {metrics.RootMeanSquaredError}");
             }
         }
@@ -51,20 +58,27 @@ namespace MLNet.AutoPipeline.Test
             var paramaters = new MFOption();
             var dataset = context.Data.LoadFromTextFile<ModelInput>(@".\TestData\recommendation-ratings-train.csv", separatorChar: ',', hasHeader: true);
             var split = context.Data.TrainTestSplit(dataset, 0.3);
-            var gridSearchSweeper = new GridSearchSweeper(context, paramaters.ValueGenerators, 20);
+
+            var sweeperOption = new RandomGridSweeper.Option()
+            {
+                SweptParameters = paramaters.ValueGenerators,
+            };
+
+            var gridSearchSweeper = new RandomGridSweeper(sweeperOption);
+
             var pipelines = context.Transforms.Conversion.MapValueToKey("userId", "userId")
                           .Append(context.Transforms.Conversion.MapValueToKey("movieId", "movieId"))
-                          .Append(context.Recommendation().Trainers.MatrixFactorization, paramaters, gridSearchSweeper, Microsoft.ML.Data.TransformerScope.Everything)
+                          .Append(context.Recommendation().Trainers.MatrixFactorization, paramaters, Microsoft.ML.Data.TransformerScope.Everything)
                           .Append(context.Transforms.CopyColumns("output", "Score"));
 
-            foreach (var (model, sweeper) in pipelines.Fits(split.TrainSet))
+            pipelines.UseSweeper(gridSearchSweeper);
+
+            foreach (var pipeline in pipelines.ProposePipelines(100))
             {
-                var eval = model.Transform(split.TestSet);
+                var eval = pipeline.Fit(split.TrainSet).Transform(split.TestSet);
                 var metrics = context.Regression.Evaluate(eval, "rating", "Score");
-                this._output.WriteLine(sweeper.Current.ToString());
+                this._output.WriteLine(gridSearchSweeper.Current.ToString());
                 this._output.WriteLine($"RMSE: {metrics.RootMeanSquaredError}");
-                var runResult = new RunResult(sweeper.Current, metrics.RootMeanSquaredError, false);
-                sweeper.AddRunHistory(runResult);
             }
         }
 

@@ -2,6 +2,8 @@
 // Copyright (c) BigMiao. All rights reserved.
 // </copyright>
 
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.ML.Runtime;
 
@@ -12,19 +14,24 @@ namespace MLNet.Sweeper
     /// </summary>
     public sealed class UniformRandomSweeper : SweeperBase
     {
-        public UniformRandomSweeper(IHostEnvironment env, SweeperOptionBase options)
-            : base(options, env, "UniformRandom")
-        {
-        }
+        private readonly Random _rand;
+        private readonly Option _option;
 
-        public UniformRandomSweeper(IHostEnvironment env, SweeperOptionBase options, IValueGenerator[] sweepParameters)
-            : base(options, env, sweepParameters, "UniformRandom")
+        public UniformRandomSweeper(Option options)
+            : base(options, "UniformRandom")
         {
+            this._option = options;
+            this._rand = new Random();
         }
 
         protected override ParameterSet CreateParamSet()
         {
-            return new ParameterSet(this.SweepParameters.Select(sweepParameter => sweepParameter.CreateFromNormalized(this.Host.Rand.NextDouble())));
+            return new ParameterSet(this.SweepParameters.Select(sweepParameter => sweepParameter.CreateFromNormalized(this._rand.NextDouble())));
+        }
+
+        public class Option : SweeperOptionBase
+        {
+
         }
     }
 }
