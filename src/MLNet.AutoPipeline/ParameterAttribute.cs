@@ -10,7 +10,7 @@ using MLNet.Sweeper;
 
 namespace MLNet.AutoPipeline
 {
-    internal class ParameterAttribute : Attribute
+    public class ParameterAttribute : Attribute
     {
         public ParameterAttribute(string name, int min, int max, bool logBase = false, int steps = 100, string groupID = null)
         {

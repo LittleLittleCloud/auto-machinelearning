@@ -29,5 +29,20 @@ namespace MLNet.AutoPipeline
             return new AutoEstimatorChain(estimators, scopes)
                        .Append(autoEstimator, scope);
         }
+
+        public static AutoEstimatorChain
+            Append<TNewTrain, TOption>(
+                this IEstimator<ITransformer> estimator,
+                Func<TOption, IEstimator<TNewTrain>> estimatorBuilder,
+                OptionBuilder<TOption> parameters,
+                TransformerScope scope = TransformerScope.Everything)
+            where TNewTrain : class, ITransformer
+            where TOption : class
+        {
+            var autoEstimator = new EstimatorBuilder<TNewTrain, TOption>(estimatorBuilder, parameters);
+
+            return new AutoEstimatorChain(new IEstimator<ITransformer>[] { estimator }, new TransformerScope[] { TransformerScope.Everything })
+                       .Append(autoEstimator, scope);
+        }
     }
 }

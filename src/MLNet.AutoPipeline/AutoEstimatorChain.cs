@@ -2,10 +2,12 @@
 // Copyright (c) BigMiao. All rights reserved.
 // </copyright>
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.ML;
 using Microsoft.ML.Data;
+using Microsoft.ML.Transforms.Text;
 using MLNet.Sweeper;
 
 namespace MLNet.AutoPipeline
@@ -50,6 +52,18 @@ namespace MLNet.AutoPipeline
             where TNewTrans : class, ITransformer
         {
             this._estimatorBuilders.Add(new EstimatorWrapper(estimator));
+            this._scopes.Add(scope);
+
+            return this;
+        }
+
+        public AutoEstimatorChain Append<TNewTrains, TOption>(Func<TOption, IEstimator<TNewTrains>> estimatorBuilder, OptionBuilder<TOption> optionBuilder, TransformerScope scope = TransformerScope.Everything)
+            where TNewTrains: ITransformer
+            where TOption: class
+        {
+            var autoEstimator = new EstimatorBuilder<TNewTrains, TOption>(estimatorBuilder, optionBuilder);
+
+            this._estimatorBuilders.Add(autoEstimator);
             this._scopes.Add(scope);
 
             return this;
