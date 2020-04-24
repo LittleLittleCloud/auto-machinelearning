@@ -2,11 +2,13 @@
 // Copyright (c) BigMiao. All rights reserved.
 // </copyright>
 
+using FluentAssertions;
 using Microsoft.ML;
 using Microsoft.ML.Data;
 using Microsoft.ML.Trainers;
 using MLNet.AutoPipeline;
 using MLNet.Sweeper;
+using System.Collections.Generic;
 using Xunit;
 using Xunit.Abstractions;
 using static Microsoft.ML.Trainers.MatrixFactorizationTrainer;
@@ -20,6 +22,30 @@ namespace MLNet.AutoPipeline.Test
         public AutoEstimatorChainTest(ITestOutputHelper output)
         {
             this._output = output;
+        }
+
+        [Fact]
+        public void AutoEstimatorSingleNode_summary_test()
+        {
+            var singleNode = new AutoEstimatorSingleNode(new MockEstimatorBuilder("MockEstiamtor"));
+            singleNode.Summary().Should().Be("SingleNode(MockEstiamtor)");
+            singleNode.NodeType.Should().Be(AutoEstimatorChainNodeType.SingleNode);
+        }
+
+        [Fact]
+        public void AutoEstimatorMixedNode_summary_should_work_with_mixed_nodes()
+        {
+            var autoEstimatorBuilder = new MockEstimatorBuilder("mockEstimator");
+            var estimatorWrapper = new EstimatorWrapper<ITransformer>(new MockTransformer());
+            var builders = new IAutoEstimatorChainNode[]
+            {
+                new AutoEstimatorSingleNode(autoEstimatorBuilder),
+                new AutoEstimatorSingleNode(estimatorWrapper),
+            };
+
+            var mixNode = new AutoEstimatorMixedNode(builders);
+            mixNode.Summary().Should().Be("MixedNode(SingleNode(mockEstimator), SingleNode(ITransformer))");
+            mixNode.NodeType.Should().Be(AutoEstimatorChainNodeType.MixedNode);
         }
 
         [Fact]

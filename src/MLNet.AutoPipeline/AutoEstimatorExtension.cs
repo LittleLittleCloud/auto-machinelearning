@@ -27,7 +27,7 @@ namespace MLNet.AutoPipeline
             var scopes = estimatorChain.GetType().GetField("_scopes", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic).GetValue(estimatorChain) as TransformerScope[];
 
             return new AutoEstimatorChain(estimators, scopes)
-                       .Append(autoEstimator, scope);
+                       .Append(autoEstimator);
         }
 
         public static AutoEstimatorChain
@@ -42,7 +42,7 @@ namespace MLNet.AutoPipeline
             var autoEstimator = new EstimatorBuilder<TNewTrain, TOption>(estimatorBuilder, parameters);
 
             return new AutoEstimatorChain(new IEstimator<ITransformer>[] { estimator }, new TransformerScope[] { TransformerScope.Everything })
-                       .Append(autoEstimator, scope);
+                       .Append(autoEstimator);
         }
     }
 }
