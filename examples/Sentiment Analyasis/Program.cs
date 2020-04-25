@@ -7,6 +7,7 @@ using Microsoft.ML.Data;
 using Microsoft.ML.Trainers;
 using Microsoft.ML.Transforms.Text;
 using MLNet.AutoPipeline;
+using MLNet.AutoPipeline.Extension;
 using MLNet.Sweeper;
 using System;
 using System.Collections.Generic;
@@ -40,8 +41,7 @@ namespace MLNet.Examples.SentimentAnalysis
                                        option.keepPunctuations,
                                        option.keepNumbers);
                                },
-                               normalizeTextOption,
-                               TransformerScope.Everything)
+                               normalizeTextOption)
                            .Append(context.Transforms.Text.TokenizeIntoWords("txt", "txt"))
                            .Append(context.Transforms.Text.RemoveDefaultStopWords("txt", "txt"))
                            .Append( // Create ApplyWordEmbedding transformer and sweep over it
@@ -61,16 +61,13 @@ namespace MLNet.Examples.SentimentAnalysis
             valueGeneratorsList.AddRange(applyWordEmbeddingOption.ValueGenerators);
             valueGeneratorsList.AddRange(sdcaOption.ValueGenerators);
 
-            var sweeperOption = new UniformRandomSweeper.Option()
-            {
-                SweptParameters = valueGeneratorsList.ToArray(),
-            };
+            var sweeperOption = new UniformRandomSweeper.Option();
 
             var sweeper = new UniformRandomSweeper(sweeperOption);
 
             pipelines.UseSweeper(sweeper);
 
-            foreach (var pipeline in pipelines.ProposePipelines(batch: 100))
+            foreach (var pipeline in pipelines.Sweeping(100))
             {
                 Console.WriteLine(sweeper.Current.ToString());
 

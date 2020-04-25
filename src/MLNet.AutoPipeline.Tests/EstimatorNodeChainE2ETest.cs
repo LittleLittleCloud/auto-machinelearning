@@ -1,0 +1,96 @@
+﻿// <copyright file="EstimatorNodeChainE2ETest.cs" company="BigMiao">
+// Copyright (c) BigMiao. All rights reserved.
+// </copyright>
+
+using Microsoft.ML;
+using Microsoft.ML.Data;
+using Microsoft.ML.Trainers.LightGbm;
+using MLNet.Sweeper;
+using System;
+using Xunit;
+using Xunit.Abstractions;
+
+namespace MLNet.AutoPipeline.Test
+{
+    public class EstimatorNodeChainE2ETest
+    {
+        private ITestOutputHelper _output;
+
+        public EstimatorNodeChainE2ETest(ITestOutputHelper output)
+        {
+            this._output = output;
+        }
+
+        [Fact]
+        public void EstiamtorNodeChain_iris_e2eTest_random_grid_sweeper()
+        {
+            var context = new MLContext();
+            var dataset = context.Data.LoadFromTextFile<Iris>(@".\TestData\iris.csv", separatorChar: ',', hasHeader: true);
+            var split = context.Data.TrainTestSplit(dataset, 0.3);
+
+            var naiveByaseTrainer = context.MulticlassClassification.Trainers.NaiveBayes("species", "features");
+
+            var lightGMBOption = new LightGBMOption();
+            Func<LightGBMOption, LightGbmMulticlassTrainer> lightGBM = (LightGBMOption option) =>
+            {
+                return context.MulticlassClassification.Trainers.LightGbm("species", "features", learningRate: option.lr, numberOfLeaves: option.leaves, minimumExampleCountPerLeaf: option.countPerLeaf);
+            };
+            var estimatorChain = context.Transforms.Conversion.MapValueToKey("species", "species")
+                          .Append(context.Transforms.Concatenate("features", new string[] { "sepal_length", "sepal_width", "petal_length", "petal_width" }))
+                          .Append(new EstimatorNodeGroup().Append(naiveByaseTrainer).Append(lightGBM, lightGMBOption));
+
+            var sweeper = new RandomGridSweeper(new RandomGridSweeper.Option());
+
+            foreach ( var sweepablePipeline in estimatorChain.BuildSweepablePipelines())
+            {
+                this._output.WriteLine(sweepablePipeline.Summary());
+                sweepablePipeline.UseSweeper(sweeper);
+                foreach (var pipeline in sweepablePipeline.Sweeping(20))
+                {
+                    var eval = pipeline.Fit(split.TrainSet).Transform(split.TestSet);
+                    var metrics = context.MulticlassClassification.Evaluate(eval, "species");
+
+                    if (sweepablePipeline.Sweeper.Current != null)
+                    {
+                        this._output.WriteLine(sweepablePipeline.Sweeper.Current.ToString());
+                    }
+
+                    this._output.WriteLine($"macro accuracy: {metrics.MacroAccuracy}");
+                }
+            }
+        }
+
+        private class LightGBMOption: OptionBuilder<LightGBMOption>
+        {
+            [Parameter("lr",0.001f ,0.1f ,true,20)]
+            public float lr;
+
+            [Parameter("leaves", 10, 1000, true, 20)]
+            public int leaves;
+
+            [Parameter("iteration", 10, 1000, true, 20)]
+            public int iteration;
+
+            [Parameter("countPerLeaf", 10, 1000, true, 20)]
+            public int countPerLeaf;
+        }
+
+        private class Iris
+        {
+            [LoadColumn(0)]
+            public float sepal_length;
+
+            [LoadColumn(1)]
+            public float sepal_width;
+
+            [LoadColumn(2)]
+            public float petal_length;
+
+            [LoadColumn(3)]
+            public float petal_width;
+
+            [LoadColumn(4)]
+            public string species;
+        }
+    }
+}

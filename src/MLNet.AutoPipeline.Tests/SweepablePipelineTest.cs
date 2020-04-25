@@ -1,4 +1,4 @@
-﻿// <copyright file="SingleNodeChainTest.cs" company="BigMiao">
+﻿// <copyright file="SweepablePipelineTest.cs" company="BigMiao">
 // Copyright (c) BigMiao. All rights reserved.
 // </copyright>
 
@@ -9,37 +9,37 @@ using FluentAssertions;
 using Microsoft.ML;
 using Microsoft.ML.Data;
 using Microsoft.ML.Trainers;
+using Microsoft.ML.Trainers.Recommender;
 using MLNet.AutoPipeline;
-using MLNet.AutoPipeline.SingleNodeChainExtension;
 using MLNet.AutoPipeline.Test;
 using MLNet.Sweeper;
 using Xunit;
 using Xunit.Abstractions;
 using static Microsoft.ML.Trainers.MatrixFactorizationTrainer;
 
-namespace MLNet.AutoPipeline.Tests
+namespace MLNet.AutoPipeline.Test
 {
-    public class SingleNodeChainTest
+    public class SweepablePipelineTest
     {
         private ITestOutputHelper _output;
 
-        public SingleNodeChainTest(ITestOutputHelper output)
+        public SweepablePipelineTest(ITestOutputHelper output)
         {
             this._output = output;
         }
 
         [Fact]
-        public void SingleNodeChain_summary_should_work()
+        public void SweepablePipeline_summary_should_work()
         {
-            var singleNodeChain = new SingleNodeChain()
+            var singleNodeChain = new SweepablePipeline()
                                   .Append(new MockTransformer())
                                   .Append(new MockEstimatorBuilder("mockEstimator"));
 
-            singleNodeChain.Summary().Should().Be("SingleNodeChain(ITransformer=>mockEstimator)");
+            singleNodeChain.Summary().Should().Be("SweepablePipeline(MockTransformer=>mockEstimator)");
         }
 
         [Fact]
-        public void SingleNodeChain_RecommendationE2ETest_RandomSweeper()
+        public void SweepablePipeline_RecommendationE2ETest_RandomSweeper()
         {
             var context = new MLContext();
             var paramaters = new MFOption();
@@ -48,7 +48,8 @@ namespace MLNet.AutoPipeline.Tests
             var sweeperOption = new UniformRandomSweeper.Option();
 
             var randomSweeper = new UniformRandomSweeper(sweeperOption);
-            var pipelines = context.Transforms.Conversion.MapValueToKey("userId", "userId")
+            var pipelines = new SweepablePipeline()
+                          .Append(context.Transforms.Conversion.MapValueToKey("userId", "userId"))
                           .Append(context.Transforms.Conversion.MapValueToKey("movieId", "movieId"))
                           .Append(context.Recommendation().Trainers.MatrixFactorization, paramaters, Microsoft.ML.Data.TransformerScope.Everything)
                           .Append(context.Transforms.CopyColumns("output", "Score"));
@@ -65,7 +66,7 @@ namespace MLNet.AutoPipeline.Tests
         }
 
         [Fact]
-        public void SingleNodeChain_RecommendationE2ETest_GridSearchSweeper()
+        public void SweepablePipeline_RecommendationE2ETest_GridSearchSweeper()
         {
             var context = new MLContext();
             var paramaters = new MFOption();
@@ -73,13 +74,15 @@ namespace MLNet.AutoPipeline.Tests
             var split = context.Data.TrainTestSplit(dataset, 0.3);
 
             var sweeperOption = new RandomGridSweeper.Option();
-
             var gridSearchSweeper = new RandomGridSweeper(sweeperOption);
 
-            var pipelines = context.Transforms.Conversion.MapValueToKey("userId", "userId")
-                          .Append(context.Transforms.Conversion.MapValueToKey("movieId", "movieId"))
-                          .Append(context.Recommendation().Trainers.MatrixFactorization, paramaters, Microsoft.ML.Data.TransformerScope.Everything)
-                          .Append(context.Transforms.CopyColumns("output", "Score"));
+            var mfTrainer = new SweepableNode<MatrixFactorizationPredictionTransformer, Options>(context.Recommendation().Trainers.MatrixFactorization, paramaters);
+
+            var pipelines = new SweepablePipeline()
+                           .Append(context.Transforms.Conversion.MapValueToKey("userId", "userId"))
+                           .Append(context.Transforms.Conversion.MapValueToKey("movieId", "movieId"))
+                           .Append(mfTrainer)
+                           .Append(context.Transforms.CopyColumns("output", "Score"));
 
             pipelines.UseSweeper(gridSearchSweeper);
             this._output.WriteLine(pipelines.Summary());

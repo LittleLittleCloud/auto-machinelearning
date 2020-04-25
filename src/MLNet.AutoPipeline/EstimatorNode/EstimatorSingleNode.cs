@@ -1,4 +1,4 @@
-﻿// <copyright file="AutoEstimatorSingleNode.cs" company="BigMiao">
+﻿// <copyright file="EstimatorSingleNode.cs" company="BigMiao">
 // Copyright (c) BigMiao. All rights reserved.
 // </copyright>
 
@@ -8,20 +8,20 @@ using System.Text;
 
 namespace MLNet.AutoPipeline
 {
-    public class AutoEstimatorSingleNode : IAutoEstimatorNode
+    public class EstimatorSingleNode : IEstimatorNode
     {
-        private ISingleNodeBuilder estimatorBuilder;
+        private ISweepablePipelineNode estimatorBuilder;
 
-        public AutoEstimatorSingleNode(ISingleNodeBuilder estimatorBuilder)
+        public EstimatorSingleNode(ISweepablePipelineNode estimatorBuilder)
         {
             this.estimatorBuilder = estimatorBuilder;
         }
 
-        public AutoEstimatorNodeType NodeType => AutoEstimatorNodeType.Node;
+        public EstimatorNodeType NodeType => EstimatorNodeType.Node;
 
-        public IEnumerable<ISingleNodeChain> BuildEstimatorChains()
+        public IEnumerable<ISweepablePipeline> BuildSweepablePipelines()
         {
-            yield return new SingleNodeChain().Append(this.estimatorBuilder);
+            yield return new SweepablePipeline().Append(this.estimatorBuilder);
         }
 
         public string Summary()
