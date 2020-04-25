@@ -14,23 +14,24 @@ namespace MLNet.Sweeper
     /// </summary>
     public abstract class SweeperBase : ISweeper
     {
-        protected readonly IValueGenerator[] SweepParameters;
         protected IList<IRunResult> _history = new List<IRunResult>();
 
         private readonly SweeperOptionBase _options;
 
         public ParameterSet Current { get; private set; }
 
+        public IEnumerable<IValueGenerator> SweepableParamaters { get; set; }
+
         protected SweeperBase(SweeperOptionBase options, string name)
         {
             this._options = options;
-            this.SweepParameters = options.SweptParameters;
+            this.SweepableParamaters = new List<IValueGenerator>();
         }
 
         protected SweeperBase(SweeperOptionBase options, IValueGenerator[] sweepParameters, string name)
         {
             this._options = options;
-            this.SweepParameters = sweepParameters;
+            this.SweepableParamaters = sweepParameters;
         }
 
         public virtual IEnumerable<ParameterSet> ProposeSweeps(int maxSweeps, IEnumerable<IRunResult> previousRuns = null)

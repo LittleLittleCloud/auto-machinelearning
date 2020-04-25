@@ -26,12 +26,11 @@ namespace MLNet.Sweeper
 
         protected override ParameterSet CreateParamSet()
         {
-            return new ParameterSet(this.SweepParameters.Select(sweepParameter => sweepParameter.CreateFromNormalized(this._rand.NextDouble())));
+            return new ParameterSet(this.SweepableParamaters.Select(sweepParameter => sweepParameter.CreateFromNormalized(this._rand.NextDouble())));
         }
 
         public class Option : SweeperOptionBase
         {
-
         }
     }
 }

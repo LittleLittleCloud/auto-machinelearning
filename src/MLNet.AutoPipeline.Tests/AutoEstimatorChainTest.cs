@@ -4,11 +4,7 @@
 
 using FluentAssertions;
 using Microsoft.ML;
-using Microsoft.ML.Data;
-using Microsoft.ML.Trainers;
-using MLNet.AutoPipeline;
-using MLNet.Sweeper;
-using System.Collections.Generic;
+using System.Linq;
 using Xunit;
 using Xunit.Abstractions;
 using static Microsoft.ML.Trainers.MatrixFactorizationTrainer;
@@ -25,123 +21,60 @@ namespace MLNet.AutoPipeline.Test
         }
 
         [Fact]
-        public void AutoEstimatorSingleNode_summary_test()
+        public void AutoEstimatorSingleNode_summary_should_work()
         {
             var singleNode = new AutoEstimatorSingleNode(new MockEstimatorBuilder("MockEstiamtor"));
             singleNode.Summary().Should().Be("SingleNode(MockEstiamtor)");
-            singleNode.NodeType.Should().Be(AutoEstimatorChainNodeType.SingleNode);
+            singleNode.NodeType.Should().Be(AutoEstimatorNodeType.Node);
         }
 
         [Fact]
-        public void AutoEstimatorMixedNode_summary_should_work_with_mixed_nodes()
+        public void AutoEstimatorNodeGroup_summary_should_work()
         {
             var autoEstimatorBuilder = new MockEstimatorBuilder("mockEstimator");
             var estimatorWrapper = new EstimatorWrapper<ITransformer>(new MockTransformer());
-            var builders = new IAutoEstimatorChainNode[]
+
+            var builders = new IAutoEstimatorNode[]
             {
                 new AutoEstimatorSingleNode(autoEstimatorBuilder),
                 new AutoEstimatorSingleNode(estimatorWrapper),
             };
 
-            var mixNode = new AutoEstimatorMixedNode(builders);
-            mixNode.Summary().Should().Be("MixedNode(SingleNode(mockEstimator), SingleNode(ITransformer))");
-            mixNode.NodeType.Should().Be(AutoEstimatorChainNodeType.MixedNode);
+            var mixNode = new AutoEstimatorNodeGroup(builders);
+
+            var autoEstimatorChain = new AutoEstimatorNodeChain()
+                            .Append(new AutoEstimatorSingleNode(autoEstimatorBuilder))
+                            .Append(mixNode);
+
+            mixNode.Summary().Should().Be("NodeGroup(SingleNode(mockEstimator), SingleNode(ITransformer))");
+            mixNode.NodeType.Should().Be(AutoEstimatorNodeType.NodeGroup);
         }
 
         [Fact]
-        public void RecommendationE2ETest_RandomSweeper()
+        public void AutoEstimatorSingleNode_should_build_single_estimator_chain()
         {
-            var context = new MLContext();
-            var paramaters = new MFOption();
-            var dataset = context.Data.LoadFromTextFile<ModelInput>(@".\TestData\recommendation-ratings-train.csv", separatorChar: ',', hasHeader: true);
-            var split = context.Data.TrainTestSplit(dataset, 0.3);
-            var sweeperOption = new UniformRandomSweeper.Option()
-            {
-                SweptParameters = paramaters.ValueGenerators,
-            };
-
-            var randomSweeper = new UniformRandomSweeper(sweeperOption);
-            var pipelines = context.Transforms.Conversion.MapValueToKey("userId", "userId")
-                          .Append(context.Transforms.Conversion.MapValueToKey("movieId", "movieId"))
-                          .Append(context.Recommendation().Trainers.MatrixFactorization, paramaters, Microsoft.ML.Data.TransformerScope.Everything)
-                          .Append(context.Transforms.CopyColumns("output", "Score"));
-
-            pipelines.UseSweeper(randomSweeper);
-
-            foreach (var pipeline in pipelines.ProposePipelines(100))
-            {
-                var eval = pipeline.Fit(split.TrainSet).Transform(split.TestSet);
-                var metrics = context.Regression.Evaluate(eval, "rating", "Score");
-                this._output.WriteLine(randomSweeper.Current.ToString());
-                this._output.WriteLine($"RMSE: {metrics.RootMeanSquaredError}");
-            }
+            var singleNode = new AutoEstimatorSingleNode(new MockEstimatorBuilder("MockEstiamtor"));
+            singleNode.BuildEstimatorChains().Count().Should().Be(1);
+            singleNode.BuildEstimatorChains().First().Summary().Should().Be("SingleNodeChain(MockEstiamtor)");
         }
 
         [Fact]
-        public void RecommendationE2ETest_GridSearchSweeper()
+        public void AutoEstimatorNodeGroup_should_build_estimator_chain()
         {
-            var context = new MLContext();
-            var paramaters = new MFOption();
-            var dataset = context.Data.LoadFromTextFile<ModelInput>(@".\TestData\recommendation-ratings-train.csv", separatorChar: ',', hasHeader: true);
-            var split = context.Data.TrainTestSplit(dataset, 0.3);
+            var singleNode1 = new AutoEstimatorSingleNode(new MockEstimatorBuilder("MockEstimator"));
+            var singleNode2 = new AutoEstimatorSingleNode(new EstimatorWrapper<ITransformer>(new MockTransformer()));
+            var singleNode3 = new AutoEstimatorSingleNode(new MockEstimatorBuilder("MockEstimator1"));
+            var nodeGroup1 = new AutoEstimatorNodeGroup().Append(singleNode1).Append(singleNode2).Append(singleNode3);
+            var nodechain = new AutoEstimatorNodeChain().Append(singleNode1).Append(singleNode2).Append(nodeGroup1);
 
-            var sweeperOption = new RandomGridSweeper.Option()
-            {
-                SweptParameters = paramaters.ValueGenerators,
-            };
-
-            var gridSearchSweeper = new RandomGridSweeper(sweeperOption);
-
-            var pipelines = context.Transforms.Conversion.MapValueToKey("userId", "userId")
-                          .Append(context.Transforms.Conversion.MapValueToKey("movieId", "movieId"))
-                          .Append(context.Recommendation().Trainers.MatrixFactorization, paramaters, Microsoft.ML.Data.TransformerScope.Everything)
-                          .Append(context.Transforms.CopyColumns("output", "Score"));
-
-            pipelines.UseSweeper(gridSearchSweeper);
-
-            foreach (var pipeline in pipelines.ProposePipelines(100))
-            {
-                var eval = pipeline.Fit(split.TrainSet).Transform(split.TestSet);
-                var metrics = context.Regression.Evaluate(eval, "rating", "Score");
-                this._output.WriteLine(gridSearchSweeper.Current.ToString());
-                this._output.WriteLine($"RMSE: {metrics.RootMeanSquaredError}");
-            }
-        }
-
-        private class MFOption : OptionBuilder<MatrixFactorizationTrainer.Options>
-        {
-            public string MatrixColumnIndexColumnName = "userId";
-
-            public string MatrixRowIndexColumnName = "movieId";
-
-            public string LabelColumnName = "rating";
-
-            [Parameter("Alpha", 0.0001f, 1f, true)]
-            public float Alpha = 0.0001f;
-
-            [Parameter("ApproximationRank", 8, 128, steps: 20)]
-            public int ApproximationRank = 8;
-
-            [Parameter("Lambda", 0.01f, 1f, true, 20)]
-            public double Lambda = 0.01f;
-
-            [Parameter("LearningRate", 0.001f, 0.1f, true, 100)]
-            public double LearningRate = 0.001f;
-
-            [Parameter("LossFunctionType", new object[] { LossFunctionType.SquareLossOneClass, LossFunctionType.SquareLossRegression })]
-            public LossFunctionType LossFunction;
-        }
-
-        private class ModelInput
-        {
-            [ColumnName("userId"), LoadColumn(0)]
-            public float UserId { get; set; }
-
-            [ColumnName("movieId"), LoadColumn(1)]
-            public float MovieId { get; set; }
-
-            [ColumnName("rating"), LoadColumn(2)]
-            public float Rating { get; set; }
+            var nodeGroup = new AutoEstimatorNodeGroup().Append(singleNode1).Append(singleNode2).Append(nodechain);
+            var estimatorChains = nodeGroup.BuildEstimatorChains().ToArray();
+            estimatorChains.Length.Should().Be(5);
+            estimatorChains[0].Summary().Should().Be("SingleNodeChain(MockEstimator)");
+            estimatorChains[1].Summary().Should().Be("SingleNodeChain(ITransformer)");
+            estimatorChains[2].Summary().Should().Be("SingleNodeChain(MockEstimator=>ITransformer=>MockEstimator)");
+            estimatorChains[3].Summary().Should().Be("SingleNodeChain(MockEstimator=>ITransformer=>ITransformer)");
+            estimatorChains[4].Summary().Should().Be("SingleNodeChain(MockEstimator=>ITransformer=>MockEstimator1)");
         }
     }
 }

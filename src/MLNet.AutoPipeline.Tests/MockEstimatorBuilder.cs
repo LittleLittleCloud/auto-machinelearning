@@ -7,6 +7,7 @@ using Microsoft.ML.Data;
 using Microsoft.ML.Trainers;
 using MLNet.AutoPipeline;
 using MLNet.Sweeper;
+using System.Collections.Generic;
 using Xunit;
 using Xunit.Abstractions;
 using static Microsoft.ML.Trainers.MatrixFactorizationTrainer;
@@ -14,7 +15,7 @@ using static Microsoft.ML.Trainers.MatrixFactorizationTrainer;
 namespace MLNet.AutoPipeline.Test
 {
 
-    public class MockEstimatorBuilder : IEstimatorBuilder
+    public class MockEstimatorBuilder : ISingleNodeBuilder
     {
         public MockEstimatorBuilder(string name)
         {
@@ -24,6 +25,8 @@ namespace MLNet.AutoPipeline.Test
         public TransformerScope Scope => TransformerScope.Everything;
 
         public string EstimatorName { get; private set; }
+
+        public IValueGenerator[] ValueGenerators => new List<IValueGenerator>().ToArray();
 
         public IEstimator<ITransformer> BuildEstimator(ParameterSet parameters)
         {

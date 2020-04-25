@@ -47,12 +47,10 @@ namespace MLNet.AutoPipeline.Test
             var context = new MLContext();
             var builder = new TestOptionBuilder();
             var maximum = 10;
-            var sweeperOption = new UniformRandomSweeper.Option()
-            {
-                SweptParameters = builder.ValueGenerators,
-            };
+            var sweeperOption = new UniformRandomSweeper.Option();
 
             var randomSweeper = new UniformRandomSweeper(sweeperOption);
+            randomSweeper.SweepableParamaters = builder.ValueGenerators;
 
             foreach (var sweeperOutput in randomSweeper.ProposeSweeps(maximum))
             {

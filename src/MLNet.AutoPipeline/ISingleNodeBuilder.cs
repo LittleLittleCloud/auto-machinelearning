@@ -3,22 +3,25 @@
 // </copyright>
 
 using System;
+using System.Collections.Generic;
 using Microsoft.ML;
 using Microsoft.ML.Data;
 using MLNet.Sweeper;
 
 namespace MLNet.AutoPipeline
 {
-    public interface IEstimatorBuilder
+    public interface ISingleNodeBuilder
     {
         IEstimator<ITransformer> BuildEstimator(ParameterSet parameters);
 
         TransformerScope Scope { get; }
 
+        IValueGenerator[] ValueGenerators { get; }
+
         string EstimatorName { get; }
     }
 
-    public class EstimatorBuilder<TTransformer, TOption> : IEstimatorBuilder
+    public class EstimatorBuilder<TTransformer, TOption> : ISingleNodeBuilder
         where TTransformer : ITransformer
         where TOption : class
     {
@@ -31,11 +34,14 @@ namespace MLNet.AutoPipeline
             this._estimatorFactory = estimatorFactory;
             this._optionBuilder = optionBuilder;
             this._scope = scope;
+            this.ValueGenerators = optionBuilder.ValueGenerators;
         }
 
-        public string EstimatorName => $"{nameof(TTransformer)}, {nameof(TOption)}";
+        public string EstimatorName => $"{typeof(TTransformer).Name}";
 
         public TransformerScope Scope => this._scope;
+
+        public IValueGenerator[] ValueGenerators { get; private set; }
 
         public IEstimator<ITransformer> BuildEstimator(ParameterSet parameters)
         {
@@ -44,7 +50,7 @@ namespace MLNet.AutoPipeline
         }
     }
 
-    public class EstimatorWrapper<TTransformer> : IEstimatorBuilder
+    public class EstimatorWrapper<TTransformer> : ISingleNodeBuilder
         where TTransformer : ITransformer
     {
         private IEstimator<TTransformer> _instance;
@@ -61,6 +67,8 @@ namespace MLNet.AutoPipeline
         public string EstimatorName => $"{typeof(TTransformer).Name}";
 
         public TransformerScope Scope => this._scope;
+
+        public IValueGenerator[] ValueGenerators { get => new List<IValueGenerator>().ToArray(); }
 
         public IEstimator<ITransformer> BuildEstimator(ParameterSet parameters)
         {

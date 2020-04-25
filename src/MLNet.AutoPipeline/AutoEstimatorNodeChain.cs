@@ -1,4 +1,4 @@
-﻿// <copyright file="AutoEstimatorChain.cs" company="BigMiao">
+﻿// <copyright file="AutoEstimatorNodeChain.cs" company="BigMiao">
 // Copyright (c) BigMiao. All rights reserved.
 // </copyright>
 
@@ -12,32 +12,32 @@ using MLNet.Sweeper;
 
 namespace MLNet.AutoPipeline
 {
-    public class AutoEstimatorChain : IAutoEstimatorChainNode
+    public class AutoEstimatorNodeChain : IAutoEstimatorNode
     {
         private readonly IList<TransformerScope> _scopes;
-        private readonly IList<IEstimatorBuilder> _estimatorBuilders;
-        private readonly IList<IAutoEstimatorChainNode> _nodes;
+        private readonly IList<ISingleNodeBuilder> _estimatorBuilders;
+        private readonly IList<IAutoEstimatorNode> _nodes;
 
         private ISweeper _sweeper;
 
-        public AutoEstimatorChainNodeType NodeType => AutoEstimatorChainNodeType.AutoEstimatorChain;
+        public AutoEstimatorNodeType NodeType => AutoEstimatorNodeType.NodeChain;
 
-        public AutoEstimatorChain(IEstimator<ITransformer>[] estimators, TransformerScope[] scopes)
+        public AutoEstimatorNodeChain(IEstimator<ITransformer>[] estimators, TransformerScope[] scopes)
         {
-            this._estimatorBuilders = estimators is null ? new List<IEstimatorBuilder>() : estimators.Select(x => new EstimatorWrapper<ITransformer>(x) as IEstimatorBuilder).ToList();
+            this._estimatorBuilders = estimators is null ? new List<ISingleNodeBuilder>() : estimators.Select(x => new EstimatorWrapper<ITransformer>(x) as ISingleNodeBuilder).ToList();
             this._scopes = scopes is null ? new List<TransformerScope>() : scopes.ToList();
         }
 
-        public AutoEstimatorChain(IList<IAutoEstimatorChainNode> nodes)
+        public AutoEstimatorNodeChain(IList<IAutoEstimatorNode> nodes)
         {
             this._nodes = nodes;
         }
 
-        public AutoEstimatorChain()
+        public AutoEstimatorNodeChain()
         {
-            this._estimatorBuilders = new List<IEstimatorBuilder>();
+            this._estimatorBuilders = new List<ISingleNodeBuilder>();
             this._scopes = new List<TransformerScope>();
-            this._nodes = new List<IAutoEstimatorChainNode>();
+            this._nodes = new List<IAutoEstimatorNode>();
         }
 
         public IEnumerable<EstimatorChain<ITransformer>> ProposePipelines(int batch)
@@ -57,7 +57,7 @@ namespace MLNet.AutoPipeline
             }
         }
 
-        public AutoEstimatorChain Append<TNewTrans>(IEstimator<TNewTrans> estimator, TransformerScope scope = TransformerScope.Everything)
+        public AutoEstimatorNodeChain Append<TNewTrans>(IEstimator<TNewTrans> estimator, TransformerScope scope = TransformerScope.Everything)
             where TNewTrans : ITransformer
         {
             var estimatorWrapper = new EstimatorWrapper<TNewTrans>(estimator, scope);
@@ -68,9 +68,9 @@ namespace MLNet.AutoPipeline
             return this;
         }
 
-        public AutoEstimatorChain Append<TNewTrains, TOption>(Func<TOption, IEstimator<TNewTrains>> estimatorBuilder, OptionBuilder<TOption> optionBuilder, TransformerScope scope = TransformerScope.Everything)
-            where TNewTrains: ITransformer
-            where TOption: class
+        public AutoEstimatorNodeChain Append<TNewTrains, TOption>(Func<TOption, IEstimator<TNewTrains>> estimatorBuilder, OptionBuilder<TOption> optionBuilder, TransformerScope scope = TransformerScope.Everything)
+            where TNewTrains : ITransformer
+            where TOption : class
         {
             var autoEstimator = new EstimatorBuilder<TNewTrains, TOption>(estimatorBuilder, optionBuilder, scope);
 
@@ -80,7 +80,7 @@ namespace MLNet.AutoPipeline
             return this;
         }
 
-        public AutoEstimatorChain Append<TNewTrans, TOption>(EstimatorBuilder<TNewTrans, TOption> estimatorBuilder)
+        public AutoEstimatorNodeChain Append<TNewTrans, TOption>(EstimatorBuilder<TNewTrans, TOption> estimatorBuilder)
             where TNewTrans : ITransformer
             where TOption : class
         {
@@ -91,7 +91,7 @@ namespace MLNet.AutoPipeline
             return this;
         }
 
-        public AutoEstimatorChain Append(IAutoEstimatorChainNode node)
+        public AutoEstimatorNodeChain Append(IAutoEstimatorNode node)
         {
             this._nodes.Add(node);
 
@@ -103,23 +103,34 @@ namespace MLNet.AutoPipeline
             this._sweeper = sweeper;
         }
 
-        public IEnumerable<IEnumerable<IEstimatorBuilder>> BuildEstimatorChains()
+        public IEnumerable<ISingleNodeChain> BuildEstimatorChains()
         {
             if (this._nodes.Count == 0)
             {
-                return new List<List<IEstimatorBuilder>>();
+                return new List<ISingleNodeChain>();
             }
 
             // TODO: use stack and yield to save memory.
-            IEnumerable<IEnumerable<IEstimatorBuilder>> paths = new List<List<IEstimatorBuilder>>();
+            var paths = new List<ISingleNodeChain>();
             foreach (var node in this._nodes)
             {
-                var newPath = new List<List<IEstimatorBuilder>>();
-                foreach (var _path in node.BuildEstimatorChains())
+                var newPath = new List<ISingleNodeChain>();
+
+                if (paths.Count == 0)
                 {
-                    foreach (var _existPath in paths)
+                    foreach (var _path in node.BuildEstimatorChains())
                     {
-                        newPath.Add(_existPath.Concat(_path).ToList());
+                        paths.Add(_path);
+                    }
+                }
+                else
+                {
+                    foreach (var _path in node.BuildEstimatorChains())
+                    {
+                        foreach (var _existPath in paths)
+                        {
+                            newPath.Add(_existPath.Concat(_path));
+                        }
                     }
 
                     paths = newPath;

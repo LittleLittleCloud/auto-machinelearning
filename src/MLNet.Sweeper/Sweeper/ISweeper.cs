@@ -25,6 +25,8 @@ namespace MLNet.Sweeper
         /// </summary>
         /// <param name="input">Output of Sweeper.</param>
         void AddRunHistory(IRunResult input);
+
+        IEnumerable<IValueGenerator> SweepableParamaters { get; set; }
     }
 
     public interface ISweepResultEvaluator<in TResults>

@@ -10,8 +10,6 @@ namespace MLNet.Sweeper
 {
     public class SweeperOptionBase
     {
-        public IValueGenerator[] SweptParameters;
-
         /// <summary>
         /// For RandomSweeper.
         /// </summary>

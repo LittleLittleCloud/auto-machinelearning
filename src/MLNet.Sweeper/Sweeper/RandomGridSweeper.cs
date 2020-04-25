@@ -26,7 +26,7 @@ namespace MLNet.Sweeper
 
         protected override ParameterSet CreateParamSet()
         {
-            return new ParameterSet(this.SweepParameters.Select(sweepParameter => sweepParameter[this._rand.Next(sweepParameter.Count)]));
+            return new ParameterSet(this.SweepableParamaters.Select(sweepParameter => sweepParameter[this._rand.Next(sweepParameter.Count)]));
         }
 
         public sealed class Option : SweeperOptionBase
