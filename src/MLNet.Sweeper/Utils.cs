@@ -2,6 +2,7 @@
 // Copyright (c) BigMiao. All rights reserved.
 // </copyright>
 
+using Numpy;
 using System;
 
 namespace MLNet.Sweeper
@@ -59,6 +60,16 @@ namespace MLNet.Sweeper
                 var lnY = (Math.Log(b) - Math.Log(a)) * x + Math.Log(a);
                 return Math.Exp(lnY);
             }
+        }
+
+        public static NDarray MultiVariateNormal(NDarray mean, NDarray cov)
+        {
+            // https://peterroelants.github.io/posts/multivariate-normal-primer/
+            // since cov is always [1*1], so calc Cholesky decompostion for cov is simple.
+            // mean should be a 1-d array.
+            var L = np.linalg.cholesky(cov);
+
+            return L.dot(np.random.standard_normal(mean.shape.Dimensions)) + mean;
         }
     }
 }
