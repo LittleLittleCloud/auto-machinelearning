@@ -30,6 +30,11 @@ namespace MLNet.Sweeper
         /// Returns the name of the generated parameter.
         /// </summary>
         string Name { get; }
+
+        /// <summary>
+        /// ID of this ValueGenerator.
+        /// </summary>
+        string ID { get; }
     }
 
     public interface INumericValueGenerator : IValueGenerator

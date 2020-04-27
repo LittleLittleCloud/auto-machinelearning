@@ -20,13 +20,14 @@ namespace MLNet.Sweeper
         public DiscreteValueGenerator(Option options)
         {
             this._options = options;
+            this.ID = Guid.NewGuid().ToString("N");
         }
 
         // REVIEW: Is float accurate enough?
         public IParameterValue CreateFromNormalized(double normalizedValue)
         {
             var rawValue = this._options.Values[(int)(this._options.Values.Length * normalizedValue)];
-            var value = new DiscreteParameterValue(this._options.Name, rawValue, this.OneHotEncodeValue(rawValue), this._options.GroupID);
+            var value = new DiscreteParameterValue(this._options.Name, rawValue, this.OneHotEncodeValue(rawValue), this.ID);
             return value;
         }
 
@@ -53,6 +54,8 @@ namespace MLNet.Sweeper
         public IParameterValue this[int i] => new DiscreteParameterValue(this._options.Name, this._options.Values[i], this.OneHotEncodeValue(this._options.Values[i]));
 
         public int Count => this._options.Values.Length;
+
+        public string ID { get; private set; }
 
         public class Option : ValueGeneratorOptionBase
         {

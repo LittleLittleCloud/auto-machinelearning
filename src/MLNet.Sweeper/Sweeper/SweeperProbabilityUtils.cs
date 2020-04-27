@@ -94,7 +94,7 @@ namespace MLNet.Sweeper
                 var sweepParam = sweepParams[i];
 
                 // This holds the actual value for this parameter, chosen in this parameter set.
-                var pset = ps[sweepParam.Name];
+                var pset = ps[sweepParam.ID];
 
                 var parameterDiscrete = sweepParam as DiscreteValueGenerator;
                 if (parameterDiscrete != null)

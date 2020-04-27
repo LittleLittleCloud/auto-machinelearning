@@ -23,13 +23,13 @@ namespace MLNet.Sweeper
 
         public double[] OneHotEncode { get; set; }
 
-        public string GroupID { get; private set; }
+        public string ID { get; private set; }
 
-        public DiscreteParameterValue(string name, object value, double[] onehot = null, string groupID = null)
+        public DiscreteParameterValue(string name, object value, double[] onehot = null, string id = null)
         {
             this._name = name;
             this._value = value;
-            this.GroupID = groupID;
+            this.ID = id ?? name;
             this.OneHotEncode = onehot;
         }
 

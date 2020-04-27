@@ -4,6 +4,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Linq;
 using MLNet.Sweeper;
 
@@ -12,9 +13,9 @@ namespace MLNet.AutoPipeline
     public abstract class OptionBuilder<TOption>
         where TOption : class
     {
-        private readonly HashSet<string> _groupIDs = new HashSet<string>();
+        private readonly HashSet<string> _ids = new HashSet<string>();
 
-        public IValueGenerator[] ValueGenerators => this.GetParameterAttributes().Select(kv => kv.Value.ValueGenerator).ToArray();
+        public IValueGenerator[] ValueGenerators => this.GetValueGenerators();
 
         public TOption CreateDefaultOption()
         {
@@ -37,7 +38,7 @@ namespace MLNet.AutoPipeline
             var option = this.CreateDefaultOption();
             foreach (var param in parameters)
             {
-                if (this._groupIDs.Contains(param.GroupID))
+                if (this._ids.Contains(param.ID))
                 {
                     var value = param.RawValue;
                     typeof(TOption).GetField(param.Name)?.SetValue(option, value);
@@ -57,11 +58,21 @@ namespace MLNet.AutoPipeline
             foreach (var param in paramaters)
             {
                 var paramaterAttribute = Attribute.GetCustomAttribute(param, typeof(ParameterAttribute)) as ParameterAttribute;
-                this._groupIDs.Add(paramaterAttribute.GroupID);
                 paramatersDictionary.Add(param.Name, paramaterAttribute);
             }
 
             return paramatersDictionary;
+        }
+
+        private IValueGenerator[] GetValueGenerators()
+        {
+            var valueGenerators = this.GetParameterAttributes().Select(kv => kv.Value.ValueGenerator).ToArray();
+            foreach (var valueGenerator in valueGenerators)
+            {
+                this._ids.Add(valueGenerator.ID);
+            }
+
+            return valueGenerators;
         }
     }
 }

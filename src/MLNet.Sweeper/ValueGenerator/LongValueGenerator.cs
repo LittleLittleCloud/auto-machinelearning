@@ -19,6 +19,7 @@ namespace MLNet.Sweeper
         public LongValueGenerator(Option options)
         {
             this._options = options;
+            this.ID = Guid.NewGuid().ToString("N");
         }
 
         // REVIEW: Is float accurate enough?
@@ -26,7 +27,7 @@ namespace MLNet.Sweeper
         {
             var val = Utils.AXPlusB(this._options.Min, this._options.Max, normalizedValue, this._options.LogBase);
 
-            return new LongParameterValue(this._options.Name, Convert.ToInt64(val), this._options.GroupID);
+            return new LongParameterValue(this._options.Name, Convert.ToInt64(val), this.ID);
         }
 
         public IParameterValue this[int i]
@@ -44,6 +45,8 @@ namespace MLNet.Sweeper
                 return this._options.Steps + 1;
             }
         }
+
+        public string ID { get; private set; }
 
         public float NormalizeValue(IParameterValue value)
         {

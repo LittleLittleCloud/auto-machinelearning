@@ -23,7 +23,7 @@ namespace MLNet.AutoPipeline.Test
         }
 
         [Fact]
-        public void OptionBuilder_should_build_optoin_from_parameter_set()
+        public void OptionBuilder_should_build_option_from_parameter_set()
         {
             var builder = new TestOptionBuilder();
             var input = new List<IParameterValue>()
@@ -88,10 +88,10 @@ namespace MLNet.AutoPipeline.Test
         private class TestOptionBuilder : OptionBuilder<TestOption>
         {
             [Parameter("LongOption", 0, 100)]
-            public long LongOption = 2;
+            public long LongOption = -1;
 
             [Parameter("FloatOption", 0f, 100f)]
-            public float FloatOption;
+            public float FloatOption = -1f;
 
             [Parameter("StringOption", new object[] { "str1", "str2", "str3", "str4" })]
             public string StringOption = "str";

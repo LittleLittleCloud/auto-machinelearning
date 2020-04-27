@@ -18,14 +18,14 @@ namespace MLNet.Sweeper
 
         public object RawValue => this._value;
 
-        public string GroupID { get; private set; }
+        public string ID { get; private set; }
 
-        public FloatParameterValue(string name, float value, string groupID = null)
+        public FloatParameterValue(string name, float value, string id = null)
         {
             this._name = name;
             this._value = value;
             this._valueText = this._value.ToString("R");
-            this.GroupID = groupID;
+            this.ID = id ?? name;
         }
 
         public bool Equals(IParameterValue other)

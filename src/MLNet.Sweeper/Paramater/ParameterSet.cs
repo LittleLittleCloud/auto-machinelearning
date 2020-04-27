@@ -23,7 +23,7 @@ namespace MLNet.Sweeper
             this._parameterValues = new Dictionary<string, IParameterValue>();
             foreach (var parameter in parameters)
             {
-                this._parameterValues.Add(parameter.Name, parameter);
+                this._parameterValues.Add(parameter.ID, parameter);
             }
 
             var parameterNames = this._parameterValues.Keys.ToList();
@@ -54,16 +54,16 @@ namespace MLNet.Sweeper
 
         public int Count => this._parameterValues.Count;
 
-        public IParameterValue this[string name]
+        public IParameterValue this[string id]
         {
             get
             {
-                return this._parameterValues[name];
+                return this._parameterValues[id];
             }
 
             set
             {
-                this._parameterValues[name] = value;
+                this._parameterValues[id] = value;
             }
         }
 

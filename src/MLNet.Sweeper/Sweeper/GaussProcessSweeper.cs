@@ -174,7 +174,7 @@ namespace MLNet.Sweeper.Sweeper
             foreach (var valueGenerator in this.SweepableParamaters)
             {
                 var _candidates = parent.Clone();
-                var value = _candidates[valueGenerator.Name];
+                var value = _candidates[valueGenerator.ID];
                 if (valueGenerator is INumericValueGenerator)
                 {
                     var norm = (valueGenerator as INumericValueGenerator).NormalizeValue(value);
@@ -184,11 +184,11 @@ namespace MLNet.Sweeper.Sweeper
                         next = norm;
                     }
 
-                    _candidates[valueGenerator.Name] = valueGenerator.CreateFromNormalized(next);
+                    _candidates[valueGenerator.ID] = valueGenerator.CreateFromNormalized(next);
                 }
                 else
                 {
-                    _candidates[valueGenerator.Name] = (valueGenerator as IDiscreteValueGenerator).CreateFromNormalized(this._rand.NextDouble());
+                    _candidates[valueGenerator.ID] = (valueGenerator as IDiscreteValueGenerator).CreateFromNormalized(this._rand.NextDouble());
                 }
 
                 candicates.Add(_candidates);

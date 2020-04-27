@@ -19,13 +19,14 @@ namespace MLNet.Sweeper
         public FloatValueGenerator(Option options)
         {
             this._options = options;
+            this.ID = Guid.NewGuid().ToString("N");
         }
 
         public IParameterValue CreateFromNormalized(double normalizedValue)
         {
             var val = Utils.AXPlusB(this._options.Min, this._options.Max, normalizedValue, this._options.LogBase);
 
-            return new FloatParameterValue(this._options.Name, (float)val, this._options.GroupID);
+            return new FloatParameterValue(this._options.Name, (float)val, this.ID);
         }
 
         public IParameterValue this[int i]
@@ -43,6 +44,8 @@ namespace MLNet.Sweeper
                 return this._options.Steps + 1;
             }
         }
+
+        public string ID { get; private set; }
 
         public float NormalizeValue(IParameterValue value)
         {
