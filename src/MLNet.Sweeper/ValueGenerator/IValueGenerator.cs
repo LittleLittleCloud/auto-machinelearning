@@ -38,4 +38,9 @@ namespace MLNet.Sweeper
 
         bool InRange(IParameterValue value);
     }
+
+    public interface IDiscreteValueGenerator : IValueGenerator
+    {
+        double[] OneHotEncodeValue(IParameterValue value);
+    }
 }

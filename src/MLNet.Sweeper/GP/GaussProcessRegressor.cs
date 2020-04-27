@@ -28,17 +28,17 @@ namespace MLNet.Sweeper.GP
             return this;
         }
 
-        public NDarray Transform(NDarray X)
+        public (NDarray, NDarray, NDarray) Transform(NDarray X)
         {
-            var k = GaussProcessRegressor.RBF(this.xTrain, this.xTrain, this.Option.l, this.Option.sigma) + this.Option.noise * this.Option.noise * np.eye(this.xTrain.size);
+            var k = GaussProcessRegressor.RBF(this.xTrain, this.xTrain, this.Option.l, this.Option.sigma) + this.Option.noise * this.Option.noise * np.eye(this.xTrain.len);
             var k_s = GaussProcessRegressor.RBF(this.xTrain, X, this.Option.l, this.Option.sigma);
-            var k_ss = GaussProcessRegressor.RBF(X, X, this.Option.l, this.Option.sigma) + 1e-8 * np.eye(X.size);
+            var k_ss = GaussProcessRegressor.RBF(X, X, this.Option.l, this.Option.sigma) + 1e-8 * np.eye(X.len);
             var k_inv = np.linalg.inv(k);
 
             var mean_s = k_s.T.dot(k_inv).dot(this.yTrain);
             var cov_s = k_ss - k_s.T.dot(k_inv).dot(k_s);
-
-            return Utils.MultiVariateNormal(mean_s, cov_s);
+            var res = np.random.multivariate_normal(mean_s.ravel(), cov_s);
+            return (res, mean_s, cov_s);
         }
 
         public static NDarray RBF(NDarray x1, NDarray x2, double l = 1, double sigma = 1)

@@ -164,5 +164,20 @@ namespace MLNet.Sweeper.Tests
             objects.Should().Contain(generator.CreateFromNormalized(0.5).RawValue);
             generator.Count.Should().Be(4);
         }
+
+        [Fact]
+        public void DiscreteValueGenerator_should_return_one_hot_encode()
+        {
+            var objects = new object[] { "a", 2, "c", 4 };
+            var option = new DiscreteValueGenerator.Option()
+            {
+                Name = "discrete",
+                Values = objects,
+            };
+
+            var generator = new DiscreteValueGenerator(option);
+
+            generator.OneHotEncodeValue(new DiscreteParameterValue("val", objects[0])).Should().BeEquivalentTo(new int[] { 1, 0, 0, 0 });
+        }
     }
 }

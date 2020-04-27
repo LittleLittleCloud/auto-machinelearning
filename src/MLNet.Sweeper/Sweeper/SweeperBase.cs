@@ -14,6 +14,7 @@ namespace MLNet.Sweeper
     /// </summary>
     public abstract class SweeperBase : ISweeper
     {
+        private HashSet<ParameterSet> _generated;
         protected IList<IRunResult> _history = new List<IRunResult>();
 
         private readonly SweeperOptionBase _options;
@@ -26,6 +27,7 @@ namespace MLNet.Sweeper
         {
             this._options = options;
             this.SweepableParamaters = new List<IValueGenerator>();
+            this._generated = new HashSet<ParameterSet>();
         }
 
         protected SweeperBase(SweeperOptionBase options, IValueGenerator[] sweepParameters, string name)
@@ -43,8 +45,6 @@ namespace MLNet.Sweeper
                 this._history.Concat(previousRuns);
             }
 
-            var generated = new HashSet<ParameterSet>();
-
             for (int i = 0; i != maxSweeps; ++i)
             {
                 var retry = 0;
@@ -54,13 +54,13 @@ namespace MLNet.Sweeper
                     candidate = this.CreateParamSet();
                     if (retry >= this._options.Retry ||
                         !AlreadyGenerated(candidate, this._history.Select(x => x.ParameterSet)) ||
-                        !generated.Contains(candidate))
+                        !this._generated.Contains(candidate))
                     {
                         break;
                     }
                 }
 
-                generated.Add(candidate);
+                this._generated.Add(candidate);
                 this.Current = candidate;
                 yield return candidate;
             }

@@ -4,13 +4,14 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace MLNet.Sweeper
 {
     /// <summary>
     /// The discrete parameter sweep.
     /// </summary>
-    public class DiscreteValueGenerator : IValueGenerator
+    public class DiscreteValueGenerator : IDiscreteValueGenerator
     {
         private readonly Option _options;
 
@@ -24,10 +25,32 @@ namespace MLNet.Sweeper
         // REVIEW: Is float accurate enough?
         public IParameterValue CreateFromNormalized(double normalizedValue)
         {
-            return new DiscreteParameterValue(this._options.Name, this._options.Values[(int)(this._options.Values.Length * normalizedValue)], this._options.GroupID);
+            var rawValue = this._options.Values[(int)(this._options.Values.Length * normalizedValue)];
+            var value = new DiscreteParameterValue(this._options.Name, rawValue, this.OneHotEncodeValue(rawValue), this._options.GroupID);
+            return value;
         }
 
-        public IParameterValue this[int i] => new DiscreteParameterValue(this._options.Name, this._options.Values[i]);
+        public double[] OneHotEncodeValue(IParameterValue value)
+        {
+            return this.OneHotEncodeValue(value.RawValue);
+        }
+
+        private double[] OneHotEncodeValue(object rawValue)
+        {
+            var index = Array.FindIndex(this._options.Values, (object val) => val == rawValue);
+            if (index < 0)
+            {
+                throw new Exception($"can't find value {rawValue}");
+            }
+            else
+            {
+                var onehot = Enumerable.Repeat(0.0, this.Count).ToArray();
+                onehot[index] = 1;
+                return onehot;
+            }
+        }
+
+        public IParameterValue this[int i] => new DiscreteParameterValue(this._options.Name, this._options.Values[i], this.OneHotEncodeValue(this._options.Values[i]));
 
         public int Count => this._options.Values.Length;
 

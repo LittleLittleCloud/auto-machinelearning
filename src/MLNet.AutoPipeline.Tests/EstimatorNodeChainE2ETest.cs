@@ -6,6 +6,7 @@ using Microsoft.ML;
 using Microsoft.ML.Data;
 using Microsoft.ML.Trainers.LightGbm;
 using MLNet.Sweeper;
+using MLNet.Sweeper.Sweeper;
 using System;
 using Xunit;
 using Xunit.Abstractions;
@@ -39,13 +40,12 @@ namespace MLNet.AutoPipeline.Test
                           .Append(context.Transforms.Concatenate("features", new string[] { "sepal_length", "sepal_width", "petal_length", "petal_width" }))
                           .Append(new EstimatorNodeGroup().Append(naiveByaseTrainer).Append(lightGBM, lightGMBOption));
 
-            var sweeper = new RandomGridSweeper(new RandomGridSweeper.Option());
-
             foreach ( var sweepablePipeline in estimatorChain.BuildSweepablePipelines())
             {
                 this._output.WriteLine(sweepablePipeline.Summary());
+                var sweeper = new GaussProcessSweeper(new GaussProcessSweeper.Option());
                 sweepablePipeline.UseSweeper(sweeper);
-                foreach (var pipeline in sweepablePipeline.Sweeping(20))
+                foreach (var pipeline in sweepablePipeline.Sweeping(200))
                 {
                     var eval = pipeline.Fit(split.TrainSet).Transform(split.TestSet);
                     var metrics = context.MulticlassClassification.Evaluate(eval, "species");
@@ -55,6 +55,8 @@ namespace MLNet.AutoPipeline.Test
                         this._output.WriteLine(sweepablePipeline.Sweeper.Current.ToString());
                     }
 
+                    var result = new RunResult(sweepablePipeline.Sweeper.Current, metrics.MacroAccuracy, true);
+                    sweepablePipeline.Sweeper.AddRunHistory(result);
                     this._output.WriteLine($"macro accuracy: {metrics.MacroAccuracy}");
                 }
             }

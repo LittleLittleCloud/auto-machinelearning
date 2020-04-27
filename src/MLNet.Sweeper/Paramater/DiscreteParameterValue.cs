@@ -8,7 +8,7 @@ using System.Text.RegularExpressions;
 
 namespace MLNet.Sweeper
 {
-    public sealed class DiscreteParameterValue : IParameterValue
+    public sealed class DiscreteParameterValue : IDiscreteParameterValue
     {
         private readonly string _name;
         private readonly object _value;
@@ -21,13 +21,16 @@ namespace MLNet.Sweeper
 
         public object RawValue => this._value;
 
+        public double[] OneHotEncode { get; set; }
+
         public string GroupID { get; private set; }
 
-        public DiscreteParameterValue(string name, object value, string groupID = null)
+        public DiscreteParameterValue(string name, object value, double[] onehot = null, string groupID = null)
         {
             this._name = name;
             this._value = value;
             this.GroupID = groupID;
+            this.OneHotEncode = onehot;
         }
 
         public bool Equals(IParameterValue other)

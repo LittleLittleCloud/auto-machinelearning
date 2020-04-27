@@ -71,5 +71,33 @@ namespace MLNet.Sweeper
 
             return L.dot(np.random.standard_normal(mean.shape.Dimensions)) + mean;
         }
+
+        public static NDarray NormPDF(NDarray X)
+        {
+            return (1 / np.sqrt((NDarray)2 * Math.PI)) * np.exp(-0.5 * X * X);
+        }
+
+        public static NDarray NormCDF(NDarray X)
+        {
+            return 0.5 * (1 + ERF(X / np.sqrt((NDarray)2)));
+        }
+
+        public static NDarray ERF(NDarray X)
+        {
+            // https://stackoverflow.com/questions/457408/is-there-an-easily-available-implementation-of-erf-for-python
+            var sign = np.ones(X.shape);
+            sign[X < 0] = (NDarray)(-1);
+
+            var a1 = (NDarray)0.254829592;
+            var a2 = (NDarray)(-0.284496736);
+            var a3 = (NDarray)1.421413741;
+            var a4 = (NDarray)(-1.453152027);
+            var a5 = (NDarray)1.061405429;
+            var p = (NDarray)0.3275911;
+
+            var t = 1.0 / (1.0 + p * X);
+            var y = (NDarray)1.0 - (((((a5 * t + a4) * t) + a3) * t + a2) * t + a1) * t * np.exp(-X * X);
+            return sign * y;
+        }
     }
 }

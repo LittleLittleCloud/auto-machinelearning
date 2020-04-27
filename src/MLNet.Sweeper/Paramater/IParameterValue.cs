@@ -29,4 +29,9 @@ namespace MLNet.Sweeper
     {
         TValue Value { get; }
     }
+
+    public interface IDiscreteParameterValue : IParameterValue
+    {
+        double[] OneHotEncode { get; }
+    }
 }

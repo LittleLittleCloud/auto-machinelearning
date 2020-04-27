@@ -54,7 +54,18 @@ namespace MLNet.Sweeper
 
         public int Count => this._parameterValues.Count;
 
-        public IParameterValue this[string name] => this._parameterValues[name];
+        public IParameterValue this[string name]
+        {
+            get
+            {
+                return this._parameterValues[name];
+            }
+
+            set
+            {
+                this._parameterValues[name] = value;
+            }
+        }
 
         public bool Equals(ParameterSet other)
         {

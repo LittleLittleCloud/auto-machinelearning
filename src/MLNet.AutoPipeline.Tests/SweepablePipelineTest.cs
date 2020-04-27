@@ -13,6 +13,7 @@ using Microsoft.ML.Trainers.Recommender;
 using MLNet.AutoPipeline;
 using MLNet.AutoPipeline.Test;
 using MLNet.Sweeper;
+using MLNet.Sweeper.Sweeper;
 using Xunit;
 using Xunit.Abstractions;
 using static Microsoft.ML.Trainers.MatrixFactorizationTrainer;
@@ -73,8 +74,7 @@ namespace MLNet.AutoPipeline.Test
             var dataset = context.Data.LoadFromTextFile<ModelInput>(@".\TestData\recommendation-ratings-train.csv", separatorChar: ',', hasHeader: true);
             var split = context.Data.TrainTestSplit(dataset, 0.3);
 
-            var sweeperOption = new RandomGridSweeper.Option();
-            var gridSearchSweeper = new RandomGridSweeper(sweeperOption);
+            var gridSearchSweeper = new GaussProcessSweeper(new GaussProcessSweeper.Option());
 
             var mfTrainer = new SweepableNode<MatrixFactorizationPredictionTransformer, Options>(context.Recommendation().Trainers.MatrixFactorization, paramaters);
 
@@ -92,6 +92,8 @@ namespace MLNet.AutoPipeline.Test
                 var eval = pipeline.Fit(split.TrainSet).Transform(split.TestSet);
                 var metrics = context.Regression.Evaluate(eval, "rating", "Score");
                 this._output.WriteLine(gridSearchSweeper.Current.ToString());
+                var result = new RunResult(gridSearchSweeper.Current, metrics.RootMeanSquaredError, false);
+                gridSearchSweeper.AddRunHistory(result);
                 this._output.WriteLine($"RMSE: {metrics.RootMeanSquaredError}");
             }
         }
