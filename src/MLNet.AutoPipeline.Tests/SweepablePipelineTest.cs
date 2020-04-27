@@ -4,7 +4,9 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
+using System.Threading;
 using FluentAssertions;
 using Microsoft.ML;
 using Microsoft.ML.Data;
@@ -39,7 +41,7 @@ namespace MLNet.AutoPipeline.Test
             singleNodeChain.Summary().Should().Be("SweepablePipeline(MockTransformer=>mockEstimator)");
         }
 
-        [Fact]
+        [Fact(Skip = "time-consuming E2E test")]
         public void SweepablePipeline_RecommendationE2ETest_RandomSweeper()
         {
             var context = new MLContext();
@@ -57,16 +59,20 @@ namespace MLNet.AutoPipeline.Test
 
             pipelines.UseSweeper(randomSweeper);
             this._output.WriteLine(pipelines.Summary());
-            foreach (var pipeline in pipelines.Sweeping(100))
+            foreach (var pipeline in pipelines.Sweeping(5))
             {
+                var tick = new Stopwatch();
+                tick.Start();
                 var eval = pipeline.Fit(split.TrainSet).Transform(split.TestSet);
                 var metrics = context.Regression.Evaluate(eval, "rating", "Score");
                 this._output.WriteLine(randomSweeper.Current.ToString());
                 this._output.WriteLine($"RMSE: {metrics.RootMeanSquaredError}");
+                tick.Stop();
+                this._output.WriteLine($"times: { tick.ElapsedMilliseconds / 1000}s");
             }
         }
 
-        [Fact]
+        [Fact(Skip ="time-consuming E2E test")]
         public void SweepablePipeline_RecommendationE2ETest_GPSweeper()
         {
             var context = new MLContext();
@@ -87,7 +93,7 @@ namespace MLNet.AutoPipeline.Test
             pipelines.UseSweeper(gpSweeper);
             this._output.WriteLine(pipelines.Summary());
 
-            foreach (var pipeline in pipelines.Sweeping(200))
+            foreach (var pipeline in pipelines.Sweeping(30))
             {
                 var eval = pipeline.Fit(split.TrainSet).Transform(split.TestSet);
                 var metrics = context.Regression.Evaluate(eval, "rating", "Score");
@@ -109,8 +115,8 @@ namespace MLNet.AutoPipeline.Test
             [Parameter(0.0001f, 1f, true)]
             public float Alpha = 0.0001f;
 
-            [Parameter(8, 128, steps: 20)]
-            public int ApproximationRank = 8;
+            [Parameter(50, 128, steps: 20)]
+            public int ApproximationRank = 50;
 
             [Parameter(0.01f, 1f, true, 20)]
             public double Lambda = 0.01f;
@@ -118,7 +124,7 @@ namespace MLNet.AutoPipeline.Test
             [Parameter(0.001f, 0.1f, true, 100)]
             public double LearningRate = 0.001f;
 
-            [Parameter(new object[] { LossFunctionType.SquareLossOneClass, LossFunctionType.SquareLossRegression })]
+            [Parameter(new object[] {LossFunctionType.SquareLossRegression })]
             public LossFunctionType LossFunction;
         }
 

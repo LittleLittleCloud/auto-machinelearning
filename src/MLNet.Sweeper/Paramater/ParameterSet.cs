@@ -95,7 +95,7 @@ namespace MLNet.Sweeper
         private bool ContainsParamValue(IParameterValue parameterValue)
         {
             IParameterValue value;
-            return this._parameterValues.TryGetValue(parameterValue.Name, out value) &&
+            return this._parameterValues.TryGetValue(parameterValue.ID, out value) &&
                    parameterValue.Equals(value);
         }
     }

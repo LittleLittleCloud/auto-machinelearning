@@ -82,6 +82,14 @@ namespace MLNet.Sweeper
             return 0.5 * (1 + ERF(X / np.sqrt((NDarray)2)));
         }
 
+        public static double Normal()
+        {
+            var seed = new Random();
+            var u1 = seed.NextDouble();
+            var u2 = seed.NextDouble();
+            return Math.Sqrt(-2.0 * Math.Log(u1)) * Math.Sin(2.0 * Math.PI * u2);
+        }
+
         public static NDarray ERF(NDarray X)
         {
             // https://stackoverflow.com/questions/457408/is-there-an-easily-available-implementation-of-erf-for-python

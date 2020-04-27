@@ -178,7 +178,7 @@ namespace MLNet.Sweeper.Sweeper
                 if (valueGenerator is INumericValueGenerator)
                 {
                     var norm = (valueGenerator as INumericValueGenerator).NormalizeValue(value);
-                    var next = (float)np.random.normal(np.array(norm), np.array(1e-2f));
+                    var next = 1e-2 * Utils.Normal() + norm;
                     if (next <= 0f || next >= 1f)
                     {
                         next = norm;
