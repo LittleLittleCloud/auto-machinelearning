@@ -11,8 +11,6 @@ namespace MLNet.Sweeper
     public abstract class ValueGeneratorOptionBase
     {
         public string Name;
-
-        public string GroupID;
     }
 
     public abstract class NumericValueGeneratorOptionBase : ValueGeneratorOptionBase

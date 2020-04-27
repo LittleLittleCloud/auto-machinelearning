@@ -66,7 +66,12 @@ namespace MLNet.AutoPipeline
 
         private IValueGenerator[] GetValueGenerators()
         {
-            var valueGenerators = this.GetParameterAttributes().Select(kv => kv.Value.ValueGenerator).ToArray();
+            var valueGenerators = this.GetParameterAttributes().Select(kv =>
+            {
+                kv.Value.ValueGenerator.Name = kv.Key;
+                return kv.Value.ValueGenerator;
+            }).ToArray();
+
             foreach (var valueGenerator in valueGenerators)
             {
                 this._ids.Add(valueGenerator.ID);

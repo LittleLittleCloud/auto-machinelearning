@@ -15,7 +15,18 @@ namespace MLNet.Sweeper
     {
         private readonly Option _options;
 
-        public string Name => this._options.Name;
+        public string Name
+        {
+            get
+            {
+                return this._options.Name;
+            }
+
+            set
+            {
+                this._options.Name = value;
+            }
+        }
 
         public DiscreteValueGenerator(Option options)
         {

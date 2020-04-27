@@ -87,13 +87,13 @@ namespace MLNet.AutoPipeline.Test
 
         private class TestOptionBuilder : OptionBuilder<TestOption>
         {
-            [Parameter("LongOption", 0, 100)]
+            [Parameter(0L, 100L)]
             public long LongOption = -1;
 
-            [Parameter("FloatOption", 0f, 100f)]
+            [Parameter(0f, 100f)]
             public float FloatOption = -1f;
 
-            [Parameter("StringOption", new object[] { "str1", "str2", "str3", "str4" })]
+            [Parameter(new object[] { "str1", "str2", "str3", "str4" })]
             public string StringOption = "str";
         }
     }

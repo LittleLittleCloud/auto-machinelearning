@@ -29,7 +29,7 @@ namespace MLNet.Sweeper
         /// <summary>
         /// Returns the name of the generated parameter.
         /// </summary>
-        string Name { get; }
+        string Name { get; set; }
 
         /// <summary>
         /// ID of this ValueGenerator.

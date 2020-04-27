@@ -92,16 +92,16 @@ namespace MLNet.Examples.SentimentAnalysis
 
             public string inputColumnName = "SentimentText";
 
-            [Parameter("caseMode", new object[] { TextNormalizingEstimator.CaseMode.Lower, TextNormalizingEstimator.CaseMode.None, TextNormalizingEstimator.CaseMode.Upper}, "NormalizeTextOption")]
+            [Parameter(new object[] { TextNormalizingEstimator.CaseMode.Lower, TextNormalizingEstimator.CaseMode.None, TextNormalizingEstimator.CaseMode.Upper})]
             public TextNormalizingEstimator.CaseMode caseMode = TextNormalizingEstimator.CaseMode.Lower;
 
-            [Parameter("keepDiacritics", new object[] { true, false }, groupID: "NormalizeTextOption")]
+            [Parameter(new object[] { true, false })]
             public bool keepDiacritics = false;
 
-            [Parameter("keepPunctuations", new object[] { true, false }, groupID : "NormalizeTextOption")]
+            [Parameter(new object[] { true, false })]
             public bool keepPunctuations = false;
 
-            [Parameter("keepNumbers", new object[] { true, false }, groupID: "NormalizeTextOption")]
+            [Parameter(new object[] { true, false })]
             public bool keepNumbers = false;
         }
 
@@ -112,15 +112,13 @@ namespace MLNet.Examples.SentimentAnalysis
             public string inputColumnName = "txt";
 
             [Parameter(
-                "modelKind",
                 new object[]
                 {
                     WordEmbeddingEstimator.PretrainedModelKind.FastTextWikipedia300D,
                     WordEmbeddingEstimator.PretrainedModelKind.GloVe300D,
                     WordEmbeddingEstimator.PretrainedModelKind.GloVeTwitter100D,
                     WordEmbeddingEstimator.PretrainedModelKind.SentimentSpecificWordEmbedding,
-                },
-                groupID: "ApplyWordEmbeddingOption")]
+                })]
             public WordEmbeddingEstimator.PretrainedModelKind modelKind = WordEmbeddingEstimator.PretrainedModelKind.FastTextWikipedia300D;
         }
 
@@ -130,10 +128,10 @@ namespace MLNet.Examples.SentimentAnalysis
 
             public string LabelColumnName = "Sentiment";
 
-            [Parameter("L1Regulation", 0.0001f, 10f, true, 20, groupID: "SdcaLogisticRegressionOption")]
+            [Parameter(0.0001f, 10f, true, 20)]
             public float L1Regulation = 0.0001f;
 
-            [Parameter("L2Regulation", 0.0001f, 10f, true, 20, groupID: "SdcaLogisticRegressionOption")]
+            [Parameter(0.0001f, 10f, true, 20)]
             public float L2Regulation = 0.0001f;
         }
     }

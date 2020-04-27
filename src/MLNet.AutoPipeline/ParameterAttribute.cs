@@ -12,54 +12,54 @@ namespace MLNet.AutoPipeline
 {
     public class ParameterAttribute : Attribute
     {
-        public ParameterAttribute(string name, int min, int max, bool logBase = false, int steps = 100, string groupID = null)
+        public ParameterAttribute(int min, int max, bool logBase = false, int steps = 100)
         {
             var option = new Int32ValueGenerator.Option()
             {
-                Name = name,
                 Min = min,
                 Max = max,
                 Steps = steps,
                 LogBase = logBase,
-                GroupID = groupID,
             };
-
-            this.GroupID = groupID;
 
             this.ValueGenerator = new Int32ValueGenerator(option);
         }
 
-        public ParameterAttribute(string name, float min, float max, bool logBase = false, int steps = 100, string groupID = null)
+        public ParameterAttribute(long min, long max, bool logBase = false, int steps = 100)
         {
-            var option = new FloatValueGenerator.Option()
+            var option = new LongValueGenerator.Option()
             {
-                Name = name,
                 Min = min,
                 Max = max,
                 Steps = steps,
                 LogBase = logBase,
-                GroupID = groupID,
             };
 
-            this.GroupID = groupID;
+            this.ValueGenerator = new LongValueGenerator(option);
+        }
+
+        public ParameterAttribute(float min, float max, bool logBase = false, int steps = 100)
+        {
+            var option = new FloatValueGenerator.Option()
+            {
+                Min = min,
+                Max = max,
+                Steps = steps,
+                LogBase = logBase,
+            };
 
             this.ValueGenerator = new FloatValueGenerator(option);
         }
 
-        public ParameterAttribute(string name, object[] candidates, string groupID = null)
+        public ParameterAttribute(object[] candidates)
         {
             var option = new DiscreteValueGenerator.Option()
             {
-                Name = name,
                 Values = candidates,
-                GroupID = groupID,
             };
 
-            this.GroupID = groupID;
             this.ValueGenerator = new DiscreteValueGenerator(option);
         }
-
-        public string GroupID { get; private set; }
 
         public IValueGenerator ValueGenerator { get; }
     }

@@ -64,16 +64,16 @@ namespace MLNet.AutoPipeline.Test
 
         private class LightGBMOption: OptionBuilder<LightGBMOption>
         {
-            [Parameter("lr",0.001f ,0.1f ,true,20)]
+            [Parameter(0.001f ,0.1f ,true,20)]
             public float lr;
 
-            [Parameter("leaves", 10, 1000, true, 20)]
+            [Parameter(10, 1000, true, 20)]
             public int leaves;
 
-            [Parameter("iteration", 10, 1000, true, 20)]
+            [Parameter(10, 1000, true, 20)]
             public int iteration;
 
-            [Parameter("countPerLeaf", 10, 1000, true, 20)]
+            [Parameter(10, 1000, true, 20)]
             public int countPerLeaf;
         }
 
