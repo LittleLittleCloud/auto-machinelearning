@@ -33,7 +33,7 @@ namespace MLNet.Sweeper.Tests
             var y_train = np.sin(X_train);
             var option = new GaussProcessRegressor.Options();
             var GP = new GaussProcessRegressor(option);
-            var res = GP.Fit(X_train, y_train).Transform(np.array<double>(new double[] { 10 }).reshape(-1, 1));
+            var res = GP.Fit(X_train, y_train).Transform(np.array<double>(new double[] { 10 }).reshape(-1, 1)).Item1.reshape(-1,1);
             ((double)res[0, 0]).Should().BeApproximately(Math.Sin(10), 0.1);
         }
     }

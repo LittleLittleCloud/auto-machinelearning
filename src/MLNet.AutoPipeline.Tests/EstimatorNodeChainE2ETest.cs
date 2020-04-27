@@ -23,7 +23,7 @@ namespace MLNet.AutoPipeline.Test
         }
 
         [Fact]
-        public void EstiamtorNodeChain_iris_e2eTest_random_grid_sweeper()
+        public void EstiamtorNodeChain_iris_e2eTest_gauss_process_sweeper()
         {
             var context = new MLContext();
             var dataset = context.Data.LoadFromTextFile<Iris>(@".\TestData\iris.csv", separatorChar: ',', hasHeader: true);

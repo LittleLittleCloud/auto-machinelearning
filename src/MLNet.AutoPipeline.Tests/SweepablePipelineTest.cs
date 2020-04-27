@@ -67,14 +67,14 @@ namespace MLNet.AutoPipeline.Test
         }
 
         [Fact]
-        public void SweepablePipeline_RecommendationE2ETest_GridSearchSweeper()
+        public void SweepablePipeline_RecommendationE2ETest_GPSweeper()
         {
             var context = new MLContext();
             var paramaters = new MFOption();
             var dataset = context.Data.LoadFromTextFile<ModelInput>(@".\TestData\recommendation-ratings-train.csv", separatorChar: ',', hasHeader: true);
             var split = context.Data.TrainTestSplit(dataset, 0.3);
 
-            var gridSearchSweeper = new GaussProcessSweeper(new GaussProcessSweeper.Option());
+            var gpSweeper = new GaussProcessSweeper(new GaussProcessSweeper.Option());
 
             var mfTrainer = new SweepableNode<MatrixFactorizationPredictionTransformer, Options>(context.Recommendation().Trainers.MatrixFactorization, paramaters);
 
@@ -84,16 +84,16 @@ namespace MLNet.AutoPipeline.Test
                            .Append(mfTrainer)
                            .Append(context.Transforms.CopyColumns("output", "Score"));
 
-            pipelines.UseSweeper(gridSearchSweeper);
+            pipelines.UseSweeper(gpSweeper);
             this._output.WriteLine(pipelines.Summary());
 
-            foreach (var pipeline in pipelines.Sweeping(100))
+            foreach (var pipeline in pipelines.Sweeping(200))
             {
                 var eval = pipeline.Fit(split.TrainSet).Transform(split.TestSet);
                 var metrics = context.Regression.Evaluate(eval, "rating", "Score");
-                this._output.WriteLine(gridSearchSweeper.Current.ToString());
-                var result = new RunResult(gridSearchSweeper.Current, metrics.RootMeanSquaredError, false);
-                gridSearchSweeper.AddRunHistory(result);
+                this._output.WriteLine(gpSweeper.Current.ToString());
+                var result = new RunResult(gpSweeper.Current, metrics.RootMeanSquaredError, true);
+                gpSweeper.AddRunHistory(result);
                 this._output.WriteLine($"RMSE: {metrics.RootMeanSquaredError}");
             }
         }
