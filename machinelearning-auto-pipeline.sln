@@ -18,7 +18,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MLNet.Sweeper.Tests", "src\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sentiment Analyasis", "examples\Sentiment Analyasis\Sentiment Analyasis.csproj", "{0413A14D-CF5B-428D-8236-3A15C8A63221}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Movie Recommendation", "examples\Movie Recommendation\Movie Recommendation.csproj", "{A6404756-D273-4EF0-8818-1D9BED601B8C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Movie Recommendation", "examples\Movie Recommendation\Movie Recommendation.csproj", "{A6404756-D273-4EF0-8818-1D9BED601B8C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
