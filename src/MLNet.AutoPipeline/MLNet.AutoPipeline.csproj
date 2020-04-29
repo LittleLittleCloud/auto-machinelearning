@@ -4,6 +4,8 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <RootNamespace>MLNet.AutoPipeline</RootNamespace>
     <IsPackable>true</IsPackable>
+    <GenerateDocumentation>true</GenerateDocumentation>
+    <DocumentationFile>$(RepoRoot)\doc\MLNet.AutoPipeline.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>

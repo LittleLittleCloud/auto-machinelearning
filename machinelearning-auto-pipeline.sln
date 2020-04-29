@@ -16,7 +16,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MLNet.AutoPipeline.Tests", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MLNet.Sweeper.Tests", "src\MLNet.Sweeper.Tests\MLNet.Sweeper.Tests.csproj", "{A4DB2507-1D19-4639-AF64-9946E68EE6DA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sentiment Analyasis", "examples\Sentiment Analyasis\Sentiment Analyasis.csproj", "{0413A14D-CF5B-428D-8236-3A15C8A63221}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sentiment Analyasis", "examples\Sentiment Analyasis\Sentiment Analyasis.csproj", "{0413A14D-CF5B-428D-8236-3A15C8A63221}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Movie Recommendation", "examples\Movie Recommendation\Movie Recommendation.csproj", "{A6404756-D273-4EF0-8818-1D9BED601B8C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -44,6 +46,10 @@ Global
 		{0413A14D-CF5B-428D-8236-3A15C8A63221}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0413A14D-CF5B-428D-8236-3A15C8A63221}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0413A14D-CF5B-428D-8236-3A15C8A63221}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A6404756-D273-4EF0-8818-1D9BED601B8C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A6404756-D273-4EF0-8818-1D9BED601B8C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A6404756-D273-4EF0-8818-1D9BED601B8C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A6404756-D273-4EF0-8818-1D9BED601B8C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
