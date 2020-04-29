@@ -20,11 +20,10 @@ namespace Movie_Recommendation
         {
             var context = new MLContext();
             var paramaters = new MFOption();
-            var dataset = context.Data.LoadFromTextFile<ModelInput>(@".\recommendation-ratings-train.csv", separatorChar: ',', hasHeader: true);
-            var split = context.Data.TrainTestSplit(dataset, 0.1);
+            var train_data = context.Data.LoadFromTextFile<ModelInput>(@".\recommendation-ratings-train.csv", separatorChar: ',', hasHeader: true);
+            var test_data = context.Data.LoadFromTextFile<ModelInput>(@".\recommendation-ratings-test.csv", separatorChar: ',', hasHeader: true);
 
-            var gpSweeper = new GaussProcessSweeper(new GaussProcessSweeper.Option());
-            var randomSweeper = new RandomGridSweeper(new RandomGridSweeper.Option());
+            var gpSweeper = new GaussProcessSweeper(new GaussProcessSweeper.Option() { InitialPopulation = 50 });
             var mfTrainer = new SweepableNode<MatrixFactorizationPredictionTransformer, Options>(context.Recommendation().Trainers.MatrixFactorization, paramaters);
 
             var pipelines = new SweepablePipeline()
@@ -37,23 +36,23 @@ namespace Movie_Recommendation
             Console.WriteLine(pipelines.Summary());
 
             RunResult bestHistory = null;
-            foreach (var pipeline in pipelines.Sweeping(300))
+            foreach (var pipeline in pipelines.Sweeping(100))
             {
-                var eval = pipeline.Fit(split.TrainSet).Transform(split.TestSet);
+                var eval = pipeline.Fit(train_data).Transform(test_data);
                 var metrics = context.Regression.Evaluate(eval, "rating", "Score");
                 Console.WriteLine(gpSweeper.Current.ToString());
-                var result = new RunResult(gpSweeper.Current, metrics.RSquared, true);
+                var result = new RunResult(gpSweeper.Current, metrics.RootMeanSquaredError, false);
 
-                if (bestHistory == null || bestHistory?.MetricValue < result.MetricValue)
+                if (bestHistory == null || bestHistory?.MetricValue > result.MetricValue)
                 {
                     bestHistory = result;
                 }
 
                 gpSweeper.AddRunHistory(result);
-                Console.WriteLine($"Rsquare: {metrics.RSquared}");
+                Console.WriteLine($"RMSE: {metrics.RootMeanSquaredError}");
             }
 
-            Console.WriteLine($"Best Rsquare: {bestHistory.MetricValue}");
+            Console.WriteLine($"Best RMSE: {bestHistory.MetricValue}");
         }
 
         private class MFOption : OptionBuilder<MatrixFactorizationTrainer.Options>

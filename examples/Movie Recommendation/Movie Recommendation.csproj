@@ -15,6 +15,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="recommendation-ratings-test.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="recommendation-ratings-train.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

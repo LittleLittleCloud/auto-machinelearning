@@ -119,7 +119,14 @@ namespace MLNet.Sweeper.Sweeper
                     // calulate ei
                     var ei = GaussProcessSweeper.EI(predict_y.reshape(-1, 1), std.reshape(-1, 1), np.max(y_train));
                     var bestCandidate = (int)np.argmax(ei);
+
+                    if ((double)np.max(ei) <= 0)
+                    {
+                        bestCandidate = this._rand.Next(0, ei.len);
+                    }
+
                     Console.WriteLine($"Best candidate: {bestCandidate}");
+                    Console.WriteLine($"Best candidate ei: {(double)np.max(ei)}");
                     this._generated.Add(candidates[bestCandidate]);
                     this.Current = candidates[bestCandidate];
                     yield return candidates[bestCandidate];
@@ -158,13 +165,13 @@ namespace MLNet.Sweeper.Sweeper
             return res;
         }
 
-        public static NDarray EI(NDarray predictY, NDarray std, NDarray bestY, double xi = 0.001)
+        public static NDarray EI(NDarray predictY, NDarray std, NDarray bestY, double xi = 0.01)
         {
             std = std.reshape(-1, 1);
             var imp = predictY - bestY - (NDarray)xi;
             var Z = imp / std;
             var ei = imp * Utils.NormCDF(Z) + std * Utils.NormPDF(Z);
-            ei[std <= (NDarray)0] = (NDarray)0;
+            ei[std < (NDarray)0] = (NDarray)0;
             return ei;
         }
 
@@ -178,11 +185,7 @@ namespace MLNet.Sweeper.Sweeper
                 if (valueGenerator is INumericValueGenerator)
                 {
                     var norm = (valueGenerator as INumericValueGenerator).NormalizeValue(value);
-                    var next = 1e-2 * Utils.Normal() + norm;
-                    if (next <= 0f || next >= 1f)
-                    {
-                        next = norm;
-                    }
+                    var next = Utils.NormCDF(1e-2 * Utils.Normal() + norm);
 
                     _candidates[valueGenerator.ID] = valueGenerator.CreateFromNormalized(next);
                 }

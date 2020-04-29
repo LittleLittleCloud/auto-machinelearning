@@ -82,6 +82,11 @@ namespace MLNet.Sweeper
             return 0.5 * (1 + ERF(X / np.sqrt((NDarray)2)));
         }
 
+        public static double NormCDF(double X)
+        {
+            return 0.5 * (1 + ERF(X / Math.Sqrt(2)));
+        }
+
         public static double Normal()
         {
             var seed = new Random();
@@ -105,6 +110,23 @@ namespace MLNet.Sweeper
 
             var t = 1.0 / (1.0 + p * X);
             var y = (NDarray)1.0 - (((((a5 * t + a4) * t) + a3) * t + a2) * t + a1) * t * np.exp(-X * X);
+            return sign * y;
+        }
+
+        public static double ERF(double X)
+        {
+            // https://stackoverflow.com/questions/457408/is-there-an-easily-available-implementation-of-erf-for-python
+            var sign = X > 0 ? 1.0 : -1.0; 
+
+            var a1 = 0.254829592;
+            var a2 = -0.284496736;
+            var a3 = 1.421413741;
+            var a4 = -1.453152027;
+            var a5 = 1.061405429;
+            var p = 0.3275911;
+
+            var t = 1.0 / (1.0 + p * X);
+            var y = 1.0 - (((((a5 * t + a4) * t) + a3) * t + a2) * t + a1) * t * Math.Exp(-X * X);
             return sign * y;
         }
     }
