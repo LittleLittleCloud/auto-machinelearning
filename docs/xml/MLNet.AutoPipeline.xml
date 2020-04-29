@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>MLNet.AutoPipeline</name>
+    </assembly>
+    <members>
+        <member name="F:MLNet.AutoPipeline.EstimatorNodeType.Node">
+            <summary>
+            Single Node.
+            A single node in EstimatorNodeChain
+            Can be IEstimator/EstimatorChain/AutoEstimator.
+            </summary>
+        </member>
+        <member name="F:MLNet.AutoPipeline.EstimatorNodeType.NodeChain">
+            <summary>
+            AutoEstimatorChain. List of Node|NodeGroup.
+            </summary>
+        </member>
+        <member name="F:MLNet.AutoPipeline.EstimatorNodeType.NodeGroup">
+            <summary>
+            Group of Node|NodeChain.
+            </summary>
+        </member>
+        <member name="F:MLNet.AutoPipeline.SweepablePipelineNodeType.Sweepable">
+            <summary>
+            Sweepable node Type.
+            </summary>
+        </member>
+        <member name="F:MLNet.AutoPipeline.SweepablePipelineNodeType.Unsweeapble">
+            <summary>
+            Unsweepable node type.
+            </summary>
+        </member>
+    </members>
+</doc>
