@@ -1,4 +1,4 @@
-##### Automate ML for [ML.NET](https://dotnet.microsoft.com/apps/machinelearning-ai/ml-dotnet)
+## Automate ML for [ML.NET](https://dotnet.microsoft.com/apps/machinelearning-ai/ml-dotnet)
 
 - MLNet.AutoPipeline: build and optimize [ML.NET](https://dotnet.microsoft.com/apps/machinelearning-ai/ml-dotnet) pipelines over pre-defined hyper parameters.
 
@@ -7,9 +7,9 @@
 [![Build Status](https://devdiv.visualstudio.com/DevDiv/_apis/build/status/LittleLittleCloud.machinelearning-auto-pipeline?branchName=master)](https://devdiv.visualstudio.com/DevDiv/_build/latest?definitionId=12900&branchName=master) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 
-##### Examples
+## Examples
 - Sentiment analyasis
 - [Movie recommendation](examples/Movie&#32;Recommendation/README.md)
 
-##### Build 
+## Build 
 - `.\Build.cmd`
