@@ -1,0 +1,227 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Interface IRunResult
+   </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Interface IRunResult
+   ">
+    <meta name="generator" content="docfx 2.52.0.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="MLNet.Sweeper.IRunResult">
+  
+  
+  <h1 id="MLNet_Sweeper_IRunResult" data-uid="MLNet.Sweeper.IRunResult" class="text-break">Interface IRunResult
+  </h1>
+  <div class="markdown level0 summary"><p>The result of a run.
+Contains the parameter set used, useful for the sweeper to not generate the same configuration multiple times.
+Also contains the result of a run and the metric value that is used by smart sweepers to generate new configurations
+that try to maximize this metric.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <span class="xref">System.IComparable&lt;MLNet.Sweeper.IRunResult&gt;.CompareTo(MLNet.Sweeper.IRunResult)</span>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="MLNet.Sweeper.html">MLNet.Sweeper</a></h6>
+  <h6><strong>Assembly</strong>: MLNet.Sweeper.dll</h6>
+  <h5 id="MLNet_Sweeper_IRunResult_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public interface IRunResult : IComparable&lt;IRunResult&gt;</code></pre>
+  </div>
+  <h3 id="properties">Properties
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/LittleLittleCloud/machinelearning-auto-pipeline/new/u/xiaoyun/addDoc/apiSpec/new?filename=MLNet_Sweeper_IRunResult_IsMetricMaximizing.md&amp;value=---%0Auid%3A%20MLNet.Sweeper.IRunResult.IsMetricMaximizing%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/LittleLittleCloud/machinelearning-auto-pipeline/blob/u/xiaoyun/addDoc/src/MLNet.Sweeper/Sweeper/ISweeper.cs/#L52">View Source</a>
+  </span>
+  <a id="MLNet_Sweeper_IRunResult_IsMetricMaximizing_" data-uid="MLNet.Sweeper.IRunResult.IsMetricMaximizing*"></a>
+  <h4 id="MLNet_Sweeper_IRunResult_IsMetricMaximizing" data-uid="MLNet.Sweeper.IRunResult.IsMetricMaximizing">IsMetricMaximizing</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">bool IsMetricMaximizing { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/LittleLittleCloud/machinelearning-auto-pipeline/new/u/xiaoyun/addDoc/apiSpec/new?filename=MLNet_Sweeper_IRunResult_MetricValue.md&amp;value=---%0Auid%3A%20MLNet.Sweeper.IRunResult.MetricValue%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/LittleLittleCloud/machinelearning-auto-pipeline/blob/u/xiaoyun/addDoc/src/MLNet.Sweeper/Sweeper/ISweeper.cs/#L50">View Source</a>
+  </span>
+  <a id="MLNet_Sweeper_IRunResult_MetricValue_" data-uid="MLNet.Sweeper.IRunResult.MetricValue*"></a>
+  <h4 id="MLNet_Sweeper_IRunResult_MetricValue" data-uid="MLNet.Sweeper.IRunResult.MetricValue">MetricValue</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IComparable MetricValue { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.IComparable</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/LittleLittleCloud/machinelearning-auto-pipeline/new/u/xiaoyun/addDoc/apiSpec/new?filename=MLNet_Sweeper_IRunResult_ParameterSet.md&amp;value=---%0Auid%3A%20MLNet.Sweeper.IRunResult.ParameterSet%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/LittleLittleCloud/machinelearning-auto-pipeline/blob/u/xiaoyun/addDoc/src/MLNet.Sweeper/Sweeper/ISweeper.cs/#L48">View Source</a>
+  </span>
+  <a id="MLNet_Sweeper_IRunResult_ParameterSet_" data-uid="MLNet.Sweeper.IRunResult.ParameterSet*"></a>
+  <h4 id="MLNet_Sweeper_IRunResult_ParameterSet" data-uid="MLNet.Sweeper.IRunResult.ParameterSet">ParameterSet</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">ParameterSet ParameterSet { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="MLNet.Sweeper.ParameterSet.html">ParameterSet</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/LittleLittleCloud/machinelearning-auto-pipeline/new/u/xiaoyun/addDoc/apiSpec/new?filename=MLNet_Sweeper_IRunResult.md&amp;value=---%0Auid%3A%20MLNet.Sweeper.IRunResult%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/LittleLittleCloud/machinelearning-auto-pipeline/blob/u/xiaoyun/addDoc/src/MLNet.Sweeper/Sweeper/ISweeper.cs/#L46" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

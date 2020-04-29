@@ -339,3 +339,6 @@ GeneratedProjectFolder/
 
 # ApprovalTests
 *.received.txt
+
+# DocFX
+api/*
