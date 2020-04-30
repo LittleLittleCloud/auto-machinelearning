@@ -145,28 +145,6 @@ references:
   isSpec: "True"
   fullName: MLNet.AutoPipeline.EstimatorNodeChain.UseSweeper
   nameWithType: EstimatorNodeChain.UseSweeper
-- uid: MLNet.AutoPipeline.EstimatorNodeChainExtension
-  name: EstimatorNodeChainExtension
-  href: api/MLNet.AutoPipeline.EstimatorNodeChainExtension.html
-  commentId: T:MLNet.AutoPipeline.EstimatorNodeChainExtension
-  fullName: MLNet.AutoPipeline.EstimatorNodeChainExtension
-  nameWithType: EstimatorNodeChainExtension
-- uid: MLNet.AutoPipeline.EstimatorNodeChainExtension.Append*
-  name: Append
-  href: api/MLNet.AutoPipeline.EstimatorNodeChainExtension.html#MLNet_AutoPipeline_EstimatorNodeChainExtension_Append_
-  commentId: Overload:MLNet.AutoPipeline.EstimatorNodeChainExtension.Append
-  isSpec: "True"
-  fullName: MLNet.AutoPipeline.EstimatorNodeChainExtension.Append
-  nameWithType: EstimatorNodeChainExtension.Append
-- uid: MLNet.AutoPipeline.EstimatorNodeChainExtension.Append``1(Microsoft.ML.Data.EstimatorChain{``0},MLNet.AutoPipeline.EstimatorNodeGroup)
-  name: Append<TLastTrain>(EstimatorChain<TLastTrain>, EstimatorNodeGroup)
-  href: api/MLNet.AutoPipeline.EstimatorNodeChainExtension.html#MLNet_AutoPipeline_EstimatorNodeChainExtension_Append__1_Microsoft_ML_Data_EstimatorChain___0__MLNet_AutoPipeline_EstimatorNodeGroup_
-  commentId: M:MLNet.AutoPipeline.EstimatorNodeChainExtension.Append``1(Microsoft.ML.Data.EstimatorChain{``0},MLNet.AutoPipeline.EstimatorNodeGroup)
-  name.vb: Append(Of TLastTrain)(EstimatorChain(Of TLastTrain), EstimatorNodeGroup)
-  fullName: MLNet.AutoPipeline.EstimatorNodeChainExtension.Append<TLastTrain>(Microsoft.ML.Data.EstimatorChain<TLastTrain>, MLNet.AutoPipeline.EstimatorNodeGroup)
-  fullName.vb: MLNet.AutoPipeline.EstimatorNodeChainExtension.Append(Of TLastTrain)(Microsoft.ML.Data.EstimatorChain(Of TLastTrain), MLNet.AutoPipeline.EstimatorNodeGroup)
-  nameWithType: EstimatorNodeChainExtension.Append<TLastTrain>(EstimatorChain<TLastTrain>, EstimatorNodeGroup)
-  nameWithType.vb: EstimatorNodeChainExtension.Append(Of TLastTrain)(EstimatorChain(Of TLastTrain), EstimatorNodeGroup)
 - uid: MLNet.AutoPipeline.EstimatorNodeGroup
   name: EstimatorNodeGroup
   href: api/MLNet.AutoPipeline.EstimatorNodeGroup.html
@@ -385,6 +363,28 @@ references:
   commentId: N:MLNet.AutoPipeline.Extension
   fullName: MLNet.AutoPipeline.Extension
   nameWithType: MLNet.AutoPipeline.Extension
+- uid: MLNet.AutoPipeline.Extension.EstimatorNodeChainExtension
+  name: EstimatorNodeChainExtension
+  href: api/MLNet.AutoPipeline.Extension.EstimatorNodeChainExtension.html
+  commentId: T:MLNet.AutoPipeline.Extension.EstimatorNodeChainExtension
+  fullName: MLNet.AutoPipeline.Extension.EstimatorNodeChainExtension
+  nameWithType: EstimatorNodeChainExtension
+- uid: MLNet.AutoPipeline.Extension.EstimatorNodeChainExtension.Append*
+  name: Append
+  href: api/MLNet.AutoPipeline.Extension.EstimatorNodeChainExtension.html#MLNet_AutoPipeline_Extension_EstimatorNodeChainExtension_Append_
+  commentId: Overload:MLNet.AutoPipeline.Extension.EstimatorNodeChainExtension.Append
+  isSpec: "True"
+  fullName: MLNet.AutoPipeline.Extension.EstimatorNodeChainExtension.Append
+  nameWithType: EstimatorNodeChainExtension.Append
+- uid: MLNet.AutoPipeline.Extension.EstimatorNodeChainExtension.Append``1(Microsoft.ML.Data.EstimatorChain{``0},MLNet.AutoPipeline.EstimatorNodeGroup)
+  name: Append<TLastTrain>(EstimatorChain<TLastTrain>, EstimatorNodeGroup)
+  href: api/MLNet.AutoPipeline.Extension.EstimatorNodeChainExtension.html#MLNet_AutoPipeline_Extension_EstimatorNodeChainExtension_Append__1_Microsoft_ML_Data_EstimatorChain___0__MLNet_AutoPipeline_EstimatorNodeGroup_
+  commentId: M:MLNet.AutoPipeline.Extension.EstimatorNodeChainExtension.Append``1(Microsoft.ML.Data.EstimatorChain{``0},MLNet.AutoPipeline.EstimatorNodeGroup)
+  name.vb: Append(Of TLastTrain)(EstimatorChain(Of TLastTrain), EstimatorNodeGroup)
+  fullName: MLNet.AutoPipeline.Extension.EstimatorNodeChainExtension.Append<TLastTrain>(Microsoft.ML.Data.EstimatorChain<TLastTrain>, MLNet.AutoPipeline.EstimatorNodeGroup)
+  fullName.vb: MLNet.AutoPipeline.Extension.EstimatorNodeChainExtension.Append(Of TLastTrain)(Microsoft.ML.Data.EstimatorChain(Of TLastTrain), MLNet.AutoPipeline.EstimatorNodeGroup)
+  nameWithType: EstimatorNodeChainExtension.Append<TLastTrain>(EstimatorChain<TLastTrain>, EstimatorNodeGroup)
+  nameWithType.vb: EstimatorNodeChainExtension.Append(Of TLastTrain)(EstimatorChain(Of TLastTrain), EstimatorNodeGroup)
 - uid: MLNet.AutoPipeline.Extension.SweepablePipelineExtension
   name: SweepablePipelineExtension
   href: api/MLNet.AutoPipeline.Extension.SweepablePipelineExtension.html
@@ -1738,128 +1738,280 @@ references:
   commentId: F:MLNet.Sweeper.FloatValueGenerator.Option.Min
   fullName: MLNet.Sweeper.FloatValueGenerator.Option.Min
   nameWithType: FloatValueGenerator.Option.Min
-- uid: MLNet.Sweeper.GP
-  name: MLNet.Sweeper.GP
-  href: api/MLNet.Sweeper.GP.html
-  commentId: N:MLNet.Sweeper.GP
-  fullName: MLNet.Sweeper.GP
-  nameWithType: MLNet.Sweeper.GP
-- uid: MLNet.Sweeper.GP.GaussProcessRegressor
+- uid: MLNet.Sweeper.GaussProcessRegressor
   name: GaussProcessRegressor
-  href: api/MLNet.Sweeper.GP.GaussProcessRegressor.html
-  commentId: T:MLNet.Sweeper.GP.GaussProcessRegressor
-  fullName: MLNet.Sweeper.GP.GaussProcessRegressor
+  href: api/MLNet.Sweeper.GaussProcessRegressor.html
+  commentId: T:MLNet.Sweeper.GaussProcessRegressor
+  fullName: MLNet.Sweeper.GaussProcessRegressor
   nameWithType: GaussProcessRegressor
-- uid: MLNet.Sweeper.GP.GaussProcessRegressor.#ctor(MLNet.Sweeper.GP.GaussProcessRegressor.Options)
+- uid: MLNet.Sweeper.GaussProcessRegressor.#ctor(MLNet.Sweeper.GaussProcessRegressor.Options)
   name: GaussProcessRegressor(GaussProcessRegressor.Options)
-  href: api/MLNet.Sweeper.GP.GaussProcessRegressor.html#MLNet_Sweeper_GP_GaussProcessRegressor__ctor_MLNet_Sweeper_GP_GaussProcessRegressor_Options_
-  commentId: M:MLNet.Sweeper.GP.GaussProcessRegressor.#ctor(MLNet.Sweeper.GP.GaussProcessRegressor.Options)
-  fullName: MLNet.Sweeper.GP.GaussProcessRegressor.GaussProcessRegressor(MLNet.Sweeper.GP.GaussProcessRegressor.Options)
+  href: api/MLNet.Sweeper.GaussProcessRegressor.html#MLNet_Sweeper_GaussProcessRegressor__ctor_MLNet_Sweeper_GaussProcessRegressor_Options_
+  commentId: M:MLNet.Sweeper.GaussProcessRegressor.#ctor(MLNet.Sweeper.GaussProcessRegressor.Options)
+  fullName: MLNet.Sweeper.GaussProcessRegressor.GaussProcessRegressor(MLNet.Sweeper.GaussProcessRegressor.Options)
   nameWithType: GaussProcessRegressor.GaussProcessRegressor(GaussProcessRegressor.Options)
-- uid: MLNet.Sweeper.GP.GaussProcessRegressor.#ctor*
+- uid: MLNet.Sweeper.GaussProcessRegressor.#ctor*
   name: GaussProcessRegressor
-  href: api/MLNet.Sweeper.GP.GaussProcessRegressor.html#MLNet_Sweeper_GP_GaussProcessRegressor__ctor_
-  commentId: Overload:MLNet.Sweeper.GP.GaussProcessRegressor.#ctor
+  href: api/MLNet.Sweeper.GaussProcessRegressor.html#MLNet_Sweeper_GaussProcessRegressor__ctor_
+  commentId: Overload:MLNet.Sweeper.GaussProcessRegressor.#ctor
   isSpec: "True"
-  fullName: MLNet.Sweeper.GP.GaussProcessRegressor.GaussProcessRegressor
+  fullName: MLNet.Sweeper.GaussProcessRegressor.GaussProcessRegressor
   nameWithType: GaussProcessRegressor.GaussProcessRegressor
-- uid: MLNet.Sweeper.GP.GaussProcessRegressor.Fit(Numpy.NDarray,Numpy.NDarray)
+- uid: MLNet.Sweeper.GaussProcessRegressor.Fit(Numpy.NDarray,Numpy.NDarray)
   name: Fit(NDarray, NDarray)
-  href: api/MLNet.Sweeper.GP.GaussProcessRegressor.html#MLNet_Sweeper_GP_GaussProcessRegressor_Fit_Numpy_NDarray_Numpy_NDarray_
-  commentId: M:MLNet.Sweeper.GP.GaussProcessRegressor.Fit(Numpy.NDarray,Numpy.NDarray)
-  fullName: MLNet.Sweeper.GP.GaussProcessRegressor.Fit(Numpy.NDarray, Numpy.NDarray)
+  href: api/MLNet.Sweeper.GaussProcessRegressor.html#MLNet_Sweeper_GaussProcessRegressor_Fit_Numpy_NDarray_Numpy_NDarray_
+  commentId: M:MLNet.Sweeper.GaussProcessRegressor.Fit(Numpy.NDarray,Numpy.NDarray)
+  fullName: MLNet.Sweeper.GaussProcessRegressor.Fit(Numpy.NDarray, Numpy.NDarray)
   nameWithType: GaussProcessRegressor.Fit(NDarray, NDarray)
-- uid: MLNet.Sweeper.GP.GaussProcessRegressor.Fit*
+- uid: MLNet.Sweeper.GaussProcessRegressor.Fit*
   name: Fit
-  href: api/MLNet.Sweeper.GP.GaussProcessRegressor.html#MLNet_Sweeper_GP_GaussProcessRegressor_Fit_
-  commentId: Overload:MLNet.Sweeper.GP.GaussProcessRegressor.Fit
+  href: api/MLNet.Sweeper.GaussProcessRegressor.html#MLNet_Sweeper_GaussProcessRegressor_Fit_
+  commentId: Overload:MLNet.Sweeper.GaussProcessRegressor.Fit
   isSpec: "True"
-  fullName: MLNet.Sweeper.GP.GaussProcessRegressor.Fit
+  fullName: MLNet.Sweeper.GaussProcessRegressor.Fit
   nameWithType: GaussProcessRegressor.Fit
-- uid: MLNet.Sweeper.GP.GaussProcessRegressor.Option
+- uid: MLNet.Sweeper.GaussProcessRegressor.Option
   name: Option
-  href: api/MLNet.Sweeper.GP.GaussProcessRegressor.html#MLNet_Sweeper_GP_GaussProcessRegressor_Option
-  commentId: P:MLNet.Sweeper.GP.GaussProcessRegressor.Option
-  fullName: MLNet.Sweeper.GP.GaussProcessRegressor.Option
+  href: api/MLNet.Sweeper.GaussProcessRegressor.html#MLNet_Sweeper_GaussProcessRegressor_Option
+  commentId: P:MLNet.Sweeper.GaussProcessRegressor.Option
+  fullName: MLNet.Sweeper.GaussProcessRegressor.Option
   nameWithType: GaussProcessRegressor.Option
-- uid: MLNet.Sweeper.GP.GaussProcessRegressor.Option*
+- uid: MLNet.Sweeper.GaussProcessRegressor.Option*
   name: Option
-  href: api/MLNet.Sweeper.GP.GaussProcessRegressor.html#MLNet_Sweeper_GP_GaussProcessRegressor_Option_
-  commentId: Overload:MLNet.Sweeper.GP.GaussProcessRegressor.Option
+  href: api/MLNet.Sweeper.GaussProcessRegressor.html#MLNet_Sweeper_GaussProcessRegressor_Option_
+  commentId: Overload:MLNet.Sweeper.GaussProcessRegressor.Option
   isSpec: "True"
-  fullName: MLNet.Sweeper.GP.GaussProcessRegressor.Option
+  fullName: MLNet.Sweeper.GaussProcessRegressor.Option
   nameWithType: GaussProcessRegressor.Option
-- uid: MLNet.Sweeper.GP.GaussProcessRegressor.Options
+- uid: MLNet.Sweeper.GaussProcessRegressor.Options
   name: GaussProcessRegressor.Options
-  href: api/MLNet.Sweeper.GP.GaussProcessRegressor.Options.html
-  commentId: T:MLNet.Sweeper.GP.GaussProcessRegressor.Options
-  fullName: MLNet.Sweeper.GP.GaussProcessRegressor.Options
+  href: api/MLNet.Sweeper.GaussProcessRegressor.Options.html
+  commentId: T:MLNet.Sweeper.GaussProcessRegressor.Options
+  fullName: MLNet.Sweeper.GaussProcessRegressor.Options
   nameWithType: GaussProcessRegressor.Options
-- uid: MLNet.Sweeper.GP.GaussProcessRegressor.Options.l
+- uid: MLNet.Sweeper.GaussProcessRegressor.Options.l
   name: l
-  href: api/MLNet.Sweeper.GP.GaussProcessRegressor.Options.html#MLNet_Sweeper_GP_GaussProcessRegressor_Options_l
-  commentId: P:MLNet.Sweeper.GP.GaussProcessRegressor.Options.l
-  fullName: MLNet.Sweeper.GP.GaussProcessRegressor.Options.l
+  href: api/MLNet.Sweeper.GaussProcessRegressor.Options.html#MLNet_Sweeper_GaussProcessRegressor_Options_l
+  commentId: P:MLNet.Sweeper.GaussProcessRegressor.Options.l
+  fullName: MLNet.Sweeper.GaussProcessRegressor.Options.l
   nameWithType: GaussProcessRegressor.Options.l
-- uid: MLNet.Sweeper.GP.GaussProcessRegressor.Options.l*
+- uid: MLNet.Sweeper.GaussProcessRegressor.Options.l*
   name: l
-  href: api/MLNet.Sweeper.GP.GaussProcessRegressor.Options.html#MLNet_Sweeper_GP_GaussProcessRegressor_Options_l_
-  commentId: Overload:MLNet.Sweeper.GP.GaussProcessRegressor.Options.l
+  href: api/MLNet.Sweeper.GaussProcessRegressor.Options.html#MLNet_Sweeper_GaussProcessRegressor_Options_l_
+  commentId: Overload:MLNet.Sweeper.GaussProcessRegressor.Options.l
   isSpec: "True"
-  fullName: MLNet.Sweeper.GP.GaussProcessRegressor.Options.l
+  fullName: MLNet.Sweeper.GaussProcessRegressor.Options.l
   nameWithType: GaussProcessRegressor.Options.l
-- uid: MLNet.Sweeper.GP.GaussProcessRegressor.Options.noise
+- uid: MLNet.Sweeper.GaussProcessRegressor.Options.noise
   name: noise
-  href: api/MLNet.Sweeper.GP.GaussProcessRegressor.Options.html#MLNet_Sweeper_GP_GaussProcessRegressor_Options_noise
-  commentId: P:MLNet.Sweeper.GP.GaussProcessRegressor.Options.noise
-  fullName: MLNet.Sweeper.GP.GaussProcessRegressor.Options.noise
+  href: api/MLNet.Sweeper.GaussProcessRegressor.Options.html#MLNet_Sweeper_GaussProcessRegressor_Options_noise
+  commentId: P:MLNet.Sweeper.GaussProcessRegressor.Options.noise
+  fullName: MLNet.Sweeper.GaussProcessRegressor.Options.noise
   nameWithType: GaussProcessRegressor.Options.noise
-- uid: MLNet.Sweeper.GP.GaussProcessRegressor.Options.noise*
+- uid: MLNet.Sweeper.GaussProcessRegressor.Options.noise*
   name: noise
-  href: api/MLNet.Sweeper.GP.GaussProcessRegressor.Options.html#MLNet_Sweeper_GP_GaussProcessRegressor_Options_noise_
-  commentId: Overload:MLNet.Sweeper.GP.GaussProcessRegressor.Options.noise
+  href: api/MLNet.Sweeper.GaussProcessRegressor.Options.html#MLNet_Sweeper_GaussProcessRegressor_Options_noise_
+  commentId: Overload:MLNet.Sweeper.GaussProcessRegressor.Options.noise
   isSpec: "True"
-  fullName: MLNet.Sweeper.GP.GaussProcessRegressor.Options.noise
+  fullName: MLNet.Sweeper.GaussProcessRegressor.Options.noise
   nameWithType: GaussProcessRegressor.Options.noise
-- uid: MLNet.Sweeper.GP.GaussProcessRegressor.Options.sigma
+- uid: MLNet.Sweeper.GaussProcessRegressor.Options.sigma
   name: sigma
-  href: api/MLNet.Sweeper.GP.GaussProcessRegressor.Options.html#MLNet_Sweeper_GP_GaussProcessRegressor_Options_sigma
-  commentId: P:MLNet.Sweeper.GP.GaussProcessRegressor.Options.sigma
-  fullName: MLNet.Sweeper.GP.GaussProcessRegressor.Options.sigma
+  href: api/MLNet.Sweeper.GaussProcessRegressor.Options.html#MLNet_Sweeper_GaussProcessRegressor_Options_sigma
+  commentId: P:MLNet.Sweeper.GaussProcessRegressor.Options.sigma
+  fullName: MLNet.Sweeper.GaussProcessRegressor.Options.sigma
   nameWithType: GaussProcessRegressor.Options.sigma
-- uid: MLNet.Sweeper.GP.GaussProcessRegressor.Options.sigma*
+- uid: MLNet.Sweeper.GaussProcessRegressor.Options.sigma*
   name: sigma
-  href: api/MLNet.Sweeper.GP.GaussProcessRegressor.Options.html#MLNet_Sweeper_GP_GaussProcessRegressor_Options_sigma_
-  commentId: Overload:MLNet.Sweeper.GP.GaussProcessRegressor.Options.sigma
+  href: api/MLNet.Sweeper.GaussProcessRegressor.Options.html#MLNet_Sweeper_GaussProcessRegressor_Options_sigma_
+  commentId: Overload:MLNet.Sweeper.GaussProcessRegressor.Options.sigma
   isSpec: "True"
-  fullName: MLNet.Sweeper.GP.GaussProcessRegressor.Options.sigma
+  fullName: MLNet.Sweeper.GaussProcessRegressor.Options.sigma
   nameWithType: GaussProcessRegressor.Options.sigma
-- uid: MLNet.Sweeper.GP.GaussProcessRegressor.RBF(Numpy.NDarray,Numpy.NDarray,System.Double,System.Double)
+- uid: MLNet.Sweeper.GaussProcessRegressor.RBF(Numpy.NDarray,Numpy.NDarray,System.Double,System.Double)
   name: RBF(NDarray, NDarray, Double, Double)
-  href: api/MLNet.Sweeper.GP.GaussProcessRegressor.html#MLNet_Sweeper_GP_GaussProcessRegressor_RBF_Numpy_NDarray_Numpy_NDarray_System_Double_System_Double_
-  commentId: M:MLNet.Sweeper.GP.GaussProcessRegressor.RBF(Numpy.NDarray,Numpy.NDarray,System.Double,System.Double)
-  fullName: MLNet.Sweeper.GP.GaussProcessRegressor.RBF(Numpy.NDarray, Numpy.NDarray, System.Double, System.Double)
+  href: api/MLNet.Sweeper.GaussProcessRegressor.html#MLNet_Sweeper_GaussProcessRegressor_RBF_Numpy_NDarray_Numpy_NDarray_System_Double_System_Double_
+  commentId: M:MLNet.Sweeper.GaussProcessRegressor.RBF(Numpy.NDarray,Numpy.NDarray,System.Double,System.Double)
+  fullName: MLNet.Sweeper.GaussProcessRegressor.RBF(Numpy.NDarray, Numpy.NDarray, System.Double, System.Double)
   nameWithType: GaussProcessRegressor.RBF(NDarray, NDarray, Double, Double)
-- uid: MLNet.Sweeper.GP.GaussProcessRegressor.RBF*
+- uid: MLNet.Sweeper.GaussProcessRegressor.RBF*
   name: RBF
-  href: api/MLNet.Sweeper.GP.GaussProcessRegressor.html#MLNet_Sweeper_GP_GaussProcessRegressor_RBF_
-  commentId: Overload:MLNet.Sweeper.GP.GaussProcessRegressor.RBF
+  href: api/MLNet.Sweeper.GaussProcessRegressor.html#MLNet_Sweeper_GaussProcessRegressor_RBF_
+  commentId: Overload:MLNet.Sweeper.GaussProcessRegressor.RBF
   isSpec: "True"
-  fullName: MLNet.Sweeper.GP.GaussProcessRegressor.RBF
+  fullName: MLNet.Sweeper.GaussProcessRegressor.RBF
   nameWithType: GaussProcessRegressor.RBF
-- uid: MLNet.Sweeper.GP.GaussProcessRegressor.Transform(Numpy.NDarray)
+- uid: MLNet.Sweeper.GaussProcessRegressor.Transform(Numpy.NDarray)
   name: Transform(NDarray)
-  href: api/MLNet.Sweeper.GP.GaussProcessRegressor.html#MLNet_Sweeper_GP_GaussProcessRegressor_Transform_Numpy_NDarray_
-  commentId: M:MLNet.Sweeper.GP.GaussProcessRegressor.Transform(Numpy.NDarray)
-  fullName: MLNet.Sweeper.GP.GaussProcessRegressor.Transform(Numpy.NDarray)
+  href: api/MLNet.Sweeper.GaussProcessRegressor.html#MLNet_Sweeper_GaussProcessRegressor_Transform_Numpy_NDarray_
+  commentId: M:MLNet.Sweeper.GaussProcessRegressor.Transform(Numpy.NDarray)
+  fullName: MLNet.Sweeper.GaussProcessRegressor.Transform(Numpy.NDarray)
   nameWithType: GaussProcessRegressor.Transform(NDarray)
-- uid: MLNet.Sweeper.GP.GaussProcessRegressor.Transform*
+- uid: MLNet.Sweeper.GaussProcessRegressor.Transform*
   name: Transform
-  href: api/MLNet.Sweeper.GP.GaussProcessRegressor.html#MLNet_Sweeper_GP_GaussProcessRegressor_Transform_
-  commentId: Overload:MLNet.Sweeper.GP.GaussProcessRegressor.Transform
+  href: api/MLNet.Sweeper.GaussProcessRegressor.html#MLNet_Sweeper_GaussProcessRegressor_Transform_
+  commentId: Overload:MLNet.Sweeper.GaussProcessRegressor.Transform
   isSpec: "True"
-  fullName: MLNet.Sweeper.GP.GaussProcessRegressor.Transform
+  fullName: MLNet.Sweeper.GaussProcessRegressor.Transform
   nameWithType: GaussProcessRegressor.Transform
+- uid: MLNet.Sweeper.GaussProcessSweeper
+  name: GaussProcessSweeper
+  href: api/MLNet.Sweeper.GaussProcessSweeper.html
+  commentId: T:MLNet.Sweeper.GaussProcessSweeper
+  fullName: MLNet.Sweeper.GaussProcessSweeper
+  nameWithType: GaussProcessSweeper
+- uid: MLNet.Sweeper.GaussProcessSweeper.#ctor(MLNet.Sweeper.GaussProcessSweeper.Option)
+  name: GaussProcessSweeper(GaussProcessSweeper.Option)
+  href: api/MLNet.Sweeper.GaussProcessSweeper.html#MLNet_Sweeper_GaussProcessSweeper__ctor_MLNet_Sweeper_GaussProcessSweeper_Option_
+  commentId: M:MLNet.Sweeper.GaussProcessSweeper.#ctor(MLNet.Sweeper.GaussProcessSweeper.Option)
+  fullName: MLNet.Sweeper.GaussProcessSweeper.GaussProcessSweeper(MLNet.Sweeper.GaussProcessSweeper.Option)
+  nameWithType: GaussProcessSweeper.GaussProcessSweeper(GaussProcessSweeper.Option)
+- uid: MLNet.Sweeper.GaussProcessSweeper.#ctor*
+  name: GaussProcessSweeper
+  href: api/MLNet.Sweeper.GaussProcessSweeper.html#MLNet_Sweeper_GaussProcessSweeper__ctor_
+  commentId: Overload:MLNet.Sweeper.GaussProcessSweeper.#ctor
+  isSpec: "True"
+  fullName: MLNet.Sweeper.GaussProcessSweeper.GaussProcessSweeper
+  nameWithType: GaussProcessSweeper.GaussProcessSweeper
+- uid: MLNet.Sweeper.GaussProcessSweeper.AddRunHistory(MLNet.Sweeper.IRunResult)
+  name: AddRunHistory(IRunResult)
+  href: api/MLNet.Sweeper.GaussProcessSweeper.html#MLNet_Sweeper_GaussProcessSweeper_AddRunHistory_MLNet_Sweeper_IRunResult_
+  commentId: M:MLNet.Sweeper.GaussProcessSweeper.AddRunHistory(MLNet.Sweeper.IRunResult)
+  fullName: MLNet.Sweeper.GaussProcessSweeper.AddRunHistory(MLNet.Sweeper.IRunResult)
+  nameWithType: GaussProcessSweeper.AddRunHistory(IRunResult)
+- uid: MLNet.Sweeper.GaussProcessSweeper.AddRunHistory*
+  name: AddRunHistory
+  href: api/MLNet.Sweeper.GaussProcessSweeper.html#MLNet_Sweeper_GaussProcessSweeper_AddRunHistory_
+  commentId: Overload:MLNet.Sweeper.GaussProcessSweeper.AddRunHistory
+  isSpec: "True"
+  fullName: MLNet.Sweeper.GaussProcessSweeper.AddRunHistory
+  nameWithType: GaussProcessSweeper.AddRunHistory
+- uid: MLNet.Sweeper.GaussProcessSweeper.Current
+  name: Current
+  href: api/MLNet.Sweeper.GaussProcessSweeper.html#MLNet_Sweeper_GaussProcessSweeper_Current
+  commentId: P:MLNet.Sweeper.GaussProcessSweeper.Current
+  fullName: MLNet.Sweeper.GaussProcessSweeper.Current
+  nameWithType: GaussProcessSweeper.Current
+- uid: MLNet.Sweeper.GaussProcessSweeper.Current*
+  name: Current
+  href: api/MLNet.Sweeper.GaussProcessSweeper.html#MLNet_Sweeper_GaussProcessSweeper_Current_
+  commentId: Overload:MLNet.Sweeper.GaussProcessSweeper.Current
+  isSpec: "True"
+  fullName: MLNet.Sweeper.GaussProcessSweeper.Current
+  nameWithType: GaussProcessSweeper.Current
+- uid: MLNet.Sweeper.GaussProcessSweeper.EI(Numpy.NDarray,Numpy.NDarray,Numpy.NDarray,System.Double)
+  name: EI(NDarray, NDarray, NDarray, Double)
+  href: api/MLNet.Sweeper.GaussProcessSweeper.html#MLNet_Sweeper_GaussProcessSweeper_EI_Numpy_NDarray_Numpy_NDarray_Numpy_NDarray_System_Double_
+  commentId: M:MLNet.Sweeper.GaussProcessSweeper.EI(Numpy.NDarray,Numpy.NDarray,Numpy.NDarray,System.Double)
+  fullName: MLNet.Sweeper.GaussProcessSweeper.EI(Numpy.NDarray, Numpy.NDarray, Numpy.NDarray, System.Double)
+  nameWithType: GaussProcessSweeper.EI(NDarray, NDarray, NDarray, Double)
+- uid: MLNet.Sweeper.GaussProcessSweeper.EI*
+  name: EI
+  href: api/MLNet.Sweeper.GaussProcessSweeper.html#MLNet_Sweeper_GaussProcessSweeper_EI_
+  commentId: Overload:MLNet.Sweeper.GaussProcessSweeper.EI
+  isSpec: "True"
+  fullName: MLNet.Sweeper.GaussProcessSweeper.EI
+  nameWithType: GaussProcessSweeper.EI
+- uid: MLNet.Sweeper.GaussProcessSweeper.Option
+  name: GaussProcessSweeper.Option
+  href: api/MLNet.Sweeper.GaussProcessSweeper.Option.html
+  commentId: T:MLNet.Sweeper.GaussProcessSweeper.Option
+  fullName: MLNet.Sweeper.GaussProcessSweeper.Option
+  nameWithType: GaussProcessSweeper.Option
+- uid: MLNet.Sweeper.GaussProcessSweeper.Option.InitialPopulation
+  name: InitialPopulation
+  href: api/MLNet.Sweeper.GaussProcessSweeper.Option.html#MLNet_Sweeper_GaussProcessSweeper_Option_InitialPopulation
+  commentId: P:MLNet.Sweeper.GaussProcessSweeper.Option.InitialPopulation
+  fullName: MLNet.Sweeper.GaussProcessSweeper.Option.InitialPopulation
+  nameWithType: GaussProcessSweeper.Option.InitialPopulation
+- uid: MLNet.Sweeper.GaussProcessSweeper.Option.InitialPopulation*
+  name: InitialPopulation
+  href: api/MLNet.Sweeper.GaussProcessSweeper.Option.html#MLNet_Sweeper_GaussProcessSweeper_Option_InitialPopulation_
+  commentId: Overload:MLNet.Sweeper.GaussProcessSweeper.Option.InitialPopulation
+  isSpec: "True"
+  fullName: MLNet.Sweeper.GaussProcessSweeper.Option.InitialPopulation
+  nameWithType: GaussProcessSweeper.Option.InitialPopulation
+- uid: MLNet.Sweeper.GaussProcessSweeper.Option.KBestParents
+  name: KBestParents
+  href: api/MLNet.Sweeper.GaussProcessSweeper.Option.html#MLNet_Sweeper_GaussProcessSweeper_Option_KBestParents
+  commentId: P:MLNet.Sweeper.GaussProcessSweeper.Option.KBestParents
+  fullName: MLNet.Sweeper.GaussProcessSweeper.Option.KBestParents
+  nameWithType: GaussProcessSweeper.Option.KBestParents
+- uid: MLNet.Sweeper.GaussProcessSweeper.Option.KBestParents*
+  name: KBestParents
+  href: api/MLNet.Sweeper.GaussProcessSweeper.Option.html#MLNet_Sweeper_GaussProcessSweeper_Option_KBestParents_
+  commentId: Overload:MLNet.Sweeper.GaussProcessSweeper.Option.KBestParents
+  isSpec: "True"
+  fullName: MLNet.Sweeper.GaussProcessSweeper.Option.KBestParents
+  nameWithType: GaussProcessSweeper.Option.KBestParents
+- uid: MLNet.Sweeper.GaussProcessSweeper.Option.L
+  name: L
+  href: api/MLNet.Sweeper.GaussProcessSweeper.Option.html#MLNet_Sweeper_GaussProcessSweeper_Option_L
+  commentId: P:MLNet.Sweeper.GaussProcessSweeper.Option.L
+  fullName: MLNet.Sweeper.GaussProcessSweeper.Option.L
+  nameWithType: GaussProcessSweeper.Option.L
+- uid: MLNet.Sweeper.GaussProcessSweeper.Option.L*
+  name: L
+  href: api/MLNet.Sweeper.GaussProcessSweeper.Option.html#MLNet_Sweeper_GaussProcessSweeper_Option_L_
+  commentId: Overload:MLNet.Sweeper.GaussProcessSweeper.Option.L
+  isSpec: "True"
+  fullName: MLNet.Sweeper.GaussProcessSweeper.Option.L
+  nameWithType: GaussProcessSweeper.Option.L
+- uid: MLNet.Sweeper.GaussProcessSweeper.Option.Noise
+  name: Noise
+  href: api/MLNet.Sweeper.GaussProcessSweeper.Option.html#MLNet_Sweeper_GaussProcessSweeper_Option_Noise
+  commentId: P:MLNet.Sweeper.GaussProcessSweeper.Option.Noise
+  fullName: MLNet.Sweeper.GaussProcessSweeper.Option.Noise
+  nameWithType: GaussProcessSweeper.Option.Noise
+- uid: MLNet.Sweeper.GaussProcessSweeper.Option.Noise*
+  name: Noise
+  href: api/MLNet.Sweeper.GaussProcessSweeper.Option.html#MLNet_Sweeper_GaussProcessSweeper_Option_Noise_
+  commentId: Overload:MLNet.Sweeper.GaussProcessSweeper.Option.Noise
+  isSpec: "True"
+  fullName: MLNet.Sweeper.GaussProcessSweeper.Option.Noise
+  nameWithType: GaussProcessSweeper.Option.Noise
+- uid: MLNet.Sweeper.GaussProcessSweeper.Option.Sigma
+  name: Sigma
+  href: api/MLNet.Sweeper.GaussProcessSweeper.Option.html#MLNet_Sweeper_GaussProcessSweeper_Option_Sigma
+  commentId: P:MLNet.Sweeper.GaussProcessSweeper.Option.Sigma
+  fullName: MLNet.Sweeper.GaussProcessSweeper.Option.Sigma
+  nameWithType: GaussProcessSweeper.Option.Sigma
+- uid: MLNet.Sweeper.GaussProcessSweeper.Option.Sigma*
+  name: Sigma
+  href: api/MLNet.Sweeper.GaussProcessSweeper.Option.html#MLNet_Sweeper_GaussProcessSweeper_Option_Sigma_
+  commentId: Overload:MLNet.Sweeper.GaussProcessSweeper.Option.Sigma
+  isSpec: "True"
+  fullName: MLNet.Sweeper.GaussProcessSweeper.Option.Sigma
+  nameWithType: GaussProcessSweeper.Option.Sigma
+- uid: MLNet.Sweeper.GaussProcessSweeper.ProposeSweeps(System.Int32,System.Collections.Generic.IEnumerable{MLNet.Sweeper.IRunResult})
+  name: ProposeSweeps(Int32, IEnumerable<IRunResult>)
+  href: api/MLNet.Sweeper.GaussProcessSweeper.html#MLNet_Sweeper_GaussProcessSweeper_ProposeSweeps_System_Int32_System_Collections_Generic_IEnumerable_MLNet_Sweeper_IRunResult__
+  commentId: M:MLNet.Sweeper.GaussProcessSweeper.ProposeSweeps(System.Int32,System.Collections.Generic.IEnumerable{MLNet.Sweeper.IRunResult})
+  name.vb: ProposeSweeps(Int32, IEnumerable(Of IRunResult))
+  fullName: MLNet.Sweeper.GaussProcessSweeper.ProposeSweeps(System.Int32, System.Collections.Generic.IEnumerable<MLNet.Sweeper.IRunResult>)
+  fullName.vb: MLNet.Sweeper.GaussProcessSweeper.ProposeSweeps(System.Int32, System.Collections.Generic.IEnumerable(Of MLNet.Sweeper.IRunResult))
+  nameWithType: GaussProcessSweeper.ProposeSweeps(Int32, IEnumerable<IRunResult>)
+  nameWithType.vb: GaussProcessSweeper.ProposeSweeps(Int32, IEnumerable(Of IRunResult))
+- uid: MLNet.Sweeper.GaussProcessSweeper.ProposeSweeps*
+  name: ProposeSweeps
+  href: api/MLNet.Sweeper.GaussProcessSweeper.html#MLNet_Sweeper_GaussProcessSweeper_ProposeSweeps_
+  commentId: Overload:MLNet.Sweeper.GaussProcessSweeper.ProposeSweeps
+  isSpec: "True"
+  fullName: MLNet.Sweeper.GaussProcessSweeper.ProposeSweeps
+  nameWithType: GaussProcessSweeper.ProposeSweeps
+- uid: MLNet.Sweeper.GaussProcessSweeper.SweepableParamaters
+  name: SweepableParamaters
+  href: api/MLNet.Sweeper.GaussProcessSweeper.html#MLNet_Sweeper_GaussProcessSweeper_SweepableParamaters
+  commentId: P:MLNet.Sweeper.GaussProcessSweeper.SweepableParamaters
+  fullName: MLNet.Sweeper.GaussProcessSweeper.SweepableParamaters
+  nameWithType: GaussProcessSweeper.SweepableParamaters
+- uid: MLNet.Sweeper.GaussProcessSweeper.SweepableParamaters*
+  name: SweepableParamaters
+  href: api/MLNet.Sweeper.GaussProcessSweeper.html#MLNet_Sweeper_GaussProcessSweeper_SweepableParamaters_
+  commentId: Overload:MLNet.Sweeper.GaussProcessSweeper.SweepableParamaters
+  isSpec: "True"
+  fullName: MLNet.Sweeper.GaussProcessSweeper.SweepableParamaters
+  nameWithType: GaussProcessSweeper.SweepableParamaters
 - uid: MLNet.Sweeper.IDiscreteParameterValue
   name: IDiscreteParameterValue
   href: api/MLNet.Sweeper.IDiscreteParameterValue.html
@@ -3067,170 +3219,6 @@ references:
   isSpec: "True"
   fullName: MLNet.Sweeper.RunResult.ParameterSet
   nameWithType: RunResult.ParameterSet
-- uid: MLNet.Sweeper.Sweeper
-  name: MLNet.Sweeper.Sweeper
-  href: api/MLNet.Sweeper.Sweeper.html
-  commentId: N:MLNet.Sweeper.Sweeper
-  fullName: MLNet.Sweeper.Sweeper
-  nameWithType: MLNet.Sweeper.Sweeper
-- uid: MLNet.Sweeper.Sweeper.GaussProcessSweeper
-  name: GaussProcessSweeper
-  href: api/MLNet.Sweeper.Sweeper.GaussProcessSweeper.html
-  commentId: T:MLNet.Sweeper.Sweeper.GaussProcessSweeper
-  fullName: MLNet.Sweeper.Sweeper.GaussProcessSweeper
-  nameWithType: GaussProcessSweeper
-- uid: MLNet.Sweeper.Sweeper.GaussProcessSweeper.#ctor(MLNet.Sweeper.Sweeper.GaussProcessSweeper.Option)
-  name: GaussProcessSweeper(GaussProcessSweeper.Option)
-  href: api/MLNet.Sweeper.Sweeper.GaussProcessSweeper.html#MLNet_Sweeper_Sweeper_GaussProcessSweeper__ctor_MLNet_Sweeper_Sweeper_GaussProcessSweeper_Option_
-  commentId: M:MLNet.Sweeper.Sweeper.GaussProcessSweeper.#ctor(MLNet.Sweeper.Sweeper.GaussProcessSweeper.Option)
-  fullName: MLNet.Sweeper.Sweeper.GaussProcessSweeper.GaussProcessSweeper(MLNet.Sweeper.Sweeper.GaussProcessSweeper.Option)
-  nameWithType: GaussProcessSweeper.GaussProcessSweeper(GaussProcessSweeper.Option)
-- uid: MLNet.Sweeper.Sweeper.GaussProcessSweeper.#ctor*
-  name: GaussProcessSweeper
-  href: api/MLNet.Sweeper.Sweeper.GaussProcessSweeper.html#MLNet_Sweeper_Sweeper_GaussProcessSweeper__ctor_
-  commentId: Overload:MLNet.Sweeper.Sweeper.GaussProcessSweeper.#ctor
-  isSpec: "True"
-  fullName: MLNet.Sweeper.Sweeper.GaussProcessSweeper.GaussProcessSweeper
-  nameWithType: GaussProcessSweeper.GaussProcessSweeper
-- uid: MLNet.Sweeper.Sweeper.GaussProcessSweeper.AddRunHistory(MLNet.Sweeper.IRunResult)
-  name: AddRunHistory(IRunResult)
-  href: api/MLNet.Sweeper.Sweeper.GaussProcessSweeper.html#MLNet_Sweeper_Sweeper_GaussProcessSweeper_AddRunHistory_MLNet_Sweeper_IRunResult_
-  commentId: M:MLNet.Sweeper.Sweeper.GaussProcessSweeper.AddRunHistory(MLNet.Sweeper.IRunResult)
-  fullName: MLNet.Sweeper.Sweeper.GaussProcessSweeper.AddRunHistory(MLNet.Sweeper.IRunResult)
-  nameWithType: GaussProcessSweeper.AddRunHistory(IRunResult)
-- uid: MLNet.Sweeper.Sweeper.GaussProcessSweeper.AddRunHistory*
-  name: AddRunHistory
-  href: api/MLNet.Sweeper.Sweeper.GaussProcessSweeper.html#MLNet_Sweeper_Sweeper_GaussProcessSweeper_AddRunHistory_
-  commentId: Overload:MLNet.Sweeper.Sweeper.GaussProcessSweeper.AddRunHistory
-  isSpec: "True"
-  fullName: MLNet.Sweeper.Sweeper.GaussProcessSweeper.AddRunHistory
-  nameWithType: GaussProcessSweeper.AddRunHistory
-- uid: MLNet.Sweeper.Sweeper.GaussProcessSweeper.Current
-  name: Current
-  href: api/MLNet.Sweeper.Sweeper.GaussProcessSweeper.html#MLNet_Sweeper_Sweeper_GaussProcessSweeper_Current
-  commentId: P:MLNet.Sweeper.Sweeper.GaussProcessSweeper.Current
-  fullName: MLNet.Sweeper.Sweeper.GaussProcessSweeper.Current
-  nameWithType: GaussProcessSweeper.Current
-- uid: MLNet.Sweeper.Sweeper.GaussProcessSweeper.Current*
-  name: Current
-  href: api/MLNet.Sweeper.Sweeper.GaussProcessSweeper.html#MLNet_Sweeper_Sweeper_GaussProcessSweeper_Current_
-  commentId: Overload:MLNet.Sweeper.Sweeper.GaussProcessSweeper.Current
-  isSpec: "True"
-  fullName: MLNet.Sweeper.Sweeper.GaussProcessSweeper.Current
-  nameWithType: GaussProcessSweeper.Current
-- uid: MLNet.Sweeper.Sweeper.GaussProcessSweeper.EI(Numpy.NDarray,Numpy.NDarray,Numpy.NDarray,System.Double)
-  name: EI(NDarray, NDarray, NDarray, Double)
-  href: api/MLNet.Sweeper.Sweeper.GaussProcessSweeper.html#MLNet_Sweeper_Sweeper_GaussProcessSweeper_EI_Numpy_NDarray_Numpy_NDarray_Numpy_NDarray_System_Double_
-  commentId: M:MLNet.Sweeper.Sweeper.GaussProcessSweeper.EI(Numpy.NDarray,Numpy.NDarray,Numpy.NDarray,System.Double)
-  fullName: MLNet.Sweeper.Sweeper.GaussProcessSweeper.EI(Numpy.NDarray, Numpy.NDarray, Numpy.NDarray, System.Double)
-  nameWithType: GaussProcessSweeper.EI(NDarray, NDarray, NDarray, Double)
-- uid: MLNet.Sweeper.Sweeper.GaussProcessSweeper.EI*
-  name: EI
-  href: api/MLNet.Sweeper.Sweeper.GaussProcessSweeper.html#MLNet_Sweeper_Sweeper_GaussProcessSweeper_EI_
-  commentId: Overload:MLNet.Sweeper.Sweeper.GaussProcessSweeper.EI
-  isSpec: "True"
-  fullName: MLNet.Sweeper.Sweeper.GaussProcessSweeper.EI
-  nameWithType: GaussProcessSweeper.EI
-- uid: MLNet.Sweeper.Sweeper.GaussProcessSweeper.Option
-  name: GaussProcessSweeper.Option
-  href: api/MLNet.Sweeper.Sweeper.GaussProcessSweeper.Option.html
-  commentId: T:MLNet.Sweeper.Sweeper.GaussProcessSweeper.Option
-  fullName: MLNet.Sweeper.Sweeper.GaussProcessSweeper.Option
-  nameWithType: GaussProcessSweeper.Option
-- uid: MLNet.Sweeper.Sweeper.GaussProcessSweeper.Option.InitialPopulation
-  name: InitialPopulation
-  href: api/MLNet.Sweeper.Sweeper.GaussProcessSweeper.Option.html#MLNet_Sweeper_Sweeper_GaussProcessSweeper_Option_InitialPopulation
-  commentId: P:MLNet.Sweeper.Sweeper.GaussProcessSweeper.Option.InitialPopulation
-  fullName: MLNet.Sweeper.Sweeper.GaussProcessSweeper.Option.InitialPopulation
-  nameWithType: GaussProcessSweeper.Option.InitialPopulation
-- uid: MLNet.Sweeper.Sweeper.GaussProcessSweeper.Option.InitialPopulation*
-  name: InitialPopulation
-  href: api/MLNet.Sweeper.Sweeper.GaussProcessSweeper.Option.html#MLNet_Sweeper_Sweeper_GaussProcessSweeper_Option_InitialPopulation_
-  commentId: Overload:MLNet.Sweeper.Sweeper.GaussProcessSweeper.Option.InitialPopulation
-  isSpec: "True"
-  fullName: MLNet.Sweeper.Sweeper.GaussProcessSweeper.Option.InitialPopulation
-  nameWithType: GaussProcessSweeper.Option.InitialPopulation
-- uid: MLNet.Sweeper.Sweeper.GaussProcessSweeper.Option.KBestParents
-  name: KBestParents
-  href: api/MLNet.Sweeper.Sweeper.GaussProcessSweeper.Option.html#MLNet_Sweeper_Sweeper_GaussProcessSweeper_Option_KBestParents
-  commentId: P:MLNet.Sweeper.Sweeper.GaussProcessSweeper.Option.KBestParents
-  fullName: MLNet.Sweeper.Sweeper.GaussProcessSweeper.Option.KBestParents
-  nameWithType: GaussProcessSweeper.Option.KBestParents
-- uid: MLNet.Sweeper.Sweeper.GaussProcessSweeper.Option.KBestParents*
-  name: KBestParents
-  href: api/MLNet.Sweeper.Sweeper.GaussProcessSweeper.Option.html#MLNet_Sweeper_Sweeper_GaussProcessSweeper_Option_KBestParents_
-  commentId: Overload:MLNet.Sweeper.Sweeper.GaussProcessSweeper.Option.KBestParents
-  isSpec: "True"
-  fullName: MLNet.Sweeper.Sweeper.GaussProcessSweeper.Option.KBestParents
-  nameWithType: GaussProcessSweeper.Option.KBestParents
-- uid: MLNet.Sweeper.Sweeper.GaussProcessSweeper.Option.L
-  name: L
-  href: api/MLNet.Sweeper.Sweeper.GaussProcessSweeper.Option.html#MLNet_Sweeper_Sweeper_GaussProcessSweeper_Option_L
-  commentId: P:MLNet.Sweeper.Sweeper.GaussProcessSweeper.Option.L
-  fullName: MLNet.Sweeper.Sweeper.GaussProcessSweeper.Option.L
-  nameWithType: GaussProcessSweeper.Option.L
-- uid: MLNet.Sweeper.Sweeper.GaussProcessSweeper.Option.L*
-  name: L
-  href: api/MLNet.Sweeper.Sweeper.GaussProcessSweeper.Option.html#MLNet_Sweeper_Sweeper_GaussProcessSweeper_Option_L_
-  commentId: Overload:MLNet.Sweeper.Sweeper.GaussProcessSweeper.Option.L
-  isSpec: "True"
-  fullName: MLNet.Sweeper.Sweeper.GaussProcessSweeper.Option.L
-  nameWithType: GaussProcessSweeper.Option.L
-- uid: MLNet.Sweeper.Sweeper.GaussProcessSweeper.Option.Noise
-  name: Noise
-  href: api/MLNet.Sweeper.Sweeper.GaussProcessSweeper.Option.html#MLNet_Sweeper_Sweeper_GaussProcessSweeper_Option_Noise
-  commentId: P:MLNet.Sweeper.Sweeper.GaussProcessSweeper.Option.Noise
-  fullName: MLNet.Sweeper.Sweeper.GaussProcessSweeper.Option.Noise
-  nameWithType: GaussProcessSweeper.Option.Noise
-- uid: MLNet.Sweeper.Sweeper.GaussProcessSweeper.Option.Noise*
-  name: Noise
-  href: api/MLNet.Sweeper.Sweeper.GaussProcessSweeper.Option.html#MLNet_Sweeper_Sweeper_GaussProcessSweeper_Option_Noise_
-  commentId: Overload:MLNet.Sweeper.Sweeper.GaussProcessSweeper.Option.Noise
-  isSpec: "True"
-  fullName: MLNet.Sweeper.Sweeper.GaussProcessSweeper.Option.Noise
-  nameWithType: GaussProcessSweeper.Option.Noise
-- uid: MLNet.Sweeper.Sweeper.GaussProcessSweeper.Option.Sigma
-  name: Sigma
-  href: api/MLNet.Sweeper.Sweeper.GaussProcessSweeper.Option.html#MLNet_Sweeper_Sweeper_GaussProcessSweeper_Option_Sigma
-  commentId: P:MLNet.Sweeper.Sweeper.GaussProcessSweeper.Option.Sigma
-  fullName: MLNet.Sweeper.Sweeper.GaussProcessSweeper.Option.Sigma
-  nameWithType: GaussProcessSweeper.Option.Sigma
-- uid: MLNet.Sweeper.Sweeper.GaussProcessSweeper.Option.Sigma*
-  name: Sigma
-  href: api/MLNet.Sweeper.Sweeper.GaussProcessSweeper.Option.html#MLNet_Sweeper_Sweeper_GaussProcessSweeper_Option_Sigma_
-  commentId: Overload:MLNet.Sweeper.Sweeper.GaussProcessSweeper.Option.Sigma
-  isSpec: "True"
-  fullName: MLNet.Sweeper.Sweeper.GaussProcessSweeper.Option.Sigma
-  nameWithType: GaussProcessSweeper.Option.Sigma
-- uid: MLNet.Sweeper.Sweeper.GaussProcessSweeper.ProposeSweeps(System.Int32,System.Collections.Generic.IEnumerable{MLNet.Sweeper.IRunResult})
-  name: ProposeSweeps(Int32, IEnumerable<IRunResult>)
-  href: api/MLNet.Sweeper.Sweeper.GaussProcessSweeper.html#MLNet_Sweeper_Sweeper_GaussProcessSweeper_ProposeSweeps_System_Int32_System_Collections_Generic_IEnumerable_MLNet_Sweeper_IRunResult__
-  commentId: M:MLNet.Sweeper.Sweeper.GaussProcessSweeper.ProposeSweeps(System.Int32,System.Collections.Generic.IEnumerable{MLNet.Sweeper.IRunResult})
-  name.vb: ProposeSweeps(Int32, IEnumerable(Of IRunResult))
-  fullName: MLNet.Sweeper.Sweeper.GaussProcessSweeper.ProposeSweeps(System.Int32, System.Collections.Generic.IEnumerable<MLNet.Sweeper.IRunResult>)
-  fullName.vb: MLNet.Sweeper.Sweeper.GaussProcessSweeper.ProposeSweeps(System.Int32, System.Collections.Generic.IEnumerable(Of MLNet.Sweeper.IRunResult))
-  nameWithType: GaussProcessSweeper.ProposeSweeps(Int32, IEnumerable<IRunResult>)
-  nameWithType.vb: GaussProcessSweeper.ProposeSweeps(Int32, IEnumerable(Of IRunResult))
-- uid: MLNet.Sweeper.Sweeper.GaussProcessSweeper.ProposeSweeps*
-  name: ProposeSweeps
-  href: api/MLNet.Sweeper.Sweeper.GaussProcessSweeper.html#MLNet_Sweeper_Sweeper_GaussProcessSweeper_ProposeSweeps_
-  commentId: Overload:MLNet.Sweeper.Sweeper.GaussProcessSweeper.ProposeSweeps
-  isSpec: "True"
-  fullName: MLNet.Sweeper.Sweeper.GaussProcessSweeper.ProposeSweeps
-  nameWithType: GaussProcessSweeper.ProposeSweeps
-- uid: MLNet.Sweeper.Sweeper.GaussProcessSweeper.SweepableParamaters
-  name: SweepableParamaters
-  href: api/MLNet.Sweeper.Sweeper.GaussProcessSweeper.html#MLNet_Sweeper_Sweeper_GaussProcessSweeper_SweepableParamaters
-  commentId: P:MLNet.Sweeper.Sweeper.GaussProcessSweeper.SweepableParamaters
-  fullName: MLNet.Sweeper.Sweeper.GaussProcessSweeper.SweepableParamaters
-  nameWithType: GaussProcessSweeper.SweepableParamaters
-- uid: MLNet.Sweeper.Sweeper.GaussProcessSweeper.SweepableParamaters*
-  name: SweepableParamaters
-  href: api/MLNet.Sweeper.Sweeper.GaussProcessSweeper.html#MLNet_Sweeper_Sweeper_GaussProcessSweeper_SweepableParamaters_
-  commentId: Overload:MLNet.Sweeper.Sweeper.GaussProcessSweeper.SweepableParamaters
-  isSpec: "True"
-  fullName: MLNet.Sweeper.Sweeper.GaussProcessSweeper.SweepableParamaters
-  nameWithType: GaussProcessSweeper.SweepableParamaters
 - uid: MLNet.Sweeper.SweeperBase
   name: SweeperBase
   href: api/MLNet.Sweeper.SweeperBase.html
