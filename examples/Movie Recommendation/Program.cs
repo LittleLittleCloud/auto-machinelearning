@@ -8,7 +8,6 @@ using Microsoft.ML.Trainers;
 using Microsoft.ML.Trainers.Recommender;
 using MLNet.AutoPipeline;
 using MLNet.Sweeper;
-using MLNet.Sweeper.Sweeper;
 using System;
 using static Microsoft.ML.Trainers.MatrixFactorizationTrainer;
 

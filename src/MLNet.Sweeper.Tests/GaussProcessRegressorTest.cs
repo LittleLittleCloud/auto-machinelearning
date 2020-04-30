@@ -3,7 +3,7 @@
 // </copyright>
 
 using FluentAssertions;
-using MLNet.Sweeper.GP;
+using MLNet.Sweeper;
 using Numpy;
 using System;
 using System.Collections.Generic;

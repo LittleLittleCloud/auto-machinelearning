@@ -1,4 +1,4 @@
-﻿// <copyright file="AutoEstimatorChainTest.cs" company="BigMiao">
+﻿// <copyright file="EstimatorNodeTest.cs" company="BigMiao">
 // Copyright (c) BigMiao. All rights reserved.
 // </copyright>
 

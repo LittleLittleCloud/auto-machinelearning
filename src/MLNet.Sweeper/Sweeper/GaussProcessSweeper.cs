@@ -2,14 +2,13 @@
 // Copyright (c) BigMiao. All rights reserved.
 // </copyright>
 
-using MLNet.Sweeper.GP;
 using Numpy;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace MLNet.Sweeper.Sweeper
+namespace MLNet.Sweeper
 {
     public class GaussProcessSweeper : ISweeper
     {

@@ -15,7 +15,6 @@ using Microsoft.ML.Trainers.Recommender;
 using MLNet.AutoPipeline;
 using MLNet.AutoPipeline.Test;
 using MLNet.Sweeper;
-using MLNet.Sweeper.Sweeper;
 using Xunit;
 using Xunit.Abstractions;
 using static Microsoft.ML.Trainers.MatrixFactorizationTrainer;

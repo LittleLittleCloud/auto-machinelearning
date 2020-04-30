@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Text;
 using Numpy;
 
-namespace MLNet.Sweeper.GP
+namespace MLNet.Sweeper
 {
     public class GaussProcessRegressor
     {

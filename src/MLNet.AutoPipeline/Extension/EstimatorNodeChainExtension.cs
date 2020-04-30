@@ -7,7 +7,7 @@ using Microsoft.ML.Data;
 using MLNet.Sweeper;
 using System;
 
-namespace MLNet.AutoPipeline
+namespace MLNet.AutoPipeline.Extension
 {
     public static class EstimatorNodeChainExtension
     {

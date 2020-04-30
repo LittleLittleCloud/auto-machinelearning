@@ -6,7 +6,7 @@ using Microsoft.ML;
 using Microsoft.ML.Data;
 using Microsoft.ML.Trainers.LightGbm;
 using MLNet.Sweeper;
-using MLNet.Sweeper.Sweeper;
+using MLNet.AutoPipeline.Extension;
 using System;
 using Xunit;
 using Xunit.Abstractions;
