@@ -25,9 +25,9 @@ jobs:
         _configuration: Release
   steps:
     # Should only run if not real-signing
-    - script: eng\common\CIBuild.cmd -configuration $(_configuration) -prepareMachine -warnAsError 0
+    - script: eng\common\CIBuild.cmd -configuration $(_configuration) -prepareMachine -warnAsError 0 /p:OfficialBuildId=$(BUILD.BUILDNUMBER)
       displayName: Build and Test
-      condition: and(succeeded(), not(and(eq(variables['SigningType'], 'real'), eq(variables['_configuration'], 'Release'))))
+      condition: succeeded()
     
     # Should always run
     - task: PublishBuildArtifacts@1
