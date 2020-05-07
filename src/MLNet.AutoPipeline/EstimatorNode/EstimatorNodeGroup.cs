@@ -75,6 +75,15 @@ namespace MLNet.AutoPipeline
             return this;
         }
 
+        /// <summary>
+        /// Append an empty <see cref="EstimatorSingleNode"/> to <see cref="EstimatorNodeGroup"/>.
+        /// </summary>
+        public EstimatorNodeGroup OrNone()
+        {
+            this.Append(EstimatorSingleNode.EmptyNode);
+            return this;
+        }
+
         public string Summary()
         {
             return $"NodeGroup({string.Join(", ", this._nodes.Select(node => node.Summary()))})";

@@ -120,7 +120,7 @@ namespace MLNet.AutoPipeline
 
         public string Summary()
         {
-            return $"NodeChain({string.Join("=>", this._nodes.Select(node => node.Summary())) })";
+            return $"NodeChain({string.Join("=>", this._nodes.Select(node => node.Summary()))})";
         }
     }
 }

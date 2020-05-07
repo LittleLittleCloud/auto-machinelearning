@@ -10,6 +10,7 @@ using MLNet.AutoPipeline.Extension;
 using System;
 using Xunit;
 using Xunit.Abstractions;
+using MLNet.Expert;
 
 namespace MLNet.AutoPipeline.Test
 {
@@ -28,6 +29,7 @@ namespace MLNet.AutoPipeline.Test
             var context = new MLContext();
             var dataset = context.Data.LoadFromTextFile<Iris>(@".\TestData\iris.csv", separatorChar: ',', hasHeader: true);
             var split = context.Data.TrainTestSplit(dataset, 0.3);
+            var normalizeExpert = new NumericFeatureExpert(context, new NumericFeatureExpert.Option());
 
             var naiveByaseTrainer = context.MulticlassClassification.Trainers.NaiveBayes("species", "features");
 
@@ -38,6 +40,7 @@ namespace MLNet.AutoPipeline.Test
             };
             var estimatorChain = context.Transforms.Conversion.MapValueToKey("species", "species")
                           .Append(context.Transforms.Concatenate("features", new string[] { "sepal_length", "sepal_width", "petal_length", "petal_width" }))
+                          .Append((normalizeExpert.Propose("features") as EstimatorNodeGroup).OrNone())
                           .Append(new EstimatorNodeGroup().Append(naiveByaseTrainer).Append(lightGBM, lightGMBOption));
 
             foreach ( var sweepablePipeline in estimatorChain.BuildSweepablePipelines())

@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MLNet.AutoPipeline\MLNet.AutoPipeline.csproj" />
+    <ProjectReference Include="..\MLNet.Expert\MLNet.Expert.csproj" />
   </ItemGroup>
 
   <ItemGroup>
