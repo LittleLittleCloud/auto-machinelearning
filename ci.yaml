@@ -12,8 +12,7 @@ jobs:
  
 - job: Windows
   pool:
-    name: VSEng-MicroBuildVS2017
-    demands: Cmd
+    vmImage: windows-latest
   strategy:
     maxParallel: 4
     matrix:
