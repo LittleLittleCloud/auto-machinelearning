@@ -23,7 +23,7 @@ namespace MLNet.AutoPipeline.Test
             this._output = output;
         }
 
-        [Fact]
+        [Fact(Skip ="Ignore")]
         public void EstiamtorNodeChain_iris_e2eTest_gauss_process_sweeper()
         {
             var context = new MLContext();
