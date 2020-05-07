@@ -114,18 +114,19 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/LittleLittleCloud/machinelearning-auto-pipeline/new/master/apiSpec/new?filename=MLNet_AutoPipeline_Extension_EstimatorNodeChainExtension_Append__1_Microsoft_ML_Data_EstimatorChain___0__MLNet_AutoPipeline_EstimatorNodeGroup_.md&amp;value=---%0Auid%3A%20MLNet.AutoPipeline.Extension.EstimatorNodeChainExtension.Append%60%601(Microsoft.ML.Data.EstimatorChain%7B%60%600%7D%2CMLNet.AutoPipeline.EstimatorNodeGroup)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/LittleLittleCloud/machinelearning-auto-pipeline/new/feature/experts/apiSpec/new?filename=MLNet_AutoPipeline_Extension_EstimatorNodeChainExtension_Append__1_Microsoft_ML_Data_EstimatorChain___0__MLNet_AutoPipeline_IEstimatorNode_.md&amp;value=---%0Auid%3A%20MLNet.AutoPipeline.Extension.EstimatorNodeChainExtension.Append%60%601(Microsoft.ML.Data.EstimatorChain%7B%60%600%7D%2CMLNet.AutoPipeline.IEstimatorNode)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/LittleLittleCloud/machinelearning-auto-pipeline/blob/master/src/MLNet.AutoPipeline/Extension/EstimatorNodeChainExtension.cs/#L14">View Source</a>
+    <a href="https://github.com/LittleLittleCloud/machinelearning-auto-pipeline/blob/feature/experts/src/MLNet.AutoPipeline/Extension/EstimatorNodeChainExtension.cs/#L14">View Source</a>
   </span>
   <a id="MLNet_AutoPipeline_Extension_EstimatorNodeChainExtension_Append_" data-uid="MLNet.AutoPipeline.Extension.EstimatorNodeChainExtension.Append*"></a>
-  <h4 id="MLNet_AutoPipeline_Extension_EstimatorNodeChainExtension_Append__1_Microsoft_ML_Data_EstimatorChain___0__MLNet_AutoPipeline_EstimatorNodeGroup_" data-uid="MLNet.AutoPipeline.Extension.EstimatorNodeChainExtension.Append``1(Microsoft.ML.Data.EstimatorChain{``0},MLNet.AutoPipeline.EstimatorNodeGroup)">Append&lt;TLastTrain&gt;(EstimatorChain&lt;TLastTrain&gt;, EstimatorNodeGroup)</h4>
+  <h4 id="MLNet_AutoPipeline_Extension_EstimatorNodeChainExtension_Append__1_Microsoft_ML_Data_EstimatorChain___0__MLNet_AutoPipeline_IEstimatorNode_" data-uid="MLNet.AutoPipeline.Extension.EstimatorNodeChainExtension.Append``1(Microsoft.ML.Data.EstimatorChain{``0},MLNet.AutoPipeline.IEstimatorNode)">Append&lt;TLastTrain&gt;(EstimatorChain&lt;TLastTrain&gt;, IEstimatorNode)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static EstimatorNodeChain Append&lt;TLastTrain&gt;(this EstimatorChain&lt;TLastTrain&gt; estimatorChain, EstimatorNodeGroup node)
+    <pre><code class="lang-csharp hljs">public static EstimatorNodeChain Append&lt;TLastTrain&gt;(this EstimatorChain&lt;TLastTrain&gt; estimatorChain, IEstimatorNode node)
+
     where TLastTrain : class, ITransformer</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
@@ -144,7 +145,7 @@
         <td></td>
       </tr>
       <tr>
-        <td><a class="xref" href="MLNet.AutoPipeline.EstimatorNodeGroup.html">EstimatorNodeGroup</a></td>
+        <td><a class="xref" href="MLNet.AutoPipeline.IEstimatorNode.html">IEstimatorNode</a></td>
         <td><span class="parametername">node</span></td>
         <td></td>
       </tr>
@@ -188,10 +189,10 @@
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/LittleLittleCloud/machinelearning-auto-pipeline/new/master/apiSpec/new?filename=MLNet_AutoPipeline_Extension_EstimatorNodeChainExtension.md&amp;value=---%0Auid%3A%20MLNet.AutoPipeline.Extension.EstimatorNodeChainExtension%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/LittleLittleCloud/machinelearning-auto-pipeline/new/feature/experts/apiSpec/new?filename=MLNet_AutoPipeline_Extension_EstimatorNodeChainExtension.md&amp;value=---%0Auid%3A%20MLNet.AutoPipeline.Extension.EstimatorNodeChainExtension%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/LittleLittleCloud/machinelearning-auto-pipeline/blob/master/src/MLNet.AutoPipeline/Extension/EstimatorNodeChainExtension.cs/#L12" class="contribution-link">View Source</a>
+                    <a href="https://github.com/LittleLittleCloud/machinelearning-auto-pipeline/blob/feature/experts/src/MLNet.AutoPipeline/Extension/EstimatorNodeChainExtension.cs/#L12" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

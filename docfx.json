@@ -5,7 +5,8 @@
         {
           "files": [
             "**MLNet.AutoPipeline.csproj",
-            "**MLNet.Sweeper.csproj"
+            "**MLNet.Sweeper.csproj",
+            "**MLNet.Expert.csproj"
           ],
           "src": "./src"
         }

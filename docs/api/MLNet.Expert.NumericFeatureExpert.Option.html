@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Class ValueGeneratorOptionBase
+    <title>Class NumericFeatureExpert.Option
    </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Class ValueGeneratorOptionBase
+    <meta name="title" content="Class NumericFeatureExpert.Option
    ">
     <meta name="generator" content="docfx 2.52.0.0">
     
@@ -68,19 +68,17 @@
         </div>
         <div class="article row grid-right">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="MLNet.Sweeper.ValueGeneratorOptionBase">
+            <article class="content wrap" id="_content" data-uid="MLNet.Expert.NumericFeatureExpert.Option">
   
   
-  <h1 id="MLNet_Sweeper_ValueGeneratorOptionBase" data-uid="MLNet.Sweeper.ValueGeneratorOptionBase" class="text-break">Class ValueGeneratorOptionBase
+  <h1 id="MLNet_Expert_NumericFeatureExpert_Option" data-uid="MLNet.Expert.NumericFeatureExpert.Option" class="text-break">Class NumericFeatureExpert.Option
   </h1>
   <div class="markdown level0 summary"></div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><span class="xref">System.Object</span></div>
-    <div class="level1"><span class="xref">ValueGeneratorOptionBase</span></div>
-      <div class="level2"><a class="xref" href="MLNet.Sweeper.DiscreteValueGenerator.Option.html">DiscreteValueGenerator.Option</a></div>
-      <div class="level2"><a class="xref" href="MLNet.Sweeper.NumericValueGeneratorOptionBase.html">NumericValueGeneratorOptionBase</a></div>
+    <div class="level1"><span class="xref">NumericFeatureExpert.Option</span></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
@@ -106,29 +104,31 @@
       <span class="xref">System.Object.ToString()</span>
     </div>
   </div>
-  <h6><strong>Namespace</strong>: <a class="xref" href="MLNet.Sweeper.html">MLNet.Sweeper</a></h6>
-  <h6><strong>Assembly</strong>: MLNet.Sweeper.dll</h6>
-  <h5 id="MLNet_Sweeper_ValueGeneratorOptionBase_syntax">Syntax</h5>
+  <h6><strong>Namespace</strong>: <a class="xref" href="MLNet.Expert.html">MLNet.Expert</a></h6>
+  <h6><strong>Assembly</strong>: MLNet.Expert.dll</h6>
+  <h5 id="MLNet_Expert_NumericFeatureExpert_Option_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public abstract class ValueGeneratorOptionBase</code></pre>
+    <pre><code class="lang-csharp hljs">public class Option</code></pre>
   </div>
-  <h3 id="fields">Fields
+  <h3 id="properties">Properties
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/LittleLittleCloud/machinelearning-auto-pipeline/new/feature/experts/apiSpec/new?filename=MLNet_Sweeper_ValueGeneratorOptionBase_Name.md&amp;value=---%0Auid%3A%20MLNet.Sweeper.ValueGeneratorOptionBase.Name%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/LittleLittleCloud/machinelearning-auto-pipeline/new/feature/experts/apiSpec/new?filename=MLNet_Expert_NumericFeatureExpert_Option_NormalizeMeanVariance.md&amp;value=---%0Auid%3A%20MLNet.Expert.NumericFeatureExpert.Option.NormalizeMeanVariance%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/LittleLittleCloud/machinelearning-auto-pipeline/blob/feature/experts/src/MLNet.Sweeper/ValueGenerator/ValueGeneratorOptionBase.cs/#L13">View Source</a>
+    <a href="https://github.com/LittleLittleCloud/machinelearning-auto-pipeline/blob/feature/experts/src/MLNet.Expert/NumericFeatureExpert.cs/#L63">View Source</a>
   </span>
-  <h4 id="MLNet_Sweeper_ValueGeneratorOptionBase_Name" data-uid="MLNet.Sweeper.ValueGeneratorOptionBase.Name">Name</h4>
-  <div class="markdown level1 summary"></div>
+  <a id="MLNet_Expert_NumericFeatureExpert_Option_NormalizeMeanVariance_" data-uid="MLNet.Expert.NumericFeatureExpert.Option.NormalizeMeanVariance*"></a>
+  <h4 id="MLNet_Expert_NumericFeatureExpert_Option_NormalizeMeanVariance" data-uid="MLNet.Expert.NumericFeatureExpert.Option.NormalizeMeanVariance">NormalizeMeanVariance</h4>
+  <div class="markdown level1 summary"><p>Normalizes based on the computed mean and variance of data.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public string Name</code></pre>
+    <pre><code class="lang-csharp hljs">public bool NormalizeMeanVariance { get; set; }</code></pre>
   </div>
-  <h5 class="fieldValue">Field Value</h5>
+  <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>
@@ -138,7 +138,38 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.String</span></td>
+        <td><span class="xref">System.Boolean</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/LittleLittleCloud/machinelearning-auto-pipeline/new/feature/experts/apiSpec/new?filename=MLNet_Expert_NumericFeatureExpert_Option_NormalizeMinMax.md&amp;value=---%0Auid%3A%20MLNet.Expert.NumericFeatureExpert.Option.NormalizeMinMax%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/LittleLittleCloud/machinelearning-auto-pipeline/blob/feature/experts/src/MLNet.Expert/NumericFeatureExpert.cs/#L68">View Source</a>
+  </span>
+  <a id="MLNet_Expert_NumericFeatureExpert_Option_NormalizeMinMax_" data-uid="MLNet.Expert.NumericFeatureExpert.Option.NormalizeMinMax*"></a>
+  <h4 id="MLNet_Expert_NumericFeatureExpert_Option_NormalizeMinMax" data-uid="MLNet.Expert.NumericFeatureExpert.Option.NormalizeMinMax">NormalizeMinMax</h4>
+  <div class="markdown level1 summary"><p>Normalizes the observed minimum and maximum values of data.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool NormalizeMinMax { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -151,10 +182,10 @@
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/LittleLittleCloud/machinelearning-auto-pipeline/new/feature/experts/apiSpec/new?filename=MLNet_Sweeper_ValueGeneratorOptionBase.md&amp;value=---%0Auid%3A%20MLNet.Sweeper.ValueGeneratorOptionBase%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/LittleLittleCloud/machinelearning-auto-pipeline/new/feature/experts/apiSpec/new?filename=MLNet_Expert_NumericFeatureExpert_Option.md&amp;value=---%0Auid%3A%20MLNet.Expert.NumericFeatureExpert.Option%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/LittleLittleCloud/machinelearning-auto-pipeline/blob/feature/experts/src/MLNet.Sweeper/ValueGenerator/ValueGeneratorOptionBase.cs/#L11" class="contribution-link">View Source</a>
+                    <a href="https://github.com/LittleLittleCloud/machinelearning-auto-pipeline/blob/feature/experts/src/MLNet.Expert/NumericFeatureExpert.cs/#L58" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>
