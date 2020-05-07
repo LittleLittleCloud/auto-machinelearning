@@ -24,7 +24,7 @@ jobs:
         _configuration: Release
   steps:
     # Should only run if not real-signing
-    - script: eng\common\CIBuild.cmd -configuration $(_configuration) -prepareMachine -warnAsError 0 /p:OfficialBuildId=$(BUILD.BUILDNUMBER)
+    - script: eng\common\CIBuild.cmd -configuration $(_configuration) -prepareMachine -warnAsError 0
       displayName: Build and Test
       condition: succeeded()
     
