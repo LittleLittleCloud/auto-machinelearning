@@ -1,4 +1,4 @@
-﻿// <copyright file="IExpert.cs" company="BigMiao">
+﻿// <copyright file="ITransformExpert.cs" company="BigMiao">
 // Copyright (c) BigMiao. All rights reserved.
 // </copyright>
 
@@ -8,9 +8,9 @@ using System.Collections.Generic;
 namespace MLNet.Expert
 {
     /// <summary>
-    /// Interface for all Expert classes.
+    /// Interface for all Transform Expert classes.
     /// </summary>
-    public interface IExpert
+    public interface ITransformExpert
     {
         /// <summary>
         /// Propose <see cref="IEstimatorNode"/> that will be applied on <paramref name="inputColumn"/> and result will be saved in <paramref name="outputColumn"/>.
