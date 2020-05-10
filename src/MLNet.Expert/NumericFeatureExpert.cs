@@ -20,7 +20,7 @@ namespace MLNet.Expert
         private Option option;
         private IList<CreateNormalizer> NormalizerFactory;
 
-        private delegate NormalizingEstimator CreateNormalizer(MLContext context, string input, string output);
+        private delegate EstimatorSingleNode CreateNormalizer(MLContext context, string input, string output);
 
         public NumericFeatureExpert(MLContext context, Option option)
         {
@@ -68,14 +68,18 @@ namespace MLNet.Expert
             public bool NormalizeMinMax { get; set; } = true;
         }
 
-        private NormalizingEstimator CreateNormalizeMeanVariance(MLContext context, string input, string output)
+        private EstimatorSingleNode CreateNormalizeMeanVariance(MLContext context, string input, string output)
         {
-            return context.Transforms.NormalizeMeanVariance(output, input);
+            var instance = context.Transforms.NormalizeMeanVariance(output, input);
+            var unsweeplableNode = new UnsweepableNode<NormalizingTransformer>(instance, estimatorName: "NormalizeMeanVariance");
+            return new EstimatorSingleNode(unsweeplableNode);
         }
 
-        private NormalizingEstimator CreateNormalizeMinMax(MLContext context, string input, string output)
+        private EstimatorSingleNode CreateNormalizeMinMax(MLContext context, string input, string output)
         {
-            return context.Transforms.NormalizeMinMax(output, input);
+            var instance = context.Transforms.NormalizeMinMax(output, input);
+            var unsweeplableNode = new UnsweepableNode<NormalizingTransformer>(instance, estimatorName: "NormalizeMinMax");
+            return new EstimatorSingleNode(unsweeplableNode);
         }
     }
 }

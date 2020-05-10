@@ -19,13 +19,21 @@ namespace MLNet.AutoPipeline
         private readonly TransformerScope _scope;
         private readonly Func<TOption, IEstimator<TTransformer>> _estimatorFactory;
 
-        public SweepableNode(Func<TOption, IEstimator<TTransformer>> estimatorFactory, OptionBuilder<TOption> optionBuilder, TransformerScope scope = TransformerScope.Everything)
+        public SweepableNode(Func<TOption, IEstimator<TTransformer>> estimatorFactory, OptionBuilder<TOption> optionBuilder, TransformerScope scope = TransformerScope.Everything, string estimatorName = null)
         {
             this._estimatorFactory = estimatorFactory;
             this._optionBuilder = optionBuilder;
             this._scope = scope;
             this.ValueGenerators = optionBuilder.ValueGenerators;
-            this.EstimatorName = estimatorFactory(optionBuilder.CreateDefaultOption()).ToString().Split('.').Last();
+
+            if (estimatorName == null)
+            {
+                this.EstimatorName = estimatorFactory(optionBuilder.CreateDefaultOption()).ToString().Split('.').Last();
+            }
+            else
+            {
+                this.EstimatorName = estimatorName;
+            }
         }
 
         public string EstimatorName { get; private set; }
