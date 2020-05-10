@@ -14,7 +14,7 @@ namespace MLNet.AutoPipeline.Extension
         public static EstimatorNodeChain
             Append<TLastTrain>(
                 this EstimatorChain<TLastTrain> estimatorChain,
-                EstimatorNodeGroup node)
+                IEstimatorNode node)
             where TLastTrain : class, ITransformer
         {
             var estimators = estimatorChain.GetType().GetField("_estimators", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic).GetValue(estimatorChain) as IEstimator<ITransformer>[];

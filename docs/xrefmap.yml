@@ -236,6 +236,19 @@ references:
   isSpec: "True"
   fullName: MLNet.AutoPipeline.EstimatorNodeGroup.NodeType
   nameWithType: EstimatorNodeGroup.NodeType
+- uid: MLNet.AutoPipeline.EstimatorNodeGroup.OrNone
+  name: OrNone()
+  href: api/MLNet.AutoPipeline.EstimatorNodeGroup.html#MLNet_AutoPipeline_EstimatorNodeGroup_OrNone
+  commentId: M:MLNet.AutoPipeline.EstimatorNodeGroup.OrNone
+  fullName: MLNet.AutoPipeline.EstimatorNodeGroup.OrNone()
+  nameWithType: EstimatorNodeGroup.OrNone()
+- uid: MLNet.AutoPipeline.EstimatorNodeGroup.OrNone*
+  name: OrNone
+  href: api/MLNet.AutoPipeline.EstimatorNodeGroup.html#MLNet_AutoPipeline_EstimatorNodeGroup_OrNone_
+  commentId: Overload:MLNet.AutoPipeline.EstimatorNodeGroup.OrNone
+  isSpec: "True"
+  fullName: MLNet.AutoPipeline.EstimatorNodeGroup.OrNone
+  nameWithType: EstimatorNodeGroup.OrNone
 - uid: MLNet.AutoPipeline.EstimatorNodeGroup.Summary
   name: Summary()
   href: api/MLNet.AutoPipeline.EstimatorNodeGroup.html#MLNet_AutoPipeline_EstimatorNodeGroup_Summary
@@ -376,15 +389,15 @@ references:
   isSpec: "True"
   fullName: MLNet.AutoPipeline.Extension.EstimatorNodeChainExtension.Append
   nameWithType: EstimatorNodeChainExtension.Append
-- uid: MLNet.AutoPipeline.Extension.EstimatorNodeChainExtension.Append``1(Microsoft.ML.Data.EstimatorChain{``0},MLNet.AutoPipeline.EstimatorNodeGroup)
-  name: Append<TLastTrain>(EstimatorChain<TLastTrain>, EstimatorNodeGroup)
-  href: api/MLNet.AutoPipeline.Extension.EstimatorNodeChainExtension.html#MLNet_AutoPipeline_Extension_EstimatorNodeChainExtension_Append__1_Microsoft_ML_Data_EstimatorChain___0__MLNet_AutoPipeline_EstimatorNodeGroup_
-  commentId: M:MLNet.AutoPipeline.Extension.EstimatorNodeChainExtension.Append``1(Microsoft.ML.Data.EstimatorChain{``0},MLNet.AutoPipeline.EstimatorNodeGroup)
-  name.vb: Append(Of TLastTrain)(EstimatorChain(Of TLastTrain), EstimatorNodeGroup)
-  fullName: MLNet.AutoPipeline.Extension.EstimatorNodeChainExtension.Append<TLastTrain>(Microsoft.ML.Data.EstimatorChain<TLastTrain>, MLNet.AutoPipeline.EstimatorNodeGroup)
-  fullName.vb: MLNet.AutoPipeline.Extension.EstimatorNodeChainExtension.Append(Of TLastTrain)(Microsoft.ML.Data.EstimatorChain(Of TLastTrain), MLNet.AutoPipeline.EstimatorNodeGroup)
-  nameWithType: EstimatorNodeChainExtension.Append<TLastTrain>(EstimatorChain<TLastTrain>, EstimatorNodeGroup)
-  nameWithType.vb: EstimatorNodeChainExtension.Append(Of TLastTrain)(EstimatorChain(Of TLastTrain), EstimatorNodeGroup)
+- uid: MLNet.AutoPipeline.Extension.EstimatorNodeChainExtension.Append``1(Microsoft.ML.Data.EstimatorChain{``0},MLNet.AutoPipeline.IEstimatorNode)
+  name: Append<TLastTrain>(EstimatorChain<TLastTrain>, IEstimatorNode)
+  href: api/MLNet.AutoPipeline.Extension.EstimatorNodeChainExtension.html#MLNet_AutoPipeline_Extension_EstimatorNodeChainExtension_Append__1_Microsoft_ML_Data_EstimatorChain___0__MLNet_AutoPipeline_IEstimatorNode_
+  commentId: M:MLNet.AutoPipeline.Extension.EstimatorNodeChainExtension.Append``1(Microsoft.ML.Data.EstimatorChain{``0},MLNet.AutoPipeline.IEstimatorNode)
+  name.vb: Append(Of TLastTrain)(EstimatorChain(Of TLastTrain), IEstimatorNode)
+  fullName: MLNet.AutoPipeline.Extension.EstimatorNodeChainExtension.Append<TLastTrain>(Microsoft.ML.Data.EstimatorChain<TLastTrain>, MLNet.AutoPipeline.IEstimatorNode)
+  fullName.vb: MLNet.AutoPipeline.Extension.EstimatorNodeChainExtension.Append(Of TLastTrain)(Microsoft.ML.Data.EstimatorChain(Of TLastTrain), MLNet.AutoPipeline.IEstimatorNode)
+  nameWithType: EstimatorNodeChainExtension.Append<TLastTrain>(EstimatorChain<TLastTrain>, IEstimatorNode)
+  nameWithType.vb: EstimatorNodeChainExtension.Append(Of TLastTrain)(EstimatorChain(Of TLastTrain), IEstimatorNode)
 - uid: MLNet.AutoPipeline.Extension.SweepablePipelineExtension
   name: SweepablePipelineExtension
   href: api/MLNet.AutoPipeline.Extension.SweepablePipelineExtension.html
@@ -1267,6 +1280,107 @@ references:
   fullName.vb: MLNet.AutoPipeline.UnsweepableNode(Of TTransformer).ValueGenerators
   nameWithType: UnsweepableNode<TTransformer>.ValueGenerators
   nameWithType.vb: UnsweepableNode(Of TTransformer).ValueGenerators
+- uid: MLNet.Expert
+  name: MLNet.Expert
+  href: api/MLNet.Expert.html
+  commentId: N:MLNet.Expert
+  fullName: MLNet.Expert
+  nameWithType: MLNet.Expert
+- uid: MLNet.Expert.IExpert
+  name: IExpert
+  href: api/MLNet.Expert.IExpert.html
+  commentId: T:MLNet.Expert.IExpert
+  fullName: MLNet.Expert.IExpert
+  nameWithType: IExpert
+- uid: MLNet.Expert.IExpert.Propose(System.String)
+  name: Propose(String)
+  href: api/MLNet.Expert.IExpert.html#MLNet_Expert_IExpert_Propose_System_String_
+  commentId: M:MLNet.Expert.IExpert.Propose(System.String)
+  fullName: MLNet.Expert.IExpert.Propose(System.String)
+  nameWithType: IExpert.Propose(String)
+- uid: MLNet.Expert.IExpert.Propose(System.String,System.String)
+  name: Propose(String, String)
+  href: api/MLNet.Expert.IExpert.html#MLNet_Expert_IExpert_Propose_System_String_System_String_
+  commentId: M:MLNet.Expert.IExpert.Propose(System.String,System.String)
+  fullName: MLNet.Expert.IExpert.Propose(System.String, System.String)
+  nameWithType: IExpert.Propose(String, String)
+- uid: MLNet.Expert.IExpert.Propose*
+  name: Propose
+  href: api/MLNet.Expert.IExpert.html#MLNet_Expert_IExpert_Propose_
+  commentId: Overload:MLNet.Expert.IExpert.Propose
+  isSpec: "True"
+  fullName: MLNet.Expert.IExpert.Propose
+  nameWithType: IExpert.Propose
+- uid: MLNet.Expert.NumericFeatureExpert
+  name: NumericFeatureExpert
+  href: api/MLNet.Expert.NumericFeatureExpert.html
+  commentId: T:MLNet.Expert.NumericFeatureExpert
+  fullName: MLNet.Expert.NumericFeatureExpert
+  nameWithType: NumericFeatureExpert
+- uid: MLNet.Expert.NumericFeatureExpert.#ctor(Microsoft.ML.MLContext,MLNet.Expert.NumericFeatureExpert.Option)
+  name: NumericFeatureExpert(MLContext, NumericFeatureExpert.Option)
+  href: api/MLNet.Expert.NumericFeatureExpert.html#MLNet_Expert_NumericFeatureExpert__ctor_Microsoft_ML_MLContext_MLNet_Expert_NumericFeatureExpert_Option_
+  commentId: M:MLNet.Expert.NumericFeatureExpert.#ctor(Microsoft.ML.MLContext,MLNet.Expert.NumericFeatureExpert.Option)
+  fullName: MLNet.Expert.NumericFeatureExpert.NumericFeatureExpert(Microsoft.ML.MLContext, MLNet.Expert.NumericFeatureExpert.Option)
+  nameWithType: NumericFeatureExpert.NumericFeatureExpert(MLContext, NumericFeatureExpert.Option)
+- uid: MLNet.Expert.NumericFeatureExpert.#ctor*
+  name: NumericFeatureExpert
+  href: api/MLNet.Expert.NumericFeatureExpert.html#MLNet_Expert_NumericFeatureExpert__ctor_
+  commentId: Overload:MLNet.Expert.NumericFeatureExpert.#ctor
+  isSpec: "True"
+  fullName: MLNet.Expert.NumericFeatureExpert.NumericFeatureExpert
+  nameWithType: NumericFeatureExpert.NumericFeatureExpert
+- uid: MLNet.Expert.NumericFeatureExpert.Option
+  name: NumericFeatureExpert.Option
+  href: api/MLNet.Expert.NumericFeatureExpert.Option.html
+  commentId: T:MLNet.Expert.NumericFeatureExpert.Option
+  fullName: MLNet.Expert.NumericFeatureExpert.Option
+  nameWithType: NumericFeatureExpert.Option
+- uid: MLNet.Expert.NumericFeatureExpert.Option.NormalizeMeanVariance
+  name: NormalizeMeanVariance
+  href: api/MLNet.Expert.NumericFeatureExpert.Option.html#MLNet_Expert_NumericFeatureExpert_Option_NormalizeMeanVariance
+  commentId: P:MLNet.Expert.NumericFeatureExpert.Option.NormalizeMeanVariance
+  fullName: MLNet.Expert.NumericFeatureExpert.Option.NormalizeMeanVariance
+  nameWithType: NumericFeatureExpert.Option.NormalizeMeanVariance
+- uid: MLNet.Expert.NumericFeatureExpert.Option.NormalizeMeanVariance*
+  name: NormalizeMeanVariance
+  href: api/MLNet.Expert.NumericFeatureExpert.Option.html#MLNet_Expert_NumericFeatureExpert_Option_NormalizeMeanVariance_
+  commentId: Overload:MLNet.Expert.NumericFeatureExpert.Option.NormalizeMeanVariance
+  isSpec: "True"
+  fullName: MLNet.Expert.NumericFeatureExpert.Option.NormalizeMeanVariance
+  nameWithType: NumericFeatureExpert.Option.NormalizeMeanVariance
+- uid: MLNet.Expert.NumericFeatureExpert.Option.NormalizeMinMax
+  name: NormalizeMinMax
+  href: api/MLNet.Expert.NumericFeatureExpert.Option.html#MLNet_Expert_NumericFeatureExpert_Option_NormalizeMinMax
+  commentId: P:MLNet.Expert.NumericFeatureExpert.Option.NormalizeMinMax
+  fullName: MLNet.Expert.NumericFeatureExpert.Option.NormalizeMinMax
+  nameWithType: NumericFeatureExpert.Option.NormalizeMinMax
+- uid: MLNet.Expert.NumericFeatureExpert.Option.NormalizeMinMax*
+  name: NormalizeMinMax
+  href: api/MLNet.Expert.NumericFeatureExpert.Option.html#MLNet_Expert_NumericFeatureExpert_Option_NormalizeMinMax_
+  commentId: Overload:MLNet.Expert.NumericFeatureExpert.Option.NormalizeMinMax
+  isSpec: "True"
+  fullName: MLNet.Expert.NumericFeatureExpert.Option.NormalizeMinMax
+  nameWithType: NumericFeatureExpert.Option.NormalizeMinMax
+- uid: MLNet.Expert.NumericFeatureExpert.Propose(System.String)
+  name: Propose(String)
+  href: api/MLNet.Expert.NumericFeatureExpert.html#MLNet_Expert_NumericFeatureExpert_Propose_System_String_
+  commentId: M:MLNet.Expert.NumericFeatureExpert.Propose(System.String)
+  fullName: MLNet.Expert.NumericFeatureExpert.Propose(System.String)
+  nameWithType: NumericFeatureExpert.Propose(String)
+- uid: MLNet.Expert.NumericFeatureExpert.Propose(System.String,System.String)
+  name: Propose(String, String)
+  href: api/MLNet.Expert.NumericFeatureExpert.html#MLNet_Expert_NumericFeatureExpert_Propose_System_String_System_String_
+  commentId: M:MLNet.Expert.NumericFeatureExpert.Propose(System.String,System.String)
+  fullName: MLNet.Expert.NumericFeatureExpert.Propose(System.String, System.String)
+  nameWithType: NumericFeatureExpert.Propose(String, String)
+- uid: MLNet.Expert.NumericFeatureExpert.Propose*
+  name: Propose
+  href: api/MLNet.Expert.NumericFeatureExpert.html#MLNet_Expert_NumericFeatureExpert_Propose_
+  commentId: Overload:MLNet.Expert.NumericFeatureExpert.Propose
+  isSpec: "True"
+  fullName: MLNet.Expert.NumericFeatureExpert.Propose
+  nameWithType: NumericFeatureExpert.Propose
 - uid: MLNet.Sweeper
   name: MLNet.Sweeper
   href: api/MLNet.Sweeper.html

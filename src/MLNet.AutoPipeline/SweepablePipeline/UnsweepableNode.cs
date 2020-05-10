@@ -16,12 +16,28 @@ namespace MLNet.AutoPipeline
     {
         private IEstimator<TTransformer> _instance;
         private TransformerScope _scope;
+        private static UnsweepableNode<ITransformer> no_op = new UnsweepableNode<ITransformer>();
 
-        public UnsweepableNode(IEstimator<TTransformer> instance, TransformerScope scope = TransformerScope.Everything)
+        public UnsweepableNode(IEstimator<TTransformer> instance, TransformerScope scope = TransformerScope.Everything, string estimatorName = null)
         {
             this._instance = instance;
             this._scope = scope;
-            this.EstimatorName = instance.ToString().Split('.').Last();
+
+            if (estimatorName == null)
+            {
+                this.EstimatorName = instance.ToString().Split('.').Last();
+            }
+            else
+            {
+                this.EstimatorName = estimatorName;
+            }
+        }
+
+        private UnsweepableNode() { }
+
+        internal static UnsweepableNode<ITransformer> EmptyNode
+        {
+            get => no_op;
         }
 
         public ParameterSet Current { get => null; }
