@@ -23,13 +23,14 @@ namespace MLNet.AutoPipeline.Test
             this._output = output;
         }
 
-        [Fact(Skip ="Ignore")]
+        [Fact(Skip ="ignore")]
         public void EstiamtorNodeChain_iris_e2eTest_gauss_process_sweeper()
         {
             var context = new MLContext();
             var dataset = context.Data.LoadFromTextFile<Iris>(@".\TestData\iris.csv", separatorChar: ',', hasHeader: true);
             var split = context.Data.TrainTestSplit(dataset, 0.3);
             var normalizeExpert = new NumericFeatureExpert(context, new NumericFeatureExpert.Option());
+            var classificationExpert = new ClassificationExpert(context, new ClassificationExpert.Option());
 
             var naiveByaseTrainer = context.MulticlassClassification.Trainers.NaiveBayes("species", "features");
 
@@ -41,7 +42,7 @@ namespace MLNet.AutoPipeline.Test
             var estimatorChain = context.Transforms.Conversion.MapValueToKey("species", "species")
                           .Append(context.Transforms.Concatenate("features", new string[] { "sepal_length", "sepal_width", "petal_length", "petal_width" }))
                           .Append((normalizeExpert.Propose("features") as EstimatorNodeGroup).OrNone())
-                          .Append(new EstimatorNodeGroup().Append(naiveByaseTrainer).Append(lightGBM, lightGMBOption));
+                          .Append((classificationExpert.Propose("species", "features") as EstimatorNodeGroup).Append(lightGBM, lightGMBOption));
 
             foreach ( var sweepablePipeline in estimatorChain.BuildSweepablePipelines())
             {

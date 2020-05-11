@@ -184,7 +184,16 @@ namespace MLNet.Sweeper
                 if (valueGenerator is INumericValueGenerator)
                 {
                     var norm = (valueGenerator as INumericValueGenerator).NormalizeValue(value);
-                    var next = Utils.NormCDF(1e-2 * Utils.Normal() + norm);
+                    var next = 1e-2 * Utils.Normal() + norm;
+                    while (true)
+                    {
+                        if (next >0 || next < 1)
+                        {
+                            break;
+                        }
+
+                        next = 1e-2 * Utils.Normal() + norm;
+                    }
 
                     _candidates[valueGenerator.ID] = valueGenerator.CreateFromNormalized(next);
                 }

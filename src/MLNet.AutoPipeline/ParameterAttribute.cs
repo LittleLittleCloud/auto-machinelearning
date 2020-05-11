@@ -5,6 +5,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using MLNet.Sweeper;
 
@@ -14,6 +15,9 @@ namespace MLNet.AutoPipeline
     {
         public ParameterAttribute(int min, int max, bool logBase = false, int steps = 100)
         {
+            Contract.Assert(max > min);
+            Contract.Assert(steps > 0);
+            Contract.Assert(!logBase || (logBase && min > 0));
             var option = new Int32ValueGenerator.Option()
             {
                 Min = min,
@@ -27,6 +31,9 @@ namespace MLNet.AutoPipeline
 
         public ParameterAttribute(long min, long max, bool logBase = false, int steps = 100)
         {
+            Contract.Assert(max > min);
+            Contract.Assert(steps > 0);
+            Contract.Assert(!logBase || (logBase && min > 0));
             var option = new LongValueGenerator.Option()
             {
                 Min = min,
@@ -40,6 +47,9 @@ namespace MLNet.AutoPipeline
 
         public ParameterAttribute(float min, float max, bool logBase = false, int steps = 100)
         {
+            Contract.Assert(max > min);
+            Contract.Assert(steps > 0);
+            Contract.Assert(!logBase || (logBase && min > 0));
             var option = new FloatValueGenerator.Option()
             {
                 Min = min,
