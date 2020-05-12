@@ -58,20 +58,14 @@ namespace MLNet.Expert.Trainers.Classification
             /// <summary>
             /// The L1 regularization hyperparameter. Higher values will tend to lead to more sparse model.
             /// </summary>
-            [Parameter(1f / 32f, 32f, true, 10)]
+            [Parameter(1E-4F, 10f, true, 20)]
             public float L1Regularization;
 
             /// <summary>
             /// The L2 weight for regularization.
             /// </summary>
-            [Parameter(1f / 32f, 32f, true, 10)]
+            [Parameter(1E-4F, 10f, true, 20)]
             public float L2Regularization;
-
-            /// <summary>
-            /// Memory size for <see cref="Microsoft.ML.Trainers.LbfgsMaximumEntropyMulticlassTrainer"/>. Low=faster, less accurate.
-            /// </summary>
-            [Parameter(1, 128, true, 7)]
-            public int HistorySize;
         }
     }
 }

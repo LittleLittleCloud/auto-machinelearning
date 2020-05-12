@@ -32,6 +32,11 @@ namespace MLNet.Expert
             {
                 this.nodeFactories.Add(LightGBMBuilder.Instance);
             }
+
+            if (option.UseSdcaMaximumEntropy)
+            {
+                this.nodeFactories.Add(SdcaMaximumEntropyBuilder.Instance);
+            }
         }
 
         public IEstimatorNode Propose(string label, string feature)
@@ -61,6 +66,11 @@ namespace MLNet.Expert
             /// Whether to use <see cref="Microsoft.ML.Trainers.LightGbm.LightGbmMulticlassTrainer"/> created by <see cref="LightGBMBuilder"/>.
             /// </summary>
             public bool UseLightGBM { get; set; } = true;
+
+            /// <summary>
+            /// Whether to use <see cref="Microsoft.ML.Trainers.SdcaMaximumEntropyMulticlassTrainer"/> created by <see cref="SdcaMaximumEntropyBuilder"/>.
+            /// </summary>
+            public bool UseSdcaMaximumEntropy { get; set; } = true;
         }
     }
 }
