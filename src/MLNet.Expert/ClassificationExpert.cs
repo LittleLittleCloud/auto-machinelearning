@@ -27,6 +27,11 @@ namespace MLNet.Expert
             {
                 this.nodeFactories.Add(LbfgsMaximumEntropyBuilder.Instance);
             }
+
+            if (option.UseNaiveBayes)
+            {
+                this.nodeFactories.Add(LightGBMBuilder.Instance);
+            }
         }
 
         public IEstimatorNode Propose(string label, string feature)
@@ -43,14 +48,19 @@ namespace MLNet.Expert
         public class Option
         {
             /// <summary>
-            /// Use NaiveBayes classifier created by <see cref="NaiveBayesBuilder"/>.
+            /// Whether to use <see cref="Microsoft.ML.Trainers.NaiveBayesMulticlassTrainer"/> created by <see cref="NaiveBayesBuilder"/>.
             /// </summary>
             public bool UseNaiveBayes { get; set; } = true;
 
             /// <summary>
-            /// Use UseLbfgsMaximumEntropy classifier created by <see cref="LbfgsMaximumEntropyBuilder"/>.
+            /// Whether to use <see cref="Microsoft.ML.Trainers.LbfgsMaximumEntropyMulticlassTrainer"/> created by <see cref="LbfgsMaximumEntropyBuilder"/>.
             /// </summary>
             public bool UseLbfgsMaximumEntropy { get; set; } = true;
+
+            /// <summary>
+            /// Whether to use <see cref="Microsoft.ML.Trainers.LightGbm.LightGbmMulticlassTrainer"/> created by <see cref="LightGBMBuilder"/>.
+            /// </summary>
+            public bool UseLightGBM { get; set; } = true;
         }
     }
 }
