@@ -39,6 +39,14 @@ namespace MLNet.Expert.Tests
                   .Should().Contain("SingleNode(LbfgsMaximumEntropy)");
         }
 
+        [Fact]
+        public void ClassificationExpert_should_propose_lightGBM()
+        {
+            var expert = this.GetClassificationExpert();
+            expert.Propose("label", "feature").ToString()
+                  .Should().Contain("SingleNode(LightGBM)");
+        }
+
         private ClassificationExpert GetClassificationExpert()
         {
             var context = new MLContext();

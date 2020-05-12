@@ -124,8 +124,6 @@ namespace MLNet.Sweeper
                         bestCandidate = this._rand.Next(0, ei.len);
                     }
 
-                    Console.WriteLine($"Best candidate: {bestCandidate}");
-                    Console.WriteLine($"Best candidate ei: {(double)np.max(ei)}");
                     this._generated.Add(candidates[bestCandidate]);
                     this.Current = candidates[bestCandidate];
                     yield return candidates[bestCandidate];

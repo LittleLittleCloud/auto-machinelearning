@@ -22,7 +22,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Movie Recommendation", "exa
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MLNet.Expert", "src\MLNet.Expert\MLNet.Expert.csproj", "{A5F88A20-5838-4CE6-BA6A-82B60FBD599F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MLNet.Expert.Tests", "src\MLNet.Expert.Tests\MLNet.Expert.Tests.csproj", "{E99B6BE0-C29B-4944-AFD3-D8BAD495253B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MLNet.Expert.Tests", "src\MLNet.Expert.Tests\MLNet.Expert.Tests.csproj", "{E99B6BE0-C29B-4944-AFD3-D8BAD495253B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Iris", "examples\Iris\Iris.csproj", "{A2C19543-8F19-4A19-89F4-94E38156B532}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -62,6 +64,10 @@ Global
 		{E99B6BE0-C29B-4944-AFD3-D8BAD495253B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E99B6BE0-C29B-4944-AFD3-D8BAD495253B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E99B6BE0-C29B-4944-AFD3-D8BAD495253B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A2C19543-8F19-4A19-89F4-94E38156B532}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A2C19543-8F19-4A19-89F4-94E38156B532}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A2C19543-8F19-4A19-89F4-94E38156B532}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A2C19543-8F19-4A19-89F4-94E38156B532}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
