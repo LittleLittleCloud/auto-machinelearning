@@ -45,7 +45,7 @@ namespace MLNet.Expert.Trainers.Classification
                 return context.MulticlassClassification.Trainers.LightGbm(label, feature, learningRate: option.LearningRate, numberOfLeaves: option.NumberOfLeaves, minimumExampleCountPerLeaf: option.MinimumExampleCountPerLeaf);
             };
 
-            var node = new SweepableNode<MulticlassPredictionTransformer<OneVersusAllModelParameters>, Option>(lightGBM, this._option, estimatorName: "LightGBM");
+            var node = Util.CreateSweepableNode(lightGBM, this._option, estimatorName: "LightGBM");
             return new EstimatorSingleNode(node);
         }
 

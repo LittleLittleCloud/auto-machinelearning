@@ -39,10 +39,10 @@ namespace MLNet.Expert.Trainers.Classification
 
         public EstimatorSingleNode CreateTrainer(MLContext context, string label, string feature)
         {
-            var sweepableNode = new SweepableNode<MulticlassPredictionTransformer<MaximumEntropyModelParameters>, Option>(
+            var sweepableNode = Util.CreateSweepableNode(
                                 (option) =>
                                 {
-                                    return context.MulticlassClassification.Trainers.LbfgsMaximumEntropy(label, feature, null, option.L1Regularization, option.L2Regularization, historySize: option.HistorySize);
+                                    return context.MulticlassClassification.Trainers.LbfgsMaximumEntropy(label, feature, null, option.L1Regularization, option.L2Regularization);
                                 },
                                 this._option,
                                 estimatorName: "LbfgsMaximumEntropy");

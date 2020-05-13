@@ -20,7 +20,16 @@ namespace Iris
             var dataset = context.Data.LoadFromTextFile<Iris>(@".\iris.csv", separatorChar: ',', hasHeader: true);
             var split = context.Data.TrainTestSplit(dataset, 0.3);
             var normalizeExpert = new NumericFeatureExpert(context, new NumericFeatureExpert.Option());
-            var classificationExpert = new ClassificationExpert(context, new ClassificationExpert.Option());
+
+            var classificationOption = new ClassificationExpert.Option()
+            {
+                UseNaiveBayes = false,
+                UseLbfgsMaximumEntropy = false,
+                UseLightGBM = false,
+                UseSdcaMaximumEntropy = false,
+            };
+
+            var classificationExpert = new ClassificationExpert(context, classificationOption);
 
             var estimatorChain = context.Transforms.Conversion.MapValueToKey("species", "species")
                           .Append(context.Transforms.Concatenate("features", new string[] { "sepal_length", "sepal_width", "petal_length", "petal_width" }))
@@ -32,7 +41,7 @@ namespace Iris
                 Console.WriteLine(sweepablePipeline.Summary());
                 var sweeper = new GaussProcessSweeper(new GaussProcessSweeper.Option());
                 sweepablePipeline.UseSweeper(sweeper);
-                foreach (var pipeline in sweepablePipeline.Sweeping(200))
+                foreach (var pipeline in sweepablePipeline.Sweeping(50))
                 {
                     var eval = pipeline.Fit(split.TrainSet).Transform(split.TestSet);
                     var metrics = context.MulticlassClassification.Evaluate(eval, "species");

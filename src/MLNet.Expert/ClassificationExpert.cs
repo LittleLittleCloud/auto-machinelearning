@@ -37,6 +37,11 @@ namespace MLNet.Expert
             {
                 this.nodeFactories.Add(SdcaMaximumEntropyBuilder.Instance);
             }
+
+            if (option.UseSdcaNonCalibrated)
+            {
+                this.nodeFactories.Add(SdcaNonCalibratedBuilder.Instance);
+            }
         }
 
         public IEstimatorNode Propose(string label, string feature)
@@ -71,6 +76,11 @@ namespace MLNet.Expert
             /// Whether to use <see cref="Microsoft.ML.Trainers.SdcaMaximumEntropyMulticlassTrainer"/> created by <see cref="SdcaMaximumEntropyBuilder"/>.
             /// </summary>
             public bool UseSdcaMaximumEntropy { get; set; } = true;
+
+            /// <summary>
+            /// Whether to use <see cref="Microsoft.ML.Trainers.SdcaNonCalibratedMulticlassTrainer"/> created by <see cref="SdcaNonCalibratedBuilder"/>.
+            /// </summary>
+            public bool UseSdcaNonCalibrated { get; set; } = true;
         }
     }
 }

@@ -44,7 +44,7 @@ namespace MLNet.Expert.Trainers.Classification
                 return context.MulticlassClassification.Trainers.SdcaMaximumEntropy(label, feature, l1Regularization: option.L1Reegularization, l2Regularization: option.L2Regularization);
             };
 
-            var node = new SweepableNode<MulticlassPredictionTransformer<MaximumEntropyModelParameters>, Option>(sdca, this._option, estimatorName: "SdcaMaximumEntropy");
+            var node = Util.CreateSweepableNode(sdca, this._option, estimatorName: "SdcaMaximumEntropy");
             return new EstimatorSingleNode(node);
         }
 
