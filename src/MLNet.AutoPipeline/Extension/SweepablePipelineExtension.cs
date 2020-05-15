@@ -56,5 +56,6 @@ namespace MLNet.AutoPipeline.Extension
                         .Append(new UnsweepableNode<TLastTran>(estimator as IEstimator<TLastTran>))
                         .Append(autoEstimator);
         }
+
     }
 }
