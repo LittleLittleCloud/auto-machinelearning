@@ -27,6 +27,9 @@ namespace Iris
                 UseLbfgsMaximumEntropy = false,
                 UseLightGBM = false,
                 UseSdcaMaximumEntropy = false,
+                UseSdcaNonCalibrated = false,
+                UseFastTreeOva = false,
+                UseFastForestOva = false,
             };
 
             var classificationExpert = new ClassificationExpert(context, classificationOption);
@@ -43,14 +46,13 @@ namespace Iris
                 sweepablePipeline.UseSweeper(sweeper);
                 foreach (var pipeline in sweepablePipeline.Sweeping(50))
                 {
-                    var eval = pipeline.Fit(split.TrainSet).Transform(split.TestSet);
-                    var metrics = context.MulticlassClassification.Evaluate(eval, "species");
-
                     if (sweepablePipeline.Sweeper.Current != null)
                     {
                         Console.WriteLine(sweepablePipeline.Sweeper.Current.ToString());
                     }
 
+                    var eval = pipeline.Fit(split.TrainSet).Transform(split.TestSet);
+                    var metrics = context.MulticlassClassification.Evaluate(eval, "species");
                     var result = new RunResult(sweepablePipeline.Sweeper.Current, metrics.MacroAccuracy, true);
                     sweepablePipeline.Sweeper.AddRunHistory(result);
                     Console.WriteLine($"macro accuracy: {metrics.MacroAccuracy}");

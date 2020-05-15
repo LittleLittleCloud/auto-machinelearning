@@ -42,6 +42,21 @@ namespace MLNet.Expert
             {
                 this.nodeFactories.Add(SdcaNonCalibratedBuilder.Instance);
             }
+
+            if (option.UseFastForestOva)
+            {
+                this.nodeFactories.Add(FastForestOvaBuilder.Instance);
+            }
+
+            if (option.UseFastTreeOva)
+            {
+                this.nodeFactories.Add(FastTreeOvaBuilder.Instance);
+            }
+
+            if (option.UseGamOva)
+            {
+                this.nodeFactories.Add(GamOvaBuilder.Instance);
+            }
         }
 
         public IEstimatorNode Propose(string label, string feature)
@@ -81,6 +96,22 @@ namespace MLNet.Expert
             /// Whether to use <see cref="Microsoft.ML.Trainers.SdcaNonCalibratedMulticlassTrainer"/> created by <see cref="SdcaNonCalibratedBuilder"/>.
             /// </summary>
             public bool UseSdcaNonCalibrated { get; set; } = true;
+
+            /// <summary>
+            /// Whether to use FastForest created by <see cref="FastForestOvaBuilder"/>.
+            /// </summary>
+            public bool UseFastForestOva { get; set; } = true;
+
+            /// <summary>
+            /// Whether to use FastTree created by <see cref="FastTreeOvaBuilder"/>.
+            /// </summary>
+            public bool UseFastTreeOva { get; set; } = true;
+
+
+            /// <summary>
+            /// Whether to use Gam created by <see cref="GamOvaBuilder"/>.
+            /// </summary>
+            public bool UseGamOva { get; set; } = true;
         }
     }
 }
