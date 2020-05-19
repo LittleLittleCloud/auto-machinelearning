@@ -28,7 +28,8 @@ namespace MLNet.CodeGenerator
 
             sb.Append(";");
 
-            return sb.ToString();
+            var code = sb.ToString();
+            return Utils.FormatCode(code);
         }
     }
 }

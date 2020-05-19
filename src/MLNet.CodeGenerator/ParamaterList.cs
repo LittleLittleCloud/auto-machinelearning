@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace MLNet.CodeGenerator
@@ -8,7 +9,7 @@ namespace MLNet.CodeGenerator
     {
         public string GeneratorCode()
         {
-            return string.Join(",", this);
+            return string.Join(",", this.Select(x => x.GeneratorCode()));
         }
     }
 }

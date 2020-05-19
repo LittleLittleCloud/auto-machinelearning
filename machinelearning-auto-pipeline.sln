@@ -24,7 +24,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MLNet.Expert", "src\MLNet.E
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MLNet.Expert.Tests", "src\MLNet.Expert.Tests\MLNet.Expert.Tests.csproj", "{E99B6BE0-C29B-4944-AFD3-D8BAD495253B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MLNet.CodeGenerator", "src\MLNet.CodeGenerator\MLNet.CodeGenerator.csproj", "{755A31EE-D359-47C2-933F-596DC85E8006}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MLNet.CodeGenerator", "src\MLNet.CodeGenerator\MLNet.CodeGenerator.csproj", "{755A31EE-D359-47C2-933F-596DC85E8006}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{496D172A-5D69-406C-A7E7-1293E01D4919}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MLNet.CodeGenerator.Tests", "src\MLNet.CodeGenerator.Tests\MLNet.CodeGenerator.Tests.csproj", "{AF479EE4-A359-4166-84F0-426CE6B12EC2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -68,9 +72,17 @@ Global
 		{755A31EE-D359-47C2-933F-596DC85E8006}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{755A31EE-D359-47C2-933F-596DC85E8006}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{755A31EE-D359-47C2-933F-596DC85E8006}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AF479EE4-A359-4166-84F0-426CE6B12EC2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AF479EE4-A359-4166-84F0-426CE6B12EC2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AF479EE4-A359-4166-84F0-426CE6B12EC2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AF479EE4-A359-4166-84F0-426CE6B12EC2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{0413A14D-CF5B-428D-8236-3A15C8A63221} = {496D172A-5D69-406C-A7E7-1293E01D4919}
+		{A6404756-D273-4EF0-8818-1D9BED601B8C} = {496D172A-5D69-406C-A7E7-1293E01D4919}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {30A0CFA5-AB6E-4688-9188-D6CA18915C11}

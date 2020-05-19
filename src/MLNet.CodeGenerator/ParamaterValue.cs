@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -52,13 +53,12 @@ namespace MLNet.CodeGenerator
         private ParamaterValue() { }
 
         public static ParamaterValue Create<T>(T value)
-            where T : class
         {
             var pv = new ParamaterValue();
 
             if (value is string)
             {
-                pv.Value = value as string;
+                pv.Value = $"\"{value as string}\"";
                 pv.Type = ParamaterValueType.String;
                 return pv;
             }
@@ -72,7 +72,7 @@ namespace MLNet.CodeGenerator
 
             if (value is float || value is double)
             {
-                pv.Value = value.ToString();
+                pv.Value = $"{Convert.ToString(value)}F";
                 pv.Type = ParamaterValueType.Float;
                 return pv;
             }
@@ -94,7 +94,7 @@ namespace MLNet.CodeGenerator
 
             if (value is IEnumerable<int>)
             {
-                var strs = string.Join(",", (value as IEnumerable<string>).Select(x => x.ToString()));
+                var strs = string.Join(",", (value as IEnumerable<int>).Select(x => x.ToString()));
                 pv.Value = $"new int[]{{{strs}}}";
                 pv.Type = ParamaterValueType.Int32Array;
                 return pv;
@@ -102,7 +102,14 @@ namespace MLNet.CodeGenerator
 
             if (value is IEnumerable<float> || value is IEnumerable<double>)
             {
-                var strs = string.Join(",", (value as IEnumerable<float>).Select(x => $"{x.ToString(CultureInfo.InvariantCulture)}F"));
+                var strList = new List<string>();
+
+                foreach (var val in value as IEnumerable)
+                {
+                    strList.Add($"{Convert.ToString(val)}F");
+                }
+
+                var strs = string.Join(",", strList);
                 pv.Value = $"new float[]{{{strs}}}";
                 pv.Type = ParamaterValueType.FloatArray;
                 return pv;
