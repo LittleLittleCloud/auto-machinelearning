@@ -5,6 +5,9 @@
 using FluentAssertions;
 using System;
 using Xunit;
+using ApprovalTests;
+using ApprovalTests.Namers;
+using ApprovalTests.Reporters;
 
 namespace MLNet.CodeGenerator.Tests
 {
@@ -51,6 +54,8 @@ namespace MLNet.CodeGenerator.Tests
         }
 
         [Fact]
+        [UseApprovalSubdirectory("ApprovalTests")]
+        [UseReporter(typeof(DiffReporter))]
         public void EstimatorChain_should_generate_code()
         {
             var trainer = this.GetTrainerEstimator();
@@ -62,7 +67,7 @@ namespace MLNet.CodeGenerator.Tests
                 transformer,
             };
 
-            estimatorChain.GeneratorCode().Should().Be("shit");
+            Approvals.Verify(estimatorChain.GeneratorCode());
         }
 
         private ParamaterList GetParamaterList()

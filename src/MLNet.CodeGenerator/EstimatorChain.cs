@@ -21,12 +21,12 @@ namespace MLNet.CodeGenerator
             var sb = new StringBuilder();
             sb.AppendLine(this[0].GeneratorCode());
 
-            for (int i = 1; i != this.Count; ++i)
+            for (int i = 1; i != this.Count - 1; ++i)
             {
                 sb.AppendLine($".Append({this[i].GeneratorCode()})");
             }
 
-            sb.Append(";");
+            sb.AppendLine($".Append({this[this.Count - 1].GeneratorCode()});");
 
             var code = sb.ToString();
             return Utils.FormatCode(code);
