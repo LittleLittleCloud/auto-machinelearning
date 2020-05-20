@@ -1,6 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project>
-  <Import Project="Sdk.props" Sdk="Microsoft.DotNet.Arcade.Sdk" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <_Artifact>$(MSBuildThisFileDirectory)artifacts\</_Artifact>
+    <BaseIntermediateOutputPath>$(_Artifact)obj\$(MSBuildProjectName)\</BaseIntermediateOutputPath>
+    <BaseOutputPath Condition=" '$(BaseOutputPath)' == '' ">$(_Artifact)bin\$(MSBuildProjectName)\</BaseOutputPath>
+    <PackageOutputPath>$(_Artifact)\Packages\$(Configuration)\Shipping\</PackageOutputPath>
+    <IsPackable>false</IsPackable>
+
+    <Author>BigMiao</Author>
+    <Owner>BigMiao</Owner>
+
+    <Major>0</Major>
+    <Minor>9</Minor>
+    <Patch>0</Patch>
+    <VersionPrefix>$(Major).$(Minor).$(Patch)</VersionPrefix>
+    <VersionPrefix Condition="'$(BUILDNUMBER)'!=''">$(VersionPrefix).$(BUILDNUMBER)</VersionPrefix>
+    <VersionSuffix Condition="'$(BUILDNUMBER)'==''">dev</VersionSuffix>
+  </PropertyGroup>
 
   <PropertyGroup Condition="'$(CopyrightNetFoundation)' != ''">
     <Copyright>$(CopyrightNetFoundation)</Copyright>
