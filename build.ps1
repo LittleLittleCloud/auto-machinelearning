@@ -34,7 +34,7 @@ function Create-Directory([string[]] $path) {
 Push-Location $PSScriptRoot
 
 $HeaderColor = 'Green'
-
+$BuildNumber = $BuildNumber -replace "['.']",''
 $DotNet = & "$PSScriptRoot\azure-pipelines\Get-Dotnet.ps1"
 $RepoRoot = $PSScriptRoot
 $ArtifactsRoot = Join-Path $RepoRoot 'artifacts'
@@ -87,7 +87,7 @@ try{
 }
 catch{
   Write-Error $error[0]
-  exit $lastexitcode
+  throw $p.ExitCode
 }
 finally {
   Pop-Location
