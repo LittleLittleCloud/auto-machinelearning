@@ -69,7 +69,7 @@ if ($BinaryLog){
 }
 
 if ($Pack){
-  $MsBuildArgs += ' -target:Pack'
+  $MsBuildArgs += ' -target:Build,Pack'
 }
 
 try{
