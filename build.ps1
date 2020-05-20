@@ -83,7 +83,7 @@ try{
 
   if ($Test){
     Write-Host "Start Testing..." $HeaderColor
-    $p = Start-Process $DotNet "test $sln -v n -r $TestResultRoot -l trx --no-build"  -NoNewWindow -Wait -PassThru
+    $p = Start-Process $DotNet "test $sln -v n -r $TestResultRoot -l trx --no-build -c $Configuration"  -NoNewWindow -Wait -PassThru
   }
 }
 catch{
