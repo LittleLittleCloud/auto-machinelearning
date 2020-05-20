@@ -24,7 +24,7 @@ jobs:
         _configuration: Release
   steps:
     # Should only run if not real-signing
-    - script: Build.cmd -Configuration $(_configuration) -Pack -Test -BuildNumbder $(BUILD.BUILDNUMBER) -BinaryLog
+    - script: Build.cmd -Configuration $(_configuration) -Pack -Test -BuildNumber $(BUILD.BUILDNUMBER) -BinaryLog
       displayName: Build and Test
       condition: succeeded()
     
