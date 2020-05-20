@@ -17,7 +17,7 @@
     <Minor>9</Minor>
     <Patch>0</Patch>
     <VersionPrefix>$(Major).$(Minor).$(Patch)</VersionPrefix>
-    <VersionPrefix Condition="'$(BUILDNUMBER)'!=''">$(VersionPrefix).$(BUILDNUMBER)</VersionPrefix>
+    <VersionSuffix Condition="'$(BUILDNUMBER)'!=''">$(BUILDNUMBER)</VersionSuffix>
     <VersionSuffix Condition="'$(BUILDNUMBER)'==''">dev</VersionSuffix>
   </PropertyGroup>
 
