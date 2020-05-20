@@ -23,8 +23,12 @@ jobs:
       Release:
         _configuration: Release
   steps:
+    - script: init.cmd
+      displayName: initialize
+      condition: succeeded()
+
     # Should only run if not real-signing
-    - script: eng\common\CIBuild.cmd -configuration $(_configuration) -prepareMachine -warnAsError 0
+    - script: Build.cmd -Configuration $(_configuration) -Pack -Test -BuildNumber $(BUILD.BUILDNUMBER) -BinaryLog
       displayName: Build and Test
       condition: succeeded()
     
@@ -39,8 +43,9 @@ jobs:
 
     - task: PublishTestResults@2
       inputs:
-        testRunner: 'xUnit'
-        testResultsFiles: '**/*.xml' 
+        testResultsFormat: 'VSTest'
+        testRunner: 'VSTest'
+        testResultsFiles: '**/*.trx' 
         searchFolder: '$(Build.SourcesDirectory)\artifacts\TestResults\$(_configuration)'
         configuration: '$(_configuration)'
         publishRunAttachments: true
@@ -50,16 +55,7 @@ jobs:
 
     - task: PublishBuildArtifacts@1
       inputs:
-        PathtoPublish: '$(Build.SourcesDirectory)\artifacts\bin'
-        ArtifactName: '$(_configuration) bin folder'
-        publishLocation: Container
-      displayName: Publish bin directory
-      continueOnError: true
-      condition: failed()
-
-    - task: PublishBuildArtifacts@1
-      inputs:
-        PathtoPublish: '$(Build.SourcesDirectory)\artifacts\packages\$(_configuration)'
+        PathtoPublish: '$(Build.SourcesDirectory)\artifacts\Packages\$(_configuration)'
         ArtifactName: '$(_configuration) packages folder'
         publishLocation: Container
       displayName: Publish packages folder
