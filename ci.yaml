@@ -26,7 +26,7 @@ jobs:
     - script: init.cmd
       displayName: initialize
       condition: succeeded()
-      
+
     # Should only run if not real-signing
     - script: Build.cmd -Configuration $(_configuration) -Pack -Test -BuildNumber $(BUILD.BUILDNUMBER) -BinaryLog
       displayName: Build and Test
@@ -43,7 +43,8 @@ jobs:
 
     - task: PublishTestResults@2
       inputs:
-        testRunner: 'xUnit'
+        testResultsFormat: 'VSTest'
+        testRunner: 'VSTest'
         testResultsFiles: '**/*.trx' 
         searchFolder: '$(Build.SourcesDirectory)\artifacts\TestResults\$(_configuration)'
         configuration: '$(_configuration)'
