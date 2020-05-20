@@ -23,6 +23,10 @@ jobs:
       Release:
         _configuration: Release
   steps:
+    - script: init.cmd
+      displayName: initialize
+      condition: succeeded()
+      
     # Should only run if not real-signing
     - script: Build.cmd -Configuration $(_configuration) -Pack -Test -BuildNumber $(BUILD.BUILDNUMBER) -BinaryLog
       displayName: Build and Test
