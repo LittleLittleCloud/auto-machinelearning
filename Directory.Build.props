@@ -8,6 +8,8 @@
     <PackageOutputPath>$(_Artifact)\Packages\$(Configuration)\Shipping\</PackageOutputPath>
     <IsPackable>false</IsPackable>
 
+    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
+    <Deterministic>False</Deterministic>
     <Author>BigMiao</Author>
     <Owner>BigMiao</Owner>
 
