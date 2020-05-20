@@ -35,7 +35,6 @@ Push-Location $PSScriptRoot
 
 $HeaderColor = 'Green'
 $BuildNumber = $BuildNumber -replace "['.']",''
-    Write-Host "BuildNumber... $BuildNumber" -ForegroundColor $HeaderColor
 $DotNet = & "$PSScriptRoot\azure-pipelines\Get-Dotnet.ps1"
 $RepoRoot = $PSScriptRoot
 $ArtifactsRoot = Join-Path $RepoRoot 'artifacts'

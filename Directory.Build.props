@@ -8,8 +8,6 @@
     <PackageOutputPath>$(_Artifact)\Packages\$(Configuration)\Shipping\</PackageOutputPath>
     <IsPackable>false</IsPackable>
 
-    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
-    <Deterministic>False</Deterministic>
     <Author>BigMiao</Author>
     <Owner>BigMiao</Owner>
 
@@ -17,8 +15,9 @@
     <Minor>9</Minor>
     <Patch>0</Patch>
     <VersionPrefix>$(Major).$(Minor).$(Patch)</VersionPrefix>
-    <VersionSuffix Condition="'$(BUILDNUMBER)'!=''">$(BUILDNUMBER)</VersionSuffix>
+    <VersionSuffix Condition="'$(BUILDNUMBER)'!=''">v$(BUILDNUMBER)</VersionSuffix>
     <VersionSuffix Condition="'$(BUILDNUMBER)'==''">dev</VersionSuffix>
+    <VersionSuffix Condition="'$(BUILDNUMBER)'=='release'"></VersionSuffix>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(CopyrightNetFoundation)' != ''">
