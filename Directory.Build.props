@@ -7,6 +7,7 @@
     <BaseOutputPath Condition=" '$(BaseOutputPath)' == '' ">$(_Artifact)bin\$(MSBuildProjectName)\</BaseOutputPath>
     <PackageOutputPath>$(_Artifact)\Packages\$(Configuration)\Shipping\</PackageOutputPath>
     <IsPackable>false</IsPackable>
+    <AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)opensource.snk</AssemblyOriginatorKeyFile>
 
     <Author>BigMiao</Author>
     <Owner>BigMiao</Owner>
