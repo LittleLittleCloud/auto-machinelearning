@@ -8,7 +8,7 @@
             "**MLNet.Sweeper.csproj",
             "**MLNet.Expert.csproj"
           ],
-          "src": "./src"
+          "src": "../src"
         }
       ],
       "dest": "api/",
@@ -28,7 +28,7 @@
         "files": [
           "articles/**/*.md",
           "toc.yml",
-          "*.md"
+          "index.md"
         ]
       }
     ],
@@ -39,7 +39,7 @@
         ]
       }
     ],
-    "dest": "docs",
+    "dest": "../docs",
     "globalMetadataFiles": [],
     "fileMetadataFiles": [],
     "template": [

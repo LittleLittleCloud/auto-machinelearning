@@ -21,7 +21,9 @@ Param (
   [Parameter()]
   [switch]$Test,
   [Parameter()]
-  [string]$BuildNumber
+  [string]$BuildNumber,
+  [Parameter()]
+  [switch]$BuildDoc
 )
 
 
@@ -31,7 +33,6 @@ function Create-Directory([string[]] $path) {
   }
 }
 
-Push-Location $PSScriptRoot
 
 $HeaderColor = 'Green'
 $BuildNumber = $BuildNumber -replace "['.']",''
@@ -49,6 +50,20 @@ if ($Clean){
   
   exit $lastexitcode
 }
+
+
+if ($BuildDoc){
+  Write-Host "Start Build Doc..." $HeaderColor
+  $p = Start-Process $DotNet "restore .\site\GenerateSite.proj " -NoNewWindow -Wait -PassThru
+  $p = Start-Process $DotNet "msbuild .\site\GenerateSite.proj /t:BuildDocFX" -NoNewWindow -Wait -PassThru
+
+  if ($p.ExitCode -ne 0){
+    throw "Build doc task fail"
+  }
+
+  exit $p.ExitCode
+}
+
 
 Create-Directory $LogDir
 
@@ -72,6 +87,10 @@ if ($Pack){
   $MsBuildArgs += ' -target:Build,Pack'
 }
 
+
+
+Push-Location $PSScriptRoot
+
 try{
   Write-Host "MsBuildArgs $MsBuildArgs" -ForegroundColor $HeaderColor
   $p = Start-Process $DotNet ('msbuild','-restore', $MsBuildArgs, "-property:BUILDNUMBER=$BuildNumber") -NoNewWindow -Wait -PassThru
@@ -84,6 +103,7 @@ try{
     Write-Host "Start Testing..." $HeaderColor
     $p = Start-Process $DotNet "test $sln -v n -r $TestResultRoot -l trx --no-build -c $Configuration"  -NoNewWindow -Wait -PassThru
   }
+
 }
 catch{
   Write-Error $error[0]
