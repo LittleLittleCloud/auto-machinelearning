@@ -54,8 +54,8 @@ if ($Clean){
 
 if ($BuildDoc){
   Write-Host "Start Build Doc..." $HeaderColor
-  $p = Start-Process $DotNet "restore .\GenerateSite.proj " -NoNewWindow -Wait -PassThru
-  $p = Start-Process $DotNet "msbuild .\GenerateSite.proj /t:BuildDocFX" -NoNewWindow -Wait -PassThru
+  $p = Start-Process $DotNet "restore .\site\GenerateSite.proj " -NoNewWindow -Wait -PassThru
+  $p = Start-Process $DotNet "msbuild .\site\GenerateSite.proj /t:BuildDocFX" -NoNewWindow -Wait -PassThru
 
   if ($p.ExitCode -ne 0){
     throw "Build doc task fail"
