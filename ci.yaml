@@ -27,10 +27,14 @@ jobs:
       displayName: initialize
       condition: succeeded()
 
-    # Should only run if not real-signing
     - script: Build.cmd -Configuration $(_configuration) -Pack -Test -BuildNumber $(BUILD.BUILDNUMBER) -BinaryLog
       displayName: Build and Test
       condition: succeeded()
+    
+    - script: Build.cmd -BuildDoc
+      displayName: Build Doc site
+      continueOnError: true
+      condition: and(succeeded(), eq(variables['_configuration'], 'Release'))
     
     # Should always run
     - task: PublishBuildArtifacts@1
@@ -61,3 +65,13 @@ jobs:
       displayName: Publish packages folder
       continueOnError: true
       condition: eq(variables['_configuration'], 'Release')
+
+    - task: PublishBuildArtifacts@1
+      inputs:
+        PathtoPublish: '$(Build.SourcesDirectory)\docs'
+        ArtifactName: 'doc site'
+        publishLocation: Container
+      displayName: Publish doc folder
+      continueOnError: true
+      condition: and(succeeded(), eq(variables['_configuration'], 'Release'))
+
