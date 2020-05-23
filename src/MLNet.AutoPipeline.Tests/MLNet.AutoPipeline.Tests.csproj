@@ -18,10 +18,4 @@
     <ProjectReference Include="..\MLNet.Expert\MLNet.Expert.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <None Update="TestData\iris.csv">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-
 </Project>

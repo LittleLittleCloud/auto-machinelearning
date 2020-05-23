@@ -23,7 +23,7 @@ namespace MLNet.AutoPipeline
             var option = assem.CreateInstance(typeof(TOption).FullName) as TOption;
 
             // set up fields
-            var fields = this.GetType().GetFields(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance);
+            var fields = this.GetType().GetFields(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic);
             foreach (var field in fields)
             {
                 var value = field.GetValue(this);
@@ -50,7 +50,7 @@ namespace MLNet.AutoPipeline
 
         private Dictionary<string, ParameterAttribute> GetParameterAttributes()
         {
-            var paramaters = this.GetType().GetFields()
+            var paramaters = this.GetType().GetFields(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic)
                      .Where(x => Attribute.GetCustomAttribute(x, typeof(ParameterAttribute)) != null);
 
             var paramatersDictionary = new Dictionary<string, ParameterAttribute>();

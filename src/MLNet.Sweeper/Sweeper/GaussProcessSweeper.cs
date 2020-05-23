@@ -124,8 +124,6 @@ namespace MLNet.Sweeper
                         bestCandidate = this._rand.Next(0, ei.len);
                     }
 
-                    Console.WriteLine($"Best candidate: {bestCandidate}");
-                    Console.WriteLine($"Best candidate ei: {(double)np.max(ei)}");
                     this._generated.Add(candidates[bestCandidate]);
                     this.Current = candidates[bestCandidate];
                     yield return candidates[bestCandidate];
@@ -184,7 +182,16 @@ namespace MLNet.Sweeper
                 if (valueGenerator is INumericValueGenerator)
                 {
                     var norm = (valueGenerator as INumericValueGenerator).NormalizeValue(value);
-                    var next = Utils.NormCDF(1e-2 * Utils.Normal() + norm);
+                    var next = 1e-2 * Utils.Normal() + norm;
+                    while (true)
+                    {
+                        if (next >0 || next < 1)
+                        {
+                            break;
+                        }
+
+                        next = 1e-2 * Utils.Normal() + norm;
+                    }
 
                     _candidates[valueGenerator.ID] = valueGenerator.CreateFromNormalized(next);
                 }

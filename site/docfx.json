@@ -1,0 +1,56 @@
+{
+  "metadata": [
+    {
+      "src": [
+        {
+          "files": [
+            "**MLNet.AutoPipeline.csproj",
+            "**MLNet.Sweeper.csproj",
+            "**MLNet.Expert.csproj",
+            "**MLNet.CodeGenerator.csproj"
+          ],
+          "src": "../src"
+        }
+      ],
+      "dest": "api/",
+      "disableGitFeatures": false,
+      "disableDefaultFilter": false
+    }
+  ],
+  "build": {
+    "content": [
+      {
+        "files": [
+          "api/**.yml",
+          "api/index.md"
+        ]
+      },
+      {
+        "files": [
+          "articles/**/*.md",
+          "toc.yml",
+          "index.md"
+        ]
+      }
+    ],
+    "resource": [
+      {
+        "files": [
+          "images/**"
+        ]
+      }
+    ],
+    "dest": "../docs",
+    "globalMetadataFiles": [],
+    "fileMetadataFiles": [],
+    "template": [
+      "default"
+    ],
+    "postProcessors": [],
+    "markdownEngineName": "markdig",
+    "noLangKeyword": false,
+    "keepFileLink": false,
+    "cleanupCacheHistory": true,
+    "disableGitFeatures": false
+  }
+}

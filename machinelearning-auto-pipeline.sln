@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29430.225
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.1145
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MLNet.AutoPipeline", "src\MLNet.AutoPipeline\MLNet.AutoPipeline.csproj", "{4F671A15-42C6-4D3C-8084-2CB57BC24700}"
 EndProject
@@ -28,7 +28,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MLNet.CodeGenerator", "src\
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{496D172A-5D69-406C-A7E7-1293E01D4919}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MLNet.CodeGenerator.Tests", "src\MLNet.CodeGenerator.Tests\MLNet.CodeGenerator.Tests.csproj", "{AF479EE4-A359-4166-84F0-426CE6B12EC2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MLNet.CodeGenerator.Tests", "src\MLNet.CodeGenerator.Tests\MLNet.CodeGenerator.Tests.csproj", "{AF479EE4-A359-4166-84F0-426CE6B12EC2}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Iris", "examples\Iris\Iris.csproj", "{A2C19543-8F19-4A19-89F4-94E38156B532}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -76,6 +78,10 @@ Global
 		{AF479EE4-A359-4166-84F0-426CE6B12EC2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AF479EE4-A359-4166-84F0-426CE6B12EC2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AF479EE4-A359-4166-84F0-426CE6B12EC2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A2C19543-8F19-4A19-89F4-94E38156B532}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A2C19543-8F19-4A19-89F4-94E38156B532}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A2C19543-8F19-4A19-89F4-94E38156B532}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A2C19543-8F19-4A19-89F4-94E38156B532}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -83,6 +89,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{0413A14D-CF5B-428D-8236-3A15C8A63221} = {496D172A-5D69-406C-A7E7-1293E01D4919}
 		{A6404756-D273-4EF0-8818-1D9BED601B8C} = {496D172A-5D69-406C-A7E7-1293E01D4919}
+		{A2C19543-8F19-4A19-89F4-94E38156B532} = {496D172A-5D69-406C-A7E7-1293E01D4919}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {30A0CFA5-AB6E-4688-9188-D6CA18915C11}

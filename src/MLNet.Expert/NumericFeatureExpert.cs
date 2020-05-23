@@ -14,7 +14,7 @@ namespace MLNet.Expert
     /// <summary>
     /// Expert for numeric feature.
     /// </summary>
-    public class NumericFeatureExpert : IExpert
+    public class NumericFeatureExpert : ITransformExpert
     {
         private MLContext context;
         private Option option;

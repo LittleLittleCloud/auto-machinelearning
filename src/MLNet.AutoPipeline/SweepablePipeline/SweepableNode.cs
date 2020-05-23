@@ -36,6 +36,8 @@ namespace MLNet.AutoPipeline
             }
         }
 
+
+
         public string EstimatorName { get; private set; }
 
         public TransformerScope Scope => this._scope;

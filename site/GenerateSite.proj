@@ -1,0 +1,24 @@
+  <Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+    </PropertyGroup>
+    <ItemGroup>
+        <PackageReference Include="docfx.console" Version="2.52.0">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+    </ItemGroup>
+
+    <Target Name="BuildDocFX">
+        <PropertyGroup>
+            <DocFXCMD>$(USERPROFILE)\.nuget\packages\docfx.console\2.52.0\tools\docfx.exe</DocFXCMD>
+        </PropertyGroup>
+
+        <Message Text="Start building site" Importance="high" />
+        <Exec Command="$(DocFXCMD) docfx.json" />
+
+    </Target>
+
+  </Project>
+  
