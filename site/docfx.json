@@ -6,7 +6,8 @@
           "files": [
             "**MLNet.AutoPipeline.csproj",
             "**MLNet.Sweeper.csproj",
-            "**MLNet.Expert.csproj"
+            "**MLNet.Expert.csproj",
+            "**MLNet.CodeGenerator.csproj"
           ],
           "src": "../src"
         }

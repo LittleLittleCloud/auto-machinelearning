@@ -4,7 +4,7 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <RootNamespace>MLNet.AutoPipeline</RootNamespace>
     <IsPackable>true</IsPackable>
-    <SignAssembly>True</SignAssembly>
+    <SignAssembly>true</SignAssembly>
   </PropertyGroup>
 
   <ItemGroup>
