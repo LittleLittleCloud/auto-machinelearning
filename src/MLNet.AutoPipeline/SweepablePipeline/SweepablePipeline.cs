@@ -91,18 +91,7 @@ namespace MLNet.AutoPipeline
             {
                 foreach (var parameters in this.Sweeper.ProposeSweeps(maximum))
                 {
-                    var pipeline = new EstimatorChain<ITransformer>();
-                    for (int i = 0; i < this.SingleNodeBuilders.Count; i++)
-                    {
-                        if (this.SingleNodeBuilders[i] == UnsweepableNode<ITransformer>.EmptyNode)
-                        {
-                            continue;
-                        }
-
-                        pipeline = pipeline.Append(this.SingleNodeBuilders[i].BuildEstimator(parameters), this.SingleNodeBuilders[i].Scope);
-                    }
-
-                    yield return pipeline;
+                    yield return this.BuildFromParameterSet(parameters);
                 }
             }
         }
@@ -119,6 +108,22 @@ namespace MLNet.AutoPipeline
             var autoEstimator = new SweepableNode<TNewTrains, TOption>(estimatorBuilder, optionBuilder, scope);
             this.Append(autoEstimator);
             return this;
+        }
+
+        internal EstimatorChain<ITransformer> BuildFromParameterSet(ParameterSet parameters)
+        {
+            var pipeline = new EstimatorChain<ITransformer>();
+            for (int i = 0; i < this.SingleNodeBuilders.Count; i++)
+            {
+                if (this.SingleNodeBuilders[i] == UnsweepableNode<ITransformer>.EmptyNode)
+                {
+                    continue;
+                }
+
+                pipeline = pipeline.Append(this.SingleNodeBuilders[i].BuildEstimator(parameters), this.SingleNodeBuilders[i].Scope);
+            }
+
+            return pipeline;
         }
     }
 }
