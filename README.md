@@ -10,7 +10,7 @@
 
 First, add `MLNet.AutoPipeline` and `MLNet.Expert` to your project. You can get those packages from our [nightly build](#Installation).
 
-```csharp
+```xml
 <ItemGroup>
   <PackageReference Include="MLNet.AutoPipeline" />
   <PackageReference Include="MLNet.Expert" />
