@@ -8,7 +8,7 @@
 
 ## Quick Start
 
-First, add `MLNet.AutoPipeline` and `MLNet.Expert` to your project. You can get those packages from our [nightly build](##Installation).
+First, add `MLNet.AutoPipeline` and `MLNet.Expert` to your project. You can get those packages from our [nightly build](#Installation).
 
 ```csharp
 <ItemGroup>
