@@ -4,6 +4,7 @@
 
 using Microsoft.ML;
 using Microsoft.ML.Data;
+using MLNet.AutoPipeline.Metric;
 using MLNet.Sweeper;
 using System;
 using System.Collections.Generic;
@@ -19,60 +20,72 @@ namespace MLNet.AutoPipeline.Experiment
         /// <summary>
         /// Parameters used in the current training round.
         /// </summary>
-        public ParameterSet Parameters { get; private set; }
+        public ParameterSet ParameterSet { get; private set; }
 
         /// <summary>
         /// Training time in seconds.
         /// </summary>
-        public float TrainingTime { get; private set; }
+        public double TrainingTime { get; private set; }
 
         /// <summary>
-        /// Training score.
+        /// Score metric name and value on test dataset, this value is set by <see cref="Experiment.Option.ScoreMetric"/>.
         /// </summary>
-        public double Score { get; private set; }
+        public Metric ScoreMetric { get; private set; }
+
+        /// <summary>
+        /// Score metric name and value on validate dataset, this value is set by <see cref="Experiment.Option.ScoreMetric"/>.
+        /// </summary>
+        public Metric ValidateScoreMetric { get; private set; }
+
+        /// <summary>
+        /// Evaluated metrics name and value in each sweeping, this value is set by <see cref="Experiment.Option.Metrics"/>.
+        /// </summary>
+        public IEnumerable<Metric> EvaluateMetrics { get; private set; }
 
         /// <summary>
         /// Indicate optimize direction.
         /// </summary>
-        public bool IsMaximizing { get; private set; }
+        public bool IsMetricMaximizing { get; private set; }
 
         /// <summary>
         /// <see cref="ISweepablePipeline"/> used in the current training round.
         /// </summary>
         public ISweepablePipeline SweepablePipeline { get; private set; }
 
-        public IterationInfo(ISweepablePipeline sweepablePipeline, ParameterSet parameters, float time, double score, bool isMaximizing)
+        public IterationInfo(ISweepablePipeline sweepablePipeline, ParameterSet parameters, double time, Metric score, Metric validateScore, IEnumerable<Metric> metrics, bool isMaximizing)
         {
             this.SweepablePipeline = sweepablePipeline;
-            this.Parameters = parameters;
+            this.ParameterSet = parameters;
             this.TrainingTime = time;
-            this.Score = score;
-            this.IsMaximizing = isMaximizing;
+            this.ScoreMetric = score;
+            this.ValidateScoreMetric = validateScore;
+            this.EvaluateMetrics = metrics;
+            this.IsMetricMaximizing = isMaximizing;
         }
 
         /// <summary>
-        /// Restore untrained pipeline from <see cref="Parameters"/>.
+        /// Restore untrained pipeline from <see cref="ParameterSet"/>.
         /// </summary>
         /// <returns></returns>
         public EstimatorChain<ITransformer> BuildPipeline()
         {
-            return (this.SweepablePipeline as SweepablePipeline)?.BuildFromParameterSet(this.Parameters);
+            return (this.SweepablePipeline as SweepablePipeline)?.BuildFromParameterSet(this.ParameterSet);
         }
 
         public int CompareTo(IterationInfo obj)
         {
-            if (obj is null)
+            if (obj is null || obj?.ScoreMetric.Name != this.ScoreMetric.Name)
             {
                 return 1;
             }
 
-            if (this.IsMaximizing)
+            if (this.IsMetricMaximizing)
             {
-                return this.Score.CompareTo(obj.Score);
+                return this.ScoreMetric.Score.CompareTo(obj.ScoreMetric.Score);
             }
             else
             {
-                return obj.Score.CompareTo(this.Score);
+                return obj.ScoreMetric.Score.CompareTo(this.ScoreMetric.Score);
             }
         }
 
@@ -95,5 +108,19 @@ namespace MLNet.AutoPipeline.Experiment
         {
             return info1.CompareTo(info2) <= 0;
         }
+
+        public class Metric
+        {
+            public Metric(string name, double score)
+            {
+                this.Name = name;
+                this.Score = score;
+            }
+
+            public string Name { get; set; }
+
+            public double Score { get; set; }
+        }
     }
+
 }

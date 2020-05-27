@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace MLNet.Sweeper
 {
-    public interface ISweeper
+    public interface ISweeper : ICloneable
     {
         /// <summary>
         /// Returns between 0 and maxSweeps configurations to run.

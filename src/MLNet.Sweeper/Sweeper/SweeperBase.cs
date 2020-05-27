@@ -77,5 +77,7 @@ namespace MLNet.Sweeper
         {
             this._history.Add(input);
         }
+
+        public abstract object Clone();
     }
 }

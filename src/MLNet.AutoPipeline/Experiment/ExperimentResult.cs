@@ -1,6 +1,7 @@
 ﻿using Microsoft.ML;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace MLNet.AutoPipeline.Experiment
@@ -12,8 +13,13 @@ namespace MLNet.AutoPipeline.Experiment
     {
         private IList<IterationInfo> runHistories;
         private IterationInfo bestTrainingRound;
+        private static object _lock = new Object();
 
         public ITransformer BestModel { get; private set; }
+
+        public IterationInfo BestIteration { get => this.bestTrainingRound; }
+
+        public double TrainingTime { get => this.runHistories.Select(x => x.TrainingTime).Sum(); }
 
         public ExperimentResult()
         {
@@ -31,12 +37,15 @@ namespace MLNet.AutoPipeline.Experiment
 
         internal void AddRunHistory(IterationInfo info, ITransformer model)
         {
-            this.runHistories.Add(info);
-
-            if (this.bestTrainingRound is null || info > this.bestTrainingRound)
+            lock (ExperimentResult._lock)
             {
-                this.bestTrainingRound = info;
-                this.BestModel = model;
+                this.runHistories.Add(info);
+
+                if (this.bestTrainingRound is null || info > this.bestTrainingRound)
+                {
+                    this.bestTrainingRound = info;
+                    this.BestModel = model;
+                }
             }
         }
     }

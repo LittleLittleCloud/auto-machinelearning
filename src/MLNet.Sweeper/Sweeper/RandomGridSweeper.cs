@@ -24,6 +24,11 @@ namespace MLNet.Sweeper
             this._option = options;
         }
 
+        public override object Clone()
+        {
+            return new RandomGridSweeper(this._option);
+        }
+
         protected override ParameterSet CreateParamSet()
         {
             return new ParameterSet(this.SweepableParamaters.Select(sweepParameter => sweepParameter[this._rand.Next(sweepParameter.Count)]));

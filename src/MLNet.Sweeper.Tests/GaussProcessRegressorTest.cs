@@ -8,6 +8,7 @@ using Numpy;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace MLNet.Sweeper.Tests
@@ -35,6 +36,19 @@ namespace MLNet.Sweeper.Tests
             var GP = new GaussProcessRegressor(option);
             var res = GP.Fit(X_train, y_train).Transform(np.array<double>(new double[] { 10 }).reshape(-1, 1)).Item1.reshape(-1,1);
             ((double)res[0, 0]).Should().BeApproximately(Math.Sin(10), 0.1);
+        }
+
+        [Fact]
+        public async void test()
+        {
+            foreach(var i in new int[] { 1, 2, 3, 4 })
+            {
+                await Task.Run(() =>
+                {
+                    var x_train = np.arange(0, 100, 1);
+                    np.sin(x_train);
+                }).ConfigureAwait(true);
+            }
         }
     }
 }

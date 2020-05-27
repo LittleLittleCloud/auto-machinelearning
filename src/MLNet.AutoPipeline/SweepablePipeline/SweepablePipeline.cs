@@ -70,7 +70,7 @@ namespace MLNet.AutoPipeline
             this.Sweeper.SweepableParamaters = this.ValueGenerators;
         }
 
-        public IEnumerable<EstimatorChain<ITransformer>> Sweeping(int maximum)
+        public IEnumerable<SweepingInfo> Sweeping(int maximum)
         {
             if (this.ValueGenerators.Count == 0)
             {
@@ -85,13 +85,13 @@ namespace MLNet.AutoPipeline
                     pipeline = pipeline.Append(this.SingleNodeBuilders[i].BuildEstimator(), this.SingleNodeBuilders[i].Scope);
                 }
 
-                yield return pipeline;
+                yield return new SweepingInfo(pipeline, null);
             }
             else
             {
                 foreach (var parameters in this.Sweeper.ProposeSweeps(maximum))
                 {
-                    yield return this.BuildFromParameterSet(parameters);
+                    yield return new SweepingInfo(this.BuildFromParameterSet(parameters), parameters);
                 }
             }
         }
