@@ -35,8 +35,9 @@ namespace Movie_Recommendation
             Console.WriteLine(pipelines.Summary());
 
             RunResult bestHistory = null;
-            foreach (var pipeline in pipelines.Sweeping(100))
+            foreach (var sweepingInfo in pipelines.Sweeping(100))
             {
+                var pipeline = sweepingInfo.Pipeline;
                 var eval = pipeline.Fit(train_data).Transform(test_data);
                 var metrics = context.Regression.Evaluate(eval, "rating", "Score");
                 Console.WriteLine(gpSweeper.Current.ToString());
