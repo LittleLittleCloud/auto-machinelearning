@@ -42,14 +42,14 @@ var experimentOption = new Experiment.Option()
 };
 
 var experiment = new Experiment(context, estimatorChain, experimentOption);
-var result = await experiment.TrainAsync(split.TrainSet, split.TestSet); // train experiment.
+var result = await experiment.TrainAsync(split.TrainSet); // train experiment.
 ```
 
 The training result is saved in `result`, which includes best model, best hyperparameter and other necessary informations.
 ```csharp
 var bestModel = result.BestModel;
 context.Model.Save(bestModel, dataset.Schema, "bestmodel.zip");
-Console.WriteLine($"best score: {result.BestIteration.ScoreMetric.Score}");
+Console.WriteLine($"best validate score: {result.BestIteration.ScoreMetric.Score}");
 Console.WriteLine($"training time: {result.TrainingTime}");
 ```
 

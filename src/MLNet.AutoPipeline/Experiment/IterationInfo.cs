@@ -28,14 +28,9 @@ namespace MLNet.AutoPipeline.Experiment
         public double TrainingTime { get; private set; }
 
         /// <summary>
-        /// Score metric name and value on test dataset, this value is set by <see cref="Experiment.Option.ScoreMetric"/>.
-        /// </summary>
-        public Metric ScoreMetric { get; private set; }
-
-        /// <summary>
         /// Score metric name and value on validate dataset, this value is set by <see cref="Experiment.Option.ScoreMetric"/>.
         /// </summary>
-        public Metric ValidateScoreMetric { get; private set; }
+        public Metric ScoreMetric { get; private set; }
 
         /// <summary>
         /// Evaluated metrics name and value in each sweeping, this value is set by <see cref="Experiment.Option.Metrics"/>.
@@ -52,13 +47,12 @@ namespace MLNet.AutoPipeline.Experiment
         /// </summary>
         public ISweepablePipeline SweepablePipeline { get; private set; }
 
-        public IterationInfo(ISweepablePipeline sweepablePipeline, ParameterSet parameters, double time, Metric score, Metric validateScore, IEnumerable<Metric> metrics, bool isMaximizing)
+        public IterationInfo(ISweepablePipeline sweepablePipeline, ParameterSet parameters, double time, Metric score, IEnumerable<Metric> metrics, bool isMaximizing)
         {
             this.SweepablePipeline = sweepablePipeline;
             this.ParameterSet = parameters;
             this.TrainingTime = time;
             this.ScoreMetric = score;
-            this.ValidateScoreMetric = validateScore;
             this.EvaluateMetrics = metrics;
             this.IsMetricMaximizing = isMaximizing;
         }

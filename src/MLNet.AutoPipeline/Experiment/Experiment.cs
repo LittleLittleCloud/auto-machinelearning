@@ -36,15 +36,14 @@ namespace MLNet.AutoPipeline.Experiment
         }
 
         /// <summary>
-        /// Train experiment using train-valudate-test split.
+        /// Train experiment using <paramref name="train"/> and validate it on <paramref name="validate"/>.
         /// </summary>
         /// <param name="train">train dataset.</param>
         /// <param name="validate">validate dataset. this dataset is only used for hypeparameter optimization.</param>
-        /// <param name="test">test dataset, this dataset is used to score after training.</param>
         /// <param name="reporter">train-progress reporter. default is null.</param>
         /// <param name="ct">cancelation tokem, default is <see cref="CancellationToken.None"/>.</param>
         /// <returns>experiment result.</returns>
-        public async Task<ExperimentResult> TrainAsync(IDataView train, IDataView validate, IDataView test, IProgress<IterationInfo> reporter = null, CancellationToken ct = default)
+        public async Task<ExperimentResult> TrainAsync(IDataView train, IDataView validate, IProgress<IterationInfo> reporter = null, CancellationToken ct = default)
         {
             var experimentResult = new ExperimentResult();
 
@@ -68,7 +67,6 @@ namespace MLNet.AutoPipeline.Experiment
                         // train
                         var model = pipeline.Fit(train);
                         var val_eval = model.Transform(validate);
-                        var test_eval = model.Transform(test);
                         stopWatch.Stop();
 
                         // evaluate
@@ -81,9 +79,8 @@ namespace MLNet.AutoPipeline.Experiment
 
                         // score
                         var validateScoreMetric = new IterationInfo.Metric(this.option.ScoreMetric.Name, this.option.ScoreMetric.Score(this.context, val_eval, this.option.Label));
-                        var testScoreMetric = new IterationInfo.Metric(this.option.ScoreMetric.Name, this.option.ScoreMetric.Score(this.context, test_eval, this.option.Label));
 
-                        var iterationInfo = new IterationInfo(sweepablePipeline, sweepingInfo.Parameters, stopWatch.Elapsed.TotalSeconds, testScoreMetric, validateScoreMetric, evaluateMetrics, this.option.ScoreMetric.IsMaximizing);
+                        var iterationInfo = new IterationInfo(sweepablePipeline, sweepingInfo.Parameters, stopWatch.Elapsed.TotalSeconds, validateScoreMetric, evaluateMetrics, this.option.ScoreMetric.IsMaximizing);
 
                         // update sweeper
                         var runHistory = new RunResult(sweepingInfo.Parameters, validateScoreMetric.Score, iterationInfo.IsMetricMaximizing);
@@ -100,15 +97,14 @@ namespace MLNet.AutoPipeline.Experiment
         }
 
         /// <summary>
-        /// Train experiment using train-test split, during training, <paramref name="train"/> will be split into train and validate dataset using <paramref name="validateFraction"/>.
+        /// Train experiment using train-validate split, during training, <paramref name="train"/> will be split into train and validate dataset using <paramref name="validateFraction"/>.
         /// </summary>
         /// <param name="train">train dataset.</param>
-        /// <param name="test">test dataset.</param>
         /// <param name="validateFraction">fraction of data used from <paramref name="train"/> to validate training, default is 0.3f.</param>
         /// <param name="reporter">train-progress reporter. default is null.</param>
         /// <param name="ct">cancelation tokem, default is <see cref="CancellationToken.None"/>.</param>
         /// <returns>experiment result.</returns>
-        public async Task<ExperimentResult> TrainAsync(IDataView train, IDataView test, float validateFraction = 0.3f, IProgress<IterationInfo> reporter = null, CancellationToken ct = default)
+        public async Task<ExperimentResult> TrainAsync(IDataView train, float validateFraction = 0.3f, IProgress<IterationInfo> reporter = null, CancellationToken ct = default)
         {
             if (validateFraction <= 0 || validateFraction >= 1)
             {
@@ -117,7 +113,7 @@ namespace MLNet.AutoPipeline.Experiment
 
             var split = this.context.Data.TrainTestSplit(train, validateFraction);
 
-            return await this.TrainAsync(split.TrainSet, split.TestSet, test, reporter, ct);
+            return await this.TrainAsync(split.TrainSet, split.TestSet, reporter, ct);
         }
 
         public class Option

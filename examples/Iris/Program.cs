@@ -53,12 +53,15 @@ namespace Iris
 
             var reporter = new Reporter();
 
-            var result = await experiment.TrainAsync(split.TrainSet, split.TestSet, reporter: reporter);
+            var result = await experiment.TrainAsync(split.TrainSet, reporter: reporter);
 
             var bestModel = result.BestModel;
-            context.Model.Save(bestModel, dataset.Schema, "bestmodel.zip");
-            Console.WriteLine($"best score: {result.BestIteration.ScoreMetric.Score}");
-            Console.WriteLine($"training time: {result.TrainingTime}");
+
+            // evaluate on test
+            var eval = bestModel.Transform(split.TestSet);
+            var metric = context.MulticlassClassification.Evaluate(eval, "species");
+            Console.WriteLine($"best model validate score: {result.BestIteration.ScoreMetric.Score}");
+            Console.WriteLine($"best model test score: {metric.MicroAccuracy}");
         }
 
         private class Iris
@@ -85,7 +88,7 @@ namespace Iris
             {
                 Console.WriteLine(value.SweepablePipeline.Summary());
                 Console.WriteLine(value.ParameterSet.ToString());
-                Console.WriteLine($"validate score: {value.ValidateScoreMetric.Name}: {value.ValidateScoreMetric.Score}");
+                Console.WriteLine($"validate score: {value.ScoreMetric.Name}: {value.ScoreMetric.Score}");
                 Console.WriteLine($"training time: {value.TrainingTime}");
             }
         }
