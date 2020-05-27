@@ -8,14 +8,21 @@
 
 ## Quick Start
 
-With `Expert`, you can easily create an auto-pipeline with a bunch of pre-defined trainers and transformer. The following code shows how to build an auto-pipeline for `Iris` dataset that sweeps over 8 classification trainers and tries [NormalizeMeanVariance](https://docs.microsoft.com/en-us/dotnet/api/microsoft.ml.normalizationcatalog.normalizemeanvariance?view=ml-dotnet) and [NormalizeMinMax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.ml.normalizationcatalog.normalizeminmax?view=ml-dotnet) over its numeric features.
+First, add `MLNet.AutoPipeline` and `MLNet.Expert` to your project. You can get those packages from our [nightly build](##Installation).
 
+```csharp
+<ItemGroup>
+  <PackageReference Include="MLNet.AutoPipeline" />
+  <PackageReference Include="MLNet.Expert" />
+</ItemGroup>
+```
+Then create an auto-pipeline with `NumericFeatureExpert` and `ClassificationExpert`. The following code creates an auto-pipeline on `Iris` dataset that can achieve 100% accuracy on its test dataset.
 ```csharp
 var context = new MLContext();
 var normalizeExpert = new NumericFeatureExpert(context, new NumericFeatureExpert.Option());
 var classificationExpert = new ClassificationExpert(context, new ClassificaitonExpert.Option());
 
-var pipelines = context.Transforms.Conversion.MapValueToKey("species", "species")
+var estimatorChain = context.Transforms.Conversion.MapValueToKey("species", "species")
                     .Append(context.Transforms.Concatenate("features", new string[] { "sepal_length", "sepal_width", "petal_length", "petal_width" }))
                     // sweep over NormalizeMeanVariance, NormalizeMinMax or No-op transformer
                     .Append((normalizeExpert.Propose("features") as EstimatorNodeGroup).OrNone())
@@ -23,31 +30,27 @@ var pipelines = context.Transforms.Conversion.MapValueToKey("species", "species"
                     .Append(classificationExpert.Propose("species", "features"));
 ```
 
-The `pipelines` will create 24 different pipelines when expanding, and it provides smart sweeper to optimize the best hyperparamater for each pipeline. Here's an example of how to expand `pipelines`.
+Then create an `Experiment` to sweep over `estimatorChain` to find the best pipeline and hyperparameter.
+
 ```csharp
-
-foreach (var sweepablePipeline in pipelines.BuildSweepablePipelines())
+var experimentOption = new Experiment.Option()
 {
-    // Use Bayesian hyperparameter optimization.
-    // Other choices: Random, GridSearch
-    var sweeper = new GaussProcessSweeper(new GaussProcessSweeper.Option());
-    sweepablePipeline.UseSweeper(sweeper);
+    ScoreMetric = new MicroAccuracyMetric(), // Use Micro Accuracy as score.
+    Sweeper = new GaussProcessSweeper(new GaussProcessSweeper.Option()), // Use GaussProcess sweeper to optimize hyperparameters.
+    Iteration = 30, // try 30 times for each pipeline
+    Label = "species", // dataset label name
+};
 
-    // Sweeping 50 times for each estimator chain to find out best hyperparameter
-    foreach (var pipeline in sweepablePipeline.Sweeping(50))
-    {
-        // Train
-        var eval = pipeline.Fit(split.TrainSet).Transform(split.TestSet);
-        // Validate
-        var metrics = context.MulticlassClassification.Evaluate(eval, "species");
-        var result = new RunResult(sweepablePipeline.Sweeper.Current, metrics.MacroAccurac
+var experiment = new Experiment(context, estimatorChain, experimentOption);
+var result = await experiment.TrainAsync(split.TrainSet, split.TestSet); // train experiment.
+```
 
-        // Add the last running result as RunHistory
-        // so sweeper can learn from past to produce better hyperparameter for next run.
-        sweepablePipeline.Sweeper.AddRunHistory(result);
-        Console.WriteLine($"macro accuracy: {metrics.MacroAccuracy}");
-    }
-}
+The training result is saved in `result`, which includes best model, best hyperparameter and other necessary informations.
+```csharp
+var bestModel = result.BestModel;
+context.Model.Save(bestModel, dataset.Schema, "bestmodel.zip");
+Console.WriteLine($"best score: {result.BestIteration.ScoreMetric.Score}");
+Console.WriteLine($"training time: {result.TrainingTime}");
 ```
 
 
@@ -63,4 +66,4 @@ This project is still under developing, so no released package is available yet.
 `https://pkgs.dev.azure.com/xiaoyuz0315/BigMiao/_packaging/MLNet-Auto-Pipeline%40Local/nuget/v3/index.json`
 
 ## Contributing
-We welcome contributions! Please see our [contrubution guide](CONTRIBUTING.md)
+We welcome contributions! Please see our [contribution guide](CONTRIBUTING.md)

@@ -55,6 +55,8 @@ namespace Iris
 
             var result = await experiment.TrainAsync(split.TrainSet, split.TestSet, reporter: reporter);
 
+            var bestModel = result.BestModel;
+            context.Model.Save(bestModel, dataset.Schema, "bestmodel.zip");
             Console.WriteLine($"best score: {result.BestIteration.ScoreMetric.Score}");
             Console.WriteLine($"training time: {result.TrainingTime}");
         }
