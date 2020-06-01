@@ -38,7 +38,7 @@ jobs:
         nobuild: true
         publishTestResults: true
         arguments: '--collect "Code coverage"'
-        projects: machinelearning-auto-pipeline.sln
+        projects: '**/*.Tests.csproj'
       condition: succeeded()
 
     - script: Build.cmd -BuildDoc
