@@ -37,7 +37,7 @@ jobs:
         command: 'test'
         nobuild: true
         publishTestResults: true
-        arguments: '–collect "Code coverage"'
+        arguments: '--collect "Code coverage"'
         projects: machinelearning-auto-pipeline.sln
       condition: succeeded()
 
