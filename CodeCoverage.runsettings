@@ -34,9 +34,9 @@ Included items must then not match any entries in the exclude list to remain inc
               </Include>
               <Exclude>
                 <ModulePath>.*CPPUnitTestFramework.*</ModulePath>
-                <ModulePath>*.tests.dll$</ModulePath>
-                <ModulePath>*coverlet.collector.dll$</ModulePath>
-                <ModulePath>*coverlet.core.dll$</ModulePath>
+                <ModulePath>.*\.Tests.dll$</ModulePath>
+                <ModulePath>.*\coverlet.collector.dll</ModulePath>
+                <ModulePath>.*\coverlet.core.dll</ModulePath>
               </Exclude>
             </ModulePaths>
 
