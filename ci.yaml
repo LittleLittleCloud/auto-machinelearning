@@ -32,9 +32,14 @@ jobs:
       condition: succeeded()
     
     - task: DotNetCoreCLI@2
+      displayName: Test
       inputs:
         command: 'test'
+        nobuild: true
+        publishTestResults: true
+        arguments: '–collect "Code coverage"'
         projects: machinelearning-auto-pipeline.sln
+      condition: succeeded()
 
     - script: Build.cmd -BuildDoc
       displayName: Build Doc site
