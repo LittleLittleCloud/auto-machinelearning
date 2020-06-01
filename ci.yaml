@@ -37,7 +37,7 @@ jobs:
         command: 'test'
         nobuild: true
         publishTestResults: true
-        arguments: '--collect "Code coverage"'
+        arguments: '--collect "Code coverage" --settings "CodeCoverage.runsettings"'
         projects: '**/*.Tests.csproj'
       condition: succeeded()
 
