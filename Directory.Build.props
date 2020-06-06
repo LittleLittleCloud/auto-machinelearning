@@ -8,7 +8,7 @@
     <PackageOutputPath>$(_Artifact)\Packages\$(Configuration)\Shipping\</PackageOutputPath>
     <IsPackable>false</IsPackable>
     <AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)opensource.snk</AssemblyOriginatorKeyFile>
-
+    <RunSettingsFilePath>$(MSBuildThisFileDirectory)\CodeCoverage.runsettings</RunSettingsFilePath>
     <Author>BigMiao</Author>
     <Owner>BigMiao</Owner>
 
