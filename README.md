@@ -1,4 +1,4 @@
-## `MLNet.AutoPipeline`: AutoML for [ML.NET](https://dotnet.microsoft.com/apps/machinelearning-ai/ml-dotnet)
+## MLNet.AutoPipeline: AutoML for [ML.NET](https://dotnet.microsoft.com/apps/machinelearning-ai/ml-dotnet)
 
 ML.Net AutoPipeline is a set of packages build on top of ML.Net that provide AutoML feature. In short, it is aimed to solve the two following problems that vastly exists in Machinelearning:
 - Given a MLNet pipeline, find the best hyper-parameters for its transformers or trainers.
