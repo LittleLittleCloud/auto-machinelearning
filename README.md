@@ -63,7 +63,7 @@ Console.WriteLine($"training time: {result.TrainingTime}");
 
 
 ## Examples
-Please visit our [MLNet-AutoPipeline-Example](https://github.com/LittleLittleCloud/MLNet-AutoPipeline-Examples) for MLNet.AutoPipeline examples.
+Please visit [MLNet-AutoPipeline-Example](https://github.com/LittleLittleCloud/MLNet-AutoPipeline-Examples) for MLNet.AutoPipeline examples.
 
 ## Installation
 
