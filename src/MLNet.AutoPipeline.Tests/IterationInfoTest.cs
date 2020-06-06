@@ -18,8 +18,8 @@ namespace MLNet.AutoPipeline.Test
         [InlineData(0, 1, false, false, false, true)]
         public void IterationInfo_should_be_comparable(double score1, double score2, bool isMaximizing, bool smaller, bool equal, bool bigger)
         {
-            var info1 = new IterationInfo(null, null, 0, new IterationInfo.Metric("score", score1), null, null, isMaximizing);
-            var info2 = new IterationInfo(null, null, 0, new IterationInfo.Metric("score", score2), null, null, isMaximizing);
+            var info1 = new IterationInfo(null, null, 0, new IterationInfo.Metric("score", score1), null, isMaximizing);
+            var info2 = new IterationInfo(null, null, 0, new IterationInfo.Metric("score", score2), null, isMaximizing);
 
             if (smaller)
             {
