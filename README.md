@@ -1,12 +1,12 @@
-## MLNet.AutoPipeline: AutoML for [ML.NET](https://dotnet.microsoft.com/apps/machinelearning-ai/ml-dotnet)
+## **MLNet.AutoPipeline**: AutoML for [ML.NET](https://dotnet.microsoft.com/apps/machinelearning-ai/ml-dotnet)
 
-ML.Net AutoPipeline is a set of packages build on top of ML.Net that provide AutoML feature. In short, it is aimed to solve the two following problems that vastly exists in Machinelearning:
+**ML.Net AutoPipeline** is a set of packages build on top of ML.Net that provide AutoML feature. In short, it is aimed to solve the two following problems that vastly exists in Machinelearning:
 - Given a ML pipeline, find the best hyper-parameters for its transformers or trainers.
 - Given a dataset and a ML task, find the best pipeline for solving this task.
 
-[`ML.Net AutoPipeline`](https://github.com/LittleLittleCloud/machinelearning-auto-pipeline) solves the first problem by sweepable pipeline, which sweeps over a set of pre-defined hyper-parameters and finds the best candidate. It solves the second problem by `MLNet.Expert`, which automatically constructs pipelines based on dataset and task. 
+**ML.Net AutoPipeline** solves the first problem by sweepable pipeline, which sweeps over a set of pre-defined hyper-parameters and finds the best candidate. It solves the second problem by `MLNet.Expert`, which automatically constructs pipelines based on dataset and task. 
 
-`ML.Net AutoPipeline` contains four libraries:
+**ML.Net AutoPipeline** contains four libraries:
 -  [MLNet.AutoPipeline](https://littlelittlecloud.github.io/machinelearning-auto-pipeline-site/api/MLNet.AutoPipeline.html): Provides API for creating sweepable MLNet pipelines. 
 - [MLNet.Sweeper](https://littlelittlecloud.github.io/machinelearning-auto-pipeline-site/api/MLNet.Sweeper.html): Provides different sweepers which can be used to optimize hyper-parameter in `MLNet.AutoPipeline`. Right now the available sweepers are [UniformRandomSweeper](https://littlelittlecloud.github.io/machinelearning-auto-pipeline-site/api/MLNet.Sweeper.UniformRandomSweeper.html), [RandomGridSweeper](https://littlelittlecloud.github.io/machinelearning-auto-pipeline-site/api/MLNet.Sweeper.RandomGridSweeper.html) and [GaussProcessSweeper](https://littlelittlecloud.github.io/machinelearning-auto-pipeline-site/api/MLNet.Sweeper.GaussProcessSweeper.html).
 - [MLNet.Expert](https://littlelittlecloud.github.io/machinelearning-auto-pipeline-site/api/MLNet.Expert.html): *(coming soon)* An AutoML library build on top of `MLNet.AutoPipeline`. It's your best choice if you don't want to define pipeline yourself but want to rely on the power of AutoML. As what it name says, it's your MLNet expert.
