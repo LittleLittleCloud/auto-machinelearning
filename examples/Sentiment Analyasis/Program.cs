@@ -67,8 +67,9 @@ namespace MLNet.Examples.SentimentAnalysis
 
             pipelines.UseSweeper(sweeper);
 
-            foreach (var pipeline in pipelines.Sweeping(100))
+            foreach (var sweepingInfo in pipelines.Sweeping(100))
             {
+                var pipeline = sweepingInfo.Pipeline;
                 Console.WriteLine(sweeper.Current.ToString());
 
                 var eval = pipeline.Fit(trainDataset).Transform(testDataset);

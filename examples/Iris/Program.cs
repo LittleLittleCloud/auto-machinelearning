@@ -5,16 +5,19 @@
 using Microsoft.ML;
 using Microsoft.ML.Data;
 using MLNet.AutoPipeline;
+using MLNet.AutoPipeline.Experiment;
 using MLNet.AutoPipeline.Extension;
+using MLNet.AutoPipeline.Metric;
 using MLNet.Expert;
 using MLNet.Sweeper;
 using System;
+using System.Threading.Tasks;
 
 namespace Iris
 {
     public class Program
     {
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
             var context = new MLContext();
             var dataset = context.Data.LoadFromTextFile<Iris>(@".\iris.csv", separatorChar: ',', hasHeader: true);
@@ -27,9 +30,8 @@ namespace Iris
                 UseLbfgsMaximumEntropy = false,
                 UseLightGBM = false,
                 UseSdcaMaximumEntropy = false,
-                UseSdcaNonCalibrated = false,
                 UseFastTreeOva = false,
-                UseFastForestOva = false,
+                UseGamOva = false,
             };
 
             var classificationExpert = new ClassificationExpert(context, classificationOption);
@@ -39,25 +41,27 @@ namespace Iris
                           .Append((normalizeExpert.Propose("features") as EstimatorNodeGroup).OrNone())
                           .Append(classificationExpert.Propose("species", "features"));
 
-            foreach (var sweepablePipeline in estimatorChain.BuildSweepablePipelines())
+            var experimentOption = new Experiment.Option()
             {
-                Console.WriteLine(sweepablePipeline.Summary());
-                var sweeper = new GaussProcessSweeper(new GaussProcessSweeper.Option());
-                sweepablePipeline.UseSweeper(sweeper);
-                foreach (var pipeline in sweepablePipeline.Sweeping(50))
-                {
-                    if (sweepablePipeline.Sweeper.Current != null)
-                    {
-                        Console.WriteLine(sweepablePipeline.Sweeper.Current.ToString());
-                    }
+                ScoreMetric = new MicroAccuracyMetric(),
+                Sweeper = new GaussProcessSweeper(new GaussProcessSweeper.Option()),
+                Iteration = 30,
+                Label = "species",
+            };
 
-                    var eval = pipeline.Fit(split.TrainSet).Transform(split.TestSet);
-                    var metrics = context.MulticlassClassification.Evaluate(eval, "species");
-                    var result = new RunResult(sweepablePipeline.Sweeper.Current, metrics.MacroAccuracy, true);
-                    sweepablePipeline.Sweeper.AddRunHistory(result);
-                    Console.WriteLine($"macro accuracy: {metrics.MacroAccuracy}");
-                }
-            }
+            var experiment = new Experiment(context, estimatorChain, experimentOption);
+
+            var reporter = new Reporter();
+
+            var result = await experiment.TrainAsync(split.TrainSet, reporter: reporter);
+
+            var bestModel = result.BestModel;
+
+            // evaluate on test
+            var eval = bestModel.Transform(split.TestSet);
+            var metric = context.MulticlassClassification.Evaluate(eval, "species");
+            Console.WriteLine($"best model validate score: {result.BestIteration.ScoreMetric.Score}");
+            Console.WriteLine($"best model test score: {metric.MicroAccuracy}");
         }
 
         private class Iris
@@ -76,6 +80,17 @@ namespace Iris
 
             [LoadColumn(4)]
             public string species;
+        }
+
+        private class Reporter : IProgress<IterationInfo>
+        {
+            public void Report(IterationInfo value)
+            {
+                Console.WriteLine(value.SweepablePipeline.Summary());
+                Console.WriteLine(value.ParameterSet.ToString());
+                Console.WriteLine($"validate score: {value.ScoreMetric.Name}: {value.ScoreMetric.Score}");
+                Console.WriteLine($"training time: {value.TrainingTime}");
+            }
         }
     }
 }

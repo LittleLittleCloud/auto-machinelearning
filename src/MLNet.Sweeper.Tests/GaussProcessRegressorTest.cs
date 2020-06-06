@@ -8,6 +8,7 @@ using Numpy;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace MLNet.Sweeper.Tests

@@ -70,7 +70,7 @@ namespace MLNet.AutoPipeline
             this.Sweeper.SweepableParamaters = this.ValueGenerators;
         }
 
-        public IEnumerable<EstimatorChain<ITransformer>> Sweeping(int maximum)
+        public IEnumerable<SweepingInfo> Sweeping(int maximum)
         {
             if (this.ValueGenerators.Count == 0)
             {
@@ -85,24 +85,13 @@ namespace MLNet.AutoPipeline
                     pipeline = pipeline.Append(this.SingleNodeBuilders[i].BuildEstimator(), this.SingleNodeBuilders[i].Scope);
                 }
 
-                yield return pipeline;
+                yield return new SweepingInfo(pipeline, null);
             }
             else
             {
                 foreach (var parameters in this.Sweeper.ProposeSweeps(maximum))
                 {
-                    var pipeline = new EstimatorChain<ITransformer>();
-                    for (int i = 0; i < this.SingleNodeBuilders.Count; i++)
-                    {
-                        if (this.SingleNodeBuilders[i] == UnsweepableNode<ITransformer>.EmptyNode)
-                        {
-                            continue;
-                        }
-
-                        pipeline = pipeline.Append(this.SingleNodeBuilders[i].BuildEstimator(parameters), this.SingleNodeBuilders[i].Scope);
-                    }
-
-                    yield return pipeline;
+                    yield return new SweepingInfo(this.BuildFromParameterSet(parameters), parameters);
                 }
             }
         }
@@ -119,6 +108,22 @@ namespace MLNet.AutoPipeline
             var autoEstimator = new SweepableNode<TNewTrains, TOption>(estimatorBuilder, optionBuilder, scope);
             this.Append(autoEstimator);
             return this;
+        }
+
+        internal EstimatorChain<ITransformer> BuildFromParameterSet(ParameterSet parameters)
+        {
+            var pipeline = new EstimatorChain<ITransformer>();
+            for (int i = 0; i < this.SingleNodeBuilders.Count; i++)
+            {
+                if (this.SingleNodeBuilders[i] == UnsweepableNode<ITransformer>.EmptyNode)
+                {
+                    continue;
+                }
+
+                pipeline = pipeline.Append(this.SingleNodeBuilders[i].BuildEstimator(parameters), this.SingleNodeBuilders[i].Scope);
+            }
+
+            return pipeline;
         }
     }
 }

@@ -34,6 +34,6 @@ namespace MLNet.AutoPipeline
 
         void UseSweeper(ISweeper sweeper);
 
-        IEnumerable<EstimatorChain<ITransformer>> Sweeping(int maximum);
+        IEnumerable<SweepingInfo> Sweeping(int maximum);
     }
 }

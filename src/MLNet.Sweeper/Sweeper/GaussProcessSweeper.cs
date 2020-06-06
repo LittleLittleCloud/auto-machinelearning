@@ -172,6 +172,11 @@ namespace MLNet.Sweeper
             return ei;
         }
 
+        public object Clone()
+        {
+            return new GaussProcessSweeper(this._option);
+        }
+
         private ParameterSet[] GetOneMutationNeighbourhood(ParameterSet parent)
         {
             var candicates = new List<ParameterSet>();
