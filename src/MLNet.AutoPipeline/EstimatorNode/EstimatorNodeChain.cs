@@ -76,6 +76,16 @@ namespace MLNet.AutoPipeline
             return this;
         }
 
+        public EstimatorNodeChain Append(IEnumerable<IEstimatorNode> nodes)
+        {
+            foreach ( var node in nodes)
+            {
+                this.Append(node);
+            }
+
+            return this;
+        }
+
         public void UseSweeper(ISweeper sweeper)
         {
             this._sweeper = sweeper;
