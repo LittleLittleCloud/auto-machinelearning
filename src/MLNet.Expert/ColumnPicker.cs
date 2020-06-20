@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics.Contracts;
 using System.Linq;
+using System.Reflection.Emit;
 using System.Text;
 
 namespace MLNet.Expert
@@ -60,9 +61,9 @@ namespace MLNet.Expert
         {
             this.columns = dataView.Schema;
             this.option = option;
-            this.NumericColumns = this.columns.Where(x => this.numericDataViewType.Contains(x.Type) && !this.option.IgnoreColumns.Contains(x.Name));
-            this.TextColumns = this.columns.Where(x => x.Type == TextDataViewType.Instance && !this.option.IgnoreColumns.Contains(x.Name) && !this.option.CatagoricalColumns.Contains(x.Name));
-            this.CatagoricalColumns = this.columns.Where(x => x.Type == TextDataViewType.Instance && this.option.CatagoricalColumns.Contains(x.Name));
+            this.NumericColumns = this.columns.Where(x => this.numericDataViewType.Contains(x.Type) && !this.option.IgnoreColumns.Contains(x.Name) && x.Name != this.option.LabelColumn);
+            this.TextColumns = this.columns.Where(x => x.Type == TextDataViewType.Instance && !this.option.IgnoreColumns.Contains(x.Name) && !this.option.CatagoricalColumns.Contains(x.Name) && x.Name != this.option.LabelColumn);
+            this.CatagoricalColumns = this.columns.Where(x => x.Type == TextDataViewType.Instance && this.option.CatagoricalColumns.Contains(x.Name) && x.Name != this.option.LabelColumn);
         }
 
         public IEnumerable<DataViewSchema.Column> NumericColumns { get; private set; }
@@ -95,15 +96,34 @@ namespace MLNet.Expert
 
         public IEnumerable<DataViewSchema.Column> SelectColumnsAsStart(int n)
         {
-            Contract.Requires(n <= this.AvailableColumns.Count());
             if (this.option.StartFromNumericFeature)
             {
-                return this.NumericColumns;
+                return this.NumericColumns.PickN(n);
             }
 
-            var pickIndex = Enumerable.Range(0, this.AvailableColumns.Count()).ToList();
-            pickIndex.Shuffle();
-            return pickIndex.GetRange(0, n).Select(i => this.AvailableColumns.ToArray()[i]);
+            return this.AvailableColumns.PickN(n);
+        }
+
+        public ColumnType GetColumnType(DataViewSchema.Column column)
+        {
+            var name = column.Name;
+
+            if (this.NumericColumns.Select(x => x.Name).Contains(name))
+            {
+                return ColumnType.Numeric;
+            }
+
+            if (this.TextColumns.Select(x => x.Name).Contains(name))
+            {
+                return ColumnType.String;
+            }
+
+            if (this.CatagoricalColumns.Select(x => x.Name).Contains(name))
+            {
+                return ColumnType.Catagorical;
+            }
+
+            throw new Exception("column not found");
         }
 
         public class Option

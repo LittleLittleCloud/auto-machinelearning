@@ -22,6 +22,16 @@ namespace MLNet.Expert
 
         private delegate EstimatorSingleNode CreateNormalizer(MLContext context, string input, string output);
 
+        public NumericFeatureExpert(MLContext context)
+            : this(context, new Option())
+        {
+        }
+
+        public static NumericFeatureExpert GetDefaultNumericFeatureExpert(MLContext mLContext)
+        {
+            return new NumericFeatureExpert(mLContext);
+        }
+
         public NumericFeatureExpert(MLContext context, Option option)
         {
             this.context = context;

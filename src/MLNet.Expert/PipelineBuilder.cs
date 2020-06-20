@@ -13,19 +13,64 @@ namespace MLNet.Expert
 {
     public class PipelineBuilder
     {
+        public static string FEATURECOLUMNNAME = "features";
+
         public static EstimatorNodeChain BuildPipelineFromState(MLContext context, State state)
         {
             var pipeline = new EstimatorNodeChain();
-            pipeline.Append(state.Transformers.SweepablePipelineNodes.Select(x => new EstimatorSingleNode(x)));
+            pipeline.Append(state.Transformers.Select(x => new EstimatorSingleNode(x)));
 
-            var concatFeaturesTransformer = PipelineBuilder.BuildConcatFeaturesTransformer(context, state.Columns, state.InputOutputColumnPairs);
+            var concatFeaturesTransformer = PipelineBuilder.BuildConcatFeaturesTransformer(context, state.Columns, state.InputOutputColumnPairs, PipelineBuilder.FEATURECOLUMNNAME);
             pipeline.Append(new EstimatorSingleNode(concatFeaturesTransformer));
 
             pipeline.Append(state.Trainers);
             return pipeline;
         }
 
-        private static ISweepablePipelineNode BuildConcatFeaturesTransformer(MLContext context, DataViewSchema.Column[] columns, InputOutputColumnPair[] inputOutputColumnPairs, string featureColumnName = "Features") 
+        public static EstimatorNodeChain BuildPipelineFromColumns(MLContext context, IEnumerable<DataViewSchema.Column> columns, ColumnPicker columnPicker, IEnumerable<InputOutputColumnPair> inputOutputColumnPairs, EstimatorNodeGroup trainers)
+        {
+            Contract.Requires(columns!.Count() == inputOutputColumnPairs!.Count());
+            var pipeline = new EstimatorNodeChain();
+            foreach (var column in columns)
+            {
+                var inputOutputColumnPair = inputOutputColumnPairs.Where(x => x.InputColumnName == column.Name).First();
+                var expert = columnPicker.GetColumnType(column) switch
+                {
+                    ColumnType.Numeric => NumericFeatureExpert.GetDefaultNumericFeatureExpert(context),
+                    _ => throw new Exception("Expert not found"),
+                };
+
+                pipeline.Append(expert.Propose(column.Name, inputOutputColumnPair.OutputColumnName));
+            }
+
+            var concatFeaturesTransformer = PipelineBuilder.BuildConcatFeaturesTransformer(context, columns, inputOutputColumnPairs, PipelineBuilder.FEATURECOLUMNNAME);
+            pipeline.Append(new EstimatorSingleNode(concatFeaturesTransformer));
+            pipeline.Append(trainers);
+
+            return pipeline;
+        }
+
+        public static EstimatorNodeChain BuildPipelineFromStateWithNewColumn(MLContext context, State state, DataViewSchema.Column column, ITransformExpert expert, string outputColumnName)
+        {
+            var pipeline = new EstimatorNodeChain();
+
+            pipeline.Append(state.Transformers.Select(x => new EstimatorSingleNode(x)));
+            pipeline.Append(expert.Propose(column.Name, outputColumnName));
+
+            var inputOutputPair = state.InputOutputColumnPairs.ToList();
+            inputOutputPair.Add(new InputOutputColumnPair(outputColumnName, column.Name));
+
+            var columns = state.Columns.ToList();
+            columns.Add(column);
+
+            var concatFeaturesTransformer = PipelineBuilder.BuildConcatFeaturesTransformer(context, columns.ToArray(), inputOutputPair.ToArray(), PipelineBuilder.FEATURECOLUMNNAME);
+            pipeline.Append(new EstimatorSingleNode(concatFeaturesTransformer));
+
+            pipeline.Append(state.Trainers);
+            return pipeline;
+        }
+
+        private static ISweepablePipelineNode BuildConcatFeaturesTransformer(MLContext context, IEnumerable<DataViewSchema.Column> columns, IEnumerable<InputOutputColumnPair> inputOutputColumnPairs, string featureColumnName = "Features")
         {
             Contract.Requires(columns != null && inputOutputColumnPairs != null);
             var inputColumnNames = inputOutputColumnPairs.Select(x => x.InputColumnName);
@@ -42,11 +87,28 @@ namespace MLNet.Expert
 
         public class State
         {
-            public ISweepablePipeline Transformers { get; private set; }
+            public State(EstimatorNodeGroup trainers)
+            {
+                this.Trainers = trainers;
+                this.Columns = new List<DataViewSchema.Column>();
+                this.InputOutputColumnPairs = new List<InputOutputColumnPair>();
+                this.Transformers = new List<ISweepablePipelineNode>();
+            }
 
-            public DataViewSchema.Column[] Columns { get; private set; }
+            public State(List<ISweepablePipelineNode> transformers, List<DataViewSchema.Column> columns, List<InputOutputColumnPair> inputOutputColumnPairs, EstimatorNodeGroup trainers)
+            {
+                Contract.Requires(columns!.Count == inputOutputColumnPairs!.Count);
+                this.Trainers = trainers;
+                this.Transformers = transformers;
+                this.Columns = columns;
+                this.InputOutputColumnPairs = inputOutputColumnPairs;
+            }
 
-            public InputOutputColumnPair[] InputOutputColumnPairs { get; private set; }
+            public List<ISweepablePipelineNode> Transformers { get; private set; }
+
+            public List<DataViewSchema.Column> Columns { get; private set; }
+
+            public List<InputOutputColumnPair> InputOutputColumnPairs { get; private set; }
 
             public EstimatorNodeGroup Trainers { get; private set; }
         }

@@ -1,9 +1,10 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
-    <IsPackable>true</IsPackable>
-    <SignAssembly>true</SignAssembly>
+      <TargetFramework>netstandard2.0</TargetFramework>
+      <IsPackable>true</IsPackable>
+      <SignAssembly>true</SignAssembly>
+      <LangVersion>8.0</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
