@@ -40,7 +40,6 @@ namespace MLNet.Expert
     public class ColumnPicker
     {
         private DataViewSchema columns;
-        private IEnumerable<DataViewSchema.Column> numericColumns;
         private Option option;
         private HashSet<DataViewType> numericDataViewType = new HashSet<DataViewType>()
         {
@@ -64,7 +63,7 @@ namespace MLNet.Expert
             this.LabelColumn = this.columns.Where(x => x.Name == option.LabelColumn).First();
             this.NumericColumns = this.columns.Where(x => this.numericDataViewType.Contains(x.Type) && !this.option.IgnoreColumns.Contains(x.Name) && x.Name != this.option.LabelColumn);
             this.TextColumns = this.columns.Where(x => x.Type == TextDataViewType.Instance && !this.option.IgnoreColumns.Contains(x.Name) && !this.option.CatagoricalColumns.Contains(x.Name) && x.Name != this.option.LabelColumn);
-            this.CatagoricalColumns = this.columns.Where(x => x.Type == TextDataViewType.Instance && this.option.CatagoricalColumns.Contains(x.Name) && x.Name != this.option.LabelColumn);
+            this.CatagoricalColumns = this.columns.Where(x => x.Type == TextDataViewType.Instance && this.option.CatagoricalColumns.Contains(x.Name) && x.Name != this.option.LabelColumn && !this.option.IgnoreColumns.Contains(x.Name));
         }
 
         public IEnumerable<DataViewSchema.Column> NumericColumns { get; private set; }
@@ -109,19 +108,22 @@ namespace MLNet.Expert
 
         public ColumnType GetColumnType(DataViewSchema.Column column)
         {
-            var name = column.Name;
+            return this.GetColumnType(column.Name);
+        }
 
-            if (this.NumericColumns.Select(x => x.Name).Contains(name))
+        public ColumnType GetColumnType(string columnName)
+        {
+            if (this.NumericColumns.Select(x => x.Name).Contains(columnName))
             {
                 return ColumnType.Numeric;
             }
 
-            if (this.TextColumns.Select(x => x.Name).Contains(name))
+            if (this.TextColumns.Select(x => x.Name).Contains(columnName))
             {
                 return ColumnType.String;
             }
 
-            if (this.CatagoricalColumns.Select(x => x.Name).Contains(name))
+            if (this.CatagoricalColumns.Select(x => x.Name).Contains(columnName))
             {
                 return ColumnType.Catagorical;
             }
