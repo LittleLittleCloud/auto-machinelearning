@@ -61,6 +61,7 @@ namespace MLNet.Expert
         {
             this.columns = dataView.Schema;
             this.option = option;
+            this.LabelColumn = this.columns.Where(x => x.Name == option.LabelColumn).First();
             this.NumericColumns = this.columns.Where(x => this.numericDataViewType.Contains(x.Type) && !this.option.IgnoreColumns.Contains(x.Name) && x.Name != this.option.LabelColumn);
             this.TextColumns = this.columns.Where(x => x.Type == TextDataViewType.Instance && !this.option.IgnoreColumns.Contains(x.Name) && !this.option.CatagoricalColumns.Contains(x.Name) && x.Name != this.option.LabelColumn);
             this.CatagoricalColumns = this.columns.Where(x => x.Type == TextDataViewType.Instance && this.option.CatagoricalColumns.Contains(x.Name) && x.Name != this.option.LabelColumn);
@@ -71,6 +72,8 @@ namespace MLNet.Expert
         public IEnumerable<DataViewSchema.Column> TextColumns { get; private set; }
 
         public IEnumerable<DataViewSchema.Column> CatagoricalColumns { get; private set; }
+
+        public DataViewSchema.Column LabelColumn { get; private set; }
 
         public IEnumerable<DataViewSchema.Column> AvailableColumns
         {

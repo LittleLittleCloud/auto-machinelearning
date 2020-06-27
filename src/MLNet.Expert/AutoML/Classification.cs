@@ -22,15 +22,15 @@ namespace MLNet.Expert.AutoML
         private MLContext context;
         private Option option;
         private ClassificationExpert classificationExpert;
-        private Dictionary<PipelineBuilder.State, ExperimentResult> history;
-        private double timeLeft;
+        private Dictionary<AutoMLTrainingState, ExperimentResult> history;
+        private double timeLeftInSecond;
 
         public Classification(MLContext context, Option option)
         {
             this.context = context;
-            this.history = new Dictionary<PipelineBuilder.State, ExperimentResult>();
+            this.history = new Dictionary<AutoMLTrainingState, ExperimentResult>();
             this.option = option;
-            this.timeLeft = option.MaximumTrainingTime;
+            this.timeLeftInSecond = option.MaximumTrainingTime;
             this.classificationExpert = new ClassificationExpert(context, this.option.ClassificationExpertOption);
         }
 
@@ -48,13 +48,13 @@ namespace MLNet.Expert.AutoML
 
             // start
             var trainers = this.classificationExpert.Propose(this.option.LabelColumn, PipelineBuilder.FEATURECOLUMNNAME);
-            var initState = new PipelineBuilder.State(trainers as EstimatorNodeGroup);
-            initState.Transformers.Add(Util.CreateUnSweepableNode(this.context.Transforms.Conversion.MapValueToKey(this.option.LabelColumn, this.option.LabelColumn), estimatorName: "MapValueToKey"));
+            var initState = new AutoMLTrainingState(trainers as EstimatorNodeGroup);
+            initState.Transformers.Add(columnPicker.LabelColumn, Util.CreateUnSweepableNode(this.context.Transforms.Conversion.MapValueToKey(this.option.LabelColumn, this.option.LabelColumn), estimatorName: "MapValueToKey"));
             var experimentOption = new Experiment.Option()
             {
                 ScoreMetric = this.option.ScoreMetric,
                 Label = this.option.LabelColumn,
-                Iteration = 10,
+                Iteration = 3,
             };
 
             foreach (var column in columnPicker.SelectColumn(initState.Columns, this.option.BeamSearch))
@@ -70,8 +70,8 @@ namespace MLNet.Expert.AutoML
                                             reporter,
                                             ct);
                 this.history.Add(state, result);
-                this.timeLeft -= result.TrainingTime;
-                if (this.timeLeft < 0)
+                this.timeLeftInSecond -= result.TrainingTime;
+                if (this.timeLeftInSecond < 0)
                 {
                     break;
                 }
@@ -79,12 +79,12 @@ namespace MLNet.Expert.AutoML
 
             do
             {
-                if (this.timeLeft < 0)
+                if (this.timeLeftInSecond < 0)
                 {
                     break;
                 }
 
-                IEnumerable<(PipelineBuilder.State, DataViewSchema.Column?)> candidates;
+                IEnumerable<(AutoMLTrainingState, DataViewSchema.Column?)> candidates;
                 if (this.option.ScoreMetric.IsMaximizing)
                 {
                     candidates = this.history.OrderByDescending(x => x.Value.BestIteration.ScoreMetric.Score)
@@ -118,8 +118,8 @@ namespace MLNet.Expert.AutoML
                             reporter,
                             ct);
                     this.history.Add(state, result);
-                    this.timeLeft -= result.TrainingTime;
-                    if (this.timeLeft < 0)
+                    this.timeLeftInSecond -= result.TrainingTime;
+                    if (this.timeLeftInSecond < 0)
                     {
                         break;
                     }
@@ -129,28 +129,28 @@ namespace MLNet.Expert.AutoML
             return this.HandleExperimentResultAndReturn(this.history);
         }
 
-        private ExperimentResult HandleExperimentResultAndReturn(Dictionary<PipelineBuilder.State, ExperimentResult> history)
+        private ExperimentResult HandleExperimentResultAndReturn(Dictionary<AutoMLTrainingState, ExperimentResult> history)
         {
             if (this.option.ScoreMetric.IsMaximizing)
             {
-                return this.history.OrderByDescending(x => x.Value.BestIteration.ScoreMetric.Score)
+                return history.OrderByDescending(x => x.Value.BestIteration.ScoreMetric.Score)
                                    .Take(1)
                                    .Select(x => x.Value)
                                    .First();
             }
             else
             {
-                return this.history.OrderByDescending(x => x.Value.BestIteration.ScoreMetric.Score)
+                return history.OrderByDescending(x => x.Value.BestIteration.ScoreMetric.Score)
                    .Take(1)
                    .Select(x => x.Value)
                    .First();
             }
         }
 
-        private async Task<(PipelineBuilder.State, ExperimentResult)> CreateExperimentBasedOnStateAndTrainAsync(
+        private async Task<(AutoMLTrainingState, ExperimentResult)> CreateExperimentBasedOnStateAndTrainAsync(
             IDataView train,
             IDataView validate,
-            PipelineBuilder.State currentState,
+            AutoMLTrainingState currentState,
             DataViewSchema.Column column,
             ColumnPicker columnPicker,
             Experiment.Option experimentOption,
@@ -168,18 +168,12 @@ namespace MLNet.Expert.AutoML
             var experimentResult = await experiment.TrainAsync(train, validate, reporter, ct);
             var transformers = experimentResult.BestIteration.SweepablePipeline.SweepablePipelineNodes;
 
-            // remove trainer
-            transformers.RemoveAt(transformers.Count - 1);
-
-            // remove concat
-            transformers.RemoveAt(transformers.Count - 1);
-
-            var columns = currentState.Columns.Select(x => x).ToList();
-            columns.Add(column);
-
+            var selectedTransformer = transformers[transformers.Count - 3];
+            var transforms = currentState.Transformers.Select(x => x).ToDictionary(x => x.Key, x => x.Value);
+            transforms.Add(column, selectedTransformer);
             var inputOutputPair = currentState.InputOutputColumnPairs.Select(x => x).ToList();
             inputOutputPair.Add(new InputOutputColumnPair(column.Name, column.Name));
-            var state = new PipelineBuilder.State(transformers.ToList(), columns, inputOutputPair, trainers as EstimatorNodeGroup);
+            var state = new AutoMLTrainingState(transforms, inputOutputPair, trainers as EstimatorNodeGroup);
             return (state, experimentResult);
         }
 

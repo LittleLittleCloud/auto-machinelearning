@@ -3,6 +3,7 @@ using Microsoft.ML.Data;
 using Microsoft.ML.Transforms;
 using MLNet.AutoPipeline;
 using MLNet.AutoPipeline.Experiment;
+using MLNet.Expert.AutoML;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
@@ -15,10 +16,10 @@ namespace MLNet.Expert
     {
         public static string FEATURECOLUMNNAME = "features";
 
-        public static EstimatorNodeChain BuildPipelineFromState(MLContext context, State state)
+        public static EstimatorNodeChain BuildPipelineFromState(MLContext context, AutoMLTrainingState state)
         {
             var pipeline = new EstimatorNodeChain();
-            pipeline.Append(state.Transformers.Select(x => new EstimatorSingleNode(x)));
+            pipeline.Append(state.Transformers.Select(x => new EstimatorSingleNode(x.Value)));
 
             var concatFeaturesTransformer = PipelineBuilder.BuildConcatFeaturesTransformer(context, state.Columns, state.InputOutputColumnPairs, PipelineBuilder.FEATURECOLUMNNAME);
             pipeline.Append(new EstimatorSingleNode(concatFeaturesTransformer));
@@ -50,11 +51,11 @@ namespace MLNet.Expert
             return pipeline;
         }
 
-        public static EstimatorNodeChain BuildPipelineFromStateWithNewColumn(MLContext context, State state, DataViewSchema.Column column, ITransformExpert expert, string outputColumnName)
+        public static EstimatorNodeChain BuildPipelineFromStateWithNewColumn(MLContext context, AutoMLTrainingState state, DataViewSchema.Column column, ITransformExpert expert, string outputColumnName)
         {
             var pipeline = new EstimatorNodeChain();
 
-            pipeline.Append(state.Transformers.Select(x => new EstimatorSingleNode(x)));
+            pipeline.Append(state.Transformers.Select(x => new EstimatorSingleNode(x.Value)));
             pipeline.Append(expert.Propose(column.Name, outputColumnName));
 
             var inputOutputPair = state.InputOutputColumnPairs.ToList();
@@ -83,34 +84,6 @@ namespace MLNet.Expert
             var outputColumnNames = inputOutputColumnPairs.Select(x => x.OutputColumnName);
             var concatFeaturesTransformer = context.Transforms.Concatenate(featureColumnName, outputColumnNames.ToArray());
             return Util.CreateUnSweepableNode(concatFeaturesTransformer);
-        }
-
-        public class State
-        {
-            public State(EstimatorNodeGroup trainers)
-            {
-                this.Trainers = trainers;
-                this.Columns = new List<DataViewSchema.Column>();
-                this.InputOutputColumnPairs = new List<InputOutputColumnPair>();
-                this.Transformers = new List<ISweepablePipelineNode>();
-            }
-
-            public State(List<ISweepablePipelineNode> transformers, List<DataViewSchema.Column> columns, List<InputOutputColumnPair> inputOutputColumnPairs, EstimatorNodeGroup trainers)
-            {
-                Contract.Requires(columns!.Count == inputOutputColumnPairs!.Count);
-                this.Trainers = trainers;
-                this.Transformers = transformers;
-                this.Columns = columns;
-                this.InputOutputColumnPairs = inputOutputColumnPairs;
-            }
-
-            public List<ISweepablePipelineNode> Transformers { get; private set; }
-
-            public List<DataViewSchema.Column> Columns { get; private set; }
-
-            public List<InputOutputColumnPair> InputOutputColumnPairs { get; private set; }
-
-            public EstimatorNodeGroup Trainers { get; private set; }
         }
     }
 }

@@ -58,7 +58,7 @@ namespace MLNet.Expert.Tests
                   .Should().Contain("SingleNode(LightGBM)");
         }
 
-        [Fact(Skip ="true")]
+        [Fact]
         public async void AutoMLTestAsync()
         {
             var context = new MLContext();
@@ -71,7 +71,7 @@ namespace MLNet.Expert.Tests
                 BeamSearch = 3,
                 ScoreMetric = new MicroAccuracyMetric(),
                 LabelColumn = "species",
-                MaximumTrainingTime = 600,
+                MaximumTrainingTime = 60,
                 ClassificationExpertOption = classificationExpertOption,
             };
 
