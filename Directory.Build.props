@@ -28,6 +28,11 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <UnstableMLNetVersion>0.17.0</UnstableMLNetVersion>
+    <StableMLNetVersion>1.5.0</StableMLNetVersion>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Condition="'$(MSBuildProjectExtension)' == '.csproj'"
         Include="StyleCop.Analyzers" Version="1.1.118" PrivateAssets="All" />
