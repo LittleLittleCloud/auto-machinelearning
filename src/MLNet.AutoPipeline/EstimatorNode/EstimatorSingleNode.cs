@@ -11,7 +11,7 @@ namespace MLNet.AutoPipeline
 {
     public class EstimatorSingleNode : IEstimatorNode
     {
-        private ISweepablePipelineNode estimatorBuilder;
+        private INode estimatorBuilder;
         private static EstimatorSingleNode no_op = new EstimatorSingleNode();
 
         internal static EstimatorSingleNode EmptyNode
@@ -22,7 +22,7 @@ namespace MLNet.AutoPipeline
             }
         }
 
-        public EstimatorSingleNode(ISweepablePipelineNode estimatorBuilder)
+        public EstimatorSingleNode(INode estimatorBuilder)
         {
             this.estimatorBuilder = estimatorBuilder;
         }

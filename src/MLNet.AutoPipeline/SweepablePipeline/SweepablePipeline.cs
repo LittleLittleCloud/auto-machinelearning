@@ -16,25 +16,25 @@ namespace MLNet.AutoPipeline
     {
         public IList<IValueGenerator> ValueGenerators { get; private set; }
 
-        public IList<ISweepablePipelineNode> SweepablePipelineNodes { get; private set; }
+        public IList<INode> SweepablePipelineNodes { get; private set; }
 
         public ISweeper Sweeper { get; private set; }
 
         public SweepablePipeline()
         {
             this.ValueGenerators = new List<IValueGenerator>();
-            this.SweepablePipelineNodes = new List<ISweepablePipelineNode>();
+            this.SweepablePipelineNodes = new List<INode>();
             this.Sweeper = new UniformRandomSweeper(new UniformRandomSweeper.Option());
         }
 
-        private SweepablePipeline(IList<IValueGenerator> valueGenerators, IList<ISweepablePipelineNode> singleNodeBuilders, ISweeper sweeper)
+        private SweepablePipeline(IList<IValueGenerator> valueGenerators, IList<INode> singleNodeBuilders, ISweeper sweeper)
         {
             this.ValueGenerators = valueGenerators;
             this.SweepablePipelineNodes = singleNodeBuilders;
             this.Sweeper = sweeper;
         }
 
-        public ISweepablePipeline Append(ISweepablePipelineNode builder)
+        public ISweepablePipeline Append(INode builder)
         {
             this.SweepablePipelineNodes.Add(builder);
             if (builder.ValueGenerators != null)

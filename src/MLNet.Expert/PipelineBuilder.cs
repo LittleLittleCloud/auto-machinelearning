@@ -71,7 +71,7 @@ namespace MLNet.Expert
             return pipeline;
         }
 
-        private static ISweepablePipelineNode BuildConcatFeaturesTransformer(MLContext context, IEnumerable<DataViewSchema.Column> columns, IEnumerable<InputOutputColumnPair> inputOutputColumnPairs, string featureColumnName = "Features")
+        private static INode BuildConcatFeaturesTransformer(MLContext context, IEnumerable<DataViewSchema.Column> columns, IEnumerable<InputOutputColumnPair> inputOutputColumnPairs, string featureColumnName = "Features")
         {
             Contract.Requires(columns != null && inputOutputColumnPairs != null);
             var inputColumnNames = inputOutputColumnPairs.Select(x => x.InputColumnName);

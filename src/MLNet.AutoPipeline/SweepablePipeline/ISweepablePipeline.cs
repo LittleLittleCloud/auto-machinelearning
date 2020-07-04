@@ -15,11 +15,11 @@ namespace MLNet.AutoPipeline
     {
         IList<IValueGenerator> ValueGenerators { get; }
 
-        IList<ISweepablePipelineNode> SweepablePipelineNodes { get; }
+        IList<INode> SweepablePipelineNodes { get; }
 
         ISweeper Sweeper { get; }
 
-        ISweepablePipeline Append(ISweepablePipelineNode builder);
+        ISweepablePipeline Append(INode builder);
 
         ISweepablePipeline Append<TTransformer>(IEstimator<TTransformer> estimator, TransformerScope scope = TransformerScope.Everything)
             where TTransformer : ITransformer;

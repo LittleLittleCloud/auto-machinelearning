@@ -21,17 +21,17 @@ namespace MLNet.Expert.AutoML
         {
             this.Trainers = trainers;
             this.InputOutputColumnPairs = new List<InputOutputColumnPair>();
-            this.Transformers = new Dictionary<DataViewSchema.Column, ISweepablePipelineNode>();
+            this.Transformers = new Dictionary<DataViewSchema.Column, INode>();
         }
 
-        public AutoMLTrainingState(Dictionary<DataViewSchema.Column, ISweepablePipelineNode> transformers, List<InputOutputColumnPair> inputOutputColumnPairs, EstimatorNodeGroup trainers)
+        public AutoMLTrainingState(Dictionary<DataViewSchema.Column, INode> transformers, List<InputOutputColumnPair> inputOutputColumnPairs, EstimatorNodeGroup trainers)
         {
             this.Trainers = trainers;
             this.Transformers = transformers;
             this.InputOutputColumnPairs = inputOutputColumnPairs;
         }
 
-        public Dictionary<DataViewSchema.Column, ISweepablePipelineNode> Transformers { get; private set; }
+        public Dictionary<DataViewSchema.Column, INode> Transformers { get; private set; }
 
         public List<DataViewSchema.Column> Columns
         {

@@ -10,7 +10,7 @@ using MLNet.Sweeper;
 
 namespace MLNet.AutoPipeline
 {
-    public enum SweepablePipelineNodeType
+    public enum NodeType
     {
         /// <summary>
         /// Sweepable node Type.
@@ -23,7 +23,7 @@ namespace MLNet.AutoPipeline
         Unsweeapble = 1,
     }
 
-    public interface ISweepablePipelineNode
+    public interface INode
     {
         IEstimator<ITransformer> BuildEstimator(ParameterSet parameters = null);
 
@@ -31,7 +31,7 @@ namespace MLNet.AutoPipeline
 
         IValueGenerator[] ValueGenerators { get; }
 
-        SweepablePipelineNodeType NodeType { get; }
+        NodeType NodeType { get; }
 
         string Summary();
 

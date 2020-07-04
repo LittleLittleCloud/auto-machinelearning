@@ -11,7 +11,7 @@ using MLNet.Sweeper;
 
 namespace MLNet.AutoPipeline
 {
-    public class UnsweepableNode<TTransformer> : ISweepablePipelineNode
+    public class UnsweepableNode<TTransformer> : INode
         where TTransformer : ITransformer
     {
         private IEstimator<TTransformer> _instance;
@@ -48,7 +48,7 @@ namespace MLNet.AutoPipeline
 
         public IValueGenerator[] ValueGenerators { get => new List<IValueGenerator>().ToArray(); }
 
-        public SweepablePipelineNodeType NodeType => SweepablePipelineNodeType.Unsweeapble;
+        public NodeType NodeType => NodeType.Unsweeapble;
 
         public IEstimator<ITransformer> BuildEstimator(ParameterSet parameters)
         {
