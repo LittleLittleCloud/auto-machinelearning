@@ -15,7 +15,7 @@ namespace MLNet.AutoPipeline
     {
         IList<IValueGenerator> ValueGenerators { get; }
 
-        IList<ISweepablePipelineNode> SingleNodeBuilders { get; }
+        IList<ISweepablePipelineNode> SweepablePipelineNodes { get; }
 
         ISweeper Sweeper { get; }
 

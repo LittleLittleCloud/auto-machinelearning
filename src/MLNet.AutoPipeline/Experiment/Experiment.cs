@@ -20,12 +20,14 @@ namespace MLNet.AutoPipeline.Experiment
         private Option option;
         private MLContext context;
         private IEnumerable<ISweepablePipeline> sweepablePipelines;
+        private double timeLeft;
 
         public Experiment(MLContext context, ISweepablePipeline pipeline, Option option)
         {
             this.option = option;
             this.context = context;
             this.sweepablePipelines = new ISweepablePipeline[1] { pipeline };
+            this.timeLeft = option.MaximumTrainingTime;
         }
 
         public Experiment(MLContext context, EstimatorNodeChain estimatorNodeChain, Option option)
@@ -33,6 +35,7 @@ namespace MLNet.AutoPipeline.Experiment
             this.option = option;
             this.context = context;
             this.sweepablePipelines = estimatorNodeChain.BuildSweepablePipelines();
+            this.timeLeft = option.MaximumTrainingTime;
         }
 
         /// <summary>
@@ -54,6 +57,9 @@ namespace MLNet.AutoPipeline.Experiment
                     sweepablePipeline.UseSweeper(this.option.Sweeper.Clone() as ISweeper);
                     foreach (var sweepingInfo in sweepablePipeline.Sweeping(this.option.Iteration))
                     {
+                        var stopWatch = new Stopwatch();
+                        stopWatch.Start();
+
                         var pipeline = sweepingInfo.Pipeline;
                         var parameters = sweepingInfo.Parameters;
                         if (ct.IsCancellationRequested)
@@ -61,13 +67,9 @@ namespace MLNet.AutoPipeline.Experiment
                             return;
                         }
 
-                        var stopWatch = new Stopwatch();
-                        stopWatch.Start();
-
                         // train
                         var model = pipeline.Fit(train);
                         var val_eval = model.Transform(validate);
-                        stopWatch.Stop();
 
                         // evaluate
                         var evaluateMetrics = new List<IterationInfo.Metric>();
@@ -89,6 +91,13 @@ namespace MLNet.AutoPipeline.Experiment
                         // report
                         experimentResult.AddRunHistory(iterationInfo, model);
                         reporter.Report(iterationInfo);
+
+                        stopWatch.Stop();
+                        this.timeLeft -= stopWatch.Elapsed.TotalSeconds;
+                        if (this.timeLeft < 0)
+                        {
+                            return;
+                        }
                     }
                 }
             });
@@ -142,6 +151,8 @@ namespace MLNet.AutoPipeline.Experiment
             /// Label column name. Default is Label.
             /// </summary>
             public string Label { get; set; } = "Label";
+
+            public double MaximumTrainingTime = 100;
         }
     }
 }
