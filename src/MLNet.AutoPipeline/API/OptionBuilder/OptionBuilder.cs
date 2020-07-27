@@ -15,7 +15,12 @@ namespace MLNet.AutoPipeline
     {
         private readonly HashSet<string> _ids = new HashSet<string>();
 
-        public IValueGenerator[] ValueGenerators => this.GetValueGenerators();
+        public IValueGenerator[] ValueGenerators { get; private set; }
+
+        public OptionBuilder()
+        {
+            this.ValueGenerators = this.GetValueGenerators();
+        }
 
         public TOption CreateDefaultOption()
         {

@@ -43,8 +43,6 @@ namespace MLNet.AutoPipeline
             get => no_op;
         }
 
-        public ParameterSet Current { get => null; }
-
         public string EstimatorName { get; private set; }
 
         public TransformerScope Scope => this._scope;
@@ -72,7 +70,7 @@ namespace MLNet.AutoPipeline
             return this.Summary();
         }
 
-        internal CodeGenNodeContract ToCodeGenNodeContract()
+        internal CodeGenNodeContract ToCodeGenNodeContract(ParameterSet parameters = null)
         {
             return new CodeGenNodeContract()
             {

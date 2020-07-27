@@ -4,6 +4,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using Microsoft.ML;
 using Microsoft.ML.Data;
@@ -67,13 +68,16 @@ namespace MLNet.AutoPipeline
             return this.Summary();
         }
 
-        internal CodeGenNodeContract ToCodeGenNodeContract()
+        internal CodeGenNodeContract ToCodeGenNodeContract(ParameterSet parameters)
         {
+            var valueGeneratorIds = this.ValueGenerators.Select(x => x.ID).ToImmutableHashSet();
+            var selectedParams = parameters.Where(x => valueGeneratorIds.Contains(x.ID));
             return new CodeGenNodeContract()
             {
                 EstimatorName = this.EstimatorName,
                 InputColumns = this.InputColumns ?? (new string[] { }),
                 OutputColumns = this.OutputColumns ?? new string[] { },
+                Parameters = new ParameterSet(selectedParams),
             };
         }
     }

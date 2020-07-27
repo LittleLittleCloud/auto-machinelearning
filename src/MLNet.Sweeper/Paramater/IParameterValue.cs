@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -17,8 +18,10 @@ namespace MLNet.Sweeper
 
         string ValueText { get; }
 
+        [JsonIgnore]
         object RawValue { get; }
 
+        [JsonIgnore]
         string ID { get; }
     }
 

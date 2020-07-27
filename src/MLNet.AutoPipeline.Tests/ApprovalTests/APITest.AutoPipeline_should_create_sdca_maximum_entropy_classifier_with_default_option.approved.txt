@@ -1,0 +1,21 @@
+{
+  "parameters": [
+    {
+      "Name": "L2Regularization",
+      "ValueText": "0.031622775",
+      "Value": 0.031622775
+    },
+    {
+      "Name": "L1Reegularization",
+      "ValueText": "0.031622775",
+      "Value": 0.031622775
+    }
+  ],
+  "name": "SdcaMaximumEntropyMulticlassTrainer",
+  "input_column": [
+    "label"
+  ],
+  "output_column": [
+    "feature"
+  ]
+}
