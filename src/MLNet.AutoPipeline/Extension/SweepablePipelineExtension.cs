@@ -16,11 +16,11 @@ namespace MLNet.AutoPipeline.Extension
         public static ISweepablePipeline
             Append<TLastTrain, TNewTrain, TOption>(
                 this EstimatorChain<TLastTrain> estimatorChain,
-                Func<TOption, IEstimator<TNewTrain>> estimatorBuilder,
+                Func<TOption, TNewTrain> estimatorBuilder,
                 OptionBuilder<TOption> parameters,
                 TransformerScope scope = TransformerScope.Everything)
             where TLastTrain : class, ITransformer
-            where TNewTrain : class, ITransformer
+            where TNewTrain : class, IEstimator<ITransformer>
             where TOption : class
         {
             var autoEstimator = new SweepableNode<TNewTrain, TOption>(estimatorBuilder, parameters, scope);
@@ -43,10 +43,10 @@ namespace MLNet.AutoPipeline.Extension
         public static ISweepablePipeline
             Append<TLastTran, TNewTran, TOption>(
                 this TLastTran estimator,
-                Func<TOption, IEstimator<TNewTran>> estimatorBuilder,
+                Func<TOption, TNewTran> estimatorBuilder,
                 OptionBuilder<TOption> parameters,
                 TransformerScope scope = TransformerScope.Everything)
-            where TNewTran : ITransformer
+            where TNewTran : IEstimator<ITransformer>
             where TLastTran : IEstimator<ITransformer>
             where TOption : class
         {

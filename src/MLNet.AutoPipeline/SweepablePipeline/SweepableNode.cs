@@ -11,15 +11,15 @@ using MLNet.Sweeper;
 
 namespace MLNet.AutoPipeline
 {
-    public class SweepableNode<TTransformer, TOption> : INode
-        where TTransformer : ITransformer
+    public class SweepableNode<TNewTrain, TOption> : INode
+        where TNewTrain : IEstimator<ITransformer>
         where TOption : class
     {
         private readonly OptionBuilder<TOption> _optionBuilder;
         private readonly TransformerScope _scope;
-        private readonly Func<TOption, IEstimator<TTransformer>> _estimatorFactory;
+        private readonly Func<TOption, TNewTrain> _estimatorFactory;
 
-        public SweepableNode(Func<TOption, IEstimator<TTransformer>> estimatorFactory, OptionBuilder<TOption> optionBuilder, TransformerScope scope = TransformerScope.Everything, string estimatorName = null, string[] inputs = null, string[] outputs = null)
+        public SweepableNode(Func<TOption, TNewTrain> estimatorFactory, OptionBuilder<TOption> optionBuilder, TransformerScope scope = TransformerScope.Everything, string estimatorName = null, string[] inputs = null, string[] outputs = null)
         {
             this._estimatorFactory = estimatorFactory;
             this._optionBuilder = optionBuilder;
