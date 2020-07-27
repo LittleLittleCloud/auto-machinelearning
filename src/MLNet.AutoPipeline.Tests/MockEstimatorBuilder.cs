@@ -32,7 +32,7 @@ namespace MLNet.AutoPipeline.Test
 
         public string[] InputColumns => throw new System.NotImplementedException();
 
-        public string OutputColumn => throw new System.NotImplementedException();
+        public string[] OutputColumns => throw new System.NotImplementedException();
 
         public IEstimator<ITransformer> BuildEstimator(ParameterSet parameters)
         {

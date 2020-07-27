@@ -46,8 +46,8 @@ namespace MLNet.AutoPipeline
             }
         }
 
-        public EstimatorNodeGroup Append<TTrans>(IEstimator<TTrans> estimator, TransformerScope scope = TransformerScope.Everything)
-            where TTrans : ITransformer
+        public EstimatorNodeGroup Append<TTrans>(TTrans estimator, TransformerScope scope = TransformerScope.Everything)
+            where TTrans : IEstimator<ITransformer>
         {
             var node = new UnsweepableNode<TTrans>(estimator, scope);
 

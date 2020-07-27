@@ -31,29 +31,29 @@ namespace MLNet.AutoPipeline.Extension
             var singleNodeChain = new SweepablePipeline();
             for (int i = 0; i != estimators.Length - 1; ++i)
             {
-                var estimator = new UnsweepableNode<ITransformer>(estimators[i], scopes[i]);
+                var estimator = new UnsweepableNode<IEstimator<ITransformer>>(estimators[i], scopes[i]);
                 singleNodeChain.Append(estimator);
             }
 
-            singleNodeChain.Append(new UnsweepableNode<TLastTrain>(estimators.Last() as IEstimator<TLastTrain>, scopes.Last()));
+            singleNodeChain.Append(new UnsweepableNode<IEstimator<TLastTrain>>(estimators.Last() as IEstimator<TLastTrain>, scopes.Last()));
 
             return singleNodeChain.Append(autoEstimator);
         }
 
         public static ISweepablePipeline
             Append<TLastTran, TNewTran, TOption>(
-                this IEstimator<TLastTran> estimator,
+                this TLastTran estimator,
                 Func<TOption, IEstimator<TNewTran>> estimatorBuilder,
                 OptionBuilder<TOption> parameters,
                 TransformerScope scope = TransformerScope.Everything)
             where TNewTran : ITransformer
-            where TLastTran : ITransformer
+            where TLastTran : IEstimator<ITransformer>
             where TOption : class
         {
             var autoEstimator = new SweepableNode<TNewTran, TOption>(estimatorBuilder, parameters, scope);
 
             return new SweepablePipeline()
-                        .Append(new UnsweepableNode<TLastTran>(estimator as IEstimator<TLastTran>))
+                        .Append(new UnsweepableNode<TLastTran>(estimator))
                         .Append(autoEstimator);
         }
 

@@ -45,8 +45,8 @@ namespace MLNet.AutoPipeline
             return this;
         }
 
-        public ISweepablePipeline Append<TNewTrans>(IEstimator<TNewTrans> estimator, TransformerScope scope = TransformerScope.Everything)
-            where TNewTrans : ITransformer
+        public ISweepablePipeline Append<TNewTrans>(TNewTrans estimator, TransformerScope scope = TransformerScope.Everything)
+            where TNewTrans : IEstimator<ITransformer>
         {
             var estimatorWrapper = new UnsweepableNode<TNewTrans>(estimator, scope);
             this.Append(estimatorWrapper);
@@ -77,7 +77,7 @@ namespace MLNet.AutoPipeline
                 var pipeline = new EstimatorChain<ITransformer>();
                 for (int i = 0; i < this.SweepablePipelineNodes.Count; i++)
                 {
-                    if (this.SweepablePipelineNodes[i] == UnsweepableNode<ITransformer>.EmptyNode)
+                    if (this.SweepablePipelineNodes[i] == UnsweepableNode<IEstimator<ITransformer>>.EmptyNode)
                     {
                         continue;
                     }
@@ -115,7 +115,7 @@ namespace MLNet.AutoPipeline
             var pipeline = new EstimatorChain<ITransformer>();
             for (int i = 0; i < this.SweepablePipelineNodes.Count; i++)
             {
-                if (this.SweepablePipelineNodes[i] == UnsweepableNode<ITransformer>.EmptyNode)
+                if (this.SweepablePipelineNodes[i] == UnsweepableNode<IEstimator<ITransformer>>.EmptyNode)
                 {
                     continue;
                 }

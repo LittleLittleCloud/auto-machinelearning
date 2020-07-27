@@ -4,6 +4,7 @@
 
 using FluentAssertions;
 using Microsoft.ML;
+using Microsoft.VisualStudio.TestPlatform.Utilities;
 using System.Linq;
 using Xunit;
 using Xunit.Abstractions;
@@ -32,7 +33,7 @@ namespace MLNet.AutoPipeline.Test
         public void EstimatorNodeGroup_summary_should_work()
         {
             var autoEstimatorBuilder = new MockEstimatorBuilder("mockEstimator");
-            var estimatorWrapper = new UnsweepableNode<ITransformer>(new MockTransformer());
+            var estimatorWrapper = Util.CreateUnSweepableNode(new MockTransformer());
 
             var builders = new IEstimatorNode[]
             {
@@ -54,7 +55,7 @@ namespace MLNet.AutoPipeline.Test
         public void EstimatorNodeChain_summary_should_work()
         {
             var autoEstimatorBuilder = new MockEstimatorBuilder("mockEstimator");
-            var estimatorWrapper = new UnsweepableNode<ITransformer>(new MockTransformer());
+            var estimatorWrapper = Util.CreateUnSweepableNode(new MockTransformer());
 
             var builders = new IEstimatorNode[]
             {
@@ -83,7 +84,7 @@ namespace MLNet.AutoPipeline.Test
         public void EstimatorNodeGroup_should_build_sweepable_pipeline()
         {
             var singleNode1 = new EstimatorSingleNode(new MockEstimatorBuilder("MockEstimator"));
-            var singleNode2 = new EstimatorSingleNode(new UnsweepableNode<ITransformer>(new MockTransformer()));
+            var singleNode2 = new EstimatorSingleNode(Util.CreateUnSweepableNode(new MockTransformer()));
             var singleNode3 = new EstimatorSingleNode(new MockEstimatorBuilder("MockEstimator1"));
             var nodeGroup1 = new EstimatorNodeGroup().Append(singleNode1).Append(singleNode2).Append(singleNode3);
             var nodechain = new EstimatorNodeChain().Append(singleNode1).Append(singleNode2).Append(nodeGroup1);

@@ -45,7 +45,7 @@ namespace MLNet.Expert
 
             if (option.UseFastForestOva)
             {
-                this.nodeFactories.Add(FastForestOvaBuilder.Instance);
+                this.nodeFactories.Add(Trainers.Classification.FastForestOvaBuilder.Instance);
             }
 
             if (option.UseFastTreeOva)

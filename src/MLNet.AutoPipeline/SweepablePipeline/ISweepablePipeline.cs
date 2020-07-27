@@ -21,8 +21,8 @@ namespace MLNet.AutoPipeline
 
         ISweepablePipeline Append(INode builder);
 
-        ISweepablePipeline Append<TTransformer>(IEstimator<TTransformer> estimator, TransformerScope scope = TransformerScope.Everything)
-            where TTransformer : ITransformer;
+        ISweepablePipeline Append<TTransformer>(TTransformer estimator, TransformerScope scope = TransformerScope.Everything)
+            where TTransformer : IEstimator<ITransformer>;
 
         ISweepablePipeline Append<TNewTran, TOption>(Func<TOption, IEstimator<TNewTran>> estimatorBuilder, OptionBuilder<TOption> optionBuilder, TransformerScope scope = TransformerScope.Everything)
             where TNewTran : ITransformer

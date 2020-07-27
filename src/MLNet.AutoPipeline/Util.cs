@@ -11,7 +11,7 @@ using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Text;
 
-namespace MLNet.Expert
+namespace MLNet.AutoPipeline
 {
     internal static class Util
     {
@@ -24,10 +24,10 @@ namespace MLNet.Expert
             return new SweepableNode<TTransformer, TOption>(estimatorFactory, optionBuilder, scope, estimatorName);
         }
 
-        public static UnsweepableNode<TInstance> CreateUnSweepableNode<TInstance>(TInstance instance, TransformerScope scope = TransformerScope.Everything, string estimatorName = null)
+        public static UnsweepableNode<TInstance> CreateUnSweepableNode<TInstance>(TInstance instance, TransformerScope scope = TransformerScope.Everything, string estimatorName = null, string[] inputs = null, string[] outputs = null)
             where TInstance : IEstimator<ITransformer>
         {
-            return new UnsweepableNode<TInstance>(instance, scope, estimatorName);
+            return new UnsweepableNode<TInstance>(instance, scope, estimatorName, inputs, outputs);
         }
 
         public static void Shuffle<T>(this IList<T> list)

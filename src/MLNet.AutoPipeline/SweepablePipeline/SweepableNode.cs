@@ -19,7 +19,7 @@ namespace MLNet.AutoPipeline
         private readonly TransformerScope _scope;
         private readonly Func<TOption, IEstimator<TTransformer>> _estimatorFactory;
 
-        public SweepableNode(Func<TOption, IEstimator<TTransformer>> estimatorFactory, OptionBuilder<TOption> optionBuilder, TransformerScope scope = TransformerScope.Everything, string estimatorName = null)
+        public SweepableNode(Func<TOption, IEstimator<TTransformer>> estimatorFactory, OptionBuilder<TOption> optionBuilder, TransformerScope scope = TransformerScope.Everything, string estimatorName = null, string[] inputs = null, string[] outputs = null)
         {
             this._estimatorFactory = estimatorFactory;
             this._optionBuilder = optionBuilder;
@@ -34,6 +34,9 @@ namespace MLNet.AutoPipeline
             {
                 this.EstimatorName = estimatorName;
             }
+
+            this.InputColumns = inputs;
+            this.OutputColumns = outputs;
         }
 
         public string EstimatorName { get; private set; }
@@ -43,6 +46,10 @@ namespace MLNet.AutoPipeline
         public IValueGenerator[] ValueGenerators { get; private set; }
 
         public NodeType NodeType => NodeType.Sweepable;
+
+        public string[] InputColumns { get; private set; }
+
+        public string[] OutputColumns { get; private set; }
 
         public IEstimator<ITransformer> BuildEstimator(ParameterSet parameters)
         {
@@ -58,6 +65,16 @@ namespace MLNet.AutoPipeline
         public override string ToString()
         {
             return this.Summary();
+        }
+
+        internal CodeGenNodeContract ToCodeGenNodeContract()
+        {
+            return new CodeGenNodeContract()
+            {
+                EstimatorName = this.EstimatorName,
+                InputColumns = this.InputColumns ?? (new string[] { }),
+                OutputColumns = this.OutputColumns ?? new string[] { },
+            };
         }
     }
 }
