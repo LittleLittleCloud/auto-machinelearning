@@ -1,0 +1,19 @@
+{
+  "parameters": [
+    {
+      "Name": "L2Regularization",
+      "ValueText": "0.031622775"
+    },
+    {
+      "Name": "L1Reegularization",
+      "ValueText": "0.031622775"
+    }
+  ],
+  "name": "SdcaNonCalibratedMulticlassTrainer",
+  "input_column": [
+    "label"
+  ],
+  "output_column": [
+    "feature"
+  ]
+}

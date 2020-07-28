@@ -30,6 +30,19 @@ namespace MLNet.AutoPipeline
             return new UnsweepableNode<TInstance>(instance, scope, estimatorName, inputs, outputs);
         }
 
+        public static EstimatorSingleNode CreateEstimatorSingleNode<TInstance>(UnsweepableNode<TInstance> unSweepableNode)
+            where TInstance : IEstimator<ITransformer>
+        {
+            return new EstimatorSingleNode(unSweepableNode as INode);
+        }
+
+        public static EstimatorSingleNode CreateEstimatorSingleNode<TInstance, TOption>(SweepableNode<TInstance, TOption> sweepableNode)
+            where TInstance : IEstimator<ITransformer>
+            where TOption : class
+        {
+            return new EstimatorSingleNode(sweepableNode as INode);
+        }
+
         public static void Shuffle<T>(this IList<T> list)
         {
             int n = list.Count;

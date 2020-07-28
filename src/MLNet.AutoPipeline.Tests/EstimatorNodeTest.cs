@@ -38,7 +38,7 @@ namespace MLNet.AutoPipeline.Test
             var builders = new IEstimatorNode[]
             {
                 new EstimatorSingleNode(autoEstimatorBuilder),
-                new EstimatorSingleNode(estimatorWrapper),
+                Util.CreateEstimatorSingleNode(estimatorWrapper),
             };
 
             var mixNode = new EstimatorNodeGroup(builders);
@@ -60,7 +60,7 @@ namespace MLNet.AutoPipeline.Test
             var builders = new IEstimatorNode[]
             {
                 new EstimatorSingleNode(autoEstimatorBuilder),
-                new EstimatorSingleNode(estimatorWrapper),
+                Util.CreateEstimatorSingleNode(estimatorWrapper),
             };
 
             var mixNode = new EstimatorNodeGroup(builders);
@@ -84,7 +84,7 @@ namespace MLNet.AutoPipeline.Test
         public void EstimatorNodeGroup_should_build_sweepable_pipeline()
         {
             var singleNode1 = new EstimatorSingleNode(new MockEstimatorBuilder("MockEstimator"));
-            var singleNode2 = new EstimatorSingleNode(Util.CreateUnSweepableNode(new MockTransformer()));
+            var singleNode2 = Util.CreateEstimatorSingleNode(Util.CreateUnSweepableNode(new MockTransformer()));
             var singleNode3 = new EstimatorSingleNode(new MockEstimatorBuilder("MockEstimator1"));
             var nodeGroup1 = new EstimatorNodeGroup().Append(singleNode1).Append(singleNode2).Append(singleNode3);
             var nodechain = new EstimatorNodeChain().Append(singleNode1).Append(singleNode2).Append(nodeGroup1);

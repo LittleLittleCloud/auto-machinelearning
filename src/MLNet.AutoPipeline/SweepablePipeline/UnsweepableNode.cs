@@ -11,7 +11,7 @@ using MLNet.Sweeper;
 
 namespace MLNet.AutoPipeline
 {
-    public class UnsweepableNode<TTrainer> : INode
+    public class UnsweepableNode<TTrainer> : INode<TTrainer>
         where TTrainer : IEstimator<ITransformer>
     {
         private TTrainer _instance;
@@ -55,9 +55,9 @@ namespace MLNet.AutoPipeline
 
         public string[] OutputColumns { get; private set; }
 
-        public IEstimator<ITransformer> BuildEstimator(ParameterSet parameters)
+        public TTrainer BuildEstimator(ParameterSet parameters)
         {
-            return this._instance as IEstimator<ITransformer>;
+            return this._instance;
         }
 
         public string Summary()
@@ -78,6 +78,11 @@ namespace MLNet.AutoPipeline
                 InputColumns = this.InputColumns ?? (new string[] { }),
                 OutputColumns = this.OutputColumns ?? new string[] { },
             };
+        }
+
+        IEstimator<ITransformer> INode.BuildEstimator(ParameterSet parameters)
+        {
+            return this.BuildEstimator(parameters);
         }
     }
 }

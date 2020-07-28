@@ -17,9 +17,12 @@ namespace MLNet.AutoPipeline
 
         public IValueGenerator[] ValueGenerators { get; private set; }
 
+        public IParameterValue[] UnsweepableParameters { get; private set; }
+
         public OptionBuilder()
         {
             this.ValueGenerators = this.GetValueGenerators();
+            this.UnsweepableParameters = this.GetUnsweepableParameterValues();
         }
 
         public TOption CreateDefaultOption()
@@ -27,12 +30,19 @@ namespace MLNet.AutoPipeline
             var assem = typeof(TOption).Assembly;
             var option = assem.CreateInstance(typeof(TOption).FullName) as TOption;
 
-            // set up fields
-            var fields = this.GetType().GetFields(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic);
-            foreach (var field in fields)
+            // set up unsweepable parameters
+            foreach (var param in this.UnsweepableParameters)
             {
-                var value = field.GetValue(this);
-                option.GetType().GetField(field.Name)?.SetValue(option, value);
+                var value = param.RawValue;
+                option.GetType().GetField(param.Name)?.SetValue(option, value);
+            }
+
+            // set up sweeppable parameters
+            foreach (var generator in this.ValueGenerators)
+            {
+                var param = generator.CreateFromNormalized(0);
+                var value = param.RawValue;
+                option.GetType().GetField(param.Name)?.SetValue(option, value);
             }
 
             return option;
@@ -53,16 +63,16 @@ namespace MLNet.AutoPipeline
             return option;
         }
 
-        private Dictionary<string, ParameterAttribute> GetParameterAttributes()
+        private Dictionary<string, SweepableParameterAttribute> GetSweepableParameterAttributes()
         {
             var paramaters = this.GetType().GetFields(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic)
-                     .Where(x => Attribute.GetCustomAttribute(x, typeof(ParameterAttribute)) != null);
+                     .Where(x => Attribute.GetCustomAttribute(x, typeof(SweepableParameterAttribute)) != null);
 
-            var paramatersDictionary = new Dictionary<string, ParameterAttribute>();
+            var paramatersDictionary = new Dictionary<string, SweepableParameterAttribute>();
 
             foreach (var param in paramaters)
             {
-                var paramaterAttribute = Attribute.GetCustomAttribute(param, typeof(ParameterAttribute)) as ParameterAttribute;
+                var paramaterAttribute = Attribute.GetCustomAttribute(param, typeof(SweepableParameterAttribute)) as SweepableParameterAttribute;
                 paramatersDictionary.Add(param.Name, paramaterAttribute);
             }
 
@@ -71,7 +81,7 @@ namespace MLNet.AutoPipeline
 
         private IValueGenerator[] GetValueGenerators()
         {
-            var valueGenerators = this.GetParameterAttributes().Select(kv =>
+            var valueGenerators = this.GetSweepableParameterAttributes().Select(kv =>
             {
                 kv.Value.ValueGenerator.Name = kv.Key;
                 return kv.Value.ValueGenerator;
@@ -83,6 +93,24 @@ namespace MLNet.AutoPipeline
             }
 
             return valueGenerators;
+        }
+
+        private IParameterValue[] GetUnsweepableParameterValues()
+        {
+            var parameters = this.GetType().GetFields(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance)
+                                 .Where(x => Attribute.GetCustomAttribute(x, typeof(ParameterAttribute)) != null);
+
+            var res = new List<ObjectParameterValue>();
+
+            foreach (var parm in parameters)
+            {
+                var guid = Guid.NewGuid().ToString();
+                var value = parm.GetValue(this);
+                var paramValue = new ObjectParameterValue(parm.Name, parm.GetValue(this), guid);
+                res.Add(paramValue);
+            }
+
+            return res.ToArray();
         }
     }
 }

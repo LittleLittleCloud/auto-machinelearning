@@ -27,9 +27,14 @@ namespace MLNet.AutoPipeline
             this.estimatorBuilder = estimatorBuilder;
         }
 
+        public EstimatorSingleNode(INode<IEstimator<ITransformer>> estimatorBuilder)
+        {
+            this.estimatorBuilder = (INode)estimatorBuilder;
+        }
+
         private EstimatorSingleNode()
         {
-            this.estimatorBuilder = UnsweepableNode<IEstimator<ITransformer>>.EmptyNode;
+            this.estimatorBuilder = (INode)UnsweepableNode<IEstimator<ITransformer>>.EmptyNode;
         }
 
         public EstimatorNodeType NodeType => EstimatorNodeType.Node;

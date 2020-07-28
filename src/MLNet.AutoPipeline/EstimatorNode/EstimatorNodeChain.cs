@@ -60,13 +60,13 @@ namespace MLNet.AutoPipeline
             where TNewTrans : IEstimator<ITransformer>
             where TOption : class
         {
-            return this.Append(new EstimatorSingleNode(estimatorBuilder));
+            return this.Append(Util.CreateEstimatorSingleNode(estimatorBuilder));
         }
 
-        public EstimatorNodeChain Append<TNewTrans>(UnsweepableNode<TNewTrans> estimatorWrapper)
+        public EstimatorNodeChain Append<TNewTrans>(UnsweepableNode<TNewTrans> unsweepableNode)
             where TNewTrans : IEstimator<ITransformer>
         {
-            return this.Append(new EstimatorSingleNode(estimatorWrapper));
+            return this.Append(Util.CreateEstimatorSingleNode(unsweepableNode));
         }
 
         public EstimatorNodeChain Append(IEstimatorNode node)

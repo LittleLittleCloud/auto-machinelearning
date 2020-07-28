@@ -47,8 +47,7 @@ namespace MLNet.Expert.Trainers.Classification
             };
 
             var ovaNode = Util.CreateSweepableNode(OVA, this._option, estimatorName: "FastForestOva");
-
-            return new EstimatorSingleNode(ovaNode);
+            return Util.CreateEstimatorSingleNode(ovaNode);
         }
 
         /// <summary>
@@ -56,13 +55,13 @@ namespace MLNet.Expert.Trainers.Classification
         /// </summary>
         public class Option : OptionBuilder<Option>
         {
-            [Parameter(2, 256, true, 8)]
+            [SweepableParameter(2, 256, true, 8)]
             public int NumberOfLeaves;
 
-            [Parameter(1, 256, true, 20)]
+            [SweepableParameter(1, 256, true, 20)]
             public int NumberOfTrees;
 
-            [Parameter(1, 256, true, 20)]
+            [SweepableParameter(1, 256, true, 20)]
             public int MinimumExampleCountPerLeaf;
         }
     }

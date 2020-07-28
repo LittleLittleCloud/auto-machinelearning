@@ -82,14 +82,14 @@ namespace MLNet.Expert
         {
             var instance = context.Transforms.NormalizeMeanVariance(output, input);
             var unsweeplableNode = Util.CreateUnSweepableNode(instance, estimatorName: "NormalizeMeanVariance");
-            return new EstimatorSingleNode(unsweeplableNode);
+            return Util.CreateEstimatorSingleNode(unsweeplableNode);
         }
 
         private EstimatorSingleNode CreateNormalizeMinMax(MLContext context, string input, string output)
         {
             var instance = context.Transforms.NormalizeMinMax(output, input);
             var unsweeplableNode = Util.CreateUnSweepableNode(instance, estimatorName: "NormalizeMinMax");
-            return new EstimatorSingleNode(unsweeplableNode);
+            return Util.CreateEstimatorSingleNode(unsweeplableNode);
         }
     }
 }

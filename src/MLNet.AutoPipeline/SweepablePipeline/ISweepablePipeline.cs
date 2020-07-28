@@ -19,6 +19,9 @@ namespace MLNet.AutoPipeline
 
         ISweeper Sweeper { get; }
 
+        ISweepablePipeline Append<TTrain>(INode<TTrain> builder)
+            where TTrain: IEstimator<ITransformer>;
+
         ISweepablePipeline Append(INode builder);
 
         ISweepablePipeline Append<TTransformer>(TTransformer estimator, TransformerScope scope = TransformerScope.Everything)

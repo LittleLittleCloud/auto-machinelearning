@@ -12,7 +12,7 @@ using MLNet.Sweeper;
 
 namespace MLNet.AutoPipeline
 {
-    public class SweepableNode<TNewTrain, TOption> : INode
+    public class SweepableNode<TNewTrain, TOption> : INode<TNewTrain>
         where TNewTrain : IEstimator<ITransformer>
         where TOption : class
     {
@@ -52,10 +52,10 @@ namespace MLNet.AutoPipeline
 
         public string[] OutputColumns { get; private set; }
 
-        public IEstimator<ITransformer> BuildEstimator(ParameterSet parameters)
+        public TNewTrain BuildEstimator(ParameterSet parameters)
         {
             var option = this._optionBuilder.BuildOption(parameters);
-            return this._estimatorFactory(option) as IEstimator<ITransformer>;
+            return this._estimatorFactory(option);
         }
 
         public string Summary()
@@ -72,13 +72,19 @@ namespace MLNet.AutoPipeline
         {
             var valueGeneratorIds = this.ValueGenerators.Select(x => x.ID).ToImmutableHashSet();
             var selectedParams = parameters.Where(x => valueGeneratorIds.Contains(x.ID));
+            var selectedUnsweepableParams = this._optionBuilder.UnsweepableParameters;
             return new CodeGenNodeContract()
             {
                 EstimatorName = this.EstimatorName,
                 InputColumns = this.InputColumns ?? (new string[] { }),
                 OutputColumns = this.OutputColumns ?? new string[] { },
-                Parameters = new ParameterSet(selectedParams),
+                Parameters = new ParameterSet(selectedParams.Concat(selectedUnsweepableParams)),
             };
+        }
+
+        IEstimator<ITransformer> INode.BuildEstimator(ParameterSet parameters)
+        {
+            return this.BuildEstimator(parameters) as IEstimator<ITransformer>;
         }
     }
 }

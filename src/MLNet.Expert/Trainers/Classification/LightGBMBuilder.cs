@@ -46,7 +46,7 @@ namespace MLNet.Expert.Trainers.Classification
             };
 
             var node = Util.CreateSweepableNode(lightGBM, this._option, estimatorName: "LightGBM");
-            return new EstimatorSingleNode(node);
+            return Util.CreateEstimatorSingleNode(node);
         }
 
         /// <summary>
@@ -54,16 +54,16 @@ namespace MLNet.Expert.Trainers.Classification
         /// </summary>
         public class Option : OptionBuilder<Option>
         {
-            [Parameter(0.001f, 0.1f, true, 20)]
+            [SweepableParameter(0.001f, 0.1f, true, 20)]
             public float LearningRate;
 
-            [Parameter(10, 1000, true, 20)]
+            [SweepableParameter(10, 1000, true, 20)]
             public int NumberOfLeaves;
 
-            [Parameter(10, 1000, true, 20)]
+            [SweepableParameter(10, 1000, true, 20)]
             public int NumberOfIterations;
 
-            [Parameter(10, 1000, true, 20)]
+            [SweepableParameter(10, 1000, true, 20)]
             public int MinimumExampleCountPerLeaf;
         }
     }

@@ -51,7 +51,7 @@ namespace MLNet.AutoPipeline
         {
             var node = new UnsweepableNode<TTrans>(estimator, scope);
 
-            return this.Append(new EstimatorSingleNode(node));
+            return this.Append(Util.CreateEstimatorSingleNode(node));
         }
 
         public EstimatorNodeGroup Append(EstimatorSingleNode node)
@@ -71,7 +71,7 @@ namespace MLNet.AutoPipeline
             where TOption : class
         {
             var autoEstimator = new SweepableNode<TNewTran, TOption>(estimatorBuilder, optionBuilder, scope);
-            this.Append(new EstimatorSingleNode(autoEstimator));
+            this.Append(Util.CreateEstimatorSingleNode(autoEstimator));
             return this;
         }
 

@@ -44,6 +44,12 @@ namespace MLNet.AutoPipeline
         string[] OutputColumns { get; }
     }
 
+    public interface INode<TTrain> : INode
+        where TTrain : IEstimator<ITransformer>
+    {
+        TTrain BuildEstimator(ParameterSet parameters = null);
+    }
+
     [DataContract]
     internal class CodeGenNodeContract
     {

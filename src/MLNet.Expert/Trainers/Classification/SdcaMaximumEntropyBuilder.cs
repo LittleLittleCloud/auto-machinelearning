@@ -45,7 +45,7 @@ namespace MLNet.Expert.Trainers.Classification
             };
 
             var node = Util.CreateSweepableNode(sdca, this._option, estimatorName: "SdcaMaximumEntropy");
-            return new EstimatorSingleNode(node);
+            return Util.CreateEstimatorSingleNode(node);
         }
 
         /// <summary>
@@ -53,10 +53,10 @@ namespace MLNet.Expert.Trainers.Classification
         /// </summary>
         public class Option : OptionBuilder<Option>
         {
-            [Parameter(1E-4F, 10f, true, 20)]
+            [SweepableParameter(1E-4F, 10f, true, 20)]
             public float L2Regularization;
 
-            [Parameter(1E-4F, 10f, true, 20)]
+            [SweepableParameter(1E-4F, 10f, true, 20)]
             public float L1Reegularization;
         }
     }

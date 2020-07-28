@@ -47,8 +47,7 @@ namespace MLNet.Expert.Trainers.Classification
             };
 
             var ovaNode = Util.CreateSweepableNode(OVA, this._option, estimatorName: "GamOva");
-
-            return new EstimatorSingleNode(ovaNode);
+            return Util.CreateEstimatorSingleNode(ovaNode);
         }
 
         /// <summary>
@@ -56,10 +55,10 @@ namespace MLNet.Expert.Trainers.Classification
         /// </summary>
         public class Option : OptionBuilder<Option>
         {
-            [Parameter(1e-4f, 1, true, 20)]
+            [SweepableParameter(1e-4f, 1, true, 20)]
             public float LearningRate;
 
-            [Parameter(4, 512, true, 20)]
+            [SweepableParameter(4, 512, true, 20)]
             public int MaximumBinCountPerFeature;
         }
     }

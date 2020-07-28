@@ -34,6 +34,12 @@ namespace MLNet.AutoPipeline
             this.Sweeper = sweeper;
         }
 
+        public ISweepablePipeline Append<TTrain>(INode<TTrain> builder)
+            where TTrain: IEstimator<ITransformer>
+        {
+            return this.Append((INode)builder);
+        }
+
         public ISweepablePipeline Append(INode builder)
         {
             this.SweepablePipelineNodes.Add(builder);

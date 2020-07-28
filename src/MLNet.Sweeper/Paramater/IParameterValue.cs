@@ -30,11 +30,13 @@ namespace MLNet.Sweeper
     /// </summary>
     public interface IParameterValue<out TValue> : IParameterValue
     {
+        [JsonIgnore]
         TValue Value { get; }
     }
 
     public interface IDiscreteParameterValue : IParameterValue
     {
+        [JsonIgnore]
         double[] OneHotEncode { get; }
     }
 }

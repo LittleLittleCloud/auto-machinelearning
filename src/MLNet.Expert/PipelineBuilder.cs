@@ -83,7 +83,7 @@ namespace MLNet.Expert
 
             var outputColumnNames = inputOutputColumnPairs.Select(x => x.OutputColumnName);
             var concatFeaturesTransformer = context.Transforms.Concatenate(featureColumnName, outputColumnNames.ToArray());
-            return Util.CreateUnSweepableNode(concatFeaturesTransformer);
+            return (INode)Util.CreateUnSweepableNode(concatFeaturesTransformer);
         }
     }
 }

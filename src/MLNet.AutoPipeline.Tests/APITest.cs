@@ -7,6 +7,7 @@ using ApprovalTests.Namers;
 using ApprovalTests.Reporters;
 using FluentAssertions;
 using Microsoft.ML;
+using Microsoft.ML.Trainers;
 using MLNet.AutoPipeline.API.OptionBuilder;
 using MLNet.Sweeper;
 using System;
@@ -46,5 +47,42 @@ namespace MLNet.AutoPipeline.Test
             var parameterset = new ParameterSet(parameterValues);
             Approvals.Verify(trainer.ToCodeGenNodeContract(parameterset));
         }
+
+        [Fact]
+        [UseApprovalSubdirectory("ApprovalTests")]
+        [UseReporter(typeof(DiffReporter))]
+        public void AutoPipeline_should_create_sdca_maximum_entropy_classifier_with_custom_option()
+        {
+            var context = new MLContext();
+            var option = new CustomSdcaMaximumEntropyOptionBuilder();
+            var trainer = context.AutoPipeline().MultiClassification.SdcaMaximumEntropy("label", "feature", option);
+            var parameterValues = option.ValueGenerators.Select(x => x.CreateFromNormalized(0.5));
+            var parameterset = new ParameterSet(parameterValues);
+            Approvals.Verify(trainer.ToCodeGenNodeContract(parameterset));
+        }
+
+        [Fact]
+        [UseApprovalSubdirectory("ApprovalTests")]
+        [UseReporter(typeof(DiffReporter))]
+        public void AutoPipeline_should_create_sdca_non_calibrated_classifier_with_default_option()
+        {
+            var context = new MLContext();
+            var trainer = context.AutoPipeline().MultiClassification.SdcaNonCalibreated("label", "feature");
+            var parameterValues = SdcaNonCalibratedOptionBuilder.Default.ValueGenerators.Select(x => x.CreateFromNormalized(0.5));
+            var parameterset = new ParameterSet(parameterValues);
+            Approvals.Verify(trainer.ToCodeGenNodeContract(parameterset));
+        }
+    }
+
+    public class CustomSdcaMaximumEntropyOptionBuilder : OptionBuilder<SdcaMaximumEntropyMulticlassTrainer.Options>
+    {
+        [SweepableParameter(1E-4F, 20f, true, 20)]
+        public float L2Regularization;
+
+        [Parameter]
+        public float L1Regularization = 0.3f;
+
+        [SweepableParameter(1E-4F, 10f, true, 20)]
+        public float BiasLearningRate;
     }
 }

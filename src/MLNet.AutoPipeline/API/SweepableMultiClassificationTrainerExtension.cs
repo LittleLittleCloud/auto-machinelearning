@@ -42,7 +42,7 @@ namespace MLNet.AutoPipeline
         /// <param name="labelColumnName">label column name. Default is Label.</param>
         /// <param name="featureColumnName">feature column name, Default is Features.</param>
         /// <param name="optionBuilder">option builder. if null, a default instance of <see cref="SdcaMaximumEntropyOptionBuilder"/> will be used.</param>
-        /// <returns><see cref="SweepableMultiClassificationTrainerExtension"/>.</returns>
+        /// <returns><see cref="SweepableNode{TNewTrain, TOption}"/>.</returns>
         public static SweepableNode<SdcaMaximumEntropyMulticlassTrainer, SdcaMaximumEntropyMulticlassTrainer.Options> SdcaMaximumEntropy(this SweepableMultiClassificationTrainers trainer, string labelColumnName = "Label", string featureColumnName = "Features", OptionBuilder<SdcaMaximumEntropyMulticlassTrainer.Options> optionBuilder = null)
         {
             var context = trainer.Context;
@@ -60,6 +60,35 @@ namespace MLNet.AutoPipeline
                                 },
                                 optionBuilder,
                                 estimatorName: nameof(SdcaMaximumEntropyMulticlassTrainer),
+                                inputs: new string[] { labelColumnName },
+                                outputs: new string[] { featureColumnName });
+        }
+
+        /// <summary>
+        /// Create a <see cref="SweepableNode{TNewTrain, TOption}"/> where TNewTrain is <see cref="SdcaNonCalibratedMulticlassTrainer"/> and TOption is <see cref="SdcaNonCalibratedMulticlassTrainer.Options"/> that can be used in <see cref="ISweepablePipeline"/>.
+        /// </summary>
+        /// <param name="trainer">The <see cref="SweepableMultiClassificationTrainerExtension"/>.</param>
+        /// <param name="labelColumnName">label column name. Default is Label.</param>
+        /// <param name="featureColumnName">feature column name, Default is Features.</param>
+        /// <param name="optionBuilder">option builder. if null, a default instance of <see cref="SdcaNonCalibratedOptionBuilder"/> will be used.</param>
+        /// <returns><see cref="SweepableNode{TNewTrain, TOption}"/>.</returns>
+        public static SweepableNode<SdcaNonCalibratedMulticlassTrainer, SdcaNonCalibratedMulticlassTrainer.Options> SdcaNonCalibreated(this SweepableMultiClassificationTrainers trainer, string labelColumnName = "Label", string featureColumnName = "Features", OptionBuilder<SdcaNonCalibratedMulticlassTrainer.Options> optionBuilder = null)
+        {
+            var context = trainer.Context;
+            if (optionBuilder == null)
+            {
+                optionBuilder = SdcaNonCalibratedOptionBuilder.Default;
+            }
+
+            return Util.CreateSweepableNode<SdcaNonCalibratedMulticlassTrainer, SdcaNonCalibratedMulticlassTrainer.Options>(
+                                (option) =>
+                                {
+                                    option.LabelColumnName = labelColumnName;
+                                    option.FeatureColumnName = featureColumnName;
+                                    return context.MulticlassClassification.Trainers.SdcaNonCalibrated(option);
+                                },
+                                optionBuilder,
+                                estimatorName: nameof(SdcaNonCalibratedMulticlassTrainer),
                                 inputs: new string[] { labelColumnName },
                                 outputs: new string[] { featureColumnName });
         }
