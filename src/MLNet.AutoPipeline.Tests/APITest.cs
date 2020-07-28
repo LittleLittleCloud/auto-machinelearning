@@ -8,6 +8,7 @@ using ApprovalTests.Reporters;
 using FluentAssertions;
 using Microsoft.ML;
 using Microsoft.ML.Trainers;
+using Microsoft.ML.Trainers.LightGbm;
 using MLNet.AutoPipeline.API.OptionBuilder;
 using MLNet.Sweeper;
 using System;
@@ -81,6 +82,18 @@ namespace MLNet.AutoPipeline.Test
             var context = new MLContext();
             var trainer = context.AutoML().MultiClassification.LbfgsMaximumEntropy("label", "feature");
             var parameterValues = LbfgsMaximumEntropyOptionBuilder.Default.ValueGenerators.Select(x => x.CreateFromNormalized(0.5));
+            var parameterset = new ParameterSet(parameterValues);
+            Approvals.Verify(trainer.ToCodeGenNodeContract(parameterset));
+        }
+
+        [Fact]
+        [UseApprovalSubdirectory("ApprovalTests")]
+        [UseReporter(typeof(DiffReporter))]
+        public void AutoPipeline_should_create_lightGbm_classifier_with_default_option()
+        {
+            var context = new MLContext();
+            var trainer = context.AutoML().MultiClassification.LightGbm("label", "feature", defaultOption: defaultOption);
+            var parameterValues = LightGbmOptionBuilder.Default.ValueGenerators.Select(x => x.CreateFromNormalized(0.5));
             var parameterset = new ParameterSet(parameterValues);
             Approvals.Verify(trainer.ToCodeGenNodeContract(parameterset));
         }
