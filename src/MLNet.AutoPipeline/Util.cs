@@ -63,5 +63,20 @@ namespace MLNet.AutoPipeline
             pickIndex.Shuffle();
             return pickIndex.GetRange(0, n).Select(i => list.ToArray()[i]);
         }
+
+        public static void CopyFieldsTo<T, TU>(this T source, TU dest)
+        {
+            var sourceField = typeof(T).GetFields(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance).ToList();
+            var destField = typeof(TU).GetFields(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance).ToList();
+
+            foreach (var field in sourceField)
+            {
+                if (destField.Any(x => x.Name == field.Name))
+                {
+                    var p = destField.First(x => x.Name == field.Name);
+                    p.SetValue(dest, field.GetValue(source));
+                }
+            }
+        }
     }
 }

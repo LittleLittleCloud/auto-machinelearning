@@ -14,7 +14,7 @@ namespace MLNet.AutoPipeline
     /// </summary>
     public static class MLContextExtension
     {
-        public static AutoPipelineCatalog AutoPipeline(this MLContext context)
+        public static AutoPipelineCatalog AutoML(this MLContext context)
         {
             return new AutoPipelineCatalog(context);
         }

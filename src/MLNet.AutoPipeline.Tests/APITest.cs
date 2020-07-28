@@ -32,7 +32,7 @@ namespace MLNet.AutoPipeline.Test
         public void AutoPipeline_should_create_naive_bayes_classifier()
         {
             var context = new MLContext();
-            var trainer = context.AutoPipeline().MultiClassification.NaiveBayes("label", "feature");
+            var trainer = context.AutoML().MultiClassification.NaiveBayes("label", "feature");
             Approvals.Verify(trainer.ToCodeGenNodeContract());
         }
 
@@ -42,7 +42,7 @@ namespace MLNet.AutoPipeline.Test
         public void AutoPipeline_should_create_sdca_maximum_entropy_classifier_with_default_option()
         {
             var context = new MLContext();
-            var trainer = context.AutoPipeline().MultiClassification.SdcaMaximumEntropy("label", "feature");
+            var trainer = context.AutoML().MultiClassification.SdcaMaximumEntropy("label", "feature");
             var parameterValues = SdcaMaximumEntropyOptionBuilder.Default.ValueGenerators.Select(x => x.CreateFromNormalized(0.5));
             var parameterset = new ParameterSet(parameterValues);
             Approvals.Verify(trainer.ToCodeGenNodeContract(parameterset));
@@ -55,7 +55,7 @@ namespace MLNet.AutoPipeline.Test
         {
             var context = new MLContext();
             var option = new CustomSdcaMaximumEntropyOptionBuilder();
-            var trainer = context.AutoPipeline().MultiClassification.SdcaMaximumEntropy("label", "feature", option);
+            var trainer = context.AutoML().MultiClassification.SdcaMaximumEntropy("label", "feature", option);
             var parameterValues = option.ValueGenerators.Select(x => x.CreateFromNormalized(0.5));
             var parameterset = new ParameterSet(parameterValues);
             Approvals.Verify(trainer.ToCodeGenNodeContract(parameterset));
@@ -67,8 +67,20 @@ namespace MLNet.AutoPipeline.Test
         public void AutoPipeline_should_create_sdca_non_calibrated_classifier_with_default_option()
         {
             var context = new MLContext();
-            var trainer = context.AutoPipeline().MultiClassification.SdcaNonCalibreated("label", "feature");
+            var trainer = context.AutoML().MultiClassification.SdcaNonCalibreated("label", "feature");
             var parameterValues = SdcaNonCalibratedOptionBuilder.Default.ValueGenerators.Select(x => x.CreateFromNormalized(0.5));
+            var parameterset = new ParameterSet(parameterValues);
+            Approvals.Verify(trainer.ToCodeGenNodeContract(parameterset));
+        }
+
+        [Fact]
+        [UseApprovalSubdirectory("ApprovalTests")]
+        [UseReporter(typeof(DiffReporter))]
+        public void AutoPipeline_should_create_lbfgs_maximum_entropy_classifier_with_default_option()
+        {
+            var context = new MLContext();
+            var trainer = context.AutoML().MultiClassification.LbfgsMaximumEntropy("label", "feature");
+            var parameterValues = LbfgsMaximumEntropyOptionBuilder.Default.ValueGenerators.Select(x => x.CreateFromNormalized(0.5));
             var parameterset = new ParameterSet(parameterValues);
             Approvals.Verify(trainer.ToCodeGenNodeContract(parameterset));
         }
