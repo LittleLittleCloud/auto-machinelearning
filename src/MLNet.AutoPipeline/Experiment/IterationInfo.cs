@@ -10,7 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace MLNet.AutoPipeline.Experiment
+namespace MLNet.AutoPipeline
 {
     /// <summary>
     /// Provides information for each training round in an Experiment.

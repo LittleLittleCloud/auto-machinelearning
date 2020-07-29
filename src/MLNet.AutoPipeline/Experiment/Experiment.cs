@@ -13,7 +13,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace MLNet.AutoPipeline.Experiment
+namespace MLNet.AutoPipeline
 {
     public class Experiment
     {

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace MLNet.AutoPipeline.Experiment
+namespace MLNet.AutoPipeline
 {
     /// <summary>
     /// Experiment Result for <see cref="Experiment"/>.

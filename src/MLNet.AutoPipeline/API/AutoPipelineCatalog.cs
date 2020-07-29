@@ -52,5 +52,15 @@ namespace MLNet.AutoPipeline
 
             return Util.CreateSweepableNode(factory, optionBuilder, estimatorName: trainerName, inputs: inputs, outputs: new string[] { output });
         }
+
+        public Experiment CreateExperiment(SweepablePipeline pipeline, Experiment.Option option = null)
+        {
+            if (option == null)
+            {
+                option = new Experiment.Option();
+            }
+
+            return new Experiment(this.mlContext, pipeline, option);
+        }
     }
 }
