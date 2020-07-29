@@ -3,6 +3,7 @@
 // </copyright>
 
 using Microsoft.ML;
+using Microsoft.ML.Runtime;
 using MLNet.AutoPipeline.Metric;
 using MLNet.Sweeper;
 using System;
@@ -128,7 +129,7 @@ namespace MLNet.AutoPipeline
         public class Option
         {
             /// <summary>
-            /// Sweeper used for hypeparameter optimization. Default is <see cref="RandomGridSweeper"/>
+            /// Sweeper used for hypeparameter optimization. Default is <see cref="RandomGridSweeper"/>.
             /// </summary>
             public ISweeper Sweeper { get; set; } = new RandomGridSweeper(new RandomGridSweeper.Option());
 

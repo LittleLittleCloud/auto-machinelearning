@@ -2,7 +2,6 @@
 using Microsoft.ML.Data;
 using Microsoft.ML.Transforms;
 using MLNet.AutoPipeline;
-using MLNet.AutoPipeline.Experiment;
 using MLNet.Expert.AutoML;
 using System;
 using System.Collections.Generic;

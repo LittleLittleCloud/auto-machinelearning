@@ -4,7 +4,6 @@
 
 using Microsoft.ML;
 using MLNet.AutoPipeline;
-using MLNet.AutoPipeline.Experiment;
 using MLNet.AutoPipeline.Metric;
 using System;
 using System.Collections.Generic;
