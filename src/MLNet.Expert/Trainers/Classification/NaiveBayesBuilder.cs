@@ -39,8 +39,8 @@ namespace MLNet.Expert.Trainers.Classification
         public EstimatorSingleNode CreateTrainer(MLContext context, string label, string feature)
         {
             var instance = context.MulticlassClassification.Trainers.NaiveBayes(label, feature);
-            var pipelineNode = new UnsweepableNode<MulticlassPredictionTransformer<NaiveBayesMulticlassModelParameters>>(instance);
-            return new EstimatorSingleNode(pipelineNode);
+            var pipelineNode = new UnsweepableNode<NaiveBayesMulticlassTrainer>(instance);
+            return Util.CreateEstimatorSingleNode(pipelineNode);
         }
 
         public class Option { }

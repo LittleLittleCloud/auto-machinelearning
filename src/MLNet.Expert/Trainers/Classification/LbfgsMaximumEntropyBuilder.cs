@@ -47,7 +47,7 @@ namespace MLNet.Expert.Trainers.Classification
                                 this._option,
                                 estimatorName: "LbfgsMaximumEntropy");
 
-            return new EstimatorSingleNode(sweepableNode);
+            return Util.CreateEstimatorSingleNode(sweepableNode);
         }
 
         /// <summary>
@@ -58,13 +58,13 @@ namespace MLNet.Expert.Trainers.Classification
             /// <summary>
             /// The L1 regularization hyperparameter. Higher values will tend to lead to more sparse model.
             /// </summary>
-            [Parameter(1E-4F, 10f, true, 20)]
+            [SweepableParameter(1E-4F, 10f, true, 20)]
             public float L1Regularization;
 
             /// <summary>
             /// The L2 weight for regularization.
             /// </summary>
-            [Parameter(1E-4F, 10f, true, 20)]
+            [SweepableParameter(1E-4F, 10f, true, 20)]
             public float L2Regularization;
         }
     }

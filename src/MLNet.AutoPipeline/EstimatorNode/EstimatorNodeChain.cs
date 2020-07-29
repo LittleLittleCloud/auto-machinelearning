@@ -25,7 +25,7 @@ namespace MLNet.AutoPipeline
         {
             for (int i = 0; i != estimators.Length; ++i)
             {
-                var estimatorWrapper = new UnsweepableNode<ITransformer>(estimators[i], scopes[i]);
+                var estimatorWrapper = new UnsweepableNode<IEstimator<ITransformer>>(estimators[i], scopes[i]);
                 this.Append(estimatorWrapper);
             }
         }
@@ -40,15 +40,15 @@ namespace MLNet.AutoPipeline
             this._nodes = new List<IEstimatorNode>();
         }
 
-        public EstimatorNodeChain Append<TNewTrans>(IEstimator<TNewTrans> estimator, TransformerScope scope = TransformerScope.Everything)
-            where TNewTrans : ITransformer
+        public EstimatorNodeChain Append<TNewTrans>(TNewTrans estimator, TransformerScope scope = TransformerScope.Everything)
+            where TNewTrans : IEstimator<ITransformer>
         {
             var estimatorWrapper = new UnsweepableNode<TNewTrans>(estimator, scope);
             return this.Append(estimatorWrapper);
         }
 
-        public EstimatorNodeChain Append<TNewTrains, TOption>(Func<TOption, IEstimator<TNewTrains>> estimatorBuilder, OptionBuilder<TOption> optionBuilder, TransformerScope scope = TransformerScope.Everything)
-            where TNewTrains : ITransformer
+        public EstimatorNodeChain Append<TNewTrains, TOption>(Func<TOption, TNewTrains> estimatorBuilder, OptionBuilder<TOption> optionBuilder, TransformerScope scope = TransformerScope.Everything)
+            where TNewTrains : IEstimator<ITransformer>
             where TOption : class
         {
             var autoEstimator = new SweepableNode<TNewTrains, TOption>(estimatorBuilder, optionBuilder, scope);
@@ -57,16 +57,16 @@ namespace MLNet.AutoPipeline
         }
 
         public EstimatorNodeChain Append<TNewTrans, TOption>(SweepableNode<TNewTrans, TOption> estimatorBuilder)
-            where TNewTrans : ITransformer
+            where TNewTrans : IEstimator<ITransformer>
             where TOption : class
         {
-            return this.Append(new EstimatorSingleNode(estimatorBuilder));
+            return this.Append(Util.CreateEstimatorSingleNode(estimatorBuilder));
         }
 
-        public EstimatorNodeChain Append<TNewTrans>(UnsweepableNode<TNewTrans> estimatorWrapper)
-            where TNewTrans : ITransformer
+        public EstimatorNodeChain Append<TNewTrans>(UnsweepableNode<TNewTrans> unsweepableNode)
+            where TNewTrans : IEstimator<ITransformer>
         {
-            return this.Append(new EstimatorSingleNode(estimatorWrapper));
+            return this.Append(Util.CreateEstimatorSingleNode(unsweepableNode));
         }
 
         public EstimatorNodeChain Append(IEstimatorNode node)
@@ -91,18 +91,18 @@ namespace MLNet.AutoPipeline
             this._sweeper = sweeper;
         }
 
-        public IEnumerable<ISweepablePipeline> BuildSweepablePipelines()
+        public IEnumerable<SweepablePipeline> BuildSweepablePipelines()
         {
             if (this._nodes.Count == 0)
             {
-                return new List<ISweepablePipeline>();
+                return new List<SweepablePipeline>();
             }
 
             // TODO: use stack and yield to save memory.
-            var paths = new List<ISweepablePipeline>();
+            var paths = new List<SweepablePipeline>();
             foreach (var node in this._nodes)
             {
-                var newPath = new List<ISweepablePipeline>();
+                var newPath = new List<SweepablePipeline>();
 
                 if (paths.Count == 0)
                 {

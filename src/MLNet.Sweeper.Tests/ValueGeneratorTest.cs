@@ -1,4 +1,4 @@
-// <copyright file="UnitTest1.cs" company="BigMiao">
+// <copyright file="ValueGeneratorTest.cs" company="BigMiao">
 // Copyright (c) BigMiao. All rights reserved.
 // </copyright>
 
@@ -10,6 +10,52 @@ namespace MLNet.Sweeper.Tests
 {
     public class ValueGeneratorTest
     {
+        [Theory]
+        [InlineData(-10, 10, 20, false, 0)]
+        [InlineData(-10, 10, 15, false, 0)]
+        [InlineData(1, 64, 7, true, 8)]
+        public void DoubleValueGenerator_should_generate_value_from_normalize(double min, double max, int step, bool logbase, double expect)
+        {
+            var option = new DoubleValueGenerator.Option()
+            {
+                Min = min,
+                Max = max,
+                Name = "double",
+                Steps = step,
+                LogBase = logbase,
+            };
+
+            var generator = new DoubleValueGenerator(option);
+
+            generator.CreateFromNormalized(1.0f).RawValue.As<double>().Should().BeApproximately(max, 0.0001);
+            generator.CreateFromNormalized(0f).RawValue.As<double>().Should().BeApproximately(min, 0.0001);
+            generator.CreateFromNormalized(0.5f).RawValue.As<double>().Should().BeApproximately(expect, 0.0001);
+        }
+
+        [Theory]
+        [InlineData(-10, 10, 20, false, 20)]
+        [InlineData(-10, 10, 13, false, 13)]
+        [InlineData(1, 10, 3, true, 3)]
+        public void DoubleValueGenerator_should_work_with_index(double min, double max, int step, bool logBase, int count)
+        {
+            var option = new DoubleValueGenerator.Option()
+            {
+                Min = min,
+                Max = max,
+                Steps = step,
+                Name = "double",
+                LogBase = logBase,
+            };
+
+            var generator = new DoubleValueGenerator(option);
+
+            generator.Count.Should().Be(count + 1);
+            generator[0].RawValue.Should().Be(min);
+            ((double)generator[count].RawValue)
+                .Should()
+                .BeApproximately(max, 0.00001);
+        }
+
         [Theory]
         [InlineData(-10f, 10f, 20, false, 0f)]
         [InlineData(-10f, 10f, 15, false, 0f)]

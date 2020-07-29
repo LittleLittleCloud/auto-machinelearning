@@ -3,6 +3,7 @@
 // </copyright>
 
 using Microsoft.ML;
+using Microsoft.ML.Runtime;
 using MLNet.AutoPipeline.Metric;
 using MLNet.Sweeper;
 using System;
@@ -13,20 +14,20 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace MLNet.AutoPipeline.Experiment
+namespace MLNet.AutoPipeline
 {
     public class Experiment
     {
         private Option option;
         private MLContext context;
-        private IEnumerable<ISweepablePipeline> sweepablePipelines;
+        private IEnumerable<SweepablePipeline> sweepablePipelines;
         private double timeLeft;
 
-        public Experiment(MLContext context, ISweepablePipeline pipeline, Option option)
+        public Experiment(MLContext context, SweepablePipeline pipeline, Option option)
         {
             this.option = option;
             this.context = context;
-            this.sweepablePipelines = new ISweepablePipeline[1] { pipeline };
+            this.sweepablePipelines = new SweepablePipeline[1] { pipeline };
             this.timeLeft = option.MaximumTrainingTime;
         }
 
@@ -128,12 +129,12 @@ namespace MLNet.AutoPipeline.Experiment
         public class Option
         {
             /// <summary>
-            /// Sweeper used for hypeparameter optimization. Default is <see cref="RandomGridSweeper"/>
+            /// Sweeper used for hypeparameter optimization. Default is <see cref="RandomGridSweeper"/>.
             /// </summary>
             public ISweeper Sweeper { get; set; } = new RandomGridSweeper(new RandomGridSweeper.Option());
 
             /// <summary>
-            /// Number of iteration <see cref="Sweeper"/> will try in each sweeping process. Default is 100. This value will be used to set maximum parameter for <seealso cref="ISweepablePipeline.Sweeping(int)"/>.
+            /// Number of iteration <see cref="Sweeper"/> will try in each sweeping process. Default is 100. This value will be used to set maximum parameter for <seealso cref="SweepablePipeline.Sweeping(int)"/>.
             /// </summary>
             public int Iteration { get; set; } = 100;
 

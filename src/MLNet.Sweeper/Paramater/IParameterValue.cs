@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -17,8 +18,10 @@ namespace MLNet.Sweeper
 
         string ValueText { get; }
 
+        [JsonIgnore]
         object RawValue { get; }
 
+        [JsonIgnore]
         string ID { get; }
     }
 
@@ -27,11 +30,13 @@ namespace MLNet.Sweeper
     /// </summary>
     public interface IParameterValue<out TValue> : IParameterValue
     {
+        [JsonIgnore]
         TValue Value { get; }
     }
 
     public interface IDiscreteParameterValue : IParameterValue
     {
+        [JsonIgnore]
         double[] OneHotEncode { get; }
     }
 }

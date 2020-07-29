@@ -4,7 +4,6 @@
 
 using Microsoft.ML;
 using MLNet.AutoPipeline;
-using MLNet.AutoPipeline.Experiment;
 using MLNet.AutoPipeline.Metric;
 using System;
 using System.Collections.Generic;
@@ -49,7 +48,7 @@ namespace MLNet.Expert.AutoML
             // start
             var trainers = this.classificationExpert.Propose(this.option.LabelColumn, PipelineBuilder.FEATURECOLUMNNAME);
             var initState = new AutoMLTrainingState(trainers as EstimatorNodeGroup);
-            initState.Transformers.Add(columnPicker.LabelColumn, Util.CreateUnSweepableNode(this.context.Transforms.Conversion.MapValueToKey(this.option.LabelColumn, this.option.LabelColumn), estimatorName: "MapValueToKey"));
+            initState.Transformers.Add(columnPicker.LabelColumn, Util.CreateUnSweepableNode(this.context.Transforms.Conversion.MapValueToKey(this.option.LabelColumn, this.option.LabelColumn), estimatorName: "MapValueToKey") as INode);
             var experimentOption = new Experiment.Option()
             {
                 ScoreMetric = this.option.ScoreMetric,
@@ -166,7 +165,7 @@ namespace MLNet.Expert.AutoML
             var pipeline = PipelineBuilder.BuildPipelineFromStateWithNewColumn(this.context, currentState, column, expert, column.Name);
             var experiment = new Experiment(this.context, pipeline, experimentOption);
             var experimentResult = await experiment.TrainAsync(train, validate, reporter, ct);
-            var transformers = experimentResult.BestIteration.SweepablePipeline.SweepablePipelineNodes;
+            var transformers = experimentResult.BestIteration.SweepablePipeline.Nodes;
 
             var selectedTransformer = transformers[transformers.Count - 3];
             var transforms = currentState.Transformers.Select(x => x).ToDictionary(x => x.Key, x => x.Value);

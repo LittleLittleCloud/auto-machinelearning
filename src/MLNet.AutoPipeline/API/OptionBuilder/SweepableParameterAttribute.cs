@@ -11,9 +11,9 @@ using MLNet.Sweeper;
 
 namespace MLNet.AutoPipeline
 {
-    public class ParameterAttribute : Attribute
+    public class SweepableParameterAttribute : Attribute
     {
-        public ParameterAttribute(int min, int max, bool logBase = false, int steps = 100)
+        public SweepableParameterAttribute(int min, int max, bool logBase = false, int steps = 100)
         {
             Contract.Assert(max > min);
             Contract.Assert(steps > 0);
@@ -29,7 +29,7 @@ namespace MLNet.AutoPipeline
             this.ValueGenerator = new Int32ValueGenerator(option);
         }
 
-        public ParameterAttribute(long min, long max, bool logBase = false, int steps = 100)
+        public SweepableParameterAttribute(long min, long max, bool logBase = false, int steps = 100)
         {
             Contract.Assert(max > min);
             Contract.Assert(steps > 0);
@@ -45,7 +45,7 @@ namespace MLNet.AutoPipeline
             this.ValueGenerator = new LongValueGenerator(option);
         }
 
-        public ParameterAttribute(float min, float max, bool logBase = false, int steps = 100)
+        public SweepableParameterAttribute(float min, float max, bool logBase = false, int steps = 100)
         {
             Contract.Assert(max > min);
             Contract.Assert(steps > 0);
@@ -61,7 +61,23 @@ namespace MLNet.AutoPipeline
             this.ValueGenerator = new FloatValueGenerator(option);
         }
 
-        public ParameterAttribute(object[] candidates)
+        public SweepableParameterAttribute(double min, double max, bool logBase = false, int steps = 100)
+        {
+            Contract.Assert(max > min);
+            Contract.Assert(steps > 0);
+            Contract.Assert(!logBase || (logBase && min > 0));
+            var option = new DoubleValueGenerator.Option()
+            {
+                Min = min,
+                Max = max,
+                Steps = steps,
+                LogBase = logBase,
+            };
+
+            this.ValueGenerator = new DoubleValueGenerator(option);
+        }
+
+        public SweepableParameterAttribute(object[] candidates)
         {
             var option = new DiscreteValueGenerator.Option()
             {

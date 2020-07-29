@@ -1,0 +1,35 @@
+{
+  "parameters": [
+    {
+      "Name": "L2Regularization",
+      "ValueText": "0.031622775"
+    },
+    {
+      "Name": "L1Regularization",
+      "ValueText": "0.031622775"
+    },
+    {
+      "Name": "HistorySize",
+      "ValueText": "32"
+    },
+    {
+      "Name": "ExampleWeightColumnName",
+      "ValueText": null
+    },
+    {
+      "Name": "OptimizationTolerance",
+      "ValueText": "1E-07"
+    },
+    {
+      "Name": "EnforceNonNegativity",
+      "ValueText": "False"
+    }
+  ],
+  "name": "SdcaMaximumEntropyMulticlassTrainer",
+  "input_column": [
+    "label"
+  ],
+  "output_column": [
+    "feature"
+  ]
+}

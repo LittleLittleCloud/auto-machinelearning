@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <IsPackable>false</IsPackable>
+    <SignAssembly>true</SignAssembly>
   </PropertyGroup>
 
   <ItemGroup>
@@ -11,6 +12,7 @@
     <PackageReference Include="Microsoft.ML.Recommender" Version="$(UnstableMLNetVersion)" />
     <PackageReference Include="Microsoft.ML.LightGBM" Version="$(StableMLNetVersion)" />
     <PackageReference Include="xunit" Version="2.4.1" />
+    <PackageReference Include="ApprovalTests" Version="5.2.4" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.1" />
   </ItemGroup>
 

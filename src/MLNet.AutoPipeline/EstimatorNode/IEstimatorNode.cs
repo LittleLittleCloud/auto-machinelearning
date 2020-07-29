@@ -34,7 +34,7 @@ namespace MLNet.AutoPipeline
 
     public interface IEstimatorNode
     {
-        IEnumerable<ISweepablePipeline> BuildSweepablePipelines();
+        IEnumerable<SweepablePipeline> BuildSweepablePipelines();
 
         EstimatorNodeType NodeType { get; }
 

@@ -5,7 +5,7 @@
 using FluentAssertions;
 using Microsoft.ML;
 using Microsoft.ML.Data;
-using MLNet.AutoPipeline.Experiment;
+using MLNet.AutoPipeline;
 using MLNet.AutoPipeline.Metric;
 using MLNet.Expert.AutoML;
 using System;

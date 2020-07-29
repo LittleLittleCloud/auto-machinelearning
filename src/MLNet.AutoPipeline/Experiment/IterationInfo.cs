@@ -10,7 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace MLNet.AutoPipeline.Experiment
+namespace MLNet.AutoPipeline
 {
     /// <summary>
     /// Provides information for each training round in an Experiment.
@@ -43,11 +43,11 @@ namespace MLNet.AutoPipeline.Experiment
         public bool IsMetricMaximizing { get; private set; }
 
         /// <summary>
-        /// <see cref="ISweepablePipeline"/> used in the current training round.
+        /// <see cref="SweepablePipeline"/> used in the current training round.
         /// </summary>
-        public ISweepablePipeline SweepablePipeline { get; private set; }
+        public SweepablePipeline SweepablePipeline { get; private set; }
 
-        public IterationInfo(ISweepablePipeline sweepablePipeline, ParameterSet parameters, double time, Metric score, IEnumerable<Metric> metrics, bool isMaximizing)
+        public IterationInfo(SweepablePipeline sweepablePipeline, ParameterSet parameters, double time, Metric score, IEnumerable<Metric> metrics, bool isMaximizing)
         {
             this.SweepablePipeline = sweepablePipeline;
             this.ParameterSet = parameters;

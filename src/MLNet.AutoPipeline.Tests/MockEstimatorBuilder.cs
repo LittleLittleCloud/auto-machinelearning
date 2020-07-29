@@ -15,7 +15,7 @@ using static Microsoft.ML.Trainers.MatrixFactorizationTrainer;
 namespace MLNet.AutoPipeline.Test
 {
 
-    public class MockEstimatorBuilder : ISweepablePipelineNode
+    public class MockEstimatorBuilder : INode
     {
         public MockEstimatorBuilder(string name)
         {
@@ -28,7 +28,11 @@ namespace MLNet.AutoPipeline.Test
 
         public IValueGenerator[] ValueGenerators => new List<IValueGenerator>().ToArray();
 
-        public SweepablePipelineNodeType NodeType => SweepablePipelineNodeType.Sweepable;
+        public NodeType NodeType => NodeType.Sweepable;
+
+        public string[] InputColumns => throw new System.NotImplementedException();
+
+        public string[] OutputColumns => throw new System.NotImplementedException();
 
         public IEstimator<ITransformer> BuildEstimator(ParameterSet parameters)
         {

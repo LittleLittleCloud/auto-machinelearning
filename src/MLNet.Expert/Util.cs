@@ -17,15 +17,15 @@ namespace MLNet.Expert
     {
         private static Random rng = new Random();
 
-        public static SweepableNode<TTransformer, TOption> CreateSweepableNode<TTransformer, TOption>(Func<TOption, IEstimator<TTransformer>> estimatorFactory, OptionBuilder<TOption> optionBuilder, TransformerScope scope = TransformerScope.Everything, string estimatorName = null)
-            where TTransformer : ITransformer
+        public static SweepableNode<TNewTrain, TOption> CreateSweepableNode<TNewTrain, TOption>(Func<TOption, TNewTrain> estimatorFactory, OptionBuilder<TOption> optionBuilder, TransformerScope scope = TransformerScope.Everything, string estimatorName = null)
+            where TNewTrain : IEstimator<ITransformer>
             where TOption : class
         {
-            return new SweepableNode<TTransformer, TOption>(estimatorFactory, optionBuilder, scope, estimatorName);
+            return new SweepableNode<TNewTrain, TOption>(estimatorFactory, optionBuilder, scope, estimatorName);
         }
 
-        public static UnsweepableNode<TInstance> CreateUnSweepableNode<TInstance>(IEstimator<TInstance> instance, TransformerScope scope = TransformerScope.Everything, string estimatorName = null)
-            where TInstance : ITransformer
+        public static UnsweepableNode<TInstance> CreateUnSweepableNode<TInstance>(TInstance instance, TransformerScope scope = TransformerScope.Everything, string estimatorName = null)
+            where TInstance : IEstimator<ITransformer>
         {
             return new UnsweepableNode<TInstance>(instance, scope, estimatorName);
         }
@@ -49,6 +49,19 @@ namespace MLNet.Expert
             var pickIndex = Enumerable.Range(0, list.Count()).ToList();
             pickIndex.Shuffle();
             return pickIndex.GetRange(0, n).Select(i => list.ToArray()[i]);
+        }
+
+        public static EstimatorSingleNode CreateEstimatorSingleNode<TInstance>(UnsweepableNode<TInstance> unSweepableNode)
+            where TInstance : IEstimator<ITransformer>
+        {
+            return new EstimatorSingleNode(unSweepableNode as INode);
+        }
+
+        public static EstimatorSingleNode CreateEstimatorSingleNode<TInstance, TOption>(SweepableNode<TInstance, TOption> sweepableNode)
+            where TInstance : IEstimator<ITransformer>
+            where TOption : class
+        {
+            return new EstimatorSingleNode(sweepableNode as INode);
         }
     }
 }

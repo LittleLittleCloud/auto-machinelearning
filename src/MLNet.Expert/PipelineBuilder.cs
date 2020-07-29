@@ -2,7 +2,6 @@
 using Microsoft.ML.Data;
 using Microsoft.ML.Transforms;
 using MLNet.AutoPipeline;
-using MLNet.AutoPipeline.Experiment;
 using MLNet.Expert.AutoML;
 using System;
 using System.Collections.Generic;
@@ -71,7 +70,7 @@ namespace MLNet.Expert
             return pipeline;
         }
 
-        private static ISweepablePipelineNode BuildConcatFeaturesTransformer(MLContext context, IEnumerable<DataViewSchema.Column> columns, IEnumerable<InputOutputColumnPair> inputOutputColumnPairs, string featureColumnName = "Features")
+        private static INode BuildConcatFeaturesTransformer(MLContext context, IEnumerable<DataViewSchema.Column> columns, IEnumerable<InputOutputColumnPair> inputOutputColumnPairs, string featureColumnName = "Features")
         {
             Contract.Requires(columns != null && inputOutputColumnPairs != null);
             var inputColumnNames = inputOutputColumnPairs.Select(x => x.InputColumnName);
@@ -83,7 +82,7 @@ namespace MLNet.Expert
 
             var outputColumnNames = inputOutputColumnPairs.Select(x => x.OutputColumnName);
             var concatFeaturesTransformer = context.Transforms.Concatenate(featureColumnName, outputColumnNames.ToArray());
-            return Util.CreateUnSweepableNode(concatFeaturesTransformer);
+            return (INode)Util.CreateUnSweepableNode(concatFeaturesTransformer);
         }
     }
 }

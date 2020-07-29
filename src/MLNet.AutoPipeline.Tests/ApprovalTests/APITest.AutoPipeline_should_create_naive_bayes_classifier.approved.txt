@@ -1,0 +1,10 @@
+{
+  "parameters": null,
+  "name": "NaiveBayesMulticlassTrainer",
+  "input_column": [
+    "label"
+  ],
+  "output_column": [
+    "feature"
+  ]
+}
