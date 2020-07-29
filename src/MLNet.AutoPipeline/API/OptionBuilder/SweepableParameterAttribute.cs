@@ -61,6 +61,22 @@ namespace MLNet.AutoPipeline
             this.ValueGenerator = new FloatValueGenerator(option);
         }
 
+        public SweepableParameterAttribute(double min, double max, bool logBase = false, int steps = 100)
+        {
+            Contract.Assert(max > min);
+            Contract.Assert(steps > 0);
+            Contract.Assert(!logBase || (logBase && min > 0));
+            var option = new DoubleValueGenerator.Option()
+            {
+                Min = min,
+                Max = max,
+                Steps = steps,
+                LogBase = logBase,
+            };
+
+            this.ValueGenerator = new DoubleValueGenerator(option);
+        }
+
         public SweepableParameterAttribute(object[] candidates)
         {
             var option = new DiscreteValueGenerator.Option()

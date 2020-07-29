@@ -2,7 +2,7 @@
   "parameters": [
     {
       "Name": "LearningRate",
-      "ValueText": "0.010000001"
+      "ValueText": "0.010000000000000004"
     },
     {
       "Name": "NumberOfLeaves",

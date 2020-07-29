@@ -40,8 +40,8 @@ namespace MLNet.AutoPipeline
         /// </item>
         /// </list>
         /// </summary>
-        [SweepableParameter(0.001f, 0.1f, true, 20)]
-        public float LearningRate;
+        [SweepableParameter(0.001, 0.1, true, 20)]
+        public double LearningRate;
 
         /// <summary>
         /// The maximum number of leaves in one tree.
