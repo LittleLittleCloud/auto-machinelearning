@@ -44,10 +44,19 @@ namespace MLNet.AutoPipeline
         string[] OutputColumns { get; }
     }
 
-    public interface INode<TTrain> : INode
+    public interface INode<out TTrain> : INode
         where TTrain : IEstimator<ITransformer>
     {
         TTrain BuildEstimator(ParameterSet parameters = null);
+    }
+
+    public interface ISweepableNode<out TTrain, TOption> : INode<TTrain>
+        where TTrain : IEstimator<ITransformer>
+        where TOption : class
+    {
+        Func<TOption, TTrain> EstimatorFactory { get;  }
+
+        OptionBuilder<TOption> OptionBuilder { get; }
     }
 
     [DataContract]

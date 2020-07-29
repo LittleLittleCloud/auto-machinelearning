@@ -7,6 +7,7 @@ using ApprovalTests.Namers;
 using ApprovalTests.Reporters;
 using FluentAssertions;
 using Microsoft.ML;
+using Microsoft.ML.Calibrators;
 using Microsoft.ML.Trainers;
 using Microsoft.ML.Trainers.LightGbm;
 using MLNet.AutoPipeline.API.OptionBuilder;
@@ -120,6 +121,31 @@ namespace MLNet.AutoPipeline.Test
             var parameterValues = optionBuilder.ValueGenerators.Select(x => x.CreateFromNormalized(0.5));
             var parameterset = new ParameterSet(parameterValues);
             Approvals.Verify(trainer.ToCodeGenNodeContract(parameterset));
+        }
+
+        [Fact]
+        [UseApprovalSubdirectory("ApprovalTests")]
+        [UseReporter(typeof(DiffReporter))]
+        public void AutoPipeline_should_create_ova_classifier_from_binary_classifier()
+        {
+            var context = new MLContext();
+            var optionBuilder = new CustomSdcaMaximumEntropyOptionBuilder();
+            var binaryTrainer = context.AutoML().SweepableTrainer(
+                                (option) =>
+                                {
+                                    option.LabelColumnName = "Label";
+                                    option.FeatureColumnName = "Features";
+                                    return context.BinaryClassification.Trainers.SdcaLogisticRegression(option.LabelColumnName, option.FeatureColumnName);
+                                },
+                                optionBuilder,
+                                new string[] { "Features" },
+                                "Score",
+                                "CustomSdca");
+            var ovaTrainer = context.AutoML().MultiClassification.OneVersusAll(binaryTrainer);
+
+            var parameterValues = optionBuilder.ValueGenerators.Select(x => x.CreateFromNormalized(0.5));
+            var parameterset = new ParameterSet(parameterValues);
+            Approvals.Verify(ovaTrainer.ToCodeGenNodeContract(parameterset));
         }
     }
 
