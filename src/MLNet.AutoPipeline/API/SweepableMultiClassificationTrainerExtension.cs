@@ -20,7 +20,7 @@ namespace MLNet.AutoPipeline
     public static class SweepableMultiClassificationTrainerExtension
     {
         /// <summary>
-        /// Create an <see cref="UnsweepableNode{SweepableBinaryClassificationTrainers}"/> where TTrainer is <see cref="NaiveBayesMulticlassTrainer"/> that can be used in <see cref="ISweepablePipeline"/>.
+        /// Create an <see cref="UnsweepableNode{SweepableBinaryClassificationTrainers}"/> where TTrainer is <see cref="NaiveBayesMulticlassTrainer"/> that can be used in <see cref="SweepablePipeline"/>.
         /// </summary>
         /// <param name="trainer">The <see cref="SweepableMultiClassificationTrainerExtension"/>.</param>
         /// <param name="labelColumnName">label column name. Default is Label.</param>
@@ -39,7 +39,7 @@ namespace MLNet.AutoPipeline
         }
 
         /// <summary>
-        /// Create a <see cref="SweepableNode{TNewTrain, TOption}"/> where TNewTrain is <see cref="SdcaMaximumEntropyMulticlassTrainer"/> and TOption is <see cref="SdcaMaximumEntropyMulticlassTrainer.Options"/> that can be used in <see cref="ISweepablePipeline"/>.
+        /// Create a <see cref="SweepableNode{TNewTrain, TOption}"/> where TNewTrain is <see cref="SdcaMaximumEntropyMulticlassTrainer"/> and TOption is <see cref="SdcaMaximumEntropyMulticlassTrainer.Options"/> that can be used in <see cref="SweepablePipeline"/>.
         /// </summary>
         /// <param name="trainer">The <see cref="SweepableMultiClassificationTrainerExtension"/>.</param>
         /// <param name="labelColumnName">label column name. Default is Label.</param>
@@ -75,7 +75,7 @@ namespace MLNet.AutoPipeline
         }
 
         /// <summary>
-        /// Create a <see cref="SweepableNode{TNewTrain, TOption}"/> where TNewTrain is <see cref="SdcaNonCalibratedMulticlassTrainer"/> and TOption is <see cref="SdcaNonCalibratedMulticlassTrainer.Options"/> that can be used in <see cref="ISweepablePipeline"/>.
+        /// Create a <see cref="SweepableNode{TNewTrain, TOption}"/> where TNewTrain is <see cref="SdcaNonCalibratedMulticlassTrainer"/> and TOption is <see cref="SdcaNonCalibratedMulticlassTrainer.Options"/> that can be used in <see cref="SweepablePipeline"/>.
         /// </summary>
         /// <param name="trainer">The <see cref="SweepableMultiClassificationTrainerExtension"/>.</param>
         /// <param name="labelColumnName">label column name. Default is Label.</param>
@@ -111,7 +111,7 @@ namespace MLNet.AutoPipeline
         }
 
         /// <summary>
-        /// Create a <see cref="SweepableNode{TNewTrain, TOption}"/> where TNewTrain is <see cref="LbfgsMaximumEntropyMulticlassTrainer"/> and TOption is <see cref="LbfgsMaximumEntropyMulticlassTrainer.Options"/> that can be used in <see cref="ISweepablePipeline"/>.
+        /// Create a <see cref="SweepableNode{TNewTrain, TOption}"/> where TNewTrain is <see cref="LbfgsMaximumEntropyMulticlassTrainer"/> and TOption is <see cref="LbfgsMaximumEntropyMulticlassTrainer.Options"/> that can be used in <see cref="SweepablePipeline"/>.
         /// </summary>
         /// <param name="trainer">The <see cref="SweepableMultiClassificationTrainerExtension"/>.</param>
         /// <param name="labelColumnName">label column name. Default is Label.</param>
@@ -147,7 +147,7 @@ namespace MLNet.AutoPipeline
         }
 
         /// <summary>
-        /// Create a <see cref="SweepableNode{TNewTrain, TOption}"/> where TNewTrain is <see cref="LightGbmMulticlassTrainer"/> and TOption is <see cref="LightGbmMulticlassTrainer.Options"/> that can be used in <see cref="ISweepablePipeline"/>.
+        /// Create a <see cref="SweepableNode{TNewTrain, TOption}"/> where TNewTrain is <see cref="LightGbmMulticlassTrainer"/> and TOption is <see cref="LightGbmMulticlassTrainer.Options"/> that can be used in <see cref="SweepablePipeline"/>.
         /// </summary>
         /// <param name="trainer">The <see cref="SweepableMultiClassificationTrainerExtension"/>.</param>
         /// <param name="labelColumnName">label column name. Default is Label.</param>
@@ -183,7 +183,7 @@ namespace MLNet.AutoPipeline
         }
 
         /// <summary>
-        /// Create a <see cref="SweepableNode{TNewTrain, TOption}"/> where TNewTrain is <see cref="OneVersusAllTrainer"/> that can be used in <see cref="ISweepablePipeline"/>. This function is used to convert binary classification trainer into multi-classification trainer. 
+        /// Create a <see cref="SweepableNode{TNewTrain, TOption}"/> where TNewTrain is <see cref="OneVersusAllTrainer"/> that can be used in <see cref="SweepablePipeline"/>. This function is used to convert binary classification trainer into multi-classification trainer. 
         /// </summary>
         /// <typeparam name="TModel">Type of binary classification trainer.</typeparam>
         /// <typeparam name="TOption">type of binary classification trainer option.</typeparam>

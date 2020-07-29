@@ -39,7 +39,7 @@ namespace MLNet.AutoPipeline
 
         public EstimatorNodeType NodeType => EstimatorNodeType.Node;
 
-        public IEnumerable<ISweepablePipeline> BuildSweepablePipelines()
+        public IEnumerable<SweepablePipeline> BuildSweepablePipelines()
         {
             yield return new SweepablePipeline().Append(this.estimatorBuilder);
         }

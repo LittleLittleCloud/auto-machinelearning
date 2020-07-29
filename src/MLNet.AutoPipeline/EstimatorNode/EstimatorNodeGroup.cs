@@ -35,7 +35,7 @@ namespace MLNet.AutoPipeline
 
         public EstimatorNodeType NodeType => EstimatorNodeType.NodeGroup;
 
-        public IEnumerable<ISweepablePipeline> BuildSweepablePipelines()
+        public IEnumerable<SweepablePipeline> BuildSweepablePipelines()
         {
             foreach (var node in this._nodes)
             {

@@ -91,18 +91,18 @@ namespace MLNet.AutoPipeline
             this._sweeper = sweeper;
         }
 
-        public IEnumerable<ISweepablePipeline> BuildSweepablePipelines()
+        public IEnumerable<SweepablePipeline> BuildSweepablePipelines()
         {
             if (this._nodes.Count == 0)
             {
-                return new List<ISweepablePipeline>();
+                return new List<SweepablePipeline>();
             }
 
             // TODO: use stack and yield to save memory.
-            var paths = new List<ISweepablePipeline>();
+            var paths = new List<SweepablePipeline>();
             foreach (var node in this._nodes)
             {
-                var newPath = new List<ISweepablePipeline>();
+                var newPath = new List<SweepablePipeline>();
 
                 if (paths.Count == 0)
                 {

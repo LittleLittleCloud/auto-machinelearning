@@ -166,7 +166,7 @@ namespace MLNet.Expert.AutoML
             var pipeline = PipelineBuilder.BuildPipelineFromStateWithNewColumn(this.context, currentState, column, expert, column.Name);
             var experiment = new Experiment(this.context, pipeline, experimentOption);
             var experimentResult = await experiment.TrainAsync(train, validate, reporter, ct);
-            var transformers = experimentResult.BestIteration.SweepablePipeline.SweepablePipelineNodes;
+            var transformers = experimentResult.BestIteration.SweepablePipeline.Nodes;
 
             var selectedTransformer = transformers[transformers.Count - 3];
             var transforms = currentState.Transformers.Select(x => x).ToDictionary(x => x.Key, x => x.Value);

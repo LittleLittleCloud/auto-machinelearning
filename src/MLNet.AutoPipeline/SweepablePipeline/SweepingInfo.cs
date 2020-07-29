@@ -24,7 +24,7 @@ namespace MLNet.AutoPipeline
         /// Initializes a new instance of the <see cref="SweepingInfo"/> class.
         /// </summary>
         /// <param name="pipeline">Pipeline.</param>
-        /// <param name="parameters">Parameters from <see cref="ISweepablePipeline.Sweeper"/>.</param>
+        /// <param name="parameters">Parameters from <see cref="SweepablePipeline.Sweeper"/>.</param>
         public SweepingInfo(EstimatorChain<ITransformer> pipeline, ParameterSet parameters)
         {
             this.Pipeline = pipeline;

@@ -47,7 +47,7 @@ namespace MLNet.AutoPipeline
     public interface INode<out TTrain> : INode
         where TTrain : IEstimator<ITransformer>
     {
-        TTrain BuildEstimator(ParameterSet parameters = null);
+        new TTrain BuildEstimator(ParameterSet parameters = null);
     }
 
     public interface ISweepableNode<out TTrain, TOption> : INode<TTrain>

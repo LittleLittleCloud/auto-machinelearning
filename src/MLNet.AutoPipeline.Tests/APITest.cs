@@ -107,7 +107,7 @@ namespace MLNet.AutoPipeline.Test
             var context = new MLContext();
             var optionBuilder = new CustomSdcaMaximumEntropyOptionBuilder();
             var trainer = context.AutoML().SweepableTrainer(
-                                (option) =>
+                                (context, option) =>
                                 {
                                     option.LabelColumnName = "Label";
                                     option.FeatureColumnName = "Features";
@@ -131,7 +131,7 @@ namespace MLNet.AutoPipeline.Test
             var context = new MLContext();
             var optionBuilder = new CustomSdcaMaximumEntropyOptionBuilder();
             var binaryTrainer = context.AutoML().SweepableTrainer(
-                                (option) =>
+                                (context, option) =>
                                 {
                                     option.LabelColumnName = "Label";
                                     option.FeatureColumnName = "Features";
@@ -146,6 +146,31 @@ namespace MLNet.AutoPipeline.Test
             var parameterValues = optionBuilder.ValueGenerators.Select(x => x.CreateFromNormalized(0.5));
             var parameterset = new ParameterSet(parameterValues);
             Approvals.Verify(ovaTrainer.ToCodeGenNodeContract(parameterset));
+        }
+
+        [Fact]
+        public void AutoPipeline_should_create_sweepable_pipeline_from_estimator_chain()
+        {
+            var context = new MLContext();
+            var pipeline = context.Transforms.Conversion.MapValueToKey("species", "species")
+                                  .Append(context.Transforms.Concatenate("features", new string[] { "sepal_length", "sepal_width", "petal_length", "petal_width" }))
+                                  .Append(context.AutoML().MultiClassification.LightGbm("species", "features"));
+
+            var parameterValues = pipeline.ValueGenerators.Select(x => x.Name);
+            pipeline.Nodes.Count.Should().Be(3);
+            parameterValues.Should().Equal(new string[] { "LearningRate", "NumberOfLeaves", "NumberOfIterations", "MinimumExampleCountPerLeaf" });
+        }
+
+        [Fact]
+        public void AutoPipeline_should_create_sweepable_pipeline_from_estimator()
+        {
+            var context = new MLContext();
+            var pipeline = context.Transforms.Conversion.MapValueToKey("species", "species")
+                                  .Append(context.AutoML().MultiClassification.LightGbm("species", "features"));
+
+            var parameterValues = pipeline.ValueGenerators.Select(x => x.Name);
+            pipeline.Nodes.Count.Should().Be(2);
+            parameterValues.Should().Equal(new string[] { "LearningRate", "NumberOfLeaves", "NumberOfIterations", "MinimumExampleCountPerLeaf" });
         }
     }
 
