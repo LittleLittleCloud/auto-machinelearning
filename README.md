@@ -15,13 +15,14 @@ First, add `MLNet.AutoPipeline` to your project. You can get those packages from
   <PackageReference Include="MLNet.AutoPipeline" />
 </ItemGroup>
 ```
-Then create a `SweepablePipeline`. `SweepablePipeline` is similar to the concept of [`EstimatorChain`](https://docs.microsoft.com/en-us/dotnet/api/microsoft.ml.data.estimatorchain-1?view=ml-dotnet) in ML.Net. And it will fine-tune hyperparameters by sweeping over a group of pre-defined parameters during training.
+Then create a `SweepablePipeline` using `AutoPipelineCatalog` API. `SweepablePipeline` is similar to the concept of [`EstimatorChain`](https://docs.microsoft.com/en-us/dotnet/api/microsoft.ml.data.estimatorchain-1?view=ml-dotnet) in ML.Net. And it will fine-tune hyperparameters by sweeping over a group of pre-defined parameters during training.
 
 ```csharp
 var context = new MLContext();
 var sweepablePipeline = context.Transforms.Conversion.MapValueToKey("species", "species")
                     // here we use Iris dataset as example.
                     .Append(context.Transforms.Concatenate("features", new string[] { "sepal_length", "sepal_width", "petal_length", "petal_width" }))
+                    // create a sweepable LbfgsMaximumEntropy trainer
                     .Append(context.AutoML().MultiClassification.LbfgsMaximumEntropy("species", "features"));
 ```
 

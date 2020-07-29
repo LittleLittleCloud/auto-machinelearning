@@ -14,6 +14,11 @@ namespace MLNet.AutoPipeline
     /// </summary>
     public static class MLContextExtension
     {
+        /// <summary>
+        /// Extension method for creating <see cref="AutoPipelineCatalog"/>.
+        /// </summary>
+        /// <param name="context">ML Context.</param>
+        /// <returns><see cref="AutoPipelineCatalog"/>.</returns>
         public static AutoPipelineCatalog AutoML(this MLContext context)
         {
             return new AutoPipelineCatalog(context);
