@@ -29,5 +29,23 @@ namespace MLNet.AutoPipeline
 
         public SweepableRegressionTrainers Regression { get; private set; }
 
+        /// <summary>
+        /// Create a sweepable mlnet trainer using custom factory method that can be used in <see cref="ISweepablePipeline"/>.
+        /// </summary>
+        /// <typeparam name="TTrain">type of trainer, must be <see cref="IEstimator{TTransformer}"/>.</typeparam>
+        /// <typeparam name="TOption">option class.</typeparam>
+        /// <param name="trainerFactory">factory method that creates the trainer.</param>
+        /// <param name="optionBuilder">option builder.</param>
+        /// <param name="inputs">input column names.</param>
+        /// <param name="output">output column name.</param>
+        /// <param name="trainerName">trainer name.</param>
+        /// <returns><see cref="SweepableNode{TNewTrain, TOption}"/>.</returns>
+        public SweepableNode<TTrain, TOption>
+            SweepableTrainer<TTrain, TOption>(Func<TOption, TTrain> trainerFactory, OptionBuilder<TOption> optionBuilder, string[] inputs = null, string output = null, string trainerName = null)
+            where TTrain : IEstimator<ITransformer>
+            where TOption : class
+        {
+            return Util.CreateSweepableNode(trainerFactory, optionBuilder, estimatorName: trainerName, inputs: inputs, outputs: new string[] { output });
+        }
     }
 }

@@ -92,8 +92,32 @@ namespace MLNet.AutoPipeline.Test
         public void AutoPipeline_should_create_lightGbm_classifier_with_default_option()
         {
             var context = new MLContext();
-            var trainer = context.AutoML().MultiClassification.LightGbm("label", "feature", defaultOption: defaultOption);
+            var trainer = context.AutoML().MultiClassification.LightGbm("label", "feature");
             var parameterValues = LightGbmOptionBuilder.Default.ValueGenerators.Select(x => x.CreateFromNormalized(0.5));
+            var parameterset = new ParameterSet(parameterValues);
+            Approvals.Verify(trainer.ToCodeGenNodeContract(parameterset));
+        }
+
+        [Fact]
+        [UseApprovalSubdirectory("ApprovalTests")]
+        [UseReporter(typeof(DiffReporter))]
+        public void AutoPipeline_should_create_classifier_with_custom_factory()
+        {
+            var context = new MLContext();
+            var optionBuilder = new CustomSdcaMaximumEntropyOptionBuilder();
+            var trainer = context.AutoML().SweepableTrainer(
+                                (option) =>
+                                {
+                                    option.LabelColumnName = "Label";
+                                    option.FeatureColumnName = "Features";
+                                    return context.MulticlassClassification.Trainers.SdcaMaximumEntropy(option);
+                                },
+                                optionBuilder,
+                                new string[] { "Features" },
+                                "Score",
+                                "CustomSdca");
+
+            var parameterValues = optionBuilder.ValueGenerators.Select(x => x.CreateFromNormalized(0.5));
             var parameterset = new ParameterSet(parameterValues);
             Approvals.Verify(trainer.ToCodeGenNodeContract(parameterset));
         }
