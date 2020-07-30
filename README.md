@@ -6,6 +6,9 @@
 
 [![Build Status](https://dev.azure.com/xiaoyuz0315/BigMiao/_apis/build/status/LittleLittleCloud.machinelearning-auto-pipeline-pr?branchName=master)](https://dev.azure.com/xiaoyuz0315/BigMiao/_build/latest?definitionId=1&branchName=master) ![Azure DevOps coverage](https://img.shields.io/azure-devops/coverage/xiaoyuz0315/BigMiao/1?color=green) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
+## Try it on Binder
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/LittleLittleCloud/MLNet-AutoPipeline-Examples/master)
+
 ## Quick Start
 
 First, add `MLNet.AutoPipeline` to your project. You can get those packages from our [nightly build](#Installation).
@@ -38,11 +41,6 @@ var experimentOption = new Experiment.Option()
 var experiment = context.AutoML().CreateExperiment(estimatorChain, experimentOption)
 var result = await experiment.TrainAsync(split.TrainSet); // train experiment.
 ```
-
-The training result includes best model, best hyperparameter and other training details. Visit our doc for more infomation.
-
-The complete code for this example can be found here
-
 
 ## Examples
 Please visit [MLNet-AutoPipeline-Example](https://github.com/LittleLittleCloud/MLNet-AutoPipeline-Examples) for MLNet.AutoPipeline examples.
