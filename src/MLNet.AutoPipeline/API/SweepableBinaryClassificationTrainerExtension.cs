@@ -12,7 +12,7 @@ namespace MLNet.AutoPipeline
         private static string PredictedLabel = "PredictedLabel";
 
         public static SweepableNode<LinearSvmTrainer, LinearSvmTrainer.Options>
-            LinearSVM(
+            LinearSvm(
                 this SweepableBinaryClassificationTrainers trainer,
                 string labelColumnName = "Label",
                 string featureColumnName = "Features",
@@ -38,6 +38,36 @@ namespace MLNet.AutoPipeline
                 new string[] { featureColumnName },
                 PredictedLabel,
                 nameof(LinearSvmTrainer));
+        }
+
+        public static SweepableNode<LdSvmTrainer, LdSvmTrainer.Options>
+            LdSvm(
+                this SweepableBinaryClassificationTrainers trainer,
+                string labelColumnName = "Label",
+                string featureColumnName = "Features",
+                OptionBuilder<LdSvmTrainer.Options> optionBuilder = null,
+                LdSvmTrainer.Options defaultOption = null)
+        {
+            var context = trainer.Context;
+            if (optionBuilder == null)
+            {
+                optionBuilder = LdSvmOptionBuilder.Default;
+            }
+
+            optionBuilder.SetDefaultOption(defaultOption);
+
+            return context.AutoML().SweepableTrainer(
+                (context, option) =>
+                {
+                    option.LabelColumnName = labelColumnName;
+                    option.FeatureColumnName = featureColumnName;
+
+                    return context.BinaryClassification.Trainers.LdSvm(option);
+                },
+                optionBuilder,
+                new string[] { featureColumnName },
+                PredictedLabel,
+                nameof(LdSvmTrainer));
         }
     }
 }
