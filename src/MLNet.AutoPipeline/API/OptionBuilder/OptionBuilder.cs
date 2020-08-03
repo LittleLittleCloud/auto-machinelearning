@@ -15,14 +15,21 @@ namespace MLNet.AutoPipeline
     {
         private readonly HashSet<string> _ids = new HashSet<string>();
 
+        private TOption defaultOption = null;
+
         public IValueGenerator[] ValueGenerators { get; private set; }
 
-        public IParameterValue[] UnsweepableParameters { get; private set; }
+        public IParameterValue[] UnsweepableParameters { get => this.GetUnsweepableParameterValues(); }
 
         public OptionBuilder()
         {
             this.ValueGenerators = this.GetValueGenerators();
-            this.UnsweepableParameters = this.GetUnsweepableParameterValues();
+        }
+
+        public OptionBuilder(TOption option)
+            : this()
+        {
+            this.defaultOption = option;
         }
 
         public TOption CreateDefaultOption()
@@ -45,7 +52,21 @@ namespace MLNet.AutoPipeline
                 option.GetType().GetField(param.Name)?.SetValue(option, value);
             }
 
+            // use field in defaultOption
+            if (this.defaultOption != null)
+            {
+                Util.CopyFieldsTo(this.defaultOption, option);
+            }
+
             return option;
+        }
+
+        public void SetDefaultOption(TOption option)
+        {
+            if (option != null)
+            {
+                this.defaultOption = option;
+            }
         }
 
         public TOption BuildOption(ParameterSet parameters)

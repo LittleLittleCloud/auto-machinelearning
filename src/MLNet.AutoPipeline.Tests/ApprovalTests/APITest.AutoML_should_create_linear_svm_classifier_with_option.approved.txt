@@ -1,0 +1,19 @@
+{
+  "parameters": [
+    {
+      "Name": "NumberOfIterations",
+      "ValueText": "100"
+    },
+    {
+      "Name": "ExampleWeightColumnName",
+      "ValueText": "example"
+    }
+  ],
+  "name": "LinearSvmTrainer",
+  "input_column": [
+    "feature"
+  ],
+  "output_column": [
+    "PredictedLabel"
+  ]
+}

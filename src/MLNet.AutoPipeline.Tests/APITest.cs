@@ -172,6 +172,20 @@ namespace MLNet.AutoPipeline.Test
             pipeline.Nodes.Count.Should().Be(2);
             parameterValues.Should().Equal(new string[] { "LearningRate", "NumberOfLeaves", "NumberOfIterations", "MinimumExampleCountPerLeaf" });
         }
+
+        [Fact]
+        [UseApprovalSubdirectory("ApprovalTests")]
+        [UseReporter(typeof(DiffReporter))]
+        public void AutoML_should_create_linear_svm_classifier_with_option()
+        {
+            var context = new MLContext();
+            var optionBuilder = LinearSvmOptionBuilder.Default;
+            optionBuilder.ExampleWeightColumnName = "example";
+            var trainer = context.AutoML().BinaryClassification.LinearSVM("label", "feature", optionBuilder);
+            var parameterValue = optionBuilder.ValueGenerators.Select(x => x.CreateFromNormalized(0.5));
+            var parameterset = new ParameterSet(parameterValue);
+            Approvals.Verify(trainer.ToCodeGenNodeContract(parameterset));
+        }
     }
 
     public class CustomSdcaMaximumEntropyOptionBuilder : OptionBuilder<SdcaMaximumEntropyMulticlassTrainer.Options>
