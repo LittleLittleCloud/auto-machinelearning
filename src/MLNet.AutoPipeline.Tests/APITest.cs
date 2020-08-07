@@ -204,12 +204,12 @@ namespace MLNet.AutoPipeline.Test
     public class CustomSdcaMaximumEntropyOptionBuilder : OptionBuilder<SdcaMaximumEntropyMulticlassTrainer.Options>
     {
         [SweepableParameter]
-        public SweepableParameter L2Regularization = SweepableParameter.CreateFloatParameter(1E-4F, 20f, true, 20);
+        public Parameter<float> L2Regularization = ParameterBuilder.CreateFloatParameter(1E-4F, 20f, true, 20);
 
         [Parameter]
         public float L1Regularization = 0.3f;
 
         [SweepableParameter]
-        public SweepableParameter BiasLearningRate = SweepableParameter.CreateFloatParameter(1E-4F, 10f, true, 20);
+        public Parameter<float> BiasLearningRate = ParameterBuilder.CreateFloatParameter(1E-4F, 10f, true, 20);
     }
 }

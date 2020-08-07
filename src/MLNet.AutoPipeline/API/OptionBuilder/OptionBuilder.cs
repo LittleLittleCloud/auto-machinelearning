@@ -86,18 +86,18 @@ namespace MLNet.AutoPipeline
             return option;
         }
 
-        private Dictionary<string, SweepableParameter> GetSweepableParameterValue()
+        private Dictionary<string, Parameter> GetSweepableParameterValue()
         {
             var paramaters = this.GetType().GetFields(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic)
                      .Where(x => Attribute.GetCustomAttribute(x, typeof(SweepableParameterAttribute)) != null)
-                     .Where(x => x.FieldType == typeof(SweepableParameter));
+                     .Where(x => x.FieldType.IsSubclassOf(typeof(Parameter)) || x.FieldType == typeof(Parameter));
 
-            var paramatersDictionary = new Dictionary<string, SweepableParameter>();
+            var paramatersDictionary = new Dictionary<string, Parameter>();
 
             foreach (var param in paramaters)
             {
                 var paramaterAttribute = Attribute.GetCustomAttribute(param, typeof(SweepableParameterAttribute)) as SweepableParameterAttribute;
-                var paramValue = (SweepableParameter)param.GetValue(this);
+                var paramValue = (Parameter)param.GetValue(this);
                 if (paramaterAttribute.Name != null)
                 {
                     paramValue.ValueGenerator.Name = paramaterAttribute.Name;

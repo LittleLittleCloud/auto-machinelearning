@@ -41,7 +41,7 @@ namespace MLNet.AutoPipeline.API.OptionBuilder
         /// </list>
         /// </summary>
         [SweepableParameter]
-        public SweepableParameter L2Regularization = SweepableParameter.CreateFloatParameter(1E-4F, 10f, true, 20);
+        public Parameter<float> L2Regularization = ParameterBuilder.CreateFloatParameter(1E-4F, 10f, true, 20);
 
         /// <summary>
         /// The L1 regularization hyperparameter.
@@ -70,7 +70,7 @@ namespace MLNet.AutoPipeline.API.OptionBuilder
         /// </list>
         /// </summary>
         [SweepableParameter]
-        public SweepableParameter L1Reegularization = SweepableParameter.CreateFloatParameter(1E-4F, 10f, true, 20);
+        public Parameter<float> L1Reegularization = ParameterBuilder.CreateFloatParameter(1E-4F, 10f, true, 20);
 
         internal static SdcaNonCalibratedOptionBuilder Default = new SdcaNonCalibratedOptionBuilder();
     }

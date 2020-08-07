@@ -131,13 +131,13 @@ namespace MLNet.AutoPipeline.Test
         private class TestOptionBuilderWithSweepableAttributeOnly : OptionBuilder<TestOption>
         {
             [SweepableParameter]
-            public SweepableParameter LongOption = SweepableParameter.CreateLongParameter(0, 100);
+            public Parameter<long> LongOption = ParameterBuilder.CreateLongParameter(0, 100);
 
             [SweepableParameter(nameof(TestOption.FloatOption))]
-            public SweepableParameter Float_Option = SweepableParameter.CreateFloatParameter(0f, 100f);
+            public Parameter<float> Float_Option = ParameterBuilder.CreateFloatParameter(0f, 100f);
 
             [SweepableParameter]
-            public SweepableParameter StringOption = SweepableParameter.CreateDiscreteParameter(new object[] { "str1", "str2", "str3", "str4" });
+            public Parameter<string> StringOption = ParameterBuilder.CreateDiscreteParameter(new string[] { "str1", "str2", "str3", "str4" });
         }
     }
 }
