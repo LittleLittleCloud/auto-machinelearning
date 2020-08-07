@@ -40,8 +40,8 @@ namespace MLNet.AutoPipeline
         /// </item>
         /// </list>
         /// </summary>
-        [SweepableParameter(0.001, 0.1, true, 20)]
-        public double LearningRate;
+        [SweepableParameter]
+        public SweepableParameter LearningRate = SweepableParameter.CreateDoubleParameter(0.001, 0.1, true, 20);
 
         /// <summary>
         /// The maximum number of leaves in one tree.
@@ -69,8 +69,8 @@ namespace MLNet.AutoPipeline
         /// </item>
         /// </list>
         /// </summary>
-        [SweepableParameter(10, 1000, true, 20)]
-        public int NumberOfLeaves;
+        [SweepableParameter]
+        public SweepableParameter NumberOfLeaves = SweepableParameter.CreateInt32Parameter(10, 1000, true, 20);
 
         /// <summary>
         /// The number of boosting iterations. A new tree is created in each iteration, so this is equivalent to the number of trees.
@@ -98,8 +98,8 @@ namespace MLNet.AutoPipeline
         /// </item>
         /// </list>
         /// </summary>
-        [SweepableParameter(10, 1000, true, 20)]
-        public int NumberOfIterations;
+        [SweepableParameter]
+        public SweepableParameter NumberOfIterations = SweepableParameter.CreateInt32Parameter(10, 1000, true, 20);
 
         /// <summary>
         /// The minimal number of data points required to form a new tree leaf.
@@ -127,8 +127,8 @@ namespace MLNet.AutoPipeline
         /// </item>
         /// </list>
         /// </summary>
-        [SweepableParameter(10, 1000, true, 20)]
-        public int MinimumExampleCountPerLeaf;
+        [SweepableParameter]
+        public SweepableParameter MinimumExampleCountPerLeaf = SweepableParameter.CreateInt32Parameter(10, 1000, true, 20);
 
         /// <summary>
         /// The name of the example weight column.

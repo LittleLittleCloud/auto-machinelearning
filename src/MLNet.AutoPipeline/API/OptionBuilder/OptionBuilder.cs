@@ -6,6 +6,8 @@ using System;
 using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
+using System.Reflection;
+using System.Security.Cryptography.X509Certificates;
 using MLNet.Sweeper;
 
 namespace MLNet.AutoPipeline
@@ -44,7 +46,7 @@ namespace MLNet.AutoPipeline
                 option.GetType().GetField(param.Name)?.SetValue(option, value);
             }
 
-            // set up sweeppable parameters
+            // set up sweepable parameters
             foreach (var generator in this.ValueGenerators)
             {
                 var param = generator.CreateFromNormalized(0);
@@ -84,17 +86,28 @@ namespace MLNet.AutoPipeline
             return option;
         }
 
-        private Dictionary<string, SweepableParameterAttribute> GetSweepableParameterAttributes()
+        private Dictionary<string, SweepableParameter> GetSweepableParameterValue()
         {
             var paramaters = this.GetType().GetFields(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic)
-                     .Where(x => Attribute.GetCustomAttribute(x, typeof(SweepableParameterAttribute)) != null);
+                     .Where(x => Attribute.GetCustomAttribute(x, typeof(SweepableParameterAttribute)) != null)
+                     .Where(x => x.FieldType == typeof(SweepableParameter));
 
-            var paramatersDictionary = new Dictionary<string, SweepableParameterAttribute>();
+            var paramatersDictionary = new Dictionary<string, SweepableParameter>();
 
             foreach (var param in paramaters)
             {
                 var paramaterAttribute = Attribute.GetCustomAttribute(param, typeof(SweepableParameterAttribute)) as SweepableParameterAttribute;
-                paramatersDictionary.Add(param.Name, paramaterAttribute);
+                var paramValue = (SweepableParameter)param.GetValue(this);
+                if (paramaterAttribute.Name != null)
+                {
+                    paramValue.ValueGenerator.Name = paramaterAttribute.Name;
+                }
+                else
+                {
+                    paramValue.ValueGenerator.Name = param.Name;
+                }
+
+                paramatersDictionary.Add(param.Name, paramValue);
             }
 
             return paramatersDictionary;
@@ -102,9 +115,8 @@ namespace MLNet.AutoPipeline
 
         private IValueGenerator[] GetValueGenerators()
         {
-            var valueGenerators = this.GetSweepableParameterAttributes().Select(kv =>
+            var valueGenerators = this.GetSweepableParameterValue().Select(kv =>
             {
-                kv.Value.ValueGenerator.Name = kv.Key;
                 return kv.Value.ValueGenerator;
             }).ToArray();
 
@@ -125,9 +137,10 @@ namespace MLNet.AutoPipeline
 
             foreach (var parm in parameters)
             {
+                var parameterAttr = (ParameterAttribute)parm.GetCustomAttribute(typeof(ParameterAttribute));
                 var guid = Guid.NewGuid().ToString();
                 var value = parm.GetValue(this);
-                var paramValue = new ObjectParameterValue(parm.Name, parm.GetValue(this), guid);
+                var paramValue = new ObjectParameterValue(parameterAttr.Name ?? parm.Name, parm.GetValue(this), guid);
                 res.Add(paramValue);
             }
 

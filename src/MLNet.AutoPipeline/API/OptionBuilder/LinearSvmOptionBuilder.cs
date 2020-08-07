@@ -37,8 +37,8 @@ namespace MLNet.AutoPipeline
         /// </item>
         /// </list>
         /// </summary>
-        [SweepableParameter(10, 1000, true, 20)]
-        public int NumberOfIterations;
+        [SweepableParameter]
+        public SweepableParameter NumberOfIterations = SweepableParameter.CreateInt32Parameter(10, 1000, true, 20);
 
         /// <summary>
         /// The name of the example weight column.

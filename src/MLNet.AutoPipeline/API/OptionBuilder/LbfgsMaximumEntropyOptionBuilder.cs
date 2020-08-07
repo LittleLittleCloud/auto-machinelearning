@@ -40,8 +40,8 @@ namespace MLNet.AutoPipeline
         /// </item>
         /// </list>
         /// </summary>
-        [SweepableParameter(1E-4F, 10f, true, 20)]
-        public float L2Regularization;
+        [SweepableParameter]
+        public SweepableParameter L2Regularization = SweepableParameter.CreateFloatParameter(1E-4F, 10f, true, 20);
 
         /// <summary>
         /// The L1 regularization hyperparameter.
@@ -69,8 +69,8 @@ namespace MLNet.AutoPipeline
         /// </item>
         /// </list>
         /// </summary>
-        [SweepableParameter(1E-4F, 10f, true, 20)]
-        public float L1Regularization;
+        [SweepableParameter]
+        public SweepableParameter L1Regularization = SweepableParameter.CreateFloatParameter(1E-4F, 10f, true, 20);
 
         /// <summary>
         /// Memory size for <see cref="SdcaMaximumEntropyMulticlassTrainer"/> Low=faster, less accurate.
@@ -98,8 +98,8 @@ namespace MLNet.AutoPipeline
         /// </item>
         /// </list>
         /// </summary>
-        [SweepableParameter(1, 1000, true, 20)]
-        public int HistorySize;
+        [SweepableParameter]
+        public SweepableParameter HistorySize = SweepableParameter.CreateInt32Parameter(1, 1000, true, 20);
 
         /// <summary>
         /// The name of the example weight column, default is null.

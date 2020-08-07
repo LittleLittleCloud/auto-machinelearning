@@ -1,4 +1,4 @@
-﻿// <copyright file="ParameterAttribute.cs" company="BigMiao">
+﻿// <copyright file="SweepableParameterAttribute.cs" company="BigMiao">
 // Copyright (c) BigMiao. All rights reserved.
 // </copyright>
 
@@ -11,6 +11,7 @@ using MLNet.Sweeper;
 
 namespace MLNet.AutoPipeline
 {
+    [AttributeUsage(AttributeTargets.Field, AllowMultiple = false, Inherited = false)]
     public class SweepableParameterAttribute : Attribute
     {
         public SweepableParameterAttribute(int min, int max, bool logBase = false, int steps = 100)
@@ -87,6 +88,15 @@ namespace MLNet.AutoPipeline
             this.ValueGenerator = new DiscreteValueGenerator(option);
         }
 
+        public SweepableParameterAttribute(string name)
+        {
+            this.Name = name;
+        }
+
+        public SweepableParameterAttribute() { }
+
         public IValueGenerator ValueGenerator { get; }
+
+        public string Name { get; private set; }
     }
 }
