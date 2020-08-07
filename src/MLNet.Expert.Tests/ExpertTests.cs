@@ -58,7 +58,7 @@ namespace MLNet.Expert.Tests
                   .Should().Contain("SingleNode(LightGBM)");
         }
 
-        [Fact]
+        [Fact(Skip = "time consume")]
         public async void AutoMLTestAsync()
         {
             var context = new MLContext();
