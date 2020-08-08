@@ -5,12 +5,12 @@
       "ValueText": "0.044721358"
     },
     {
-      "Name": "BiasLearningRate",
-      "ValueText": "0.031622775"
-    },
-    {
       "Name": "L1Regularization",
       "ValueText": "0.3"
+    },
+    {
+      "Name": "BiasLearningRate",
+      "ValueText": "0.031622775"
     }
   ],
   "name": "CustomSdcaOva",

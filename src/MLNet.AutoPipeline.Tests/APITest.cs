@@ -158,7 +158,7 @@ namespace MLNet.AutoPipeline.Test
 
             var parameterValues = pipeline.ValueGenerators.Select(x => x.Name);
             pipeline.Nodes.Count.Should().Be(3);
-            parameterValues.Should().Equal(new string[] { "LearningRate", "NumberOfLeaves", "NumberOfIterations", "MinimumExampleCountPerLeaf" });
+            parameterValues.Should().Equal(new string[] { "LearningRate", "NumberOfLeaves", "NumberOfIterations", "MinimumExampleCountPerLeaf", "ExampleWeightColumnName" });
         }
 
         [Fact]
@@ -170,7 +170,7 @@ namespace MLNet.AutoPipeline.Test
 
             var parameterValues = pipeline.ValueGenerators.Select(x => x.Name);
             pipeline.Nodes.Count.Should().Be(2);
-            parameterValues.Should().Equal(new string[] { "LearningRate", "NumberOfLeaves", "NumberOfIterations", "MinimumExampleCountPerLeaf" });
+            parameterValues.Should().Equal(new string[] { "LearningRate", "NumberOfLeaves", "NumberOfIterations", "MinimumExampleCountPerLeaf", "ExampleWeightColumnName" });
         }
 
         [Fact]
@@ -180,7 +180,7 @@ namespace MLNet.AutoPipeline.Test
         {
             var context = new MLContext();
             var optionBuilder = LinearSvmOptionBuilder.Default;
-            optionBuilder.ExampleWeightColumnName = "example";
+            optionBuilder.ExampleWeightColumnName = ParameterBuilder.CreateFromSingleValue("example");
             var trainer = context.AutoML().BinaryClassification.LinearSvm("label", "feature", optionBuilder);
             var parameterValue = optionBuilder.ValueGenerators.Select(x => x.CreateFromNormalized(0.5));
             var parameterset = new ParameterSet(parameterValue);
@@ -203,13 +203,13 @@ namespace MLNet.AutoPipeline.Test
 
     public class CustomSdcaMaximumEntropyOptionBuilder : OptionBuilder<SdcaMaximumEntropyMulticlassTrainer.Options>
     {
-        [SweepableParameter]
+        [Parameter]
         public Parameter<float> L2Regularization = ParameterBuilder.CreateFloatParameter(1E-4F, 20f, true, 20);
 
         [Parameter]
-        public float L1Regularization = 0.3f;
+        public Parameter<float> L1Regularization = ParameterBuilder.CreateFromSingleValue(0.3f);
 
-        [SweepableParameter]
+        [Parameter]
         public Parameter<float> BiasLearningRate = ParameterBuilder.CreateFloatParameter(1E-4F, 10f, true, 20);
     }
 }

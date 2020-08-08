@@ -74,13 +74,12 @@ namespace MLNet.AutoPipeline
         {
             var valueGeneratorIds = this.ValueGenerators.Select(x => x.ID).ToImmutableHashSet();
             var selectedParams = parameters.Where(x => valueGeneratorIds.Contains(x.ID));
-            var selectedUnsweepableParams = this.OptionBuilder.UnsweepableParameters;
             return new CodeGenNodeContract()
             {
                 EstimatorName = this.EstimatorName,
                 InputColumns = this.InputColumns ?? (new string[] { }),
                 OutputColumns = this.OutputColumns ?? new string[] { },
-                Parameters = new ParameterSet(selectedParams.Concat(selectedUnsweepableParams)),
+                Parameters = new ParameterSet(selectedParams),
             };
         }
 

@@ -122,21 +122,21 @@ namespace MLNet.AutoPipeline.Test
         private class TestOptionBuilderWithParameterAttributeOnly : OptionBuilder<TestOption>
         {
             [Parameter]
-            public long LongOption = 100;
+            public Parameter<long> LongOption = ParameterBuilder.CreateFromSingleValue(100L);
 
             [Parameter(nameof(TestOption.FloatOption))]
-            public float Float_Option = 100f;
+            public Parameter<float> Float_Option = ParameterBuilder.CreateFromSingleValue(100f);
         }
 
         private class TestOptionBuilderWithSweepableAttributeOnly : OptionBuilder<TestOption>
         {
-            [SweepableParameter]
+            [Parameter]
             public Parameter<long> LongOption = ParameterBuilder.CreateLongParameter(0, 100);
 
-            [SweepableParameter(nameof(TestOption.FloatOption))]
+            [Parameter(nameof(TestOption.FloatOption))]
             public Parameter<float> Float_Option = ParameterBuilder.CreateFloatParameter(0f, 100f);
 
-            [SweepableParameter]
+            [Parameter]
             public Parameter<string> StringOption = ParameterBuilder.CreateDiscreteParameter(new string[] { "str1", "str2", "str3", "str4" });
         }
     }

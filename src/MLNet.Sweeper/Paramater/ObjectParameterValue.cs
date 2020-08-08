@@ -1,4 +1,4 @@
-﻿// <copyright file="Class1.cs" company="BigMiao">
+﻿// <copyright file="ObjectParameterValue.cs" company="BigMiao">
 // Copyright (c) BigMiao. All rights reserved.
 // </copyright>
 
@@ -7,7 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace MLNet.AutoPipeline
+namespace MLNet.Sweeper
 {
     internal class ObjectParameterValue : IParameterValue
     {

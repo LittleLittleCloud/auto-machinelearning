@@ -37,10 +37,10 @@ namespace MLNet.AutoPipeline
         /// </item>
         /// </list>
         /// </summary>
-        [SweepableParameter]
+        [Parameter]
         public Parameter<int> NumberOfIterations = ParameterBuilder.CreateInt32Parameter(10, 1000, true, 20);
 
-        [SweepableParameter]
+        [Parameter]
         public Parameter<int> TreeDepth = ParameterBuilder.CreateInt32Parameter(1, 100, true, 20);
 
         internal static LdSvmOptionBuilder Default = new LdSvmOptionBuilder();

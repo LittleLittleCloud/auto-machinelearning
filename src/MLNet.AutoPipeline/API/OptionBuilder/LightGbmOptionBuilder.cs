@@ -40,7 +40,7 @@ namespace MLNet.AutoPipeline
         /// </item>
         /// </list>
         /// </summary>
-        [SweepableParameter]
+        [Parameter]
         public Parameter<double> LearningRate = ParameterBuilder.CreateDoubleParameter(0.001, 0.1, true, 20);
 
         /// <summary>
@@ -69,7 +69,7 @@ namespace MLNet.AutoPipeline
         /// </item>
         /// </list>
         /// </summary>
-        [SweepableParameter]
+        [Parameter]
         public Parameter<int> NumberOfLeaves = ParameterBuilder.CreateInt32Parameter(10, 1000, true, 20);
 
         /// <summary>
@@ -98,7 +98,7 @@ namespace MLNet.AutoPipeline
         /// </item>
         /// </list>
         /// </summary>
-        [SweepableParameter]
+        [Parameter]
         public Parameter<int> NumberOfIterations = ParameterBuilder.CreateInt32Parameter(10, 1000, true, 20);
 
         /// <summary>
@@ -127,14 +127,14 @@ namespace MLNet.AutoPipeline
         /// </item>
         /// </list>
         /// </summary>
-        [SweepableParameter]
+        [Parameter]
         public Parameter<int> MinimumExampleCountPerLeaf = ParameterBuilder.CreateInt32Parameter(10, 1000, true, 20);
 
         /// <summary>
         /// The name of the example weight column.
         /// </summary>
         [Parameter]
-        public string ExampleWeightColumnName = default;
+        public Parameter<string> ExampleWeightColumnName = ParameterBuilder.CreateFromSingleValue<string>(default);
 
         internal static LightGbmOptionBuilder Default = new LightGbmOptionBuilder();
     }
