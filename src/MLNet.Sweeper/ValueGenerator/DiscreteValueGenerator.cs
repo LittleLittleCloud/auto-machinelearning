@@ -5,6 +5,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 namespace MLNet.Sweeper
 {
@@ -67,6 +68,16 @@ namespace MLNet.Sweeper
         public int Count => this._options.Values.Length;
 
         public string ID { get; private set; }
+
+        public override string ToString()
+        {
+            var sb = new StringBuilder();
+            sb.AppendLine($"Parameter Name: {this.Name}");
+            sb.AppendLine($"Parameter Type: Discrete");
+            sb.AppendLine($"Parameter Value: {string.Join(",", this._options.Values.Select(x => x.ToString()))}");
+
+            return sb.ToString();
+        }
 
         public class Option : ValueGeneratorOptionBase
         {

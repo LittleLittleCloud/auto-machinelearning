@@ -2,6 +2,9 @@
 // Copyright (c) BigMiao. All rights reserved.
 // </copyright>
 
+using ApprovalTests;
+using ApprovalTests.Namers;
+using ApprovalTests.Reporters;
 using FluentAssertions;
 using Microsoft.ML;
 using MLNet.Sweeper;
@@ -108,6 +111,15 @@ namespace MLNet.AutoPipeline.Test
             option2.LongOption.Should().Equals(2);
             option2.FloatOption.Should().Equals(2f);
             option2.StringOption.Should().Equals("2");
+        }
+
+        [Fact]
+        [UseApprovalSubdirectory("ApprovalTests")]
+        [UseReporter(typeof(DiffReporter))]
+        public void OptionBuilder_should_print_in_a_human_readable_format()
+        {
+            var optionBuilder = new TestOptionBuilderWithSweepableAttributeOnly();
+            Approvals.Verify(optionBuilder);
         }
 
         private class TestOption

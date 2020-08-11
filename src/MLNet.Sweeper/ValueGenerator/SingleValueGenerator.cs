@@ -44,6 +44,16 @@ namespace MLNet.Sweeper
 
         public string ID { get; private set; }
 
+        public override string ToString()
+        {
+            var sb = new StringBuilder();
+            sb.AppendLine($"Parameter Name: {this.Name}");
+            sb.AppendLine($"Parameter Type: {typeof(T).Name}");
+            sb.AppendLine($"Parameter Value: {this.value}");
+
+            return sb.ToString();
+        }
+
         public IParameterValue CreateFromNormalized(double normalizedValue)
         {
             return this[0];

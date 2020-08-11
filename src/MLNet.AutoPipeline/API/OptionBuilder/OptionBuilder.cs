@@ -8,6 +8,7 @@ using System.Dynamic;
 using System.Linq;
 using System.Reflection;
 using System.Security.Cryptography.X509Certificates;
+using System.Text;
 using MLNet.Sweeper;
 
 namespace MLNet.AutoPipeline
@@ -61,6 +62,11 @@ namespace MLNet.AutoPipeline
             }
         }
 
+        /// <summary>
+        /// Build option using <paramref name="parameters"/>.
+        /// </summary>
+        /// <param name="parameters">a set of parameters used to build option.</param>
+        /// <returns><paramref name="TOption"/>.</returns>
         public TOption BuildOption(ParameterSet parameters)
         {
             var option = this.CreateDefaultOption();
@@ -74,6 +80,19 @@ namespace MLNet.AutoPipeline
             }
 
             return option;
+        }
+
+        public override string ToString()
+        {
+            var sb = new StringBuilder();
+            sb.AppendLine($"Type of option: {typeof(TOption).Name}");
+            sb.AppendLine();
+            foreach (var value in this.ValueGenerators)
+            {
+                sb.AppendLine(value.ToString());
+            }
+
+            return sb.ToString();
         }
 
         private Dictionary<string, Parameter> GetSweepableParameterValue()

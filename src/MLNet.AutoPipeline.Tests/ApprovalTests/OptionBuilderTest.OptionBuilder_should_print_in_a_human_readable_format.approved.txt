@@ -1,0 +1,20 @@
+Type of option: TestOption
+
+Parameter Name: LongOption
+Parameter Type: long
+Min Value: 0
+Max Value: 100
+Steps: 100
+Log Base: False
+
+Parameter Name: FloatOption
+Parameter Type: float
+Min Value: 0
+Max Value: 100
+Steps: 100
+Log Base: False
+
+Parameter Name: StringOption
+Parameter Type: Discrete
+Parameter Value: str1,str2,str3,str4
+
