@@ -1,5 +1,6 @@
 ﻿using Microsoft.ML;
 using Microsoft.ML.Trainers;
+using Microsoft.ML.Trainers.FastTree;
 using MLNet.AutoPipeline.API.OptionBuilder;
 using System;
 using System.Collections.Generic;
@@ -68,6 +69,64 @@ namespace MLNet.AutoPipeline
                 new string[] { featureColumnName },
                 PredictedLabel,
                 nameof(LdSvmTrainer));
+        }
+
+        public static SweepableNode<FastForestBinaryTrainer, FastForestBinaryTrainer.Options>
+            FastForest(
+                this SweepableBinaryClassificationTrainers trainer,
+                string labelColumnName = "Label",
+                string featureColumnName = "Features",
+                OptionBuilder<FastForestBinaryTrainer.Options> optionBuilder = null,
+                FastForestBinaryTrainer.Options defaultOption = null)
+        {
+            var context = trainer.Context;
+            if (optionBuilder == null)
+            {
+                optionBuilder = FastForestBinaryTrainerOptionBuilder.Default;
+            }
+
+            optionBuilder.SetDefaultOption(defaultOption);
+            return context.AutoML().SweepableTrainer(
+                (context, option) =>
+                {
+                    option.LabelColumnName = labelColumnName;
+                    option.FeatureColumnName = featureColumnName;
+
+                    return context.BinaryClassification.Trainers.FastForest(option);
+                },
+                optionBuilder,
+                new string[] { featureColumnName },
+                PredictedLabel,
+                nameof(FastForestBinaryTrainer));
+        }
+
+        public static SweepableNode<FastTreeBinaryTrainer, FastTreeBinaryTrainer.Options>
+            FastTree(
+                this SweepableBinaryClassificationTrainers trainer,
+                string labelColumnName = "Label",
+                string featureColumnName = "Features",
+                OptionBuilder<FastTreeBinaryTrainer.Options> optionBuilder = null,
+                FastTreeBinaryTrainer.Options defaultOption = null)
+        {
+            var context = trainer.Context;
+            if (optionBuilder == null)
+            {
+                optionBuilder = FastTreeBinaryTrainerOptionBuilder.Default;
+            }
+
+            optionBuilder.SetDefaultOption(defaultOption);
+            return context.AutoML().SweepableTrainer(
+                (context, option) =>
+                {
+                    option.LabelColumnName = labelColumnName;
+                    option.FeatureColumnName = featureColumnName;
+
+                    return context.BinaryClassification.Trainers.FastTree(option);
+                },
+                optionBuilder,
+                new string[] { featureColumnName },
+                PredictedLabel,
+                nameof(FastTreeBinaryTrainer));
         }
     }
 }

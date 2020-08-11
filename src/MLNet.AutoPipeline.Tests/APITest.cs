@@ -190,6 +190,34 @@ namespace MLNet.AutoPipeline.Test
         [Fact]
         [UseApprovalSubdirectory("ApprovalTests")]
         [UseReporter(typeof(DiffReporter))]
+        public void AutoML_should_create_fast_forest_binary_classifier_with_option()
+        {
+            var context = new MLContext();
+            var optionBuilder = FastForestBinaryTrainerOptionBuilder.Default;
+            optionBuilder.ExampleWeightColumnName = ParameterBuilder.CreateFromSingleValue("example");
+            var trainer = context.AutoML().BinaryClassification.FastForest("label", "feature", optionBuilder);
+            var parameterValue = optionBuilder.ValueGenerators.Select(x => x.CreateFromNormalized(0.5));
+            var parameterset = new ParameterSet(parameterValue);
+            Approvals.Verify(trainer.ToCodeGenNodeContract(parameterset));
+        }
+
+        [Fact]
+        [UseApprovalSubdirectory("ApprovalTests")]
+        [UseReporter(typeof(DiffReporter))]
+        public void AutoML_should_create_fast_tree_binary_classifier_with_option()
+        {
+            var context = new MLContext();
+            var optionBuilder = FastTreeBinaryTrainerOptionBuilder.Default;
+            optionBuilder.ExampleWeightColumnName = ParameterBuilder.CreateFromSingleValue("example");
+            var trainer = context.AutoML().BinaryClassification.FastTree("label", "feature", optionBuilder);
+            var parameterValue = optionBuilder.ValueGenerators.Select(x => x.CreateFromNormalized(0.5));
+            var parameterset = new ParameterSet(parameterValue);
+            Approvals.Verify(trainer.ToCodeGenNodeContract(parameterset));
+        }
+
+        [Fact]
+        [UseApprovalSubdirectory("ApprovalTests")]
+        [UseReporter(typeof(DiffReporter))]
         public void AutoML_should_create_ld_svm_classifier_with_option()
         {
             var context = new MLContext();

@@ -1,0 +1,35 @@
+{
+  "parameters": [
+    {
+      "Name": "LabelColumnName",
+      "ValueText": "Label"
+    },
+    {
+      "Name": "FeatureColumnName",
+      "ValueText": "Features"
+    },
+    {
+      "Name": "ExampleWeightColumnName",
+      "ValueText": "example"
+    },
+    {
+      "Name": "NumberOfLeaves",
+      "ValueText": "32"
+    },
+    {
+      "Name": "NumberOfTrees",
+      "ValueText": "32"
+    },
+    {
+      "Name": "MinimumExampleCountPerLeaf",
+      "ValueText": "10"
+    }
+  ],
+  "name": "FastForestBinaryTrainer",
+  "input_column": [
+    "feature"
+  ],
+  "output_column": [
+    "PredictedLabel"
+  ]
+}
