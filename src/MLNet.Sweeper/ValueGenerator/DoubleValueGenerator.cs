@@ -5,6 +5,7 @@
 using MLNet.Sweeper.Paramater;
 using System;
 using System.Collections.Generic;
+using System.Text;
 
 namespace MLNet.Sweeper
 {
@@ -71,6 +72,19 @@ namespace MLNet.Sweeper
             {
                 return (float)((valueTyped.Value - this._options.Min) / (this._options.Max - this._options.Min));
             }
+        }
+
+        public override string ToString()
+        {
+            var sb = new StringBuilder();
+            sb.AppendLine($"Parameter Name: {this.Name}");
+            sb.AppendLine($"Parameter Type: double");
+            sb.AppendLine($"Min Value: {this._options.Min}");
+            sb.AppendLine($"Max Value: {this._options.Max}");
+            sb.AppendLine($"Steps: {this._options.Steps}");
+            sb.AppendLine($"Log Base: {this._options.LogBase}");
+
+            return sb.ToString();
         }
 
         public bool InRange(IParameterValue value)

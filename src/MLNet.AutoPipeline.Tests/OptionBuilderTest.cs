@@ -2,6 +2,9 @@
 // Copyright (c) BigMiao. All rights reserved.
 // </copyright>
 
+using ApprovalTests;
+using ApprovalTests.Namers;
+using ApprovalTests.Reporters;
 using FluentAssertions;
 using Microsoft.ML;
 using MLNet.Sweeper;
@@ -15,7 +18,7 @@ namespace MLNet.AutoPipeline.Test
         [Fact]
         public void OptionBuilder_should_create_default_option()
         {
-            var builder = new TestOptionBuilder();
+            var builder = new TestOptionBuilderWithSweepableAttributeOnly();
             var option = builder.CreateDefaultOption();
             option.LongOption.Should().Equals(10);
             option.FloatOption.Should().Equals(1f);
@@ -25,7 +28,7 @@ namespace MLNet.AutoPipeline.Test
         [Fact]
         public void OptionBuilder_should_build_option_from_parameter_set()
         {
-            var builder = new TestOptionBuilder();
+            var builder = new TestOptionBuilderWithSweepableAttributeOnly();
             var input = new List<IParameterValue>()
             {
                 new LongParameterValue("LongOption", 2),
@@ -45,7 +48,7 @@ namespace MLNet.AutoPipeline.Test
         public void OptionBuilder_should_work_with_random_sweeper()
         {
             var context = new MLContext();
-            var builder = new TestOptionBuilder();
+            var builder = new TestOptionBuilderWithSweepableAttributeOnly();
             var maximum = 10;
             var sweeperOption = new UniformRandomSweeper.Option();
 
@@ -76,6 +79,49 @@ namespace MLNet.AutoPipeline.Test
             }
         }
 
+        [Fact]
+        public void OptionBuilder_should_build_option_using_field_with_parameter_attribute()
+        {
+            var optionBuilder = new TestOptionBuilderWithParameterAttributeOnly();
+            var option1 = optionBuilder.CreateDefaultOption();
+            option1.FloatOption.Should().Be(100f);
+            option1.LongOption.Should().Be(100L);
+            option1.StringOption.Should().Be(string.Empty);
+        }
+
+        [Fact]
+        public void OptionBuilder_should_build_option_using_field_with_sweepable_parameter_attribute()
+        {
+            var optionBuilder = new TestOptionBuilderWithSweepableAttributeOnly();
+            var option1 = optionBuilder.CreateDefaultOption();
+            option1.FloatOption.Should().Be(0f);
+            option1.LongOption.Should().Be(0);
+            option1.StringOption.Should().Be("str1");
+
+            var input = new List<IParameterValue>()
+            {
+                new LongParameterValue("LongOption", 2),
+                new FloatParameterValue("FloatOption", 2f),
+                new DiscreteParameterValue("StringOption", "2"),
+            };
+
+            var parameterSet = new ParameterSet(input);
+            var option2 = optionBuilder.BuildOption(parameterSet);
+
+            option2.LongOption.Should().Equals(2);
+            option2.FloatOption.Should().Equals(2f);
+            option2.StringOption.Should().Equals("2");
+        }
+
+        [Fact]
+        [UseApprovalSubdirectory("ApprovalTests")]
+        [UseReporter(typeof(DiffReporter))]
+        public void OptionBuilder_should_print_in_a_human_readable_format()
+        {
+            var optionBuilder = new TestOptionBuilderWithSweepableAttributeOnly();
+            Approvals.Verify(optionBuilder);
+        }
+
         private class TestOption
         {
             public long LongOption = 1;
@@ -85,16 +131,25 @@ namespace MLNet.AutoPipeline.Test
             public string StringOption = string.Empty;
         }
 
-        private class TestOptionBuilder : OptionBuilder<TestOption>
+        private class TestOptionBuilderWithParameterAttributeOnly : OptionBuilder<TestOption>
         {
-            [SweepableParameter(0L, 100L)]
-            public long LongOption = -1;
+            [Parameter]
+            public Parameter<long> LongOption = ParameterBuilder.CreateFromSingleValue(100L);
 
-            [SweepableParameter(0f, 100f)]
-            public float FloatOption = -1f;
+            [Parameter(nameof(TestOption.FloatOption))]
+            public Parameter<float> Float_Option = ParameterBuilder.CreateFromSingleValue(100f);
+        }
 
-            [SweepableParameter(new object[] { "str1", "str2", "str3", "str4" })]
-            public string StringOption = "str";
+        private class TestOptionBuilderWithSweepableAttributeOnly : OptionBuilder<TestOption>
+        {
+            [Parameter]
+            public Parameter<long> LongOption = ParameterBuilder.CreateLongParameter(0, 100);
+
+            [Parameter(nameof(TestOption.FloatOption))]
+            public Parameter<float> Float_Option = ParameterBuilder.CreateFloatParameter(0f, 100f);
+
+            [Parameter]
+            public Parameter<string> StringOption = ParameterBuilder.CreateDiscreteParameter(new string[] { "str1", "str2", "str3", "str4" });
         }
     }
 }

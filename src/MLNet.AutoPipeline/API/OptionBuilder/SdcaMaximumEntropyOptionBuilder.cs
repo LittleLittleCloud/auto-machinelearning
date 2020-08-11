@@ -42,8 +42,8 @@ namespace MLNet.AutoPipeline.API.OptionBuilder
         /// </item>
         /// </list>
         /// </summary>
-        [SweepableParameter(1E-4F, 10f, true, 20)]
-        public float L2Regularization;
+        [Parameter]
+        public Parameter<float> L2Regularization = ParameterBuilder.CreateFloatParameter(1E-4F, 10f, true, 20);
 
         /// <summary>
         /// The L1 regularization hyperparameter.
@@ -71,8 +71,8 @@ namespace MLNet.AutoPipeline.API.OptionBuilder
         /// </item>
         /// </list>
         /// </summary>
-        [SweepableParameter(1E-4F, 10f, true, 20)]
-        public float L1Regularization;
+        [Parameter]
+        public Parameter<float> L1Regularization = ParameterBuilder.CreateFloatParameter(1E-4F, 10f, true, 20);
 
         /// <summary>
         /// Memory size for <see cref="SdcaMaximumEntropyMulticlassTrainer"/> Low=faster, less accurate.
@@ -100,25 +100,25 @@ namespace MLNet.AutoPipeline.API.OptionBuilder
         /// </item>
         /// </list>
         /// </summary>
-        [SweepableParameter(1, 1000, true, 20)]
-        public int HistorySize;
+        [Parameter]
+        public Parameter<int> HistorySize = ParameterBuilder.CreateInt32Parameter(1, 1000, true, 20);
 
         /// <summary>
         /// The name of the example weight column, default is null.
         /// </summary>
         [Parameter]
-        public string ExampleWeightColumnName = default;
+        public Parameter<string> ExampleWeightColumnName = ParameterBuilder.CreateFromSingleValue<string>(default);
 
         /// <summary>
         /// Threshold for optimizer convergence, default is 1E-7F.
         /// </summary>
         [Parameter]
-        public float OptimizationTolerance = 1E-7F;
+        public Parameter<float> OptimizationTolerance = ParameterBuilder.CreateFromSingleValue(1e-7f);
 
         /// <summary>
         /// Enforce non-negative weights, default is false.
         /// </summary>
         [Parameter]
-        public bool EnforceNonNegativity = false;
+        public Parameter<bool> EnforceNonNegativity = ParameterBuilder.CreateFromSingleValue(false);
     }
 }

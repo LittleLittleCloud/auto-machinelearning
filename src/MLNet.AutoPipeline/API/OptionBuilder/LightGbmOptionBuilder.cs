@@ -40,8 +40,8 @@ namespace MLNet.AutoPipeline
         /// </item>
         /// </list>
         /// </summary>
-        [SweepableParameter(0.001, 0.1, true, 20)]
-        public double LearningRate;
+        [Parameter]
+        public Parameter<double> LearningRate = ParameterBuilder.CreateDoubleParameter(0.001, 0.1, true, 20);
 
         /// <summary>
         /// The maximum number of leaves in one tree.
@@ -69,8 +69,8 @@ namespace MLNet.AutoPipeline
         /// </item>
         /// </list>
         /// </summary>
-        [SweepableParameter(10, 1000, true, 20)]
-        public int NumberOfLeaves;
+        [Parameter]
+        public Parameter<int> NumberOfLeaves = ParameterBuilder.CreateInt32Parameter(10, 1000, true, 20);
 
         /// <summary>
         /// The number of boosting iterations. A new tree is created in each iteration, so this is equivalent to the number of trees.
@@ -98,8 +98,8 @@ namespace MLNet.AutoPipeline
         /// </item>
         /// </list>
         /// </summary>
-        [SweepableParameter(10, 1000, true, 20)]
-        public int NumberOfIterations;
+        [Parameter]
+        public Parameter<int> NumberOfIterations = ParameterBuilder.CreateInt32Parameter(10, 1000, true, 20);
 
         /// <summary>
         /// The minimal number of data points required to form a new tree leaf.
@@ -127,14 +127,14 @@ namespace MLNet.AutoPipeline
         /// </item>
         /// </list>
         /// </summary>
-        [SweepableParameter(10, 1000, true, 20)]
-        public int MinimumExampleCountPerLeaf;
+        [Parameter]
+        public Parameter<int> MinimumExampleCountPerLeaf = ParameterBuilder.CreateInt32Parameter(10, 1000, true, 20);
 
         /// <summary>
         /// The name of the example weight column.
         /// </summary>
         [Parameter]
-        public string ExampleWeightColumnName = default;
+        public Parameter<string> ExampleWeightColumnName = ParameterBuilder.CreateFromSingleValue<string>(default);
 
         internal static LightGbmOptionBuilder Default = new LightGbmOptionBuilder();
     }

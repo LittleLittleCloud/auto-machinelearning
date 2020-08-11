@@ -1,4 +1,4 @@
-﻿// <copyright file="SweepableParameterAttribute.cs" company="BigMiao">
+﻿// <copyright file="Parameter.cs" company="BigMiao">
 // Copyright (c) BigMiao. All rights reserved.
 // </copyright>
 
@@ -11,10 +11,13 @@ using MLNet.Sweeper;
 
 namespace MLNet.AutoPipeline
 {
-    [AttributeUsage(AttributeTargets.Field, AllowMultiple = false, Inherited = false)]
-    public class SweepableParameterAttribute : Attribute
+    /// <summary>
+    /// Create a parameter that can be used in <see cref="OptionBuilder{TOption}"/>.
+    /// </summary>
+    /// <typeparam name="T">type of Parameter.</typeparam>
+    public class Parameter<T> : Parameter
     {
-        public SweepableParameterAttribute(int min, int max, bool logBase = false, int steps = 100)
+        internal Parameter(int min, int max, bool logBase = false, int steps = 100)
         {
             Contract.Assert(max > min);
             Contract.Assert(steps > 0);
@@ -30,7 +33,7 @@ namespace MLNet.AutoPipeline
             this.ValueGenerator = new Int32ValueGenerator(option);
         }
 
-        public SweepableParameterAttribute(long min, long max, bool logBase = false, int steps = 100)
+        internal Parameter(long min, long max, bool logBase = false, int steps = 100)
         {
             Contract.Assert(max > min);
             Contract.Assert(steps > 0);
@@ -46,7 +49,7 @@ namespace MLNet.AutoPipeline
             this.ValueGenerator = new LongValueGenerator(option);
         }
 
-        public SweepableParameterAttribute(float min, float max, bool logBase = false, int steps = 100)
+        internal Parameter(float min, float max, bool logBase = false, int steps = 100)
         {
             Contract.Assert(max > min);
             Contract.Assert(steps > 0);
@@ -62,7 +65,7 @@ namespace MLNet.AutoPipeline
             this.ValueGenerator = new FloatValueGenerator(option);
         }
 
-        public SweepableParameterAttribute(double min, double max, bool logBase = false, int steps = 100)
+        internal Parameter(double min, double max, bool logBase = false, int steps = 100)
         {
             Contract.Assert(max > min);
             Contract.Assert(steps > 0);
@@ -78,25 +81,27 @@ namespace MLNet.AutoPipeline
             this.ValueGenerator = new DoubleValueGenerator(option);
         }
 
-        public SweepableParameterAttribute(object[] candidates)
+        internal Parameter(T[] candidates)
         {
             var option = new DiscreteValueGenerator.Option()
             {
-                Values = candidates,
+                Values = candidates.Select(x => (object)x).ToArray(),
             };
 
             this.ValueGenerator = new DiscreteValueGenerator(option);
         }
 
-        public SweepableParameterAttribute(string name)
+        internal Parameter(T value)
         {
-            this.Name = name;
+            this.ValueGenerator = new SingleValueGenerator<T>(null, value);
         }
+    }
 
-        public SweepableParameterAttribute() { }
-
-        public IValueGenerator ValueGenerator { get; }
-
-        public string Name { get; private set; }
+    /// <summary>
+    /// abstract class for <see cref="Parameter{T}"/>.
+    /// </summary>
+    public abstract class Parameter
+    {
+        protected internal virtual IValueGenerator ValueGenerator { get; protected set; }
     }
 }

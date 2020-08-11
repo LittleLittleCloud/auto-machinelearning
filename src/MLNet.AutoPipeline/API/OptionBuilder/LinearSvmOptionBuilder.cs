@@ -37,14 +37,14 @@ namespace MLNet.AutoPipeline
         /// </item>
         /// </list>
         /// </summary>
-        [SweepableParameter(10, 1000, true, 20)]
-        public int NumberOfIterations;
+        [Parameter]
+        public Parameter<int> NumberOfIterations = ParameterBuilder.CreateInt32Parameter(10, 1000, true, 20);
 
         /// <summary>
         /// The name of the example weight column.
         /// </summary>
         [Parameter]
-        public string ExampleWeightColumnName = default;
+        public Parameter<string> ExampleWeightColumnName = ParameterBuilder.CreateFromSingleValue<string>(default);
 
         internal static LinearSvmOptionBuilder Default = new LinearSvmOptionBuilder();
     }
