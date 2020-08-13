@@ -30,7 +30,5 @@ namespace MLNet.AutoPipeline
 
         [Parameter(nameof(FastTreeBinaryTrainer.Options.LearningRate))]
         public Parameter<double> LearningRate = ParameterBuilder.CreateDoubleParameter(1e-4, 1, true);
-
-
     }
 }

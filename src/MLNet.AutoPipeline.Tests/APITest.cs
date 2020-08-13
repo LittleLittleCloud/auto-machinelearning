@@ -241,6 +241,45 @@ namespace MLNet.AutoPipeline.Test
             var parameterset = new ParameterSet(parameterValue);
             Approvals.Verify(trainer.ToCodeGenNodeContract(parameterset));
         }
+
+        [Fact]
+        [UseApprovalSubdirectory("ApprovalTests")]
+        [UseReporter(typeof(DiffReporter))]
+        public void AutoML_should_create_gam_classifier_with_option()
+        {
+            var context = new MLContext();
+            var optionBuilder = GamBinaryTrainerOptionBuilder.Default;
+            var trainer = context.AutoML().BinaryClassification.Gam("label", "feature", optionBuilder);
+            var parameterValue = optionBuilder.ValueGenerators.Select(x => x.CreateFromNormalized(0.5));
+            var parameterset = new ParameterSet(parameterValue);
+            Approvals.Verify(trainer.ToCodeGenNodeContract(parameterset));
+        }
+
+        [Fact]
+        [UseApprovalSubdirectory("ApprovalTests")]
+        [UseReporter(typeof(DiffReporter))]
+        public void AutoML_should_create_sgd_noncalibrated_classifier_with_option()
+        {
+            var context = new MLContext();
+            var optionBuilder = SgdNonCalibratedBinaryTrainerOptionBuilder.Default;
+            var trainer = context.AutoML().BinaryClassification.SgdNonCalibrated("label", "feature", optionBuilder);
+            var parameterValue = optionBuilder.ValueGenerators.Select(x => x.CreateFromNormalized(0.5));
+            var parameterset = new ParameterSet(parameterValue);
+            Approvals.Verify(trainer.ToCodeGenNodeContract(parameterset));
+        }
+
+        [Fact]
+        [UseApprovalSubdirectory("ApprovalTests")]
+        [UseReporter(typeof(DiffReporter))]
+        public void AutoML_should_create_sgd_calibrated_classifier_with_option()
+        {
+            var context = new MLContext();
+            var optionBuilder = SgdCalibratedBinaryTrainerOptionBuilder.Default;
+            var trainer = context.AutoML().BinaryClassification.SgdCalibrated("label", "feature", optionBuilder);
+            var parameterValue = optionBuilder.ValueGenerators.Select(x => x.CreateFromNormalized(0.5));
+            var parameterset = new ParameterSet(parameterValue);
+            Approvals.Verify(trainer.ToCodeGenNodeContract(parameterset));
+        }
     }
 
     public class CustomSdcaMaximumEntropyOptionBuilder : OptionBuilder<SdcaMaximumEntropyMulticlassTrainer.Options>

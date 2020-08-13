@@ -156,7 +156,94 @@ namespace MLNet.AutoPipeline
                 optionBuilder,
                 new string[] { featureColumnName },
                 PredictedLabel,
-                nameof(FastTreeBinaryTrainer));
+                nameof(LightGbmBinaryTrainer));
+        }
+
+        public static SweepableNode<GamBinaryTrainer, GamBinaryTrainer.Options>
+            Gam(
+                this SweepableBinaryClassificationTrainers trainer,
+                string labelColumnName = "Label",
+                string featureColumnName = "Features",
+                OptionBuilder<GamBinaryTrainer.Options> optionBuilder = null,
+                GamBinaryTrainer.Options defaultOption = null)
+        {
+            var context = trainer.Context;
+            if (optionBuilder == null)
+            {
+                optionBuilder = GamBinaryTrainerOptionBuilder.Default;
+            }
+
+            optionBuilder.SetDefaultOption(defaultOption);
+            return context.AutoML().SweepableTrainer(
+                (context, option) =>
+                {
+                    option.LabelColumnName = labelColumnName;
+                    option.FeatureColumnName = featureColumnName;
+
+                    return context.BinaryClassification.Trainers.Gam(option);
+                },
+                optionBuilder,
+                new string[] { featureColumnName },
+                PredictedLabel,
+                nameof(GamBinaryTrainer));
+        }
+
+        public static SweepableNode<SgdNonCalibratedTrainer, SgdNonCalibratedTrainer.Options>
+            SgdNonCalibrated(
+                this SweepableBinaryClassificationTrainers trainer,
+                string labelColumnName = "Label",
+                string featureColumnName = "Features",
+                OptionBuilder<SgdNonCalibratedTrainer.Options> optionBuilder = null,
+                SgdNonCalibratedTrainer.Options defaultOption = null)
+        {
+            var context = trainer.Context;
+            if (optionBuilder == null)
+            {
+                optionBuilder = SgdNonCalibratedBinaryTrainerOptionBuilder.Default;
+            }
+
+            optionBuilder.SetDefaultOption(defaultOption);
+            return context.AutoML().SweepableTrainer(
+                (context, option) =>
+                {
+                    option.LabelColumnName = labelColumnName;
+                    option.FeatureColumnName = featureColumnName;
+
+                    return context.BinaryClassification.Trainers.SgdNonCalibrated(option);
+                },
+                optionBuilder,
+                new string[] { featureColumnName },
+                PredictedLabel,
+                nameof(SgdNonCalibratedTrainer));
+        }
+
+        public static SweepableNode<SgdCalibratedTrainer, SgdCalibratedTrainer.Options>
+            SgdCalibrated(
+                this SweepableBinaryClassificationTrainers trainer,
+                string labelColumnName = "Label",
+                string featureColumnName = "Features",
+                OptionBuilder<SgdCalibratedTrainer.Options> optionBuilder = null,
+                SgdCalibratedTrainer.Options defaultOption = null)
+        {
+            var context = trainer.Context;
+            if (optionBuilder == null)
+            {
+                optionBuilder = SgdCalibratedBinaryTrainerOptionBuilder.Default;
+            }
+
+            optionBuilder.SetDefaultOption(defaultOption);
+            return context.AutoML().SweepableTrainer(
+                (context, option) =>
+                {
+                    option.LabelColumnName = labelColumnName;
+                    option.FeatureColumnName = featureColumnName;
+
+                    return context.BinaryClassification.Trainers.SgdCalibrated(option);
+                },
+                optionBuilder,
+                new string[] { featureColumnName },
+                PredictedLabel,
+                nameof(SgdCalibratedTrainer));
         }
     }
 }

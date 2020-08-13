@@ -10,22 +10,22 @@
     },
     {
       "Name": "ExampleWeightColumnName",
-      "ValueText": "example"
+      "ValueText": null
     },
     {
-      "Name": "NumberOfLeaves",
+      "Name": "NumberOfIterations",
       "ValueText": "32"
-    },
-    {
-      "Name": "MinimumExampleCountPerLeaf",
-      "ValueText": "10"
     },
     {
       "Name": "LearningRate",
       "ValueText": "0.010000000000000004"
+    },
+    {
+      "Name": "L2Regularization",
+      "ValueText": "0.000100000005"
     }
   ],
-  "name": "LightGbmBinaryTrainer",
+  "name": "SgdCalibratedTrainer",
   "input_column": [
     "feature"
   ],

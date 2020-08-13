@@ -10,22 +10,22 @@
     },
     {
       "Name": "ExampleWeightColumnName",
-      "ValueText": "example"
+      "ValueText": null
     },
     {
-      "Name": "NumberOfLeaves",
-      "ValueText": "32"
+      "Name": "NumberOfIterations",
+      "ValueText": "2236"
     },
     {
-      "Name": "MinimumExampleCountPerLeaf",
-      "ValueText": "10"
+      "Name": "MaximumBinCountPerFeature",
+      "ValueText": "100"
     },
     {
       "Name": "LearningRate",
       "ValueText": "0.010000000000000004"
     }
   ],
-  "name": "LightGbmBinaryTrainer",
+  "name": "GamBinaryTrainer",
   "input_column": [
     "feature"
   ],

@@ -74,7 +74,7 @@ namespace MLNet.AutoPipeline
         /// <typeparam name="T">type of values.</typeparam>
         /// <param name="objects">discrete values.</param>
         /// <returns><see cref="Parameter{T}"/>.</returns>
-        public static Parameter<T> CreateDiscreteParameter<T>(T[] objects)
+        public static Parameter<T> CreateDiscreteParameter<T>(params T[] objects)
         {
             return new Parameter<T>(objects);
         }

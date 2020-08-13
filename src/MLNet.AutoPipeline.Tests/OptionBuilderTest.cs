@@ -149,7 +149,7 @@ namespace MLNet.AutoPipeline.Test
             public Parameter<float> Float_Option = ParameterBuilder.CreateFloatParameter(0f, 100f);
 
             [Parameter]
-            public Parameter<string> StringOption = ParameterBuilder.CreateDiscreteParameter(new string[] { "str1", "str2", "str3", "str4" });
+            public Parameter<string> StringOption = ParameterBuilder.CreateDiscreteParameter("str1", "str2", "str3", "str4");
         }
     }
 }
