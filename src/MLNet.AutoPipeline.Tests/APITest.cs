@@ -10,7 +10,6 @@ using Microsoft.ML;
 using Microsoft.ML.Calibrators;
 using Microsoft.ML.Trainers;
 using Microsoft.ML.Trainers.LightGbm;
-using MLNet.AutoPipeline.API.OptionBuilder;
 using MLNet.Sweeper;
 using System;
 using System.Collections.Generic;
@@ -276,6 +275,58 @@ namespace MLNet.AutoPipeline.Test
             var context = new MLContext();
             var optionBuilder = SgdCalibratedBinaryTrainerOptionBuilder.Default;
             var trainer = context.AutoML().BinaryClassification.SgdCalibrated("label", "feature", optionBuilder);
+            var parameterValue = optionBuilder.ValueGenerators.Select(x => x.CreateFromNormalized(0.5));
+            var parameterset = new ParameterSet(parameterValue);
+            Approvals.Verify(trainer.ToCodeGenNodeContract(parameterset));
+        }
+
+        [Fact]
+        [UseApprovalSubdirectory("ApprovalTests")]
+        [UseReporter(typeof(DiffReporter))]
+        public void AutoML_should_create_sdca_non_calibrated_classifier_with_option()
+        {
+            var context = new MLContext();
+            var optionBuilder = SdcaNonCalibratedBinaryTrainerOptionBuilder.Default;
+            var trainer = context.AutoML().BinaryClassification.SdcaNonCalibrated("label", "feature", optionBuilder);
+            var parameterValue = optionBuilder.ValueGenerators.Select(x => x.CreateFromNormalized(0.5));
+            var parameterset = new ParameterSet(parameterValue);
+            Approvals.Verify(trainer.ToCodeGenNodeContract(parameterset));
+        }
+
+        [Fact]
+        [UseApprovalSubdirectory("ApprovalTests")]
+        [UseReporter(typeof(DiffReporter))]
+        public void AutoML_should_create_sdca_logistic_regression_binary_classifier_with_option()
+        {
+            var context = new MLContext();
+            var optionBuilder = SdcaLogisticRegressionBinaryTrainerOptionBuilder.Default;
+            var trainer = context.AutoML().BinaryClassification.SdcaLogisticRegression("label", "feature", optionBuilder);
+            var parameterValue = optionBuilder.ValueGenerators.Select(x => x.CreateFromNormalized(0.5));
+            var parameterset = new ParameterSet(parameterValue);
+            Approvals.Verify(trainer.ToCodeGenNodeContract(parameterset));
+        }
+
+        [Fact]
+        [UseApprovalSubdirectory("ApprovalTests")]
+        [UseReporter(typeof(DiffReporter))]
+        public void AutoML_should_create_lbfgs_logistic_regression_binary_classifier_with_option()
+        {
+            var context = new MLContext();
+            var optionBuilder = LbfgsLogisticRegressionBinaryTrainerOptionBuilder.Default;
+            var trainer = context.AutoML().BinaryClassification.LbfgsLogisticRegression("label", "feature", optionBuilder);
+            var parameterValue = optionBuilder.ValueGenerators.Select(x => x.CreateFromNormalized(0.5));
+            var parameterset = new ParameterSet(parameterValue);
+            Approvals.Verify(trainer.ToCodeGenNodeContract(parameterset));
+        }
+
+        [Fact]
+        [UseApprovalSubdirectory("ApprovalTests")]
+        [UseReporter(typeof(DiffReporter))]
+        public void AutoML_should_create_averaged_perceptron_binary_classifier_with_option()
+        {
+            var context = new MLContext();
+            var optionBuilder = AveragedPerceptronBinaryTrainerOptionBuilder.Default;
+            var trainer = context.AutoML().BinaryClassification.AveragedPerceptron("label", "feature", optionBuilder);
             var parameterValue = optionBuilder.ValueGenerators.Select(x => x.CreateFromNormalized(0.5));
             var parameterset = new ParameterSet(parameterValue);
             Approvals.Verify(trainer.ToCodeGenNodeContract(parameterset));

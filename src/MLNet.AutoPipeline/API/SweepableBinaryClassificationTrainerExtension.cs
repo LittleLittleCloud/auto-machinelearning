@@ -2,7 +2,6 @@
 using Microsoft.ML.Trainers;
 using Microsoft.ML.Trainers.FastTree;
 using Microsoft.ML.Trainers.LightGbm;
-using MLNet.AutoPipeline.API.OptionBuilder;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -244,6 +243,122 @@ namespace MLNet.AutoPipeline
                 new string[] { featureColumnName },
                 PredictedLabel,
                 nameof(SgdCalibratedTrainer));
+        }
+
+        public static SweepableNode<SdcaNonCalibratedBinaryTrainer, SdcaNonCalibratedBinaryTrainer.Options>
+            SdcaNonCalibrated(
+                this SweepableBinaryClassificationTrainers trainer,
+                string labelColumnName = "Label",
+                string featureColumnName = "Features",
+                OptionBuilder<SdcaNonCalibratedBinaryTrainer.Options> optionBuilder = null,
+                SdcaNonCalibratedBinaryTrainer.Options defaultOption = null)
+        {
+            var context = trainer.Context;
+            if (optionBuilder == null)
+            {
+                optionBuilder = SdcaNonCalibratedBinaryTrainerOptionBuilder.Default;
+            }
+
+            optionBuilder.SetDefaultOption(defaultOption);
+            return context.AutoML().SweepableTrainer(
+                (context, option) =>
+                {
+                    option.LabelColumnName = labelColumnName;
+                    option.FeatureColumnName = featureColumnName;
+
+                    return context.BinaryClassification.Trainers.SdcaNonCalibrated(option);
+                },
+                optionBuilder,
+                new string[] { featureColumnName },
+                PredictedLabel,
+                nameof(SdcaNonCalibratedBinaryTrainer));
+        }
+
+        public static SweepableNode<SdcaLogisticRegressionBinaryTrainer, SdcaLogisticRegressionBinaryTrainer.Options>
+            SdcaLogisticRegression(
+                this SweepableBinaryClassificationTrainers trainer,
+                string labelColumnName = "Label",
+                string featureColumnName = "Features",
+                OptionBuilder<SdcaLogisticRegressionBinaryTrainer.Options> optionBuilder = null,
+                SdcaLogisticRegressionBinaryTrainer.Options defaultOption = null)
+        {
+            var context = trainer.Context;
+            if (optionBuilder == null)
+            {
+                optionBuilder = SdcaLogisticRegressionBinaryTrainerOptionBuilder.Default;
+            }
+
+            optionBuilder.SetDefaultOption(defaultOption);
+            return context.AutoML().SweepableTrainer(
+                (context, option) =>
+                {
+                    option.LabelColumnName = labelColumnName;
+                    option.FeatureColumnName = featureColumnName;
+
+                    return context.BinaryClassification.Trainers.SdcaLogisticRegression(option);
+                },
+                optionBuilder,
+                new string[] { featureColumnName },
+                PredictedLabel,
+                nameof(SdcaLogisticRegressionBinaryTrainer));
+        }
+
+        public static SweepableNode<LbfgsLogisticRegressionBinaryTrainer, LbfgsLogisticRegressionBinaryTrainer.Options>
+            LbfgsLogisticRegression(
+                this SweepableBinaryClassificationTrainers trainer,
+                string labelColumnName = "Label",
+                string featureColumnName = "Features",
+                OptionBuilder<LbfgsLogisticRegressionBinaryTrainer.Options> optionBuilder = null,
+                LbfgsLogisticRegressionBinaryTrainer.Options defaultOption = null)
+        {
+            var context = trainer.Context;
+            if (optionBuilder == null)
+            {
+                optionBuilder = LbfgsLogisticRegressionBinaryTrainerOptionBuilder.Default;
+            }
+
+            optionBuilder.SetDefaultOption(defaultOption);
+            return context.AutoML().SweepableTrainer(
+                (context, option) =>
+                {
+                    option.LabelColumnName = labelColumnName;
+                    option.FeatureColumnName = featureColumnName;
+
+                    return context.BinaryClassification.Trainers.LbfgsLogisticRegression(option);
+                },
+                optionBuilder,
+                new string[] { featureColumnName },
+                PredictedLabel,
+                nameof(LbfgsLogisticRegressionBinaryTrainer));
+        }
+
+        public static SweepableNode<AveragedPerceptronTrainer, AveragedPerceptronTrainer.Options>
+            AveragedPerceptron(
+                this SweepableBinaryClassificationTrainers trainer,
+                string labelColumnName = "Label",
+                string featureColumnName = "Features",
+                OptionBuilder<AveragedPerceptronTrainer.Options> optionBuilder = null,
+                AveragedPerceptronTrainer.Options defaultOption = null)
+        {
+            var context = trainer.Context;
+            if (optionBuilder == null)
+            {
+                optionBuilder = AveragedPerceptronBinaryTrainerOptionBuilder.Default;
+            }
+
+            optionBuilder.SetDefaultOption(defaultOption);
+            return context.AutoML().SweepableTrainer(
+                (context, option) =>
+                {
+                    option.LabelColumnName = labelColumnName;
+                    option.FeatureColumnName = featureColumnName;
+
+                    return context.BinaryClassification.Trainers.AveragedPerceptron(option);
+                },
+                optionBuilder,
+                new string[] { featureColumnName },
+                PredictedLabel,
+                nameof(AveragedPerceptronTrainer));
         }
     }
 }

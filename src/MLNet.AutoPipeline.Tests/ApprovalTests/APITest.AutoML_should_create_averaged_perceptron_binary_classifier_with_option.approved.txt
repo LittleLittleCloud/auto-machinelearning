@@ -1,0 +1,40 @@
+{
+  "parameters": [
+    {
+      "Name": "LabelColumnName",
+      "ValueText": "Label"
+    },
+    {
+      "Name": "FeatureColumnName",
+      "ValueText": "Features"
+    },
+    {
+      "Name": "LossFunction",
+      "ValueText": "Microsoft.ML.Trainers.LogLoss",
+      "Value": {}
+    },
+    {
+      "Name": "L2Regularization",
+      "ValueText": "0.031622775"
+    },
+    {
+      "Name": "LearningRate",
+      "ValueText": "0.031622775"
+    },
+    {
+      "Name": "NumberOfIterations",
+      "ValueText": "16"
+    },
+    {
+      "Name": "DecreaseLearningRate",
+      "ValueText": "False"
+    }
+  ],
+  "name": "AveragedPerceptronTrainer",
+  "input_column": [
+    "feature"
+  ],
+  "output_column": [
+    "PredictedLabel"
+  ]
+}

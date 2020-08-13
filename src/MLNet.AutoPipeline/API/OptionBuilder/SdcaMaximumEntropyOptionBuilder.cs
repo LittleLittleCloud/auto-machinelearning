@@ -7,7 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace MLNet.AutoPipeline.API.OptionBuilder
+namespace MLNet.AutoPipeline
 {
     /// <summary>
     /// Sweepable option for <see cref="SdcaMaximumEntropyMulticlassTrainer"/>.
