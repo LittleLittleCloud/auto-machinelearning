@@ -152,7 +152,7 @@ namespace MLNet.AutoPipeline
         /// <param name="trainer">The <see cref="SweepableMultiClassificationTrainerExtension"/>.</param>
         /// <param name="labelColumnName">label column name. Default is Label.</param>
         /// <param name="featureColumnName">feature column name, Default is Features.</param>
-        /// <param name="optionBuilder">option builder. if null, a default instance of <see cref="LightGbmOptionBuilder"/> will be used.</param>
+        /// <param name="optionBuilder">option builder. if null, a default instance of <see cref="LightGbmMultiClassOptionBuilder"/> will be used.</param>
         /// <param name="defaultOption">predefined option. if null, default option will be used.</param>
         /// <returns><see cref="SweepableNode{TNewTrain, TOption}"/>.</returns>
         public static SweepableNode<LightGbmMulticlassTrainer, LightGbmMulticlassTrainer.Options>
@@ -161,7 +161,7 @@ namespace MLNet.AutoPipeline
             var context = trainer.Context;
             if (optionBuilder == null)
             {
-                optionBuilder = LightGbmOptionBuilder.Default;
+                optionBuilder = LightGbmMultiClassOptionBuilder.Default;
             }
 
             return Util.CreateSweepableNode(

@@ -94,7 +94,7 @@ namespace MLNet.AutoPipeline.Test
         {
             var context = new MLContext();
             var trainer = context.AutoML().MultiClassification.LightGbm("label", "feature");
-            var parameterValues = LightGbmOptionBuilder.Default.ValueGenerators.Select(x => x.CreateFromNormalized(0.5));
+            var parameterValues = LightGbmMultiClassOptionBuilder.Default.ValueGenerators.Select(x => x.CreateFromNormalized(0.5));
             var parameterset = new ParameterSet(parameterValues);
             Approvals.Verify(trainer.ToCodeGenNodeContract(parameterset));
         }
@@ -210,6 +210,20 @@ namespace MLNet.AutoPipeline.Test
             var optionBuilder = FastTreeBinaryTrainerOptionBuilder.Default;
             optionBuilder.ExampleWeightColumnName = ParameterBuilder.CreateFromSingleValue("example");
             var trainer = context.AutoML().BinaryClassification.FastTree("label", "feature", optionBuilder);
+            var parameterValue = optionBuilder.ValueGenerators.Select(x => x.CreateFromNormalized(0.5));
+            var parameterset = new ParameterSet(parameterValue);
+            Approvals.Verify(trainer.ToCodeGenNodeContract(parameterset));
+        }
+
+        [Fact]
+        [UseApprovalSubdirectory("ApprovalTests")]
+        [UseReporter(typeof(DiffReporter))]
+        public void AutoML_should_create_lightGbm_binary_classifier_with_option()
+        {
+            var context = new MLContext();
+            var optionBuilder = LightGbmBinaryClassOptionBuilder.Default;
+            optionBuilder.ExampleWeightColumnName = ParameterBuilder.CreateFromSingleValue("example");
+            var trainer = context.AutoML().BinaryClassification.LightGbm("label", "feature", optionBuilder);
             var parameterValue = optionBuilder.ValueGenerators.Select(x => x.CreateFromNormalized(0.5));
             var parameterset = new ParameterSet(parameterValue);
             Approvals.Verify(trainer.ToCodeGenNodeContract(parameterset));

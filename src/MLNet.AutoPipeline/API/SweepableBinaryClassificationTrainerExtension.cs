@@ -1,6 +1,7 @@
 ﻿using Microsoft.ML;
 using Microsoft.ML.Trainers;
 using Microsoft.ML.Trainers.FastTree;
+using Microsoft.ML.Trainers.LightGbm;
 using MLNet.AutoPipeline.API.OptionBuilder;
 using System;
 using System.Collections.Generic;
@@ -122,6 +123,35 @@ namespace MLNet.AutoPipeline
                     option.FeatureColumnName = featureColumnName;
 
                     return context.BinaryClassification.Trainers.FastTree(option);
+                },
+                optionBuilder,
+                new string[] { featureColumnName },
+                PredictedLabel,
+                nameof(FastTreeBinaryTrainer));
+        }
+
+        public static SweepableNode<LightGbmBinaryTrainer, LightGbmBinaryTrainer.Options>
+            LightGbm(
+                this SweepableBinaryClassificationTrainers trainer,
+                string labelColumnName = "Label",
+                string featureColumnName = "Features",
+                OptionBuilder<LightGbmBinaryTrainer.Options> optionBuilder = null,
+                LightGbmBinaryTrainer.Options defaultOption = null)
+        {
+            var context = trainer.Context;
+            if (optionBuilder == null)
+            {
+                optionBuilder = LightGbmBinaryClassOptionBuilder.Default;
+            }
+
+            optionBuilder.SetDefaultOption(defaultOption);
+            return context.AutoML().SweepableTrainer(
+                (context, option) =>
+                {
+                    option.LabelColumnName = labelColumnName;
+                    option.FeatureColumnName = featureColumnName;
+
+                    return context.BinaryClassification.Trainers.LightGbm(option);
                 },
                 optionBuilder,
                 new string[] { featureColumnName },

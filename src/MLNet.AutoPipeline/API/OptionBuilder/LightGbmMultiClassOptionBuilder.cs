@@ -1,4 +1,4 @@
-﻿// <copyright file="LightGbmOptionBuilder.cs" company="BigMiao">
+﻿// <copyright file="LightGbmMultiClassOptionBuilder.cs" company="BigMiao">
 // Copyright (c) BigMiao. All rights reserved.
 // </copyright>
 
@@ -12,7 +12,7 @@ namespace MLNet.AutoPipeline
     /// <summary>
     /// Sweepable option for <see cref="LightGbmMulticlassTrainer"/>.
     /// </summary>
-    public class LightGbmOptionBuilder : OptionBuilder<LightGbmMulticlassTrainer.Options>
+    public class LightGbmMultiClassOptionBuilder : OptionBuilder<LightGbmMulticlassTrainer.Options>
     {
         /// <summary>
         /// Learning rate.
@@ -136,6 +136,6 @@ namespace MLNet.AutoPipeline
         [Parameter]
         public Parameter<string> ExampleWeightColumnName = ParameterBuilder.CreateFromSingleValue<string>(default);
 
-        internal static LightGbmOptionBuilder Default = new LightGbmOptionBuilder();
+        internal static LightGbmMultiClassOptionBuilder Default = new LightGbmMultiClassOptionBuilder();
     }
 }
