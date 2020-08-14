@@ -19,19 +19,16 @@ namespace MLNet.Expert.Trainers.Classification
     /// </summary>
     public class FastForestOvaBuilder : ICanCreateTrainer
     {
-        private Option _option;
         private MLContext _context;
         private static FastForestOvaBuilder _instance = new FastForestOvaBuilder();
 
-        public FastForestOvaBuilder(MLContext context, Option option)
+        public FastForestOvaBuilder(MLContext context)
         {
-            this._option = option;
             this._context = context;
         }
 
         internal FastForestOvaBuilder()
         {
-            this._option = new Option();
         }
 
         internal static FastForestOvaBuilder Instance
@@ -41,28 +38,8 @@ namespace MLNet.Expert.Trainers.Classification
 
         public EstimatorSingleNode CreateTrainer(MLContext context, string label, string feature)
         {
-            Func<Option, OneVersusAllTrainer> OVA = (option) =>
-            {
-                return context.MulticlassClassification.Trainers.OneVersusAll(context.BinaryClassification.Trainers.FastForest(label, feature, numberOfLeaves: option.NumberOfLeaves, numberOfTrees: option.NumberOfTrees, minimumExampleCountPerLeaf: option.MinimumExampleCountPerLeaf), label);
-            };
-
-            var ovaNode = Util.CreateSweepableNode(OVA, this._option, estimatorName: "FastForestOva");
+            var ovaNode = context.AutoML().MultiClassification.OneVersusAll(context.AutoML().BinaryClassification.FastForest(label, feature), label);
             return Util.CreateEstimatorSingleNode(ovaNode);
-        }
-
-        /// <summary>
-        /// Sweepable option for <see cref="FastForestOvaBuilder"/>.
-        /// </summary>
-        public class Option : SweepableOption<Option>
-        {
-            [SweepableParameter(2, 256, true, 8)]
-            public int NumberOfLeaves;
-
-            [SweepableParameter(1, 256, true, 20)]
-            public int NumberOfTrees;
-
-            [SweepableParameter(1, 256, true, 20)]
-            public int MinimumExampleCountPerLeaf;
         }
     }
 }

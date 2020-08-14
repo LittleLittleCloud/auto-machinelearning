@@ -15,9 +15,11 @@ namespace MLNet.AutoPipeline
     /// Create a parameter that can be used in <see cref="SweepableOption{TOption}"/>.
     /// </summary>
     /// <typeparam name="T">type of Parameter.</typeparam>
-    public class IParameter<T> : IParameter
+    public class Parameter<T> : IParameter
     {
-        internal IParameter(int min, int max, bool logBase = false, int steps = 100)
+        public IValueGenerator ValueGenerator { get; private set; }
+
+        internal Parameter(int min, int max, bool logBase = false, int steps = 100)
         {
             Contract.Assert(max > min);
             Contract.Assert(steps > 0);
@@ -33,7 +35,7 @@ namespace MLNet.AutoPipeline
             this.ValueGenerator = new Int32ValueGenerator(option);
         }
 
-        internal IParameter(long min, long max, bool logBase = false, int steps = 100)
+        internal Parameter(long min, long max, bool logBase = false, int steps = 100)
         {
             Contract.Assert(max > min);
             Contract.Assert(steps > 0);
@@ -49,7 +51,7 @@ namespace MLNet.AutoPipeline
             this.ValueGenerator = new LongValueGenerator(option);
         }
 
-        internal IParameter(float min, float max, bool logBase = false, int steps = 100)
+        internal Parameter(float min, float max, bool logBase = false, int steps = 100)
         {
             Contract.Assert(max > min);
             Contract.Assert(steps > 0);
@@ -65,7 +67,7 @@ namespace MLNet.AutoPipeline
             this.ValueGenerator = new FloatValueGenerator(option);
         }
 
-        internal IParameter(double min, double max, bool logBase = false, int steps = 100)
+        internal Parameter(double min, double max, bool logBase = false, int steps = 100)
         {
             Contract.Assert(max > min);
             Contract.Assert(steps > 0);
@@ -81,7 +83,7 @@ namespace MLNet.AutoPipeline
             this.ValueGenerator = new DoubleValueGenerator(option);
         }
 
-        internal IParameter(T[] candidates)
+        internal Parameter(T[] candidates)
         {
             var option = new DiscreteValueGenerator.Option()
             {
@@ -91,7 +93,7 @@ namespace MLNet.AutoPipeline
             this.ValueGenerator = new DiscreteValueGenerator(option);
         }
 
-        internal IParameter(T value)
+        internal Parameter(T value)
         {
             this.ValueGenerator = new SingleValueGenerator<T>(null, value);
         }
@@ -99,8 +101,8 @@ namespace MLNet.AutoPipeline
 
     /// <summary>
     /// </summary>
-    public interface IParameter
+    internal interface IParameter
     {
-        IValueGenerator ValueGenerator { public get; }
+        IValueGenerator ValueGenerator { get; }
     }
 }

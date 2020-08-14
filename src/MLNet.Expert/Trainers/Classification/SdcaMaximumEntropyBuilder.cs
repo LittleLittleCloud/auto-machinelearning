@@ -17,19 +17,16 @@ namespace MLNet.Expert.Trainers.Classification
     /// </summary>
     public class SdcaMaximumEntropyBuilder : ICanCreateTrainer
     {
-        private Option _option;
         private MLContext _context;
         private static SdcaMaximumEntropyBuilder _instance = new SdcaMaximumEntropyBuilder();
 
-        public SdcaMaximumEntropyBuilder(MLContext context, Option option)
+        public SdcaMaximumEntropyBuilder(MLContext context)
         {
             this._context = context;
-            this._option = option;
         }
 
         internal SdcaMaximumEntropyBuilder()
         {
-            this._option = new Option();
         }
 
         internal static SdcaMaximumEntropyBuilder Instance
@@ -39,25 +36,8 @@ namespace MLNet.Expert.Trainers.Classification
 
         public EstimatorSingleNode CreateTrainer(MLContext context, string label, string feature)
         {
-            Func<Option, SdcaMaximumEntropyMulticlassTrainer> sdca = (option) =>
-            {
-                return context.MulticlassClassification.Trainers.SdcaMaximumEntropy(label, feature, l1Regularization: option.L1Reegularization, l2Regularization: option.L2Regularization);
-            };
-
-            var node = Util.CreateSweepableNode(sdca, this._option, estimatorName: "SdcaMaximumEntropy");
+            var node = context.AutoML().MultiClassification.SdcaMaximumEntropy(label, feature);
             return Util.CreateEstimatorSingleNode(node);
-        }
-
-        /// <summary>
-        /// Sweepable option for <see cref="SdcaMaximumEntropyBuilder"/>.
-        /// </summary>
-        public class Option : SweepableOption<Option>
-        {
-            [SweepableParameter(1E-4F, 10f, true, 20)]
-            public float L2Regularization;
-
-            [SweepableParameter(1E-4F, 10f, true, 20)]
-            public float L1Reegularization;
         }
     }
 }

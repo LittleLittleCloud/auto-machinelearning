@@ -20,7 +20,7 @@ namespace MLNet.AutoPipeline
         public Parameter<string> ExampleWeightColumnName = CreateFromSingleValue<string>(default);
 
         [Parameter(nameof(FastTreeBinaryTrainer.Options.NumberOfLeaves))]
-        public Parameter<int> NumberOfLeaves = CreateInt32Parameter(1, 1000, true);
+        public Parameter<int> NumberOfLeaves = CreateInt32Parameter(10, 1000, true);
 
         [Parameter(nameof(FastTreeBinaryTrainer.Options.NumberOfTrees))]
         public Parameter<int> NumberOfTrees = CreateInt32Parameter(1, 1000, true);

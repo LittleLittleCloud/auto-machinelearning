@@ -97,7 +97,7 @@ namespace MLNet.AutoPipeline
         {
             var paramaters = this.GetType().GetFields(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic)
                      .Where(x => Attribute.GetCustomAttribute(x, typeof(ParameterAttribute)) != null)
-                     .Where(x => x.FieldType.IsSubclassOf(typeof(IParameter)) || x.FieldType == typeof(IParameter));
+                     .Where(x => x.GetValue(this) is IParameter);
 
             var paramatersDictionary = new Dictionary<string, IParameter>();
 

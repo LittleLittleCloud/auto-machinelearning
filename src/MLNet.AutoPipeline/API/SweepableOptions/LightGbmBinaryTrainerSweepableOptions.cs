@@ -23,7 +23,7 @@ namespace MLNet.AutoPipeline
         public Parameter<string> ExampleWeightColumnName = CreateFromSingleValue<string>(default);
 
         [Parameter(nameof(LightGbmBinaryTrainer.Options.NumberOfLeaves))]
-        public Parameter<int> NumberOfLeaves = CreateInt32Parameter(1, 1000, true);
+        public Parameter<int> NumberOfLeaves = CreateInt32Parameter(10, 1000, true);
 
         [Parameter(nameof(LightGbmBinaryTrainer.Options.MinimumExampleCountPerLeaf))]
         public Parameter<int> MinimumExampleCountPerLeaf = CreateInt32Parameter(1, 100, true);

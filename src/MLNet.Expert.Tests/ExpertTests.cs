@@ -47,7 +47,7 @@ namespace MLNet.Expert.Tests
         {
             var expert = this.GetClassificationExpert();
             expert.Propose("label", "feature").ToString()
-                  .Should().Contain("SingleNode(LbfgsMaximumEntropy)");
+                  .Should().Contain("SingleNode(LbfgsMaximumEntropyMulticlassTrainer)");
         }
 
         [Fact]
@@ -55,10 +55,10 @@ namespace MLNet.Expert.Tests
         {
             var expert = this.GetClassificationExpert();
             expert.Propose("label", "feature").ToString()
-                  .Should().Contain("SingleNode(LightGBM)");
+                  .Should().Contain("SingleNode(LightGbmMulticlassTrainer)");
         }
 
-        [Fact(Skip = "time consume")]
+        [Fact]
         public async void AutoMLTestAsync()
         {
             var context = new MLContext();

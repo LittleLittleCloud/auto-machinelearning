@@ -20,7 +20,7 @@ namespace MLNet.AutoPipeline
         public Parameter<string> ExampleWeightColumnName = CreateFromSingleValue<string>(default);
 
         [Parameter]
-        public Parameter<int> NumberOfLeaves = CreateInt32Parameter(1, 1000, true);
+        public Parameter<int> NumberOfLeaves = CreateInt32Parameter(10, 1000, true);
 
         [Parameter]
         public Parameter<int> NumberOfTrees = CreateInt32Parameter(1, 1000, true);
