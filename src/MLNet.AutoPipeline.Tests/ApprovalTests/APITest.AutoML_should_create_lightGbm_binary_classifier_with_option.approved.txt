@@ -14,7 +14,7 @@
     },
     {
       "Name": "NumberOfLeaves",
-      "ValueText": "32"
+      "ValueText": "100"
     },
     {
       "Name": "MinimumExampleCountPerLeaf",
