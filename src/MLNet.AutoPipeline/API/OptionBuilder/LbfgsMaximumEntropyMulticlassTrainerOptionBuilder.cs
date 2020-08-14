@@ -12,7 +12,7 @@ namespace MLNet.AutoPipeline
     /// <summary>
     /// Sweepable option for <see cref="LbfgsMaximumEntropyMulticlassTrainer"/>.
     /// </summary>
-    public class LbfgsMaximumEntropyMulticlassTrainerOptionBuilder : OptionBuilder<LbfgsMaximumEntropyMulticlassTrainer.Options>
+    public class LbfgsMaximumEntropyMulticlassTrainerOptionBuilder : SweepableOption<LbfgsMaximumEntropyMulticlassTrainer.Options>
     {
         /// <summary>
         /// The L2 regularization hyperparameter.

@@ -41,7 +41,7 @@ namespace MLNet.AutoPipeline
         /// <param name="trainerName">trainer name.</param>
         /// <returns><see cref="SweepableNode{TNewTrain, TOption}"/>.</returns>
         public SweepableNode<TTrain, TOption>
-            SweepableTrainer<TTrain, TOption>(Func<MLContext, TOption, TTrain> trainerFactory, OptionBuilder<TOption> optionBuilder, string[] inputs = null, string output = null, string trainerName = null)
+            SweepableTrainer<TTrain, TOption>(Func<MLContext, TOption, TTrain> trainerFactory, SweepableOption<TOption> optionBuilder, string[] inputs = null, string output = null, string trainerName = null)
             where TTrain : IEstimator<ITransformer>
             where TOption : class
         {

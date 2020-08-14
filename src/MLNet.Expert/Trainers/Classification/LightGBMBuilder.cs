@@ -52,7 +52,7 @@ namespace MLNet.Expert.Trainers.Classification
         /// <summary>
         /// Sweepable option for <see cref="LightGBMBuilder"/>.
         /// </summary>
-        public class Option : OptionBuilder<Option>
+        public class Option : SweepableOption<Option>
         {
             [SweepableParameter(0.001f, 0.1f, true, 20)]
             public float LearningRate;

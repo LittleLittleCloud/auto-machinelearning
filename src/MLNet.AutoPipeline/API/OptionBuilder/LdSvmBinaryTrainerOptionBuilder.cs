@@ -9,7 +9,7 @@ using System.Text;
 
 namespace MLNet.AutoPipeline
 {
-    public class LdSvmBinaryTrainerOptionBuilder : OptionBuilder<LdSvmTrainer.Options>
+    public class LdSvmBinaryTrainerOptionBuilder : SweepableOption<LdSvmTrainer.Options>
     {
         /// <summary>
         /// The number of boosting iterations. A new tree is created in each iteration, so this is equivalent to the number of trees.

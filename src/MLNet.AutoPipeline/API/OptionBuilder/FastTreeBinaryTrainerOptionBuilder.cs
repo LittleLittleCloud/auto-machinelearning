@@ -6,7 +6,7 @@ using Microsoft.ML.Trainers.FastTree;
 
 namespace MLNet.AutoPipeline
 {
-    public class FastTreeBinaryTrainerOptionBuilder : OptionBuilder<FastTreeBinaryTrainer.Options>
+    public class FastTreeBinaryTrainerOptionBuilder : SweepableOption<FastTreeBinaryTrainer.Options>
     {
         public static FastTreeBinaryTrainerOptionBuilder Default = new FastTreeBinaryTrainerOptionBuilder();
 

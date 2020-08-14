@@ -12,7 +12,7 @@ namespace MLNet.AutoPipeline
     /// <summary>
     /// Sweepable option for <see cref="SdcaMaximumEntropyMulticlassTrainer"/>.
     /// </summary>
-    public sealed class SdcaMaximumEntropyMulticlassTrainerOptionBuilder : OptionBuilder<SdcaMaximumEntropyMulticlassTrainer.Options>
+    public sealed class SdcaMaximumEntropyMulticlassTrainerOptionBuilder : SweepableOption<SdcaMaximumEntropyMulticlassTrainer.Options>
     {
         internal static SdcaMaximumEntropyMulticlassTrainerOptionBuilder Default = new SdcaMaximumEntropyMulticlassTrainerOptionBuilder();
 

@@ -6,7 +6,7 @@ using Microsoft.ML.Trainers;
 
 namespace MLNet.AutoPipeline
 {
-    public class LbfgsLogisticRegressionBinaryTrainerOptionBuilder : OptionBuilder<LbfgsLogisticRegressionBinaryTrainer.Options>
+    public class LbfgsLogisticRegressionBinaryTrainerOptionBuilder : SweepableOption<LbfgsLogisticRegressionBinaryTrainer.Options>
     {
         public static LbfgsLogisticRegressionBinaryTrainerOptionBuilder Default = new LbfgsLogisticRegressionBinaryTrainerOptionBuilder();
 

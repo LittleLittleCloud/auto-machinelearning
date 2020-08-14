@@ -47,7 +47,7 @@ namespace MLNet.AutoPipeline
         /// <param name="defaultOption">predefined option. if null, default option will be used.</param>
         /// <returns><see cref="SweepableNode{TNewTrain, TOption}"/>.</returns>
         public static SweepableNode<SdcaMaximumEntropyMulticlassTrainer, SdcaMaximumEntropyMulticlassTrainer.Options>
-            SdcaMaximumEntropy(this SweepableMultiClassificationTrainers trainer, string labelColumnName = "Label", string featureColumnName = "Features", OptionBuilder<SdcaMaximumEntropyMulticlassTrainer.Options> optionBuilder = null, SdcaMaximumEntropyMulticlassTrainer.Options defaultOption = null)
+            SdcaMaximumEntropy(this SweepableMultiClassificationTrainers trainer, string labelColumnName = "Label", string featureColumnName = "Features", SweepableOption<SdcaMaximumEntropyMulticlassTrainer.Options> optionBuilder = null, SdcaMaximumEntropyMulticlassTrainer.Options defaultOption = null)
         {
             var context = trainer.Context;
             if (optionBuilder == null)
@@ -83,7 +83,7 @@ namespace MLNet.AutoPipeline
         /// <param name="defaultOption">predefined option. if null, default option will be used.</param>
         /// <returns><see cref="SweepableNode{TNewTrain, TOption}"/>.</returns>
         public static SweepableNode<SdcaNonCalibratedMulticlassTrainer, SdcaNonCalibratedMulticlassTrainer.Options>
-                SdcaNonCalibreated(this SweepableMultiClassificationTrainers trainer, string labelColumnName = "Label", string featureColumnName = "Features", OptionBuilder<SdcaNonCalibratedMulticlassTrainer.Options> optionBuilder = null, SdcaNonCalibratedMulticlassTrainer.Options defaultOption = null)
+                SdcaNonCalibreated(this SweepableMultiClassificationTrainers trainer, string labelColumnName = "Label", string featureColumnName = "Features", SweepableOption<SdcaNonCalibratedMulticlassTrainer.Options> optionBuilder = null, SdcaNonCalibratedMulticlassTrainer.Options defaultOption = null)
         {
             var context = trainer.Context;
             if (optionBuilder == null)
@@ -119,7 +119,7 @@ namespace MLNet.AutoPipeline
         /// <param name="defaultOption">predefined option. if null, default option will be used.</param>
         /// <returns><see cref="SweepableNode{TNewTrain, TOption}"/>.</returns>
         public static SweepableNode<LbfgsMaximumEntropyMulticlassTrainer, LbfgsMaximumEntropyMulticlassTrainer.Options>
-                LbfgsMaximumEntropy(this SweepableMultiClassificationTrainers trainer, string labelColumnName = "Label", string featureColumnName = "Features", OptionBuilder<LbfgsMaximumEntropyMulticlassTrainer.Options> optionBuilder = null, LbfgsMaximumEntropyMulticlassTrainer.Options defaultOption = null)
+                LbfgsMaximumEntropy(this SweepableMultiClassificationTrainers trainer, string labelColumnName = "Label", string featureColumnName = "Features", SweepableOption<LbfgsMaximumEntropyMulticlassTrainer.Options> optionBuilder = null, LbfgsMaximumEntropyMulticlassTrainer.Options defaultOption = null)
         {
             var context = trainer.Context;
             if (optionBuilder == null)
@@ -155,7 +155,7 @@ namespace MLNet.AutoPipeline
         /// <param name="defaultOption">predefined option. if null, default option will be used.</param>
         /// <returns><see cref="SweepableNode{TNewTrain, TOption}"/>.</returns>
         public static SweepableNode<LightGbmMulticlassTrainer, LightGbmMulticlassTrainer.Options>
-            LightGbm(this SweepableMultiClassificationTrainers trainer, string labelColumnName = "Label", string featureColumnName = "Features", OptionBuilder<LightGbmMulticlassTrainer.Options> optionBuilder = null, LightGbmMulticlassTrainer.Options defaultOption = null)
+            LightGbm(this SweepableMultiClassificationTrainers trainer, string labelColumnName = "Label", string featureColumnName = "Features", SweepableOption<LightGbmMulticlassTrainer.Options> optionBuilder = null, LightGbmMulticlassTrainer.Options defaultOption = null)
         {
             var context = trainer.Context;
             if (optionBuilder == null)

@@ -53,7 +53,7 @@ namespace MLNet.Expert.Trainers.Classification
         /// <summary>
         /// Sweepable option for <see cref="GamOvaBuilder"/>.
         /// </summary>
-        public class Option : OptionBuilder<Option>
+        public class Option : SweepableOption<Option>
         {
             [SweepableParameter(1e-4f, 1, true, 20)]
             public float LearningRate;

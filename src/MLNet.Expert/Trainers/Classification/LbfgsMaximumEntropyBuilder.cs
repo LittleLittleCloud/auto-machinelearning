@@ -53,7 +53,7 @@ namespace MLNet.Expert.Trainers.Classification
         /// <summary>
         /// Sweepable option for <see cref="LbfgsMaximumEntropyBuilder"/>.
         /// </summary>
-        public class Option : OptionBuilder<Option>
+        public class Option : SweepableOption<Option>
         {
             /// <summary>
             /// The L1 regularization hyperparameter. Higher values will tend to lead to more sparse model.

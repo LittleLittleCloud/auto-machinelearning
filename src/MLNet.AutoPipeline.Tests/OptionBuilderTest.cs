@@ -131,7 +131,7 @@ namespace MLNet.AutoPipeline.Test
             public string StringOption = string.Empty;
         }
 
-        private class TestOptionBuilderWithParameterAttributeOnly : OptionBuilder<TestOption>
+        private class TestOptionBuilderWithParameterAttributeOnly : SweepableOption<TestOption>
         {
             [Parameter]
             public Parameter<long> LongOption = ParameterBuilder.CreateFromSingleValue(100L);
@@ -140,7 +140,7 @@ namespace MLNet.AutoPipeline.Test
             public Parameter<float> Float_Option = ParameterBuilder.CreateFromSingleValue(100f);
         }
 
-        private class TestOptionBuilderWithSweepableAttributeOnly : OptionBuilder<TestOption>
+        private class TestOptionBuilderWithSweepableAttributeOnly : SweepableOption<TestOption>
         {
             [Parameter]
             public Parameter<long> LongOption = ParameterBuilder.CreateLongParameter(0, 100);

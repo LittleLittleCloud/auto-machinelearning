@@ -51,7 +51,7 @@ namespace MLNet.Expert.Trainers.Classification
         /// <summary>
         /// Sweepable option for <see cref="SdcaMaximumEntropyBuilder"/>.
         /// </summary>
-        public class Option : OptionBuilder<Option>
+        public class Option : SweepableOption<Option>
         {
             [SweepableParameter(1E-4F, 10f, true, 20)]
             public float L2Regularization;

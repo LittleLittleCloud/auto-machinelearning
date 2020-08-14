@@ -12,7 +12,7 @@ using MLNet.Sweeper;
 namespace MLNet.AutoPipeline
 {
     /// <summary>
-    /// Create a parameter that can be used in <see cref="OptionBuilder{TOption}"/>.
+    /// Create a parameter that can be used in <see cref="SweepableOption{TOption}"/>.
     /// </summary>
     /// <typeparam name="T">type of Parameter.</typeparam>
     public class Parameter<T> : Parameter

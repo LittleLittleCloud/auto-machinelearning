@@ -9,7 +9,7 @@ using System.Text;
 
 namespace MLNet.AutoPipeline
 {
-    public class AveragedPerceptronBinaryTrainerOptionBuilder : OptionBuilder<AveragedPerceptronTrainer.Options>
+    public class AveragedPerceptronBinaryTrainerOptionBuilder : SweepableOption<AveragedPerceptronTrainer.Options>
     {
         public static AveragedPerceptronBinaryTrainerOptionBuilder Default = new AveragedPerceptronBinaryTrainerOptionBuilder();
 

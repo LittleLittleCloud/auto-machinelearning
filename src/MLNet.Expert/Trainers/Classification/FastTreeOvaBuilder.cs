@@ -53,7 +53,7 @@ namespace MLNet.Expert.Trainers.Classification
         /// <summary>
         /// Sweepable option for <see cref="FastTreeOvaBuilder"/>.
         /// </summary>
-        public class Option : OptionBuilder<Option>
+        public class Option : SweepableOption<Option>
         {
             [SweepableParameter(2, 256, true, 8)]
             public int NumberOfLeaves;

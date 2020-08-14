@@ -18,7 +18,7 @@ namespace MLNet.AutoPipeline
     {
         private readonly TransformerScope _scope;
 
-        public SweepableNode(Func<TOption, TTrain> estimatorFactory, OptionBuilder<TOption> optionBuilder, TransformerScope scope = TransformerScope.Everything, string estimatorName = null, string[] inputs = null, string[] outputs = null)
+        public SweepableNode(Func<TOption, TTrain> estimatorFactory, SweepableOption<TOption> optionBuilder, TransformerScope scope = TransformerScope.Everything, string estimatorName = null, string[] inputs = null, string[] outputs = null)
         {
             this.EstimatorFactory = estimatorFactory;
             this.OptionBuilder = optionBuilder;
@@ -40,7 +40,7 @@ namespace MLNet.AutoPipeline
 
         public Func<TOption, TTrain> EstimatorFactory { get; private set; }
 
-        public OptionBuilder<TOption> OptionBuilder { get; private set; }
+        public SweepableOption<TOption> OptionBuilder { get; private set; }
 
         public string EstimatorName { get; private set; }
 

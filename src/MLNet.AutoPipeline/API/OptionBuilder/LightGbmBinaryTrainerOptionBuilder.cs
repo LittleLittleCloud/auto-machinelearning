@@ -9,7 +9,7 @@ using System.Text;
 
 namespace MLNet.AutoPipeline
 {
-    public class LightGbmBinaryTrainerOptionBuilder : OptionBuilder<LightGbmBinaryTrainer.Options>
+    public class LightGbmBinaryTrainerOptionBuilder : SweepableOption<LightGbmBinaryTrainer.Options>
     {
         public static LightGbmBinaryTrainerOptionBuilder Default = new LightGbmBinaryTrainerOptionBuilder();
 

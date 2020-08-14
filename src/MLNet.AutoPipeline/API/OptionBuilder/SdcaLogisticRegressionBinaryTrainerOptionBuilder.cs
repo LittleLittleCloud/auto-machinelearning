@@ -9,7 +9,7 @@ using System.Text;
 
 namespace MLNet.AutoPipeline
 {
-    public class SdcaLogisticRegressionBinaryTrainerOptionBuilder : OptionBuilder<SdcaLogisticRegressionBinaryTrainer.Options>
+    public class SdcaLogisticRegressionBinaryTrainerOptionBuilder : SweepableOption<SdcaLogisticRegressionBinaryTrainer.Options>
     {
         public static SdcaLogisticRegressionBinaryTrainerOptionBuilder Default = new SdcaLogisticRegressionBinaryTrainerOptionBuilder();
 

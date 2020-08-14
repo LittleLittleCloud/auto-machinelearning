@@ -12,7 +12,7 @@ namespace MLNet.AutoPipeline
     /// <summary>
     /// Sweepable option for <see cref="SdcaNonCalibratedMulticlassTrainer"/>.
     /// </summary>
-    public sealed class SdcaNonCalibratedMulticlassTrainerOptionBuilder : OptionBuilder<SdcaNonCalibratedMulticlassTrainer.Options>
+    public sealed class SdcaNonCalibratedMulticlassTrainerOptionBuilder : SweepableOption<SdcaNonCalibratedMulticlassTrainer.Options>
     {
         /// <summary>
         /// The L2 regularization hyperparameter.

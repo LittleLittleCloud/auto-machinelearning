@@ -12,7 +12,7 @@ namespace MLNet.AutoPipeline
     /// <summary>
     /// Sweepable option for <see cref="LightGbmMulticlassTrainer"/>.
     /// </summary>
-    public class LightGbmMulticlassTrainerOptionBuilder : OptionBuilder<LightGbmMulticlassTrainer.Options>
+    public class LightGbmMulticlassTrainerOptionBuilder : SweepableOption<LightGbmMulticlassTrainer.Options>
     {
         /// <summary>
         /// Learning rate.

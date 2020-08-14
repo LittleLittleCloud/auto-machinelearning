@@ -333,7 +333,7 @@ namespace MLNet.AutoPipeline.Test
         }
     }
 
-    public class CustomSdcaMaximumEntropyOptionBuilder : OptionBuilder<SdcaMaximumEntropyMulticlassTrainer.Options>
+    public class CustomSdcaMaximumEntropyOptionBuilder : SweepableOption<SdcaMaximumEntropyMulticlassTrainer.Options>
     {
         [Parameter]
         public Parameter<float> L2Regularization = ParameterBuilder.CreateFloatParameter(1E-4F, 20f, true, 20);

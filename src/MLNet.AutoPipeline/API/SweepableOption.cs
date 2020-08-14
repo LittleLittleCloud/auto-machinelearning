@@ -1,4 +1,4 @@
-﻿// <copyright file="OptionBuilder.cs" company="BigMiao">
+﻿// <copyright file="SweepableOption.cs" company="BigMiao">
 // Copyright (c) BigMiao. All rights reserved.
 // </copyright>
 
@@ -6,14 +6,12 @@ using System;
 using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
-using System.Reflection;
-using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using MLNet.Sweeper;
 
 namespace MLNet.AutoPipeline
 {
-    public abstract class OptionBuilder<TOption>
+    public abstract class SweepableOption<TOption>
         where TOption : class
     {
         private readonly HashSet<string> _ids = new HashSet<string>();
@@ -22,11 +20,11 @@ namespace MLNet.AutoPipeline
 
         public IValueGenerator[] ValueGenerators { get => this.GetValueGenerators(); }
 
-        public OptionBuilder()
+        public SweepableOption()
         {
         }
 
-        public OptionBuilder(TOption option)
+        public SweepableOption(TOption option)
             : this()
         {
             this.defaultOption = option;

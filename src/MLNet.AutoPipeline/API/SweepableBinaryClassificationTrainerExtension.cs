@@ -17,7 +17,7 @@ namespace MLNet.AutoPipeline
                 this SweepableBinaryClassificationTrainers trainer,
                 string labelColumnName = "Label",
                 string featureColumnName = "Features",
-                OptionBuilder<LinearSvmTrainer.Options> optionBuilder = null,
+                SweepableOption<LinearSvmTrainer.Options> optionBuilder = null,
                 LinearSvmTrainer.Options defaultOption = null)
         {
             var context = trainer.Context;
@@ -46,7 +46,7 @@ namespace MLNet.AutoPipeline
                 this SweepableBinaryClassificationTrainers trainer,
                 string labelColumnName = "Label",
                 string featureColumnName = "Features",
-                OptionBuilder<LdSvmTrainer.Options> optionBuilder = null,
+                SweepableOption<LdSvmTrainer.Options> optionBuilder = null,
                 LdSvmTrainer.Options defaultOption = null)
         {
             var context = trainer.Context;
@@ -76,7 +76,7 @@ namespace MLNet.AutoPipeline
                 this SweepableBinaryClassificationTrainers trainer,
                 string labelColumnName = "Label",
                 string featureColumnName = "Features",
-                OptionBuilder<FastForestBinaryTrainer.Options> optionBuilder = null,
+                SweepableOption<FastForestBinaryTrainer.Options> optionBuilder = null,
                 FastForestBinaryTrainer.Options defaultOption = null)
         {
             var context = trainer.Context;
@@ -105,7 +105,7 @@ namespace MLNet.AutoPipeline
                 this SweepableBinaryClassificationTrainers trainer,
                 string labelColumnName = "Label",
                 string featureColumnName = "Features",
-                OptionBuilder<FastTreeBinaryTrainer.Options> optionBuilder = null,
+                SweepableOption<FastTreeBinaryTrainer.Options> optionBuilder = null,
                 FastTreeBinaryTrainer.Options defaultOption = null)
         {
             var context = trainer.Context;
@@ -134,7 +134,7 @@ namespace MLNet.AutoPipeline
                 this SweepableBinaryClassificationTrainers trainer,
                 string labelColumnName = "Label",
                 string featureColumnName = "Features",
-                OptionBuilder<LightGbmBinaryTrainer.Options> optionBuilder = null,
+                SweepableOption<LightGbmBinaryTrainer.Options> optionBuilder = null,
                 LightGbmBinaryTrainer.Options defaultOption = null)
         {
             var context = trainer.Context;
@@ -163,7 +163,7 @@ namespace MLNet.AutoPipeline
                 this SweepableBinaryClassificationTrainers trainer,
                 string labelColumnName = "Label",
                 string featureColumnName = "Features",
-                OptionBuilder<GamBinaryTrainer.Options> optionBuilder = null,
+                SweepableOption<GamBinaryTrainer.Options> optionBuilder = null,
                 GamBinaryTrainer.Options defaultOption = null)
         {
             var context = trainer.Context;
@@ -192,7 +192,7 @@ namespace MLNet.AutoPipeline
                 this SweepableBinaryClassificationTrainers trainer,
                 string labelColumnName = "Label",
                 string featureColumnName = "Features",
-                OptionBuilder<SgdNonCalibratedTrainer.Options> optionBuilder = null,
+                SweepableOption<SgdNonCalibratedTrainer.Options> optionBuilder = null,
                 SgdNonCalibratedTrainer.Options defaultOption = null)
         {
             var context = trainer.Context;
@@ -221,7 +221,7 @@ namespace MLNet.AutoPipeline
                 this SweepableBinaryClassificationTrainers trainer,
                 string labelColumnName = "Label",
                 string featureColumnName = "Features",
-                OptionBuilder<SgdCalibratedTrainer.Options> optionBuilder = null,
+                SweepableOption<SgdCalibratedTrainer.Options> optionBuilder = null,
                 SgdCalibratedTrainer.Options defaultOption = null)
         {
             var context = trainer.Context;
@@ -250,7 +250,7 @@ namespace MLNet.AutoPipeline
                 this SweepableBinaryClassificationTrainers trainer,
                 string labelColumnName = "Label",
                 string featureColumnName = "Features",
-                OptionBuilder<SdcaNonCalibratedBinaryTrainer.Options> optionBuilder = null,
+                SweepableOption<SdcaNonCalibratedBinaryTrainer.Options> optionBuilder = null,
                 SdcaNonCalibratedBinaryTrainer.Options defaultOption = null)
         {
             var context = trainer.Context;
@@ -279,7 +279,7 @@ namespace MLNet.AutoPipeline
                 this SweepableBinaryClassificationTrainers trainer,
                 string labelColumnName = "Label",
                 string featureColumnName = "Features",
-                OptionBuilder<SdcaLogisticRegressionBinaryTrainer.Options> optionBuilder = null,
+                SweepableOption<SdcaLogisticRegressionBinaryTrainer.Options> optionBuilder = null,
                 SdcaLogisticRegressionBinaryTrainer.Options defaultOption = null)
         {
             var context = trainer.Context;
@@ -308,7 +308,7 @@ namespace MLNet.AutoPipeline
                 this SweepableBinaryClassificationTrainers trainer,
                 string labelColumnName = "Label",
                 string featureColumnName = "Features",
-                OptionBuilder<LbfgsLogisticRegressionBinaryTrainer.Options> optionBuilder = null,
+                SweepableOption<LbfgsLogisticRegressionBinaryTrainer.Options> optionBuilder = null,
                 LbfgsLogisticRegressionBinaryTrainer.Options defaultOption = null)
         {
             var context = trainer.Context;
@@ -337,7 +337,7 @@ namespace MLNet.AutoPipeline
                 this SweepableBinaryClassificationTrainers trainer,
                 string labelColumnName = "Label",
                 string featureColumnName = "Features",
-                OptionBuilder<AveragedPerceptronTrainer.Options> optionBuilder = null,
+                SweepableOption<AveragedPerceptronTrainer.Options> optionBuilder = null,
                 AveragedPerceptronTrainer.Options defaultOption = null)
         {
             var context = trainer.Context;

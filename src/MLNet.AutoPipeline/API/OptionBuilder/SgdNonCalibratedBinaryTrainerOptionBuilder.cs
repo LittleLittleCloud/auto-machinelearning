@@ -9,7 +9,7 @@ using System.Text;
 
 namespace MLNet.AutoPipeline
 {
-    public class SgdNonCalibratedBinaryTrainerOptionBuilder : OptionBuilder<SgdNonCalibratedTrainer.Options>
+    public class SgdNonCalibratedBinaryTrainerOptionBuilder : SweepableOption<SgdNonCalibratedTrainer.Options>
     {
         public static SgdNonCalibratedBinaryTrainerOptionBuilder Default = new SgdNonCalibratedBinaryTrainerOptionBuilder();
 
