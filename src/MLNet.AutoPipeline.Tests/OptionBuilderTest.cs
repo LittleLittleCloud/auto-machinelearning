@@ -131,25 +131,25 @@ namespace MLNet.AutoPipeline.Test
             public string StringOption = string.Empty;
         }
 
-        private class TestOptionBuilderWithParameterAttributeOnly : OptionBuilder<TestOption>
+        private class TestOptionBuilderWithParameterAttributeOnly : SweepableOption<TestOption>
         {
             [Parameter]
-            public Parameter<long> LongOption = ParameterBuilder.CreateFromSingleValue(100L);
+            public Parameter<long> LongOption = ParameterFactory.CreateFromSingleValue(100L);
 
             [Parameter(nameof(TestOption.FloatOption))]
-            public Parameter<float> Float_Option = ParameterBuilder.CreateFromSingleValue(100f);
+            public Parameter<float> Float_Option = ParameterFactory.CreateFromSingleValue(100f);
         }
 
-        private class TestOptionBuilderWithSweepableAttributeOnly : OptionBuilder<TestOption>
+        private class TestOptionBuilderWithSweepableAttributeOnly : SweepableOption<TestOption>
         {
             [Parameter]
-            public Parameter<long> LongOption = ParameterBuilder.CreateLongParameter(0, 100);
+            public Parameter<long> LongOption = ParameterFactory.CreateLongParameter(0, 100);
 
             [Parameter(nameof(TestOption.FloatOption))]
-            public Parameter<float> Float_Option = ParameterBuilder.CreateFloatParameter(0f, 100f);
+            public Parameter<float> Float_Option = ParameterFactory.CreateFloatParameter(0f, 100f);
 
             [Parameter]
-            public Parameter<string> StringOption = ParameterBuilder.CreateDiscreteParameter(new string[] { "str1", "str2", "str3", "str4" });
+            public Parameter<string> StringOption = ParameterFactory.CreateDiscreteParameter("str1", "str2", "str3", "str4");
         }
     }
 }

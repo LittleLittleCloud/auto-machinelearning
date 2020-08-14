@@ -19,16 +19,9 @@ namespace MLNet.Expert.Trainers.Classification
     public class NaiveBayesBuilder : ICanCreateTrainer
     {
         private static NaiveBayesBuilder instance = new NaiveBayesBuilder();
-        private Option _option;
 
-        public NaiveBayesBuilder(Option option)
+        public NaiveBayesBuilder()
         {
-            this._option = option;
-        }
-
-        internal NaiveBayesBuilder()
-        {
-            this._option = new Option();
         }
 
         internal static NaiveBayesBuilder Instance
@@ -38,11 +31,8 @@ namespace MLNet.Expert.Trainers.Classification
 
         public EstimatorSingleNode CreateTrainer(MLContext context, string label, string feature)
         {
-            var instance = context.MulticlassClassification.Trainers.NaiveBayes(label, feature);
-            var pipelineNode = new UnsweepableNode<NaiveBayesMulticlassTrainer>(instance);
+            var pipelineNode = context.AutoML().MultiClassification.NaiveBayes(label, feature);
             return Util.CreateEstimatorSingleNode(pipelineNode);
         }
-
-        public class Option { }
     }
 }

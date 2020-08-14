@@ -6,7 +6,6 @@ using Microsoft.ML;
 using Microsoft.ML.Data;
 using Microsoft.ML.Trainers;
 using Microsoft.ML.Trainers.LightGbm;
-using MLNet.AutoPipeline.API.OptionBuilder;
 using System;
 using System.Collections.Generic;
 using System.Reflection.Emit;
@@ -44,16 +43,16 @@ namespace MLNet.AutoPipeline
         /// <param name="trainer">The <see cref="SweepableMultiClassificationTrainerExtension"/>.</param>
         /// <param name="labelColumnName">label column name. Default is Label.</param>
         /// <param name="featureColumnName">feature column name, Default is Features.</param>
-        /// <param name="optionBuilder">option builder. if null, a default instance of <see cref="SdcaMaximumEntropyOptionBuilder"/> will be used.</param>
+        /// <param name="optionBuilder">option builder. if null, a default instance of <see cref="SdcaMaximumEntropyMulticlassTrainerSweepableOptions"/> will be used.</param>
         /// <param name="defaultOption">predefined option. if null, default option will be used.</param>
         /// <returns><see cref="SweepableNode{TNewTrain, TOption}"/>.</returns>
         public static SweepableNode<SdcaMaximumEntropyMulticlassTrainer, SdcaMaximumEntropyMulticlassTrainer.Options>
-            SdcaMaximumEntropy(this SweepableMultiClassificationTrainers trainer, string labelColumnName = "Label", string featureColumnName = "Features", OptionBuilder<SdcaMaximumEntropyMulticlassTrainer.Options> optionBuilder = null, SdcaMaximumEntropyMulticlassTrainer.Options defaultOption = null)
+            SdcaMaximumEntropy(this SweepableMultiClassificationTrainers trainer, string labelColumnName = "Label", string featureColumnName = "Features", SweepableOption<SdcaMaximumEntropyMulticlassTrainer.Options> optionBuilder = null, SdcaMaximumEntropyMulticlassTrainer.Options defaultOption = null)
         {
             var context = trainer.Context;
             if (optionBuilder == null)
             {
-                optionBuilder = SdcaMaximumEntropyOptionBuilder.Default;
+                optionBuilder = SdcaMaximumEntropyMulticlassTrainerSweepableOptions.Default;
             }
 
             return Util.CreateSweepableNode(
@@ -80,16 +79,16 @@ namespace MLNet.AutoPipeline
         /// <param name="trainer">The <see cref="SweepableMultiClassificationTrainerExtension"/>.</param>
         /// <param name="labelColumnName">label column name. Default is Label.</param>
         /// <param name="featureColumnName">feature column name, Default is Features.</param>
-        /// <param name="optionBuilder">option builder. if null, a default instance of <see cref="SdcaNonCalibratedOptionBuilder"/> will be used.</param>
+        /// <param name="optionBuilder">option builder. if null, a default instance of <see cref="SdcaNonCalibratedMulticlassTrainerSweepableOptions"/> will be used.</param>
         /// <param name="defaultOption">predefined option. if null, default option will be used.</param>
         /// <returns><see cref="SweepableNode{TNewTrain, TOption}"/>.</returns>
         public static SweepableNode<SdcaNonCalibratedMulticlassTrainer, SdcaNonCalibratedMulticlassTrainer.Options>
-                SdcaNonCalibreated(this SweepableMultiClassificationTrainers trainer, string labelColumnName = "Label", string featureColumnName = "Features", OptionBuilder<SdcaNonCalibratedMulticlassTrainer.Options> optionBuilder = null, SdcaNonCalibratedMulticlassTrainer.Options defaultOption = null)
+                SdcaNonCalibreated(this SweepableMultiClassificationTrainers trainer, string labelColumnName = "Label", string featureColumnName = "Features", SweepableOption<SdcaNonCalibratedMulticlassTrainer.Options> optionBuilder = null, SdcaNonCalibratedMulticlassTrainer.Options defaultOption = null)
         {
             var context = trainer.Context;
             if (optionBuilder == null)
             {
-                optionBuilder = SdcaNonCalibratedOptionBuilder.Default;
+                optionBuilder = SdcaNonCalibratedMulticlassTrainerSweepableOptions.Default;
             }
 
             return Util.CreateSweepableNode(
@@ -116,16 +115,16 @@ namespace MLNet.AutoPipeline
         /// <param name="trainer">The <see cref="SweepableMultiClassificationTrainerExtension"/>.</param>
         /// <param name="labelColumnName">label column name. Default is Label.</param>
         /// <param name="featureColumnName">feature column name, Default is Features.</param>
-        /// <param name="optionBuilder">option builder. if null, a default instance of <see cref="LbfgsMaximumEntropyOptionBuilder"/> will be used.</param>
+        /// <param name="optionBuilder">option builder. if null, a default instance of <see cref="LbfgsMaximumEntropyMulticlassTrainerSweepableOptions"/> will be used.</param>
         /// <param name="defaultOption">predefined option. if null, default option will be used.</param>
         /// <returns><see cref="SweepableNode{TNewTrain, TOption}"/>.</returns>
         public static SweepableNode<LbfgsMaximumEntropyMulticlassTrainer, LbfgsMaximumEntropyMulticlassTrainer.Options>
-                LbfgsMaximumEntropy(this SweepableMultiClassificationTrainers trainer, string labelColumnName = "Label", string featureColumnName = "Features", OptionBuilder<LbfgsMaximumEntropyMulticlassTrainer.Options> optionBuilder = null, LbfgsMaximumEntropyMulticlassTrainer.Options defaultOption = null)
+                LbfgsMaximumEntropy(this SweepableMultiClassificationTrainers trainer, string labelColumnName = "Label", string featureColumnName = "Features", SweepableOption<LbfgsMaximumEntropyMulticlassTrainer.Options> optionBuilder = null, LbfgsMaximumEntropyMulticlassTrainer.Options defaultOption = null)
         {
             var context = trainer.Context;
             if (optionBuilder == null)
             {
-                optionBuilder = LbfgsMaximumEntropyOptionBuilder.Default;
+                optionBuilder = LbfgsMaximumEntropyMulticlassTrainerSweepableOptions.Default;
             }
 
             return Util.CreateSweepableNode(
@@ -152,16 +151,16 @@ namespace MLNet.AutoPipeline
         /// <param name="trainer">The <see cref="SweepableMultiClassificationTrainerExtension"/>.</param>
         /// <param name="labelColumnName">label column name. Default is Label.</param>
         /// <param name="featureColumnName">feature column name, Default is Features.</param>
-        /// <param name="optionBuilder">option builder. if null, a default instance of <see cref="LightGbmOptionBuilder"/> will be used.</param>
+        /// <param name="optionBuilder">option builder. if null, a default instance of <see cref="LightGbmMulticlassTrainerSweepableOptions"/> will be used.</param>
         /// <param name="defaultOption">predefined option. if null, default option will be used.</param>
         /// <returns><see cref="SweepableNode{TNewTrain, TOption}"/>.</returns>
         public static SweepableNode<LightGbmMulticlassTrainer, LightGbmMulticlassTrainer.Options>
-            LightGbm(this SweepableMultiClassificationTrainers trainer, string labelColumnName = "Label", string featureColumnName = "Features", OptionBuilder<LightGbmMulticlassTrainer.Options> optionBuilder = null, LightGbmMulticlassTrainer.Options defaultOption = null)
+            LightGbm(this SweepableMultiClassificationTrainers trainer, string labelColumnName = "Label", string featureColumnName = "Features", SweepableOption<LightGbmMulticlassTrainer.Options> optionBuilder = null, LightGbmMulticlassTrainer.Options defaultOption = null)
         {
             var context = trainer.Context;
             if (optionBuilder == null)
             {
-                optionBuilder = LightGbmOptionBuilder.Default;
+                optionBuilder = LightGbmMulticlassTrainerSweepableOptions.Default;
             }
 
             return Util.CreateSweepableNode(

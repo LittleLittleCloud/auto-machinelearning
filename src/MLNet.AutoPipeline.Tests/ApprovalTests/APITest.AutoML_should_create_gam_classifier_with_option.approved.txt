@@ -1,0 +1,35 @@
+{
+  "parameters": [
+    {
+      "Name": "LabelColumnName",
+      "ValueText": "Label"
+    },
+    {
+      "Name": "FeatureColumnName",
+      "ValueText": "Features"
+    },
+    {
+      "Name": "ExampleWeightColumnName",
+      "ValueText": null
+    },
+    {
+      "Name": "NumberOfIterations",
+      "ValueText": "2236"
+    },
+    {
+      "Name": "MaximumBinCountPerFeature",
+      "ValueText": "100"
+    },
+    {
+      "Name": "LearningRate",
+      "ValueText": "0.010000000000000004"
+    }
+  ],
+  "name": "GamBinaryTrainer",
+  "input_column": [
+    "feature"
+  ],
+  "output_column": [
+    "PredictedLabel"
+  ]
+}

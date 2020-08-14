@@ -66,7 +66,7 @@ namespace MLNet.AutoPipeline
             return this;
         }
 
-        public EstimatorNodeGroup Append<TNewTran, TOption>(Func<TOption, TNewTran> estimatorBuilder, OptionBuilder<TOption> optionBuilder, TransformerScope scope = TransformerScope.Everything)
+        public EstimatorNodeGroup Append<TNewTran, TOption>(Func<TOption, TNewTran> estimatorBuilder, SweepableOption<TOption> optionBuilder, TransformerScope scope = TransformerScope.Everything)
             where TNewTran : IEstimator<ITransformer>
             where TOption : class
         {

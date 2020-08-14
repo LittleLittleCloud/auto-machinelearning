@@ -1,0 +1,40 @@
+{
+  "parameters": [
+    {
+      "Name": "LabelColumnName",
+      "ValueText": "Label"
+    },
+    {
+      "Name": "FeatureColumnName",
+      "ValueText": "Features"
+    },
+    {
+      "Name": "ExampleWeightColumnName",
+      "ValueText": null
+    },
+    {
+      "Name": "LossFunction",
+      "ValueText": "Microsoft.ML.Trainers.LogLoss",
+      "Value": {}
+    },
+    {
+      "Name": "NumberOfIterations",
+      "ValueText": "32"
+    },
+    {
+      "Name": "LearningRate",
+      "ValueText": "0.010000000000000004"
+    },
+    {
+      "Name": "L2Regularization",
+      "ValueText": "0.000100000005"
+    }
+  ],
+  "name": "SgdNonCalibratedTrainer",
+  "input_column": [
+    "feature"
+  ],
+  "output_column": [
+    "PredictedLabel"
+  ]
+}

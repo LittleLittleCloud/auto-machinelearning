@@ -19,19 +19,16 @@ namespace MLNet.Expert.Trainers.Classification
     /// </summary>
     public class FastTreeOvaBuilder : ICanCreateTrainer
     {
-        private Option _option;
         private MLContext _context;
         private static FastTreeOvaBuilder _instance = new FastTreeOvaBuilder();
 
-        public FastTreeOvaBuilder(MLContext context, Option option)
+        public FastTreeOvaBuilder(MLContext context)
         {
-            this._option = option;
             this._context = context;
         }
 
         internal FastTreeOvaBuilder()
         {
-            this._option = new Option();
         }
 
         internal static FastTreeOvaBuilder Instance
@@ -41,31 +38,8 @@ namespace MLNet.Expert.Trainers.Classification
 
         public EstimatorSingleNode CreateTrainer(MLContext context, string label, string feature)
         {
-            Func<Option, OneVersusAllTrainer> OVA = (option) =>
-            {
-                return context.MulticlassClassification.Trainers.OneVersusAll(context.BinaryClassification.Trainers.FastTree(label, feature, numberOfLeaves: option.NumberOfLeaves, numberOfTrees: option.NumberOfTrees, minimumExampleCountPerLeaf: option.MinimumExampleCountPerLeaf), label);
-            };
-
-            var ovaNode = Util.CreateSweepableNode(OVA, this._option, estimatorName: "FastTreeOva");
-            return Util.CreateEstimatorSingleNode(ovaNode);
-        }
-
-        /// <summary>
-        /// Sweepable option for <see cref="FastTreeOvaBuilder"/>.
-        /// </summary>
-        public class Option : OptionBuilder<Option>
-        {
-            [SweepableParameter(2, 256, true, 8)]
-            public int NumberOfLeaves;
-
-            [SweepableParameter(1, 256, true, 20)]
-            public int NumberOfTrees;
-
-            [SweepableParameter(1, 256, true, 20)]
-            public int MinimumExampleCountPerLeaf;
-
-            [SweepableParameter(1e-4f, 1, true, 20)]
-            public float LearningRate;
+            var trainer = context.AutoML().MultiClassification.OneVersusAll(context.AutoML().BinaryClassification.FastForest(label, feature), label);
+            return Util.CreateEstimatorSingleNode(trainer);
         }
     }
 }

@@ -18,19 +18,16 @@ namespace MLNet.Expert.Trainers.Classification
     /// </summary>
     public class LightGBMBuilder : ICanCreateTrainer
     {
-        private Option _option;
         private MLContext _context;
         private static LightGBMBuilder _instance = new LightGBMBuilder();
 
-        public LightGBMBuilder(MLContext context, Option option)
+        public LightGBMBuilder(MLContext context)
         {
-            this._option = option;
             this._context = context;
         }
 
         internal LightGBMBuilder()
         {
-            this._option = new Option();
         }
 
         internal static LightGBMBuilder Instance
@@ -40,31 +37,8 @@ namespace MLNet.Expert.Trainers.Classification
 
         public EstimatorSingleNode CreateTrainer(MLContext context, string label, string feature)
         {
-            Func<Option, LightGbmMulticlassTrainer> lightGBM = (option) =>
-            {
-                return context.MulticlassClassification.Trainers.LightGbm(label, feature, learningRate: option.LearningRate, numberOfLeaves: option.NumberOfLeaves, minimumExampleCountPerLeaf: option.MinimumExampleCountPerLeaf);
-            };
-
-            var node = Util.CreateSweepableNode(lightGBM, this._option, estimatorName: "LightGBM");
+            var node = context.AutoML().MultiClassification.LightGbm(label, feature);
             return Util.CreateEstimatorSingleNode(node);
-        }
-
-        /// <summary>
-        /// Sweepable option for <see cref="LightGBMBuilder"/>.
-        /// </summary>
-        public class Option : OptionBuilder<Option>
-        {
-            [SweepableParameter(0.001f, 0.1f, true, 20)]
-            public float LearningRate;
-
-            [SweepableParameter(10, 1000, true, 20)]
-            public int NumberOfLeaves;
-
-            [SweepableParameter(10, 1000, true, 20)]
-            public int NumberOfIterations;
-
-            [SweepableParameter(10, 1000, true, 20)]
-            public int MinimumExampleCountPerLeaf;
         }
     }
 }

@@ -17,7 +17,7 @@ namespace MLNet.AutoPipeline
     {
         private static Random rng = new Random();
 
-        public static SweepableNode<TNewTrain, TOption> CreateSweepableNode<TNewTrain, TOption>(Func<TOption, TNewTrain> estimatorFactory, OptionBuilder<TOption> optionBuilder, TransformerScope scope = TransformerScope.Everything, string estimatorName = null, string[] inputs = null, string[] outputs = null)
+        public static SweepableNode<TNewTrain, TOption> CreateSweepableNode<TNewTrain, TOption>(Func<TOption, TNewTrain> estimatorFactory, SweepableOption<TOption> optionBuilder, TransformerScope scope = TransformerScope.Everything, string estimatorName = null, string[] inputs = null, string[] outputs = null)
             where TNewTrain : IEstimator<ITransformer>
             where TOption : class
         {

@@ -107,7 +107,7 @@ namespace MLNet.AutoPipeline
             return new SweepablePipeline(this.ValueGenerators.Concat(chain.ValueGenerators).ToList(), this.Nodes.Concat(chain.Nodes).ToList(), this.Sweeper);
         }
 
-        public SweepablePipeline Append<TNewTrains, TOption>(Func<TOption, TNewTrains> estimatorBuilder, OptionBuilder<TOption> optionBuilder, TransformerScope scope = TransformerScope.Everything)
+        public SweepablePipeline Append<TNewTrains, TOption>(Func<TOption, TNewTrains> estimatorBuilder, SweepableOption<TOption> optionBuilder, TransformerScope scope = TransformerScope.Everything)
             where TNewTrains : IEstimator<ITransformer>
             where TOption : class
         {

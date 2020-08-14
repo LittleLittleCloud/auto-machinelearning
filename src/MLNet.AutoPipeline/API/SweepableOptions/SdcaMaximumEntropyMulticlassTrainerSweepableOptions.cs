@@ -1,4 +1,4 @@
-﻿// <copyright file="SdcaMaximumEntropyOptionBuilder.cs" company="BigMiao">
+﻿// <copyright file="SdcaMaximumEntropyMulticlassTrainerSweepableOptions.cs" company="BigMiao">
 // Copyright (c) BigMiao. All rights reserved.
 // </copyright>
 
@@ -7,14 +7,14 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace MLNet.AutoPipeline.API.OptionBuilder
+namespace MLNet.AutoPipeline
 {
     /// <summary>
     /// Sweepable option for <see cref="SdcaMaximumEntropyMulticlassTrainer"/>.
     /// </summary>
-    public sealed class SdcaMaximumEntropyOptionBuilder : OptionBuilder<SdcaMaximumEntropyMulticlassTrainer.Options>
+    public sealed class SdcaMaximumEntropyMulticlassTrainerSweepableOptions : SweepableOption<SdcaMaximumEntropyMulticlassTrainer.Options>
     {
-        internal static SdcaMaximumEntropyOptionBuilder Default = new SdcaMaximumEntropyOptionBuilder();
+        public static SdcaMaximumEntropyMulticlassTrainerSweepableOptions Default = new SdcaMaximumEntropyMulticlassTrainerSweepableOptions();
 
         /// <summary>
         /// The L2 regularization hyperparameter.
@@ -43,7 +43,7 @@ namespace MLNet.AutoPipeline.API.OptionBuilder
         /// </list>
         /// </summary>
         [Parameter]
-        public Parameter<float> L2Regularization = ParameterBuilder.CreateFloatParameter(1E-4F, 10f, true, 20);
+        public Parameter<float> L2Regularization = CreateFloatParameter(1E-4F, 10f, true, 20);
 
         /// <summary>
         /// The L1 regularization hyperparameter.
@@ -72,7 +72,7 @@ namespace MLNet.AutoPipeline.API.OptionBuilder
         /// </list>
         /// </summary>
         [Parameter]
-        public Parameter<float> L1Regularization = ParameterBuilder.CreateFloatParameter(1E-4F, 10f, true, 20);
+        public Parameter<float> L1Regularization = CreateFloatParameter(1E-4F, 10f, true, 20);
 
         /// <summary>
         /// Memory size for <see cref="SdcaMaximumEntropyMulticlassTrainer"/> Low=faster, less accurate.
@@ -101,24 +101,24 @@ namespace MLNet.AutoPipeline.API.OptionBuilder
         /// </list>
         /// </summary>
         [Parameter]
-        public Parameter<int> HistorySize = ParameterBuilder.CreateInt32Parameter(1, 1000, true, 20);
+        public Parameter<int> HistorySize = CreateInt32Parameter(1, 1000, true, 20);
 
         /// <summary>
         /// The name of the example weight column, default is null.
         /// </summary>
         [Parameter]
-        public Parameter<string> ExampleWeightColumnName = ParameterBuilder.CreateFromSingleValue<string>(default);
+        public Parameter<string> ExampleWeightColumnName = CreateFromSingleValue<string>(default);
 
         /// <summary>
         /// Threshold for optimizer convergence, default is 1E-7F.
         /// </summary>
         [Parameter]
-        public Parameter<float> OptimizationTolerance = ParameterBuilder.CreateFromSingleValue(1e-7f);
+        public Parameter<float> OptimizationTolerance = CreateFromSingleValue(1e-7f);
 
         /// <summary>
         /// Enforce non-negative weights, default is false.
         /// </summary>
         [Parameter]
-        public Parameter<bool> EnforceNonNegativity = ParameterBuilder.CreateFromSingleValue(false);
+        public Parameter<bool> EnforceNonNegativity = CreateFromSingleValue(false);
     }
 }

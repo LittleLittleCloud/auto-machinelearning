@@ -56,7 +56,7 @@ namespace MLNet.AutoPipeline
     {
         Func<TOption, TTrain> EstimatorFactory { get;  }
 
-        OptionBuilder<TOption> OptionBuilder { get; }
+        SweepableOption<TOption> OptionBuilder { get; }
     }
 
     [DataContract]
