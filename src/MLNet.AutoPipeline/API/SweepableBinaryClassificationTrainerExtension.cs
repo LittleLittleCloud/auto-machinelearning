@@ -23,7 +23,7 @@ namespace MLNet.AutoPipeline
             var context = trainer.Context;
             if (optionBuilder == null)
             {
-                optionBuilder = LinearSvmBinaryTrainerOptionBuilder.Default;
+                optionBuilder = LinearSvmBinaryTrainerSweepableOptions.Default;
             }
 
             optionBuilder.SetDefaultOption(defaultOption);
@@ -52,7 +52,7 @@ namespace MLNet.AutoPipeline
             var context = trainer.Context;
             if (optionBuilder == null)
             {
-                optionBuilder = LdSvmBinaryTrainerOptionBuilder.Default;
+                optionBuilder = LdSvmBinaryTrainerSweepableOptions.Default;
             }
 
             optionBuilder.SetDefaultOption(defaultOption);
@@ -82,7 +82,7 @@ namespace MLNet.AutoPipeline
             var context = trainer.Context;
             if (optionBuilder == null)
             {
-                optionBuilder = FastForestBinaryTrainerOptionBuilder.Default;
+                optionBuilder = FastForestBinaryTrainerSweepableOptions.Default;
             }
 
             optionBuilder.SetDefaultOption(defaultOption);
@@ -111,7 +111,7 @@ namespace MLNet.AutoPipeline
             var context = trainer.Context;
             if (optionBuilder == null)
             {
-                optionBuilder = FastTreeBinaryTrainerOptionBuilder.Default;
+                optionBuilder = FastTreeBinaryTrainerSweepableOptions.Default;
             }
 
             optionBuilder.SetDefaultOption(defaultOption);
@@ -140,7 +140,7 @@ namespace MLNet.AutoPipeline
             var context = trainer.Context;
             if (optionBuilder == null)
             {
-                optionBuilder = LightGbmBinaryTrainerOptionBuilder.Default;
+                optionBuilder = LightGbmBinaryTrainerSweepableOptions.Default;
             }
 
             optionBuilder.SetDefaultOption(defaultOption);
@@ -169,7 +169,7 @@ namespace MLNet.AutoPipeline
             var context = trainer.Context;
             if (optionBuilder == null)
             {
-                optionBuilder = GamBinaryTrainerOptionBuilder.Default;
+                optionBuilder = GamBinaryTrainerSweepableOptions.Default;
             }
 
             optionBuilder.SetDefaultOption(defaultOption);
@@ -198,7 +198,7 @@ namespace MLNet.AutoPipeline
             var context = trainer.Context;
             if (optionBuilder == null)
             {
-                optionBuilder = SgdNonCalibratedBinaryTrainerOptionBuilder.Default;
+                optionBuilder = SgdNonCalibratedBinaryTrainerSweepableOptions.Default;
             }
 
             optionBuilder.SetDefaultOption(defaultOption);
@@ -227,7 +227,7 @@ namespace MLNet.AutoPipeline
             var context = trainer.Context;
             if (optionBuilder == null)
             {
-                optionBuilder = SgdCalibratedBinaryTrainerOptionBuilder.Default;
+                optionBuilder = SgdCalibratedBinaryTrainerSweepableOptions.Default;
             }
 
             optionBuilder.SetDefaultOption(defaultOption);
@@ -256,7 +256,7 @@ namespace MLNet.AutoPipeline
             var context = trainer.Context;
             if (optionBuilder == null)
             {
-                optionBuilder = SdcaNonCalibratedBinaryTrainerOptionBuilder.Default;
+                optionBuilder = SdcaNonCalibratedBinaryTrainerSweepableOptions.Default;
             }
 
             optionBuilder.SetDefaultOption(defaultOption);
@@ -285,7 +285,7 @@ namespace MLNet.AutoPipeline
             var context = trainer.Context;
             if (optionBuilder == null)
             {
-                optionBuilder = SdcaLogisticRegressionBinaryTrainerOptionBuilder.Default;
+                optionBuilder = SdcaLogisticRegressionBinaryTrainerSweepableOptions.Default;
             }
 
             optionBuilder.SetDefaultOption(defaultOption);
@@ -314,7 +314,7 @@ namespace MLNet.AutoPipeline
             var context = trainer.Context;
             if (optionBuilder == null)
             {
-                optionBuilder = LbfgsLogisticRegressionBinaryTrainerOptionBuilder.Default;
+                optionBuilder = LbfgsLogisticRegressionBinaryTrainerSweepableOptions.Default;
             }
 
             optionBuilder.SetDefaultOption(defaultOption);
@@ -343,7 +343,7 @@ namespace MLNet.AutoPipeline
             var context = trainer.Context;
             if (optionBuilder == null)
             {
-                optionBuilder = AveragedPerceptronBinaryTrainerOptionBuilder.Default;
+                optionBuilder = AveragedPerceptronBinaryTrainerSweepableOptions.Default;
             }
 
             optionBuilder.SetDefaultOption(defaultOption);

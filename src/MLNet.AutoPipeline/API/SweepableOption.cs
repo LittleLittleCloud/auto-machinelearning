@@ -93,18 +93,18 @@ namespace MLNet.AutoPipeline
             return sb.ToString();
         }
 
-        private Dictionary<string, Parameter> GetSweepableParameterValue()
+        private Dictionary<string, IParameter> GetSweepableParameterValue()
         {
             var paramaters = this.GetType().GetFields(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic)
                      .Where(x => Attribute.GetCustomAttribute(x, typeof(ParameterAttribute)) != null)
-                     .Where(x => x.FieldType.IsSubclassOf(typeof(Parameter)) || x.FieldType == typeof(Parameter));
+                     .Where(x => x.FieldType.IsSubclassOf(typeof(IParameter)) || x.FieldType == typeof(IParameter));
 
-            var paramatersDictionary = new Dictionary<string, Parameter>();
+            var paramatersDictionary = new Dictionary<string, IParameter>();
 
             foreach (var param in paramaters)
             {
                 var paramaterAttribute = Attribute.GetCustomAttribute(param, typeof(ParameterAttribute)) as ParameterAttribute;
-                var paramValue = (Parameter)param.GetValue(this);
+                var paramValue = (IParameter)param.GetValue(this);
                 if (paramValue == null)
                 {
                     // TODO: add warning for wrong parameter type.
@@ -139,6 +139,74 @@ namespace MLNet.AutoPipeline
             }
 
             return valueGenerators;
+        }
+
+        /// <summary>
+        /// Create a sweepable parameter with type Int32.
+        /// </summary>
+        /// <param name="min">min value.</param>
+        /// <param name="max">max value.</param>
+        /// <param name="logBase">log base.</param>
+        /// <param name="steps">steps.</param>
+        /// <returns><see cref="IParameter"/>.</returns>
+        public static Parameter<int> CreateInt32Parameter(int min, int max, bool logBase = false, int steps = 100)
+        {
+            return ParameterFactory.CreateInt32Parameter(min, max, logBase, steps);
+        }
+
+        /// <summary>
+        /// Create a sweepable parameter with type Long.
+        /// </summary>
+        /// <param name="min">min value.</param>
+        /// <param name="max">max value.</param>
+        /// <param name="logBase">log base.</param>
+        /// <param name="steps">steps.</param>
+        /// <returns><see cref="IParameter"/>.</returns>
+        public static Parameter<long> CreateLongParameter(long min, long max, bool logBase = false, int steps = 100)
+        {
+            return ParameterFactory.CreateLongParameter(min, max, logBase, steps);
+        }
+
+        /// <summary>
+        /// Create a sweepable parameter with type Float.
+        /// </summary>
+        /// <param name="min">min value.</param>
+        /// <param name="max">max value.</param>
+        /// <param name="logBase">log base.</param>
+        /// <param name="steps">steps.</param>
+        /// <returns><see cref="IParameter"/>.</returns>
+        public static Parameter<float> CreateFloatParameter(float min, float max, bool logBase = false, int steps = 100)
+        {
+            return ParameterFactory.CreateFloatParameter(min, max, logBase, steps);
+        }
+
+        /// <summary>
+        /// Create a sweepable parameter with type Double.
+        /// </summary>
+        /// <param name="min">min value.</param>
+        /// <param name="max">max value.</param>
+        /// <param name="logBase">log base.</param>
+        /// <param name="steps">steps.</param>
+        /// <returns><see cref="IParameter"/>.</returns>
+        public static Parameter<double> CreateDoubleParameter(double min, double max, bool logBase = false, int steps = 100)
+        {
+            return ParameterFactory.CreateDoubleParameter(min, max, logBase, steps);
+        }
+
+        /// <summary>
+        /// Create a sweepable parameter with discrete values.
+        /// </summary>
+        /// <typeparam name="T">type of values.</typeparam>
+        /// <param name="objects">discrete values.</param>
+        /// <returns><see cref="Parameter{T}"/>.</returns>
+        public static Parameter<T> CreateDiscreteParameter<T>(params T[] objects)
+        {
+            return ParameterFactory.CreateDiscreteParameter<T>(objects);
+        }
+
+        public static Parameter<T> CreateFromSingleValue<T>(T value)
+        {
+            return ParameterFactory.CreateFromSingleValue<T>(value);
         }
     }
 }

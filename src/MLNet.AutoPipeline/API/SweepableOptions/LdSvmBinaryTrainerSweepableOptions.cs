@@ -1,4 +1,4 @@
-﻿// <copyright file="LinearSvmBinaryTrainerOptionBuilder.cs" company="BigMiao">
+﻿// <copyright file="LdSvmBinaryTrainerSweepableOptions.cs" company="BigMiao">
 // Copyright (c) BigMiao. All rights reserved.
 // </copyright>
 
@@ -9,8 +9,10 @@ using System.Text;
 
 namespace MLNet.AutoPipeline
 {
-    public class LinearSvmBinaryTrainerOptionBuilder : SweepableOption<LinearSvmTrainer.Options>
+    public class LdSvmBinaryTrainerSweepableOptions : SweepableOption<LdSvmTrainer.Options>
     {
+        public static LdSvmBinaryTrainerSweepableOptions Default = new LdSvmBinaryTrainerSweepableOptions();
+
         /// <summary>
         /// The number of boosting iterations. A new tree is created in each iteration, so this is equivalent to the number of trees.
         /// <para>Default sweeping configuration.</para>
@@ -38,14 +40,9 @@ namespace MLNet.AutoPipeline
         /// </list>
         /// </summary>
         [Parameter]
-        public Parameter<int> NumberOfIterations = ParameterBuilder.CreateInt32Parameter(10, 1000, true, 20);
+        public Parameter<int> NumberOfIterations = CreateInt32Parameter(10, 1000, true, 20);
 
-        /// <summary>
-        /// The name of the example weight column.
-        /// </summary>
         [Parameter]
-        public Parameter<string> ExampleWeightColumnName = ParameterBuilder.CreateFromSingleValue<string>(default);
-
-        internal static LinearSvmBinaryTrainerOptionBuilder Default = new LinearSvmBinaryTrainerOptionBuilder();
+        public Parameter<int> TreeDepth = CreateInt32Parameter(1, 100, true, 20);
     }
 }
