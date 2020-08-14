@@ -1,4 +1,4 @@
-﻿// <copyright file="LinearSvmOptionBuilder.cs" company="BigMiao">
+﻿// <copyright file="LinearSvmBinaryTrainerOptionBuilder.cs" company="BigMiao">
 // Copyright (c) BigMiao. All rights reserved.
 // </copyright>
 
@@ -9,7 +9,7 @@ using System.Text;
 
 namespace MLNet.AutoPipeline
 {
-    public class LinearSvmOptionBuilder : OptionBuilder<LinearSvmTrainer.Options>
+    public class LinearSvmBinaryTrainerOptionBuilder : OptionBuilder<LinearSvmTrainer.Options>
     {
         /// <summary>
         /// The number of boosting iterations. A new tree is created in each iteration, so this is equivalent to the number of trees.
@@ -46,6 +46,6 @@ namespace MLNet.AutoPipeline
         [Parameter]
         public Parameter<string> ExampleWeightColumnName = ParameterBuilder.CreateFromSingleValue<string>(default);
 
-        internal static LinearSvmOptionBuilder Default = new LinearSvmOptionBuilder();
+        internal static LinearSvmBinaryTrainerOptionBuilder Default = new LinearSvmBinaryTrainerOptionBuilder();
     }
 }

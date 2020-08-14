@@ -23,7 +23,7 @@ namespace MLNet.AutoPipeline
             var context = trainer.Context;
             if (optionBuilder == null)
             {
-                optionBuilder = LinearSvmOptionBuilder.Default;
+                optionBuilder = LinearSvmBinaryTrainerOptionBuilder.Default;
             }
 
             optionBuilder.SetDefaultOption(defaultOption);
@@ -52,7 +52,7 @@ namespace MLNet.AutoPipeline
             var context = trainer.Context;
             if (optionBuilder == null)
             {
-                optionBuilder = LdSvmOptionBuilder.Default;
+                optionBuilder = LdSvmBinaryTrainerOptionBuilder.Default;
             }
 
             optionBuilder.SetDefaultOption(defaultOption);
@@ -140,7 +140,7 @@ namespace MLNet.AutoPipeline
             var context = trainer.Context;
             if (optionBuilder == null)
             {
-                optionBuilder = LightGbmBinaryClassOptionBuilder.Default;
+                optionBuilder = LightGbmBinaryTrainerOptionBuilder.Default;
             }
 
             optionBuilder.SetDefaultOption(defaultOption);

@@ -1,4 +1,4 @@
-﻿// <copyright file="SdcaMaximumEntropyOptionBuilder.cs" company="BigMiao">
+﻿// <copyright file="LbfgsMaximumEntropyMulticlassTrainerOptionBuilder.cs" company="BigMiao">
 // Copyright (c) BigMiao. All rights reserved.
 // </copyright>
 
@@ -10,12 +10,10 @@ using System.Text;
 namespace MLNet.AutoPipeline
 {
     /// <summary>
-    /// Sweepable option for <see cref="SdcaMaximumEntropyMulticlassTrainer"/>.
+    /// Sweepable option for <see cref="LbfgsMaximumEntropyMulticlassTrainer"/>.
     /// </summary>
-    public sealed class SdcaMaximumEntropyOptionBuilder : OptionBuilder<SdcaMaximumEntropyMulticlassTrainer.Options>
+    public class LbfgsMaximumEntropyMulticlassTrainerOptionBuilder : OptionBuilder<LbfgsMaximumEntropyMulticlassTrainer.Options>
     {
-        internal static SdcaMaximumEntropyOptionBuilder Default = new SdcaMaximumEntropyOptionBuilder();
-
         /// <summary>
         /// The L2 regularization hyperparameter.
         /// <para>Default sweeping configuration.</para>
@@ -120,5 +118,7 @@ namespace MLNet.AutoPipeline
         /// </summary>
         [Parameter]
         public Parameter<bool> EnforceNonNegativity = ParameterBuilder.CreateFromSingleValue(false);
+
+        internal static LbfgsMaximumEntropyMulticlassTrainerOptionBuilder Default = new LbfgsMaximumEntropyMulticlassTrainerOptionBuilder();
     }
 }

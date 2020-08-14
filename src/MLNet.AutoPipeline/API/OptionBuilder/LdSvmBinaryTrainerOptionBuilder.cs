@@ -1,4 +1,4 @@
-﻿// <copyright file="Class1.cs" company="BigMiao">
+﻿// <copyright file="LdSvmBinaryTrainerOptionBuilder.cs" company="BigMiao">
 // Copyright (c) BigMiao. All rights reserved.
 // </copyright>
 
@@ -9,7 +9,7 @@ using System.Text;
 
 namespace MLNet.AutoPipeline
 {
-    public class LdSvmOptionBuilder : OptionBuilder<LdSvmTrainer.Options>
+    public class LdSvmBinaryTrainerOptionBuilder : OptionBuilder<LdSvmTrainer.Options>
     {
         /// <summary>
         /// The number of boosting iterations. A new tree is created in each iteration, so this is equivalent to the number of trees.
@@ -43,6 +43,6 @@ namespace MLNet.AutoPipeline
         [Parameter]
         public Parameter<int> TreeDepth = ParameterBuilder.CreateInt32Parameter(1, 100, true, 20);
 
-        internal static LdSvmOptionBuilder Default = new LdSvmOptionBuilder();
+        internal static LdSvmBinaryTrainerOptionBuilder Default = new LdSvmBinaryTrainerOptionBuilder();
     }
 }

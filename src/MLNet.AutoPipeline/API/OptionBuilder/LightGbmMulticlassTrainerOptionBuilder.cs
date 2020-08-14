@@ -1,8 +1,8 @@
-﻿// <copyright file="LbfgsMaximumEntropyOptionBuilder.cs" company="BigMiao">
+﻿// <copyright file="LightGbmMulticlassTrainerOptionBuilder.cs" company="BigMiao">
 // Copyright (c) BigMiao. All rights reserved.
 // </copyright>
 
-using Microsoft.ML.Trainers;
+using Microsoft.ML.Trainers.LightGbm;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -10,12 +10,12 @@ using System.Text;
 namespace MLNet.AutoPipeline
 {
     /// <summary>
-    /// Sweepable option for <see cref="LbfgsMaximumEntropyMulticlassTrainer"/>.
+    /// Sweepable option for <see cref="LightGbmMulticlassTrainer"/>.
     /// </summary>
-    public class LbfgsMaximumEntropyOptionBuilder : OptionBuilder<LbfgsMaximumEntropyMulticlassTrainer.Options>
+    public class LightGbmMulticlassTrainerOptionBuilder : OptionBuilder<LightGbmMulticlassTrainer.Options>
     {
         /// <summary>
-        /// The L2 regularization hyperparameter.
+        /// Learning rate.
         /// <para>Default sweeping configuration.</para>
         /// <list type="bullet">
         /// <item>
@@ -24,11 +24,11 @@ namespace MLNet.AutoPipeline
         /// </item>
         /// <item>
         /// <term>minimum value</term>
-        /// <description><c>1E-4F</c></description>
+        /// <description><c>1E-3F</c></description>
         /// </item>
         /// <item>
         /// <term>maximum value</term>
-        /// <description><c>10F</c></description>
+        /// <description><c>0.1F</c></description>
         /// </item>
         /// <item>
         /// <term>log base</term>
@@ -41,39 +41,10 @@ namespace MLNet.AutoPipeline
         /// </list>
         /// </summary>
         [Parameter]
-        public Parameter<float> L2Regularization = ParameterBuilder.CreateFloatParameter(1E-4F, 10f, true, 20);
+        public Parameter<double> LearningRate = ParameterBuilder.CreateDoubleParameter(0.001, 0.1, true, 20);
 
         /// <summary>
-        /// The L1 regularization hyperparameter.
-        /// <para>Default sweeping configuration.</para>
-        /// <list type="bullet">
-        /// <item>
-        /// <term>type</term>
-        /// <description><c>Float</c></description>
-        /// </item>
-        /// <item>
-        /// <term>minimum value</term>
-        /// <description><c>1E-4F</c></description>
-        /// </item>
-        /// <item>
-        /// <term>maximum value</term>
-        /// <description><c>10F</c></description>
-        /// </item>
-        /// <item>
-        /// <term>log base</term>
-        /// <description><c>true</c></description>
-        /// </item>
-        /// <item>
-        /// <term>step</term>
-        /// <description><c>20</c></description>
-        /// </item>
-        /// </list>
-        /// </summary>
-        [Parameter]
-        public Parameter<float> L1Regularization = ParameterBuilder.CreateFloatParameter(1E-4F, 10f, true, 20);
-
-        /// <summary>
-        /// Memory size for <see cref="SdcaMaximumEntropyMulticlassTrainer"/> Low=faster, less accurate.
+        /// The maximum number of leaves in one tree.
         /// <para>Default sweeping configuration.</para>
         /// <list type="bullet">
         /// <item>
@@ -82,7 +53,7 @@ namespace MLNet.AutoPipeline
         /// </item>
         /// <item>
         /// <term>minimum value</term>
-        /// <description><c>1</c></description>
+        /// <description><c>10</c></description>
         /// </item>
         /// <item>
         /// <term>maximum value</term>
@@ -99,26 +70,72 @@ namespace MLNet.AutoPipeline
         /// </list>
         /// </summary>
         [Parameter]
-        public Parameter<int> HistorySize = ParameterBuilder.CreateInt32Parameter(1, 1000, true, 20);
+        public Parameter<int> NumberOfLeaves = ParameterBuilder.CreateInt32Parameter(10, 1000, true, 20);
 
         /// <summary>
-        /// The name of the example weight column, default is null.
+        /// The number of boosting iterations. A new tree is created in each iteration, so this is equivalent to the number of trees.
+        /// <para>Default sweeping configuration.</para>
+        /// <list type="bullet">
+        /// <item>
+        /// <term>type</term>
+        /// <description><c>Int</c></description>
+        /// </item>
+        /// <item>
+        /// <term>minimum value</term>
+        /// <description><c>10</c></description>
+        /// </item>
+        /// <item>
+        /// <term>maximum value</term>
+        /// <description><c>1000</c></description>
+        /// </item>
+        /// <item>
+        /// <term>log base</term>
+        /// <description><c>true</c></description>
+        /// </item>
+        /// <item>
+        /// <term>step</term>
+        /// <description><c>20</c></description>
+        /// </item>
+        /// </list>
+        /// </summary>
+        [Parameter]
+        public Parameter<int> NumberOfIterations = ParameterBuilder.CreateInt32Parameter(10, 1000, true, 20);
+
+        /// <summary>
+        /// The minimal number of data points required to form a new tree leaf.
+        /// <para>Default sweeping configuration.</para>
+        /// <list type="bullet">
+        /// <item>
+        /// <term>type</term>
+        /// <description><c>Int</c></description>
+        /// </item>
+        /// <item>
+        /// <term>minimum value</term>
+        /// <description><c>10</c></description>
+        /// </item>
+        /// <item>
+        /// <term>maximum value</term>
+        /// <description><c>1000</c></description>
+        /// </item>
+        /// <item>
+        /// <term>log base</term>
+        /// <description><c>true</c></description>
+        /// </item>
+        /// <item>
+        /// <term>step</term>
+        /// <description><c>20</c></description>
+        /// </item>
+        /// </list>
+        /// </summary>
+        [Parameter]
+        public Parameter<int> MinimumExampleCountPerLeaf = ParameterBuilder.CreateInt32Parameter(10, 1000, true, 20);
+
+        /// <summary>
+        /// The name of the example weight column.
         /// </summary>
         [Parameter]
         public Parameter<string> ExampleWeightColumnName = ParameterBuilder.CreateFromSingleValue<string>(default);
 
-        /// <summary>
-        /// Threshold for optimizer convergence, default is 1E-7F.
-        /// </summary>
-        [Parameter]
-        public Parameter<float> OptimizationTolerance = ParameterBuilder.CreateFromSingleValue(1e-7f);
-
-        /// <summary>
-        /// Enforce non-negative weights, default is false.
-        /// </summary>
-        [Parameter]
-        public Parameter<bool> EnforceNonNegativity = ParameterBuilder.CreateFromSingleValue(false);
-
-        internal static LbfgsMaximumEntropyOptionBuilder Default = new LbfgsMaximumEntropyOptionBuilder();
+        internal static LightGbmMulticlassTrainerOptionBuilder Default = new LightGbmMulticlassTrainerOptionBuilder();
     }
 }

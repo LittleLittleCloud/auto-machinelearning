@@ -1,4 +1,4 @@
-﻿// <copyright file="SdcaMaximumEntropyOptionBuilder.cs" company="BigMiao">
+﻿// <copyright file="SdcaNonCalibratedMulticlassTrainerOptionBuilder.cs" company="BigMiao">
 // Copyright (c) BigMiao. All rights reserved.
 // </copyright>
 
@@ -12,7 +12,7 @@ namespace MLNet.AutoPipeline
     /// <summary>
     /// Sweepable option for <see cref="SdcaNonCalibratedMulticlassTrainer"/>.
     /// </summary>
-    public sealed class SdcaNonCalibratedOptionBuilder : OptionBuilder<SdcaNonCalibratedMulticlassTrainer.Options>
+    public sealed class SdcaNonCalibratedMulticlassTrainerOptionBuilder : OptionBuilder<SdcaNonCalibratedMulticlassTrainer.Options>
     {
         /// <summary>
         /// The L2 regularization hyperparameter.
@@ -72,6 +72,6 @@ namespace MLNet.AutoPipeline
         [Parameter]
         public Parameter<float> L1Reegularization = ParameterBuilder.CreateFloatParameter(1E-4F, 10f, true, 20);
 
-        internal static SdcaNonCalibratedOptionBuilder Default = new SdcaNonCalibratedOptionBuilder();
+        internal static SdcaNonCalibratedMulticlassTrainerOptionBuilder Default = new SdcaNonCalibratedMulticlassTrainerOptionBuilder();
     }
 }

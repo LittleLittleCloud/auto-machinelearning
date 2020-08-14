@@ -44,7 +44,7 @@ namespace MLNet.AutoPipeline.Test
         {
             var context = new MLContext();
             var trainer = context.AutoML().MultiClassification.SdcaMaximumEntropy("label", "feature");
-            var parameterValues = SdcaMaximumEntropyOptionBuilder.Default.ValueGenerators.Select(x => x.CreateFromNormalized(0.5));
+            var parameterValues = SdcaMaximumEntropyMulticlassTrainerOptionBuilder.Default.ValueGenerators.Select(x => x.CreateFromNormalized(0.5));
             var parameterset = new ParameterSet(parameterValues);
             Approvals.Verify(trainer.ToCodeGenNodeContract(parameterset));
         }
@@ -69,7 +69,7 @@ namespace MLNet.AutoPipeline.Test
         {
             var context = new MLContext();
             var trainer = context.AutoML().MultiClassification.SdcaNonCalibreated("label", "feature");
-            var parameterValues = SdcaNonCalibratedOptionBuilder.Default.ValueGenerators.Select(x => x.CreateFromNormalized(0.5));
+            var parameterValues = SdcaNonCalibratedMulticlassTrainerOptionBuilder.Default.ValueGenerators.Select(x => x.CreateFromNormalized(0.5));
             var parameterset = new ParameterSet(parameterValues);
             Approvals.Verify(trainer.ToCodeGenNodeContract(parameterset));
         }
@@ -81,7 +81,7 @@ namespace MLNet.AutoPipeline.Test
         {
             var context = new MLContext();
             var trainer = context.AutoML().MultiClassification.LbfgsMaximumEntropy("label", "feature");
-            var parameterValues = LbfgsMaximumEntropyOptionBuilder.Default.ValueGenerators.Select(x => x.CreateFromNormalized(0.5));
+            var parameterValues = LbfgsMaximumEntropyMulticlassTrainerOptionBuilder.Default.ValueGenerators.Select(x => x.CreateFromNormalized(0.5));
             var parameterset = new ParameterSet(parameterValues);
             Approvals.Verify(trainer.ToCodeGenNodeContract(parameterset));
         }
@@ -93,7 +93,7 @@ namespace MLNet.AutoPipeline.Test
         {
             var context = new MLContext();
             var trainer = context.AutoML().MultiClassification.LightGbm("label", "feature");
-            var parameterValues = LightGbmMultiClassOptionBuilder.Default.ValueGenerators.Select(x => x.CreateFromNormalized(0.5));
+            var parameterValues = LightGbmMulticlassTrainerOptionBuilder.Default.ValueGenerators.Select(x => x.CreateFromNormalized(0.5));
             var parameterset = new ParameterSet(parameterValues);
             Approvals.Verify(trainer.ToCodeGenNodeContract(parameterset));
         }
@@ -178,7 +178,7 @@ namespace MLNet.AutoPipeline.Test
         public void AutoML_should_create_linear_svm_classifier_with_option()
         {
             var context = new MLContext();
-            var optionBuilder = LinearSvmOptionBuilder.Default;
+            var optionBuilder = LinearSvmBinaryTrainerOptionBuilder.Default;
             optionBuilder.ExampleWeightColumnName = ParameterBuilder.CreateFromSingleValue("example");
             var trainer = context.AutoML().BinaryClassification.LinearSvm("label", "feature", optionBuilder);
             var parameterValue = optionBuilder.ValueGenerators.Select(x => x.CreateFromNormalized(0.5));
@@ -220,7 +220,7 @@ namespace MLNet.AutoPipeline.Test
         public void AutoML_should_create_lightGbm_binary_classifier_with_option()
         {
             var context = new MLContext();
-            var optionBuilder = LightGbmBinaryClassOptionBuilder.Default;
+            var optionBuilder = LightGbmBinaryTrainerOptionBuilder.Default;
             optionBuilder.ExampleWeightColumnName = ParameterBuilder.CreateFromSingleValue("example");
             var trainer = context.AutoML().BinaryClassification.LightGbm("label", "feature", optionBuilder);
             var parameterValue = optionBuilder.ValueGenerators.Select(x => x.CreateFromNormalized(0.5));
@@ -234,7 +234,7 @@ namespace MLNet.AutoPipeline.Test
         public void AutoML_should_create_ld_svm_classifier_with_option()
         {
             var context = new MLContext();
-            var optionBuilder = LdSvmOptionBuilder.Default;
+            var optionBuilder = LdSvmBinaryTrainerOptionBuilder.Default;
             var trainer = context.AutoML().BinaryClassification.LdSvm("label", "feature", optionBuilder);
             var parameterValue = optionBuilder.ValueGenerators.Select(x => x.CreateFromNormalized(0.5));
             var parameterset = new ParameterSet(parameterValue);

@@ -1,4 +1,4 @@
-﻿// <copyright file="LightGbmBinaryClassOptionBuilder.cs" company="BigMiao">
+﻿// <copyright file="LightGbmBinaryTrainerOptionBuilder.cs" company="BigMiao">
 // Copyright (c) BigMiao. All rights reserved.
 // </copyright>
 
@@ -9,9 +9,9 @@ using System.Text;
 
 namespace MLNet.AutoPipeline
 {
-    public class LightGbmBinaryClassOptionBuilder : OptionBuilder<LightGbmBinaryTrainer.Options>
+    public class LightGbmBinaryTrainerOptionBuilder : OptionBuilder<LightGbmBinaryTrainer.Options>
     {
-        public static LightGbmBinaryClassOptionBuilder Default = new LightGbmBinaryClassOptionBuilder();
+        public static LightGbmBinaryTrainerOptionBuilder Default = new LightGbmBinaryTrainerOptionBuilder();
 
         [Parameter(nameof(LightGbmBinaryTrainer.Options.LabelColumnName))]
         public Parameter<string> LabelColumnName = ParameterBuilder.CreateFromSingleValue("Label");
