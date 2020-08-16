@@ -117,7 +117,6 @@ namespace MLNet.AutoPipeline
                     {
                         foreach (var _existPath in paths)
                         {
-                            newPath.Add(_existPath.Concat(_path));
                         }
                     }
 

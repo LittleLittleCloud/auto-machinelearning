@@ -12,26 +12,37 @@ using System.Text;
 
 namespace MLNet.AutoPipeline
 {
-    public class SweepablePipeline
+    public class SweepablePipeline : ISweepable<SingleSweepablePipeline>
     {
-        public IList<IValueGenerator> ValueGenerators { get; private set; }
+        public IEnumerable<IValueGenerator> SweepableValueGenerators { get; private set; }
 
-        public IList<INode> Nodes { get; private set; }
-
-        public ISweeper Sweeper { get; private set; }
+        internal IList<SweepableNodeGenerator> NodeGenerators { get; private set; }
 
         public SweepablePipeline()
         {
-            this.ValueGenerators = new List<IValueGenerator>();
-            this.Nodes = new List<INode>();
-            this.Sweeper = new UniformRandomSweeper(new UniformRandomSweeper.Option());
+            this.SweepableValueGenerators = new List<IValueGenerator>();
+            this.NodeGenerators = new List<SweepableNodeGenerator>();
         }
 
-        private SweepablePipeline(IList<IValueGenerator> valueGenerators, IList<INode> singleNodeBuilders, ISweeper sweeper)
+        SingleSweepablePipeline ISweepable<SingleSweepablePipeline>.BuildFromParameterSet(ParameterSet parameters)
         {
-            this.ValueGenerators = valueGenerators;
-            this.Nodes = singleNodeBuilders;
-            this.Sweeper = sweeper;
+            var nodes = new List<INode>();
+
+            foreach (var generator in this.NodeGenerators)
+            {
+                var param = parameters.Where(param => generator.ID == param.ID).FirstOrDefault();
+
+                // TODO
+                // Error Handling
+                if (param == null)
+                {
+                    throw new Exception("can't build SingleSweepablePipeline from SweepablePipeline");
+                }
+
+                nodes.Add(param.RawValue as INode);
+            }
+
+            return new SingleSweepablePipeline(nodes);
         }
 
         public SweepablePipeline Append<TTrain>(INode<TTrain> builder)
@@ -40,13 +51,22 @@ namespace MLNet.AutoPipeline
             return this.Append((INode)builder);
         }
 
-        public SweepablePipeline Append(INode builder)
+        public SweepablePipeline Append(INode node)
         {
-            this.Nodes.Add(builder);
-            if (builder.ValueGenerators != null)
+            var i = this.NodeGenerators.Count();
+            this.NodeGenerators.Add(new SweepableNodeGenerator($"{nameof(SweepableNodeGenerator)}_{i}", node));
+            if (node.ValueGenerators != null)
             {
-                this.ValueGenerators = this.ValueGenerators.Concat(builder.ValueGenerators.ToList()).ToList();
+                this.SweepableValueGenerators = this.SweepableValueGenerators.Concat(node.ValueGenerators.ToList()).ToList();
             }
+
+            return this;
+        }
+
+        public SweepablePipeline Append(params INode[] nodes)
+        {
+            var i = this.NodeGenerators.Count();
+            this.NodeGenerators.Add(new SweepableNodeGenerator($"{nameof(SweepableNodeGenerator)}_{i}", nodes));
 
             return this;
         }
@@ -54,7 +74,7 @@ namespace MLNet.AutoPipeline
         public SweepablePipeline Append<TNewTrans>(TNewTrans estimator, TransformerScope scope = TransformerScope.Everything)
             where TNewTrans : IEstimator<ITransformer>
         {
-            var estimatorWrapper = new UnsweepableNode<TNewTrans>(estimator, scope);
+            var estimatorWrapper = Util.CreateUnSweepableNode(estimator, scope);
             this.Append(estimatorWrapper);
 
             return this;
@@ -62,7 +82,7 @@ namespace MLNet.AutoPipeline
 
         public string Summary()
         {
-            return $"SweepablePipeline({string.Join("=>", this.Nodes.Select(builder => builder.EstimatorName))})";
+            return $"SweepablePipeline({string.Join("=>", this.NodeGenerators.Select(builder => builder.Name))})";
         }
 
         public override string ToString()
@@ -70,63 +90,47 @@ namespace MLNet.AutoPipeline
             return this.Summary();
         }
 
-        public void UseSweeper(ISweeper sweeper)
+        internal SweepablePipeline Append(SweepableNodeGenerator nodeGenerator)
         {
-            this.Sweeper = sweeper;
-            this.Sweeper.SweepableParamaters = this.ValueGenerators;
-        }
+            this.NodeGenerators.Add(nodeGenerator);
 
-        public IEnumerable<SweepingInfo> Sweeping(int maximum)
-        {
-            if (this.ValueGenerators.Count == 0)
-            {
-                var pipeline = new EstimatorChain<ITransformer>();
-                for (int i = 0; i < this.Nodes.Count; i++)
-                {
-                    if (this.Nodes[i] == UnsweepableNode<IEstimator<ITransformer>>.EmptyNode)
-                    {
-                        continue;
-                    }
-
-                    pipeline = pipeline.Append(this.Nodes[i].BuildEstimator(), this.Nodes[i].Scope);
-                }
-
-                yield return new SweepingInfo(pipeline, null);
-            }
-            else
-            {
-                foreach (var parameters in this.Sweeper.ProposeSweeps(maximum))
-                {
-                    yield return new SweepingInfo(this.BuildFromParameterSet(parameters), parameters);
-                }
-            }
-        }
-
-        public SweepablePipeline Concat(SweepablePipeline chain)
-        {
-            return new SweepablePipeline(this.ValueGenerators.Concat(chain.ValueGenerators).ToList(), this.Nodes.Concat(chain.Nodes).ToList(), this.Sweeper);
-        }
-
-        public SweepablePipeline Append<TNewTrains, TOption>(Func<TOption, TNewTrains> estimatorBuilder, SweepableOption<TOption> optionBuilder, TransformerScope scope = TransformerScope.Everything)
-            where TNewTrains : IEstimator<ITransformer>
-            where TOption : class
-        {
-            var autoEstimator = new SweepableNode<TNewTrains, TOption>(estimatorBuilder, optionBuilder, scope);
-            this.Append(autoEstimator);
             return this;
         }
 
-        internal EstimatorChain<ITransformer> BuildFromParameterSet(ParameterSet parameters)
+        internal SingleSweepablePipeline BuildFromParameterSet(ParameterSet parameters)
+        {
+            return (this as ISweepable<SingleSweepablePipeline>).BuildFromParameterSet(parameters);
+        }
+    }
+
+    internal class SingleSweepablePipeline : ISweepable<EstimatorChain<ITransformer>>
+    {
+        private List<INode> nodes;
+
+        public SingleSweepablePipeline(List<INode> nodes)
+        {
+            this.nodes = nodes;
+        }
+
+        public IEnumerable<IValueGenerator> SweepableValueGenerators
+        {
+            get
+            {
+                return this.nodes.Select(node => node.ValueGenerators).SelectMany(x => x).ToList();
+            }
+        }
+
+        public EstimatorChain<ITransformer> BuildFromParameterSet(ParameterSet parameters)
         {
             var pipeline = new EstimatorChain<ITransformer>();
-            for (int i = 0; i < this.Nodes.Count; i++)
+            for (int i = 0; i < this.nodes.Count; i++)
             {
-                if (this.Nodes[i] == UnsweepableNode<IEstimator<ITransformer>>.EmptyNode)
+                if (this.nodes[i] == UnsweepableNode<IEstimator<ITransformer>>.EmptyNode)
                 {
                     continue;
                 }
 
-                pipeline = pipeline.Append(this.Nodes[i].BuildEstimator(parameters), this.Nodes[i].Scope);
+                pipeline = pipeline.Append(this.nodes[i].BuildFromParameterSet(parameters), this.nodes[i].Scope);
             }
 
             return pipeline;

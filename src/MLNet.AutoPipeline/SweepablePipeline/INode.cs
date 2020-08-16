@@ -27,7 +27,7 @@ namespace MLNet.AutoPipeline
 
     public interface INode
     {
-        IEstimator<ITransformer> BuildEstimator(ParameterSet parameters = null);
+        IEstimator<ITransformer> BuildFromParameterSet(ParameterSet parameters = null);
 
         TransformerScope Scope { get; }
 
@@ -47,7 +47,7 @@ namespace MLNet.AutoPipeline
     public interface INode<out TTrain> : INode
         where TTrain : IEstimator<ITransformer>
     {
-        new TTrain BuildEstimator(ParameterSet parameters = null);
+        new TTrain BuildFromParameterSet(ParameterSet parameters = null);
     }
 
     public interface ISweepableNode<out TTrain, TOption> : INode<TTrain>
@@ -79,4 +79,5 @@ namespace MLNet.AutoPipeline
             return JsonConvert.SerializeObject(this, Formatting.Indented);
         }
     }
+
 }

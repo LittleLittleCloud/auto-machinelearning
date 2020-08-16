@@ -51,9 +51,9 @@ namespace MLNet.Expert.AutoML
             initState.Transformers.Add(columnPicker.LabelColumn, Util.CreateUnSweepableNode(this.context.Transforms.Conversion.MapValueToKey(this.option.LabelColumn, this.option.LabelColumn), estimatorName: "MapValueToKey") as INode);
             var experimentOption = new Experiment.Option()
             {
-                ScoreMetric = this.option.ScoreMetric,
+                EvaluationMetrics = this.option.ScoreMetric,
                 Label = this.option.LabelColumn,
-                Iteration = 3,
+                ParameterSweeperIteration = 3,
             };
 
             foreach (var column in columnPicker.SelectColumn(initState.Columns, this.option.BeamSearch))

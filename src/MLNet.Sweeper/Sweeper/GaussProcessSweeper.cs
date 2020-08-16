@@ -22,20 +22,6 @@ namespace MLNet.Sweeper
 
         public ParameterSet Current { get; private set; }
 
-        public IEnumerable<IValueGenerator> SweepableParamaters
-        {
-            get
-            {
-                return this._valueGenerators;
-            }
-
-            set
-            {
-                this._valueGenerators = value;
-                this._randomSweeper.SweepableParamaters = value;
-            }
-        }
-
         public GaussProcessSweeper(Option option)
         {
             this._option = option;
@@ -63,8 +49,9 @@ namespace MLNet.Sweeper
             this._runHistory.Add(input);
         }
 
-        public IEnumerable<ParameterSet> ProposeSweeps(int maxSweeps, IEnumerable<IRunResult> previousRuns = null)
+        public IEnumerable<ParameterSet> ProposeSweeps(ISweepable sweepable, int maxSweeps = 100, IEnumerable<IRunResult> previousRuns = null)
         {
+            this._valueGenerators = sweepable.SweepableValueGenerators;
             if (previousRuns != null)
             {
                 foreach ( var history in previousRuns)
@@ -77,7 +64,7 @@ namespace MLNet.Sweeper
             {
                 if (this._runHistory.Count < this._option.InitialPopulation)
                 {
-                    var randomSweepResult = this._randomSweeper.ProposeSweeps(1, this._runHistory).First();
+                    var randomSweepResult = this._randomSweeper.ProposeSweeps(sweepable, 1, this._runHistory).First();
                     this._generated.Add(randomSweepResult);
                     this.Current = randomSweepResult;
                     yield return randomSweepResult;
@@ -104,7 +91,7 @@ namespace MLNet.Sweeper
                     }
 
                     // add some random samples
-                    var random_sample = this._randomSweeper.ProposeSweeps(20, this._runHistory).ToList();
+                    var random_sample = this._randomSweeper.ProposeSweeps(sweepable, 20, this._runHistory).ToList();
                     candidates.AddRange(random_sample);
 
                     // prepare train data
@@ -180,7 +167,7 @@ namespace MLNet.Sweeper
         private ParameterSet[] GetOneMutationNeighbourhood(ParameterSet parent)
         {
             var candicates = new List<ParameterSet>();
-            foreach (var valueGenerator in this.SweepableParamaters)
+            foreach (var valueGenerator in this._valueGenerators)
             {
                 var _candidates = parent.Clone();
                 var value = _candidates[valueGenerator.ID];

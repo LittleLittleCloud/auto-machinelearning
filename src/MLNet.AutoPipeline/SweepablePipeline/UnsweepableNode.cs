@@ -55,7 +55,7 @@ namespace MLNet.AutoPipeline
 
         public string[] OutputColumns { get; private set; }
 
-        public TTrainer BuildEstimator(ParameterSet parameters)
+        public TTrainer BuildFromParameterSet(ParameterSet parameters)
         {
             return this._instance;
         }
@@ -80,9 +80,9 @@ namespace MLNet.AutoPipeline
             };
         }
 
-        IEstimator<ITransformer> INode.BuildEstimator(ParameterSet parameters)
+        IEstimator<ITransformer> INode.BuildFromParameterSet(ParameterSet parameters)
         {
-            return this.BuildEstimator(parameters);
+            return this.BuildFromParameterSet(parameters);
         }
     }
 }

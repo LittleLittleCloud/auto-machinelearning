@@ -16,7 +16,7 @@ namespace MLNet.Sweeper
         /// Some smart sweepers can take advantage of the metric(s) that the caller computes for previous runs.
         /// </summary>
         /// <returns>ParameterSet.</returns>
-        IEnumerable<ParameterSet> ProposeSweeps(int maxSweeps, IEnumerable<IRunResult> previousRuns = null);
+        IEnumerable<ParameterSet> ProposeSweeps(ISweepable sweepable, int maxSweeps = 100, IEnumerable<IRunResult> previousRuns = null);
 
         ParameterSet Current { get; }
 
@@ -25,8 +25,6 @@ namespace MLNet.Sweeper
         /// </summary>
         /// <param name="input">Output of Sweeper.</param>
         void AddRunHistory(IRunResult input);
-
-        IEnumerable<IValueGenerator> SweepableParamaters { get; set; }
     }
 
     public interface ISweepResultEvaluator<in TResults>
@@ -56,5 +54,15 @@ namespace MLNet.Sweeper
         where T : IComparable<T>
     {
         new T MetricValue { get; }
+    }
+
+    public interface ISweepable
+    {
+        IEnumerable<IValueGenerator> SweepableValueGenerators { get; }
+    }
+
+    internal interface ISweepable<out T> : ISweepable
+    {
+        T BuildFromParameterSet(ParameterSet parameters);
     }
 }

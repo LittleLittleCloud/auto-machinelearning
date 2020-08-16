@@ -11,5 +11,10 @@
     <PackageReference Include="Microsoft.ML.FastTree" Version="$(StableMLNetVersion)" />
     <PackageReference Include="Numpy" Version="3.7.1.14" />
   </ItemGroup>
+  
+  <ItemGroup>
+    <InternalsVisibleTo Include="MLNet.AutoPipeline" />
+    <InternalsVisibleTo Include="MLNet.AutoPipeline.Tests" />
+  </ItemGroup>
 
 </Project>

@@ -37,7 +37,7 @@ namespace MLNet.AutoPipeline.Test
                                   .Append(new MockTransformer())
                                   .Append(new MockEstimatorBuilder("mockEstimator"));
 
-            singleNodeChain.Summary().Should().Be("SweepablePipeline(MockTransformer=>mockEstimator)");
+            singleNodeChain.Summary().Should().Be("SweepablePipeline(SweepableNodeGenerator_0=>SweepableNodeGenerator_1)");
         }
     }
 }

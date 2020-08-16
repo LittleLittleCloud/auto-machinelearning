@@ -11,7 +11,7 @@ using MLNet.Sweeper;
 
 namespace MLNet.AutoPipeline
 {
-    public abstract class SweepableOption<TOption>
+    public abstract class SweepableOption<TOption> : ISweepable<TOption>
         where TOption : class
     {
         private readonly HashSet<string> _ids = new HashSet<string>();
@@ -19,6 +19,8 @@ namespace MLNet.AutoPipeline
         private TOption defaultOption = null;
 
         public IValueGenerator[] ValueGenerators { get => this.GetValueGenerators(); }
+
+        public IEnumerable<IValueGenerator> SweepableValueGenerators { get => this.ValueGenerators; }
 
         public SweepableOption()
         {
@@ -65,7 +67,7 @@ namespace MLNet.AutoPipeline
         /// </summary>
         /// <param name="parameters">a set of parameters used to build option.</param>
         /// <returns><paramref name="TOption"/>.</returns>
-        public TOption BuildOption(ParameterSet parameters)
+        public TOption BuildFromParameterSet(ParameterSet parameters)
         {
             var option = this.CreateDefaultOption();
             foreach (var param in parameters)

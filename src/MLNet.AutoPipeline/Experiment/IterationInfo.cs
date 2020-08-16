@@ -28,7 +28,7 @@ namespace MLNet.AutoPipeline
         public double TrainingTime { get; private set; }
 
         /// <summary>
-        /// Score metric name and value on validate dataset, this value is set by <see cref="Experiment.Option.ScoreMetric"/>.
+        /// Score metric name and value on validate dataset, this value is set by <see cref="Experiment.Option.EvaluationMetrics"/>.
         /// </summary>
         public Metric ScoreMetric { get; private set; }
 
@@ -43,13 +43,13 @@ namespace MLNet.AutoPipeline
         public bool IsMetricMaximizing { get; private set; }
 
         /// <summary>
-        /// <see cref="SweepablePipeline"/> used in the current training round.
+        /// <see cref="SingleSweepablePipeline"/> used in the current training round.
         /// </summary>
-        public SweepablePipeline SweepablePipeline { get; private set; }
+        internal SingleSweepablePipeline SingleSweepablePipeline { get; private set; }
 
-        public IterationInfo(SweepablePipeline sweepablePipeline, ParameterSet parameters, double time, Metric score, IEnumerable<Metric> metrics, bool isMaximizing)
+        internal IterationInfo(SingleSweepablePipeline singleweepablePipeline, ParameterSet parameters, double time, Metric score, IEnumerable<Metric> metrics, bool isMaximizing)
         {
-            this.SweepablePipeline = sweepablePipeline;
+            this.SingleSweepablePipeline = singleweepablePipeline;
             this.ParameterSet = parameters;
             this.TrainingTime = time;
             this.ScoreMetric = score;
@@ -63,7 +63,7 @@ namespace MLNet.AutoPipeline
         /// <returns></returns>
         public EstimatorChain<ITransformer> BuildPipeline()
         {
-            return (this.SweepablePipeline as SweepablePipeline)?.BuildFromParameterSet(this.ParameterSet);
+            return this.SingleSweepablePipeline.BuildFromParameterSet(this.ParameterSet);
         }
 
         public int CompareTo(IterationInfo obj)
