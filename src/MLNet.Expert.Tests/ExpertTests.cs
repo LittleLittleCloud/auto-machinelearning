@@ -59,7 +59,7 @@ namespace MLNet.Expert.Tests
                   .Should().Contain("SweepableNode(LightGbmMulticlassTrainer)");
         }
 
-        [Fact]
+        [Fact(Skip ="time consuming")]
         public async void AutoMLTestAsync()
         {
             var context = new MLContext();
