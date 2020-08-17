@@ -49,22 +49,20 @@ namespace MLNet.Sweeper
 
             for (int i = 0; i != maxSweeps; ++i)
             {
-                var retry = 0;
-                while (true)
+                for (int j = 0; j != this._options.Retry; ++j)
                 {
-                    retry++;
                     candidate = this.CreateParamSet(sweepable);
-                    if (retry >= this._options.Retry ||
-                        !AlreadyGenerated(candidate, this._history.Select(x => x.ParameterSet)) ||
+                    if (!AlreadyGenerated(candidate, this._history.Select(x => x.ParameterSet)) &&
                         !this._generated.Contains(candidate))
                     {
+
+                        this._generated.Add(candidate);
+                        this.Current = candidate;
+                        yield return candidate;
+
                         break;
                     }
                 }
-
-                this._generated.Add(candidate);
-                this.Current = candidate;
-                yield return candidate;
             }
         }
 

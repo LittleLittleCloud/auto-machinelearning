@@ -9,6 +9,7 @@ using MLNet.AutoPipeline;
 using MLNet.AutoPipeline.Metric;
 using MLNet.Expert.AutoML;
 using System;
+using System.Linq;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -28,34 +29,34 @@ namespace MLNet.Expert.Tests
             var option = new NumericFeatureExpert.Option();
 
             var expert = new NumericFeatureExpert(context, option);
-            expert.Propose("test").ToString()
-                  .Should().Contain("SingleNode(NormalizeMeanVariance)")
+            expert.Propose("test").Select(node => node.Summary())
+                  .Should().Contain("Node(NormalizeMeanVariance)")
                   .And
-                  .Contain("SingleNode(NormalizeMinMax)");
+                  .Contain("Node(NormalizeMinMax)");
         }
 
         [Fact]
         public void ClassificationExpert_should_propose_naiveBayes()
         {
             var expert = this.GetClassificationExpert();
-            expert.Propose("label", "feature").ToString()
-                  .Should().Contain("SingleNode(NaiveBayesMulticlassTrainer)");
+            expert.Propose("label", "feature").Select(node => node.Summary())
+                  .Should().Contain("Node(NaiveBayesMulticlassTrainer)");
         }
 
         [Fact]
         public void ClassificationExpert_should_propose_lbfgsMaximumEntropy()
         {
             var expert = this.GetClassificationExpert();
-            expert.Propose("label", "feature").ToString()
-                  .Should().Contain("SingleNode(LbfgsMaximumEntropyMulticlassTrainer)");
+            expert.Propose("label", "feature").Select(node => node.Summary())
+                  .Should().Contain("SweepableNode(LbfgsMaximumEntropyMulticlassTrainer)");
         }
 
         [Fact]
         public void ClassificationExpert_should_propose_lightGBM()
         {
             var expert = this.GetClassificationExpert();
-            expert.Propose("label", "feature").ToString()
-                  .Should().Contain("SingleNode(LightGbmMulticlassTrainer)");
+            expert.Propose("label", "feature").Select(node => node.Summary())
+                  .Should().Contain("SweepableNode(LightGbmMulticlassTrainer)");
         }
 
         [Fact]
@@ -126,7 +127,6 @@ namespace MLNet.Expert.Tests
 
             public void Report(IterationInfo value)
             {
-                this.output.WriteLine(value.SweepablePipeline.Summary());
                 this.output.WriteLine(value.ParameterSet?.ToString() ?? string.Empty);
                 this.output.WriteLine($"validate score: {value.ScoreMetric.Name}: {value.ScoreMetric.Score}");
                 this.output.WriteLine($"training time: {value.TrainingTime}");

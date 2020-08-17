@@ -127,7 +127,7 @@ namespace MLNet.AutoPipeline
             /// <summary>
             /// Sweeper used for sweeping over pipeline when there are more than one transformers or trainers in a single pipe. Default is <see cref="RandomGridSweeper"/>.
             /// </summary>
-            public ISweeper PipelineSweeper { get; set; } = new RandomGridSweeper();
+            public ISweeper PipelineSweeper { get; set; } = new GridSearchSweeper();
 
             /// <summary>
             /// Number of iteration <see cref="ParameterSweeper"/> will try in each hypeparameter optimization process. This value will be used to set maximum parameter for <seealso cref="SweepablePipeline.Sweeping(int)"/>. Default is 100. 

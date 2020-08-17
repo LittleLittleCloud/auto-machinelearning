@@ -34,10 +34,9 @@ namespace MLNet.Expert.Trainers.Classification
             get => SdcaNonCalibratedBuilder._instance;
         }
 
-        public EstimatorSingleNode CreateTrainer(MLContext context, string label, string feature)
+        public INode CreateTrainer(MLContext context, string label, string feature)
         {
-            var node = context.AutoML().MultiClassification.SdcaNonCalibreated(label, feature);
-            return Util.CreateEstimatorSingleNode(node);
+            return context.AutoML().MultiClassification.SdcaNonCalibreated(label, feature);
         }
     }
 }

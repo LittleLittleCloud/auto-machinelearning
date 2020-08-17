@@ -1,0 +1,7 @@
+SweepablePipeline([estimator1_1]=>[estimator2_1|estimator2_2]=>[estimator3_1|estimator3_2|estimator3_3])
+SweepablePipeline(estimator1_1=>estimator2_1=>estimator3_1)
+SweepablePipeline(estimator1_1=>estimator2_2=>estimator3_1)
+SweepablePipeline(estimator1_1=>estimator2_1=>estimator3_2)
+SweepablePipeline(estimator1_1=>estimator2_2=>estimator3_2)
+SweepablePipeline(estimator1_1=>estimator2_1=>estimator3_3)
+SweepablePipeline(estimator1_1=>estimator2_2=>estimator3_3)

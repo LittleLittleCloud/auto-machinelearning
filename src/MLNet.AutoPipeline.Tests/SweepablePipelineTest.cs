@@ -7,6 +7,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 using System.Threading;
+using ApprovalTests;
+using ApprovalTests.Namers;
+using ApprovalTests.Reporters;
 using FluentAssertions;
 using Microsoft.ML;
 using Microsoft.ML.Data;
@@ -33,11 +36,34 @@ namespace MLNet.AutoPipeline.Test
         [Fact]
         public void SweepablePipeline_summary_should_work()
         {
-            var singleNodeChain = new SweepablePipeline()
+            var sweepablePipeline = new SweepablePipeline()
                                   .Append(new MockTransformer())
                                   .Append(new MockEstimatorBuilder("mockEstimator"));
 
-            singleNodeChain.Summary().Should().Be("SweepablePipeline(SweepableNodeGenerator_0=>SweepableNodeGenerator_1)");
+            sweepablePipeline.Summary().Should().Be("SweepablePipeline([MockTransformer]=>[mockEstimator])");
+        }
+
+        [Fact]
+        [UseApprovalSubdirectory("ApprovalTests")]
+        [UseReporter(typeof(DiffReporter))]
+        public void SweepablePipeline_should_create_SingleEstimatorSweepablePipeline()
+        {
+            var sweepablePipeline = new SweepablePipeline()
+                                    .Append(new MockEstimatorBuilder("estimator1_1"))
+                                    .Append(new MockEstimatorBuilder("estimator2_1"), new MockEstimatorBuilder("estimator2_2"))
+                                    .Append(new MockEstimatorBuilder("estimator3_1"), new MockEstimatorBuilder("estimator3_2"), new MockEstimatorBuilder("estimator3_3"));
+
+            var res = new StringBuilder();
+            res.AppendLine(sweepablePipeline.ToString());
+
+            var sweeper = new GridSearchSweeper();
+            foreach (var param in sweeper.ProposeSweeps(sweepablePipeline, 100))
+            {
+                var singleEstimatorPipeline = sweepablePipeline.BuildFromParameterSet(param);
+                res.AppendLine(singleEstimatorPipeline.ToString());
+            }
+
+            Approvals.Verify(res.ToString());
         }
     }
 }

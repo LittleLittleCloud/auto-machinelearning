@@ -45,9 +45,9 @@ namespace MLNet.AutoPipeline
         /// <summary>
         /// <see cref="SingleSweepablePipeline"/> used in the current training round.
         /// </summary>
-        internal SingleSweepablePipeline SingleSweepablePipeline { get; private set; }
+        internal SingleEstimatorSweepablePipeline SingleSweepablePipeline { get; private set; }
 
-        internal IterationInfo(SingleSweepablePipeline singleweepablePipeline, ParameterSet parameters, double time, Metric score, IEnumerable<Metric> metrics, bool isMaximizing)
+        internal IterationInfo(SingleEstimatorSweepablePipeline singleweepablePipeline, ParameterSet parameters, double time, Metric score, IEnumerable<Metric> metrics, bool isMaximizing)
         {
             this.SingleSweepablePipeline = singleweepablePipeline;
             this.ParameterSet = parameters;

@@ -59,15 +59,15 @@ namespace MLNet.Expert
             }
         }
 
-        public IEstimatorNode Propose(string label, string feature)
+        public IEnumerable<INode> Propose(string label, string feature)
         {
-            var groupNode = new EstimatorNodeGroup();
+            var nodes = new List<INode>();
             foreach (var creator in this.nodeFactories)
             {
-                groupNode.Append(creator.CreateTrainer(this.context, label, feature));
+                nodes.Add(creator.CreateTrainer(this.context, label, feature));
             }
 
-            return groupNode;
+            return nodes;
         }
 
         public class Option

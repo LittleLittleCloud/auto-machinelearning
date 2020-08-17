@@ -12,18 +12,16 @@ namespace MLNet.AutoPipeline
 {
     internal class SweepableNodeGenerator : IDiscreteValueGenerator
     {
-        private List<INode> nodes;
-
         public SweepableNodeGenerator(string name, IEnumerable<INode> nodes)
         {
-            this.nodes = nodes.ToList();
+            this.Nodes = nodes.ToList();
             this.ID = Guid.NewGuid().ToString("N");
             this.Name = name;
         }
 
         public SweepableNodeGenerator(string name, INode node)
         {
-            this.nodes = new List<INode>()
+            this.Nodes = new List<INode>()
             {
                 node,
             };
@@ -32,9 +30,11 @@ namespace MLNet.AutoPipeline
             this.Name = name;
         }
 
-        public IParameterValue this[int i] => new DiscreteParameterValue(this.Name, this.nodes[i], this.OneHotEncodeValue(this.nodes[i]), this.ID);
+        public IParameterValue this[int i] => new DiscreteParameterValue(this.Name, this.Nodes[i], this.OneHotEncodeValue(this.Nodes[i]), this.ID);
 
-        public int Count => this.nodes.Count();
+        public int Count => this.Nodes.Count();
+
+        public List<INode> Nodes { get; private set; }
 
         public string Name { get; set; }
 
@@ -52,7 +52,7 @@ namespace MLNet.AutoPipeline
 
         private double[] OneHotEncodeValue(INode node)
         {
-            var index = this.nodes.IndexOf(node);
+            var index = this.Nodes.IndexOf(node);
             if (index < 0)
             {
                 throw new Exception($"can't find value {node.EstimatorName}");

@@ -36,10 +36,9 @@ namespace MLNet.Expert.Trainers.Classification
             get => GamOvaBuilder._instance;
         }
 
-        public EstimatorSingleNode CreateTrainer(MLContext context, string label, string feature)
+        public INode CreateTrainer(MLContext context, string label, string feature)
         {
-            var ovaNode = context.AutoML().MultiClassification.OneVersusAll(context.AutoML().BinaryClassification.Gam(label, feature), label);
-            return Util.CreateEstimatorSingleNode(ovaNode);
+            return context.AutoML().MultiClassification.OneVersusAll(context.AutoML().BinaryClassification.Gam(label, feature), label);
         }
     }
 }

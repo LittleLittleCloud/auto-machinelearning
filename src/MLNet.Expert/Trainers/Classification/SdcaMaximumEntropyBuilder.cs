@@ -34,10 +34,9 @@ namespace MLNet.Expert.Trainers.Classification
             get => SdcaMaximumEntropyBuilder._instance;
         }
 
-        public EstimatorSingleNode CreateTrainer(MLContext context, string label, string feature)
+        public INode CreateTrainer(MLContext context, string label, string feature)
         {
-            var node = context.AutoML().MultiClassification.SdcaMaximumEntropy(label, feature);
-            return Util.CreateEstimatorSingleNode(node);
+            return context.AutoML().MultiClassification.SdcaMaximumEntropy(label, feature);
         }
     }
 }

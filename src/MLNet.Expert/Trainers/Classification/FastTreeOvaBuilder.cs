@@ -36,10 +36,9 @@ namespace MLNet.Expert.Trainers.Classification
             get => FastTreeOvaBuilder._instance;
         }
 
-        public EstimatorSingleNode CreateTrainer(MLContext context, string label, string feature)
+        public INode CreateTrainer(MLContext context, string label, string feature)
         {
-            var trainer = context.AutoML().MultiClassification.OneVersusAll(context.AutoML().BinaryClassification.FastForest(label, feature), label);
-            return Util.CreateEstimatorSingleNode(trainer);
+            return context.AutoML().MultiClassification.OneVersusAll(context.AutoML().BinaryClassification.FastForest(label, feature), label);
         }
     }
 }
