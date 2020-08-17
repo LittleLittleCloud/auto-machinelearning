@@ -20,22 +20,14 @@ namespace MLNet.AutoPipeline
     {
         private Option option;
         private MLContext context;
-        private IEnumerable<SweepablePipeline> sweepablePipelines;
+        private SweepablePipeline sweepablePipeline;
         private double timeLeft;
 
         public Experiment(MLContext context, SweepablePipeline pipeline, Option option)
         {
             this.option = option;
             this.context = context;
-            this.sweepablePipelines = new SweepablePipeline[1] { pipeline };
-            this.timeLeft = option.MaximumTrainingTime;
-        }
-
-        public Experiment(MLContext context, EstimatorNodeChain estimatorNodeChain, Option option)
-        {
-            this.option = option;
-            this.context = context;
-            this.sweepablePipelines = estimatorNodeChain.BuildSweepablePipelines();
+            this.sweepablePipeline = pipeline;
             this.timeLeft = option.MaximumTrainingTime;
         }
 
@@ -53,20 +45,16 @@ namespace MLNet.AutoPipeline
 
             await Task.Run(() =>
             {
-                foreach (var sweepablePipeline in this.sweepablePipelines)
+                foreach (var pipelineConfig in this.option.PipelineSweeper.ProposeSweeps(this.sweepablePipeline, this.option.PipelineSweeperIteration))
                 {
-                    sweepablePipeline.UseSweeper(this.option.Sweeper.Clone() as ISweeper);
-                    foreach (var sweepingInfo in sweepablePipeline.Sweeping(this.option.Iteration))
+                    var singleSweepablePipeline = this.sweepablePipeline.BuildFromParameterSet(pipelineConfig);
+                    foreach (var parameterSet in this.option.ParameterSweeper.ProposeSweeps(singleSweepablePipeline, this.option.ParameterSweeperIteration))
                     {
                         var stopWatch = new Stopwatch();
                         stopWatch.Start();
 
-                        var pipeline = sweepingInfo.Pipeline;
-                        var parameters = sweepingInfo.Parameters;
-                        if (ct.IsCancellationRequested)
-                        {
-                            return;
-                        }
+                        var pipeline = singleSweepablePipeline.BuildFromParameterSet(parameterSet);
+                        ct.ThrowIfCancellationRequested();
 
                         // train
                         var model = pipeline.Fit(train);
@@ -81,13 +69,13 @@ namespace MLNet.AutoPipeline
                         }
 
                         // score
-                        var validateScoreMetric = new IterationInfo.Metric(this.option.ScoreMetric.Name, this.option.ScoreMetric.Score(this.context, val_eval, this.option.Label));
+                        var validateScoreMetric = new IterationInfo.Metric(this.option.EvaluationMetrics.Name, this.option.EvaluationMetrics.Score(this.context, val_eval, this.option.Label));
 
-                        var iterationInfo = new IterationInfo(sweepablePipeline, sweepingInfo.Parameters, stopWatch.Elapsed.TotalSeconds, validateScoreMetric, evaluateMetrics, this.option.ScoreMetric.IsMaximizing);
+                        var iterationInfo = new IterationInfo(singleSweepablePipeline, parameterSet, stopWatch.Elapsed.TotalSeconds, validateScoreMetric, evaluateMetrics, this.option.EvaluationMetrics.IsMaximizing);
 
                         // update sweeper
-                        var runHistory = new RunResult(sweepingInfo.Parameters, validateScoreMetric.Score, iterationInfo.IsMetricMaximizing);
-                        sweepablePipeline.Sweeper.AddRunHistory(runHistory);
+                        var runHistory = new RunResult(parameterSet, validateScoreMetric.Score, iterationInfo.IsMetricMaximizing);
+                        this.option.ParameterSweeper.AddRunHistory(runHistory);
 
                         // report
                         experimentResult.AddRunHistory(iterationInfo, model);
@@ -100,6 +88,9 @@ namespace MLNet.AutoPipeline
                             return;
                         }
                     }
+
+                    // TODO
+                    // Add Run history to this.option.PipelineSweeper.
                 }
             });
 
@@ -131,17 +122,27 @@ namespace MLNet.AutoPipeline
             /// <summary>
             /// Sweeper used for hypeparameter optimization. Default is <see cref="RandomGridSweeper"/>.
             /// </summary>
-            public ISweeper Sweeper { get; set; } = new RandomGridSweeper(new RandomGridSweeper.Option());
+            public ISweeper ParameterSweeper { get; set; } = new RandomGridSweeper();
 
             /// <summary>
-            /// Number of iteration <see cref="Sweeper"/> will try in each sweeping process. Default is 100. This value will be used to set maximum parameter for <seealso cref="SweepablePipeline.Sweeping(int)"/>.
+            /// Sweeper used for sweeping over pipeline when there are more than one transformers or trainers in a single pipe. Default is <see cref="RandomGridSweeper"/>.
             /// </summary>
-            public int Iteration { get; set; } = 100;
+            public ISweeper PipelineSweeper { get; set; } = new GridSearchSweeper();
+
+            /// <summary>
+            /// Number of iteration <see cref="ParameterSweeper"/> will try in each hypeparameter optimization process. This value will be used to set maximum parameter for <seealso cref="SweepablePipeline.Sweeping(int)"/>. Default is 100. 
+            /// </summary>
+            public int ParameterSweeperIteration { get; set; } = 100;
+
+            /// <summary>
+            /// The maximum number of pipelines the ongoing experiment will try. This value will be used to set maximum parameter for <seealso cref="SweepablePipeline.Sweeping(int)"/>. Default is 100.
+            /// </summary>
+            public int PipelineSweeperIteration { get; set; } = 100;
 
             /// <summary>
             /// Metric to optimize. This metric will be recorded in <see cref="IterationInfo.ScoreMetric"/> in each sweeping.
             /// </summary>
-            public IMetric ScoreMetric { get; set; }
+            public IMetric EvaluationMetrics { get; set; }
 
             /// <summary>
             /// Metrics to be evaluate during training. These metrics will be recorded in <see cref="IterationInfo."/> 

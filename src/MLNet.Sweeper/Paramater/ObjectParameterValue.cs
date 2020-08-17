@@ -30,5 +30,15 @@ namespace MLNet.Sweeper
         {
             return other != null && other.ID == this.ID && other.Name == this.Name && other.RawValue == this.RawValue;
         }
+
+        public override int GetHashCode()
+        {
+            int hashCode = 1120140629;
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(this.Name);
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(this.ValueText);
+            hashCode = hashCode * -1521134295 + EqualityComparer<object>.Default.GetHashCode(this.RawValue);
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(this.ID);
+            return hashCode;
+        }
     }
 }

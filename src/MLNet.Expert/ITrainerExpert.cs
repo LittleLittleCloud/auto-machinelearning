@@ -3,6 +3,7 @@
 // </copyright>
 
 using MLNet.AutoPipeline;
+using System.Collections.Generic;
 
 namespace MLNet.Expert
 {
@@ -17,6 +18,6 @@ namespace MLNet.Expert
         /// <param name="label">label column name.</param>
         /// <param name="feature">feature column name.</param>
         /// <returns></returns>
-        IEstimatorNode Propose(string label, string feature);
+        IEnumerable<INode> Propose(string label, string feature);
     }
 }

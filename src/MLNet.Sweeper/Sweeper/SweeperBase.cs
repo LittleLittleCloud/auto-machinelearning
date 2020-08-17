@@ -21,22 +21,24 @@ namespace MLNet.Sweeper
 
         public ParameterSet Current { get; private set; }
 
-        public IEnumerable<IValueGenerator> SweepableParamaters { get; set; }
+        protected SweeperBase()
+        {
+            this._options = new SweeperOptionBase();
+            this._generated = new HashSet<ParameterSet>();
+        }
 
         protected SweeperBase(SweeperOptionBase options, string name)
         {
             this._options = options;
-            this.SweepableParamaters = new List<IValueGenerator>();
             this._generated = new HashSet<ParameterSet>();
         }
 
         protected SweeperBase(SweeperOptionBase options, IValueGenerator[] sweepParameters, string name)
         {
             this._options = options;
-            this.SweepableParamaters = sweepParameters;
         }
 
-        public virtual IEnumerable<ParameterSet> ProposeSweeps(int maxSweeps, IEnumerable<IRunResult> previousRuns = null)
+        public virtual IEnumerable<ParameterSet> ProposeSweeps(ISweepable sweepable, int maxSweeps, IEnumerable<IRunResult> previousRuns = null)
         {
             ParameterSet candidate;
 
@@ -47,22 +49,20 @@ namespace MLNet.Sweeper
 
             for (int i = 0; i != maxSweeps; ++i)
             {
-                var retry = 0;
-                while (true)
+                for (int j = 0; j != this._options.Retry; ++j)
                 {
-                    retry++;
-                    candidate = this.CreateParamSet();
-                    if (retry >= this._options.Retry ||
-                        !AlreadyGenerated(candidate, this._history.Select(x => x.ParameterSet)) ||
+                    candidate = this.CreateParamSet(sweepable);
+                    if (!AlreadyGenerated(candidate, this._history.Select(x => x.ParameterSet)) &&
                         !this._generated.Contains(candidate))
                     {
+
+                        this._generated.Add(candidate);
+                        this.Current = candidate;
+                        yield return candidate;
+
                         break;
                     }
                 }
-
-                this._generated.Add(candidate);
-                this.Current = candidate;
-                yield return candidate;
             }
         }
 
@@ -71,7 +71,7 @@ namespace MLNet.Sweeper
             return previousRuns.Any(previousRun => previousRun.Equals(paramSet));
         }
 
-        protected abstract ParameterSet CreateParamSet();
+        protected abstract ParameterSet CreateParamSet(ISweepable sweepable);
 
         public virtual void AddRunHistory(IRunResult input)
         {

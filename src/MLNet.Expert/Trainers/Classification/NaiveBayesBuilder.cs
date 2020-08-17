@@ -29,10 +29,9 @@ namespace MLNet.Expert.Trainers.Classification
             get => NaiveBayesBuilder.instance;
         }
 
-        public EstimatorSingleNode CreateTrainer(MLContext context, string label, string feature)
+        public INode CreateTrainer(MLContext context, string label, string feature)
         {
-            var pipelineNode = context.AutoML().MultiClassification.NaiveBayes(label, feature);
-            return Util.CreateEstimatorSingleNode(pipelineNode);
+            return context.AutoML().MultiClassification.NaiveBayes(label, feature);
         }
     }
 }

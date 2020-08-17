@@ -47,13 +47,13 @@ namespace MLNet.Expert.AutoML
 
             // start
             var trainers = this.classificationExpert.Propose(this.option.LabelColumn, PipelineBuilder.FEATURECOLUMNNAME);
-            var initState = new AutoMLTrainingState(trainers as EstimatorNodeGroup);
+            var initState = new AutoMLTrainingState(trainers);
             initState.Transformers.Add(columnPicker.LabelColumn, Util.CreateUnSweepableNode(this.context.Transforms.Conversion.MapValueToKey(this.option.LabelColumn, this.option.LabelColumn), estimatorName: "MapValueToKey") as INode);
             var experimentOption = new Experiment.Option()
             {
-                ScoreMetric = this.option.ScoreMetric,
+                EvaluationMetrics = this.option.ScoreMetric,
                 Label = this.option.LabelColumn,
-                Iteration = 3,
+                ParameterSweeperIteration = 3,
             };
 
             foreach (var column in columnPicker.SelectColumn(initState.Columns, this.option.BeamSearch))
@@ -65,7 +65,7 @@ namespace MLNet.Expert.AutoML
                                             column,
                                             columnPicker,
                                             experimentOption,
-                                            trainers as EstimatorNodeGroup,
+                                            trainers,
                                             reporter,
                                             ct);
                 this.history.Add(state, result);
@@ -113,7 +113,7 @@ namespace MLNet.Expert.AutoML
                             candidate.Item2.Value,
                             columnPicker,
                             experimentOption,
-                            trainers as EstimatorNodeGroup,
+                            trainers,
                             reporter,
                             ct);
                     this.history.Add(state, result);
@@ -153,7 +153,7 @@ namespace MLNet.Expert.AutoML
             DataViewSchema.Column column,
             ColumnPicker columnPicker,
             Experiment.Option experimentOption,
-            EstimatorNodeGroup trainers,
+            IEnumerable<INode> trainers,
             IProgress<IterationInfo> reporter = null,
             CancellationToken ct = default)
         {
@@ -165,14 +165,14 @@ namespace MLNet.Expert.AutoML
             var pipeline = PipelineBuilder.BuildPipelineFromStateWithNewColumn(this.context, currentState, column, expert, column.Name);
             var experiment = new Experiment(this.context, pipeline, experimentOption);
             var experimentResult = await experiment.TrainAsync(train, validate, reporter, ct);
-            var transformers = experimentResult.BestIteration.SweepablePipeline.Nodes;
+            var transformers = experimentResult.BestIteration.SingleSweepablePipeline.Nodes;
 
             var selectedTransformer = transformers[transformers.Count - 3];
             var transforms = currentState.Transformers.Select(x => x).ToDictionary(x => x.Key, x => x.Value);
             transforms.Add(column, selectedTransformer);
             var inputOutputPair = currentState.InputOutputColumnPairs.Select(x => x).ToList();
             inputOutputPair.Add(new InputOutputColumnPair(column.Name, column.Name));
-            var state = new AutoMLTrainingState(transforms, inputOutputPair, trainers as EstimatorNodeGroup);
+            var state = new AutoMLTrainingState(transforms, inputOutputPair, trainers);
             return (state, experimentResult);
         }
 

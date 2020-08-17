@@ -16,14 +16,14 @@ namespace MLNet.Expert.AutoML
 {
     public class AutoMLTrainingState
     {
-        public AutoMLTrainingState(EstimatorNodeGroup trainers)
+        public AutoMLTrainingState(IEnumerable<INode> trainers)
         {
             this.Trainers = trainers;
             this.InputOutputColumnPairs = new List<InputOutputColumnPair>();
             this.Transformers = new Dictionary<DataViewSchema.Column, INode>();
         }
 
-        public AutoMLTrainingState(Dictionary<DataViewSchema.Column, INode> transformers, List<InputOutputColumnPair> inputOutputColumnPairs, EstimatorNodeGroup trainers)
+        public AutoMLTrainingState(Dictionary<DataViewSchema.Column, INode> transformers, List<InputOutputColumnPair> inputOutputColumnPairs, IEnumerable<INode> trainers)
         {
             this.Trainers = trainers;
             this.Transformers = transformers;
@@ -39,6 +39,6 @@ namespace MLNet.Expert.AutoML
 
         public List<InputOutputColumnPair> InputOutputColumnPairs { get; private set; }
 
-        public EstimatorNodeGroup Trainers { get; private set; }
+        public IEnumerable<INode> Trainers { get; private set; }
     }
 }

@@ -15,22 +15,22 @@ namespace MLNet.Expert
     {
         public static string FEATURECOLUMNNAME = "features";
 
-        public static EstimatorNodeChain BuildPipelineFromState(MLContext context, AutoMLTrainingState state)
+        public static SweepablePipeline BuildPipelineFromState(MLContext context, AutoMLTrainingState state)
         {
-            var pipeline = new EstimatorNodeChain();
-            pipeline.Append(state.Transformers.Select(x => new EstimatorSingleNode(x.Value)));
+            var pipeline = new SweepablePipeline();
+            pipeline.Append(state.Transformers.Values.ToArray());
 
             var concatFeaturesTransformer = PipelineBuilder.BuildConcatFeaturesTransformer(context, state.Columns, state.InputOutputColumnPairs, PipelineBuilder.FEATURECOLUMNNAME);
-            pipeline.Append(new EstimatorSingleNode(concatFeaturesTransformer));
+            pipeline.Append(concatFeaturesTransformer);
 
-            pipeline.Append(state.Trainers);
+            pipeline.Append(state.Trainers.ToArray());
             return pipeline;
         }
 
-        public static EstimatorNodeChain BuildPipelineFromColumns(MLContext context, IEnumerable<DataViewSchema.Column> columns, ColumnPicker columnPicker, IEnumerable<InputOutputColumnPair> inputOutputColumnPairs, EstimatorNodeGroup trainers)
+        public static SweepablePipeline BuildPipelineFromColumns(MLContext context, IEnumerable<DataViewSchema.Column> columns, ColumnPicker columnPicker, IEnumerable<InputOutputColumnPair> inputOutputColumnPairs, INode[] trainers)
         {
             Contract.Requires(columns!.Count() == inputOutputColumnPairs!.Count());
-            var pipeline = new EstimatorNodeChain();
+            var pipeline = new SweepablePipeline();
             foreach (var column in columns)
             {
                 var inputOutputColumnPair = inputOutputColumnPairs.Where(x => x.InputColumnName == column.Name).First();
@@ -40,22 +40,22 @@ namespace MLNet.Expert
                     _ => throw new Exception("Expert not found"),
                 };
 
-                pipeline.Append(expert.Propose(column.Name, inputOutputColumnPair.OutputColumnName));
+                pipeline.Append(expert.Propose(column.Name, inputOutputColumnPair.OutputColumnName).ToArray());
             }
 
             var concatFeaturesTransformer = PipelineBuilder.BuildConcatFeaturesTransformer(context, columns, inputOutputColumnPairs, PipelineBuilder.FEATURECOLUMNNAME);
-            pipeline.Append(new EstimatorSingleNode(concatFeaturesTransformer));
+            pipeline.Append(concatFeaturesTransformer);
             pipeline.Append(trainers);
 
             return pipeline;
         }
 
-        public static EstimatorNodeChain BuildPipelineFromStateWithNewColumn(MLContext context, AutoMLTrainingState state, DataViewSchema.Column column, ITransformExpert expert, string outputColumnName)
+        public static SweepablePipeline BuildPipelineFromStateWithNewColumn(MLContext context, AutoMLTrainingState state, DataViewSchema.Column column, ITransformExpert expert, string outputColumnName)
         {
-            var pipeline = new EstimatorNodeChain();
+            var pipeline = new SweepablePipeline();
 
-            pipeline.Append(state.Transformers.Select(x => new EstimatorSingleNode(x.Value)));
-            pipeline.Append(expert.Propose(column.Name, outputColumnName));
+            pipeline.Append(state.Transformers.Values.ToArray());
+            pipeline.Append(expert.Propose(column.Name, outputColumnName).ToArray());
 
             var inputOutputPair = state.InputOutputColumnPairs.ToList();
             inputOutputPair.Add(new InputOutputColumnPair(outputColumnName, column.Name));
@@ -64,9 +64,9 @@ namespace MLNet.Expert
             columns.Add(column);
 
             var concatFeaturesTransformer = PipelineBuilder.BuildConcatFeaturesTransformer(context, columns.ToArray(), inputOutputPair.ToArray(), PipelineBuilder.FEATURECOLUMNNAME);
-            pipeline.Append(new EstimatorSingleNode(concatFeaturesTransformer));
+            pipeline.Append(concatFeaturesTransformer);
 
-            pipeline.Append(state.Trainers);
+            pipeline.Append(state.Trainers.ToArray());
             return pipeline;
         }
 

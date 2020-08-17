@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <InternalsVisibleTo Include="MLNet.AutoPipeline.Tests" />
+    <InternalsVisibleTo Include="MLNet.Expert" />
   </ItemGroup>
 
   <ItemGroup>

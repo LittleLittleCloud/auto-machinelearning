@@ -50,18 +50,5 @@ namespace MLNet.Expert
             pickIndex.Shuffle();
             return pickIndex.GetRange(0, n).Select(i => list.ToArray()[i]);
         }
-
-        public static EstimatorSingleNode CreateEstimatorSingleNode<TInstance>(UnsweepableNode<TInstance> unSweepableNode)
-            where TInstance : IEstimator<ITransformer>
-        {
-            return new EstimatorSingleNode(unSweepableNode as INode);
-        }
-
-        public static EstimatorSingleNode CreateEstimatorSingleNode<TInstance, TOption>(SweepableNode<TInstance, TOption> sweepableNode)
-            where TInstance : IEstimator<ITransformer>
-            where TOption : class
-        {
-            return new EstimatorSingleNode(sweepableNode as INode);
-        }
     }
 }

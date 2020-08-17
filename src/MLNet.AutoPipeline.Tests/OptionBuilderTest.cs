@@ -38,7 +38,7 @@ namespace MLNet.AutoPipeline.Test
 
             var paramSet = new ParameterSet(input);
 
-            var option = builder.BuildOption(paramSet);
+            var option = builder.BuildFromParameterSet(paramSet);
             option.LongOption.Should().Equals(2);
             option.FloatOption.Should().Equals(2f);
             option.StringOption.Should().Equals("2");
@@ -53,12 +53,11 @@ namespace MLNet.AutoPipeline.Test
             var sweeperOption = new UniformRandomSweeper.Option();
 
             var randomSweeper = new UniformRandomSweeper(sweeperOption);
-            randomSweeper.SweepableParamaters = builder.ValueGenerators;
 
-            foreach (var sweeperOutput in randomSweeper.ProposeSweeps(maximum))
+            foreach (var sweeperOutput in randomSweeper.ProposeSweeps(builder, maximum))
             {
                 maximum -= 1;
-                var option = builder.BuildOption(sweeperOutput);
+                var option = builder.BuildFromParameterSet(sweeperOutput);
                 option.LongOption
                       .Should()
                       .BeLessOrEqualTo(100)
@@ -106,7 +105,7 @@ namespace MLNet.AutoPipeline.Test
             };
 
             var parameterSet = new ParameterSet(input);
-            var option2 = optionBuilder.BuildOption(parameterSet);
+            var option2 = optionBuilder.BuildFromParameterSet(parameterSet);
 
             option2.LongOption.Should().Equals(2);
             option2.FloatOption.Should().Equals(2f);

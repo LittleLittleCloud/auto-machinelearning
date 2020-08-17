@@ -35,10 +35,9 @@ namespace MLNet.Expert.Trainers.Classification
             get => LightGBMBuilder._instance;
         }
 
-        public EstimatorSingleNode CreateTrainer(MLContext context, string label, string feature)
+        public INode CreateTrainer(MLContext context, string label, string feature)
         {
-            var node = context.AutoML().MultiClassification.LightGbm(label, feature);
-            return Util.CreateEstimatorSingleNode(node);
+            return context.AutoML().MultiClassification.LightGbm(label, feature);
         }
     }
 }

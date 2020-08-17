@@ -35,7 +35,6 @@ namespace MLNet.Sweeper
             this.ID = Guid.NewGuid().ToString("N");
         }
 
-        // REVIEW: Is float accurate enough?
         public IParameterValue CreateFromNormalized(double normalizedValue)
         {
             var rawValue = this._options.Values[(int)(this._options.Values.Length * normalizedValue)];
