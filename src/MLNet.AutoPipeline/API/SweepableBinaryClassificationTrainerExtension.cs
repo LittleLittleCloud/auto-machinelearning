@@ -1,4 +1,8 @@
-﻿using Microsoft.ML;
+﻿// <copyright file="SweepableBinaryClassificationTrainerExtension.cs" company="BigMiao">
+// Copyright (c) BigMiao. All rights reserved.
+// </copyright>
+
+using Microsoft.ML;
 using Microsoft.ML.Trainers;
 using Microsoft.ML.Trainers.FastTree;
 using Microsoft.ML.Trainers.LightGbm;
@@ -10,7 +14,7 @@ namespace MLNet.AutoPipeline
 {
     public static class SweepableBinaryClassificationTrainerExtension
     {
-        private static string PredictedLabel = "PredictedLabel";
+        private const string PredictedLabel = "PredictedLabel";
 
         public static SweepableNode<LinearSvmTrainer, LinearSvmTrainer.Options>
             LinearSvm(
@@ -27,7 +31,6 @@ namespace MLNet.AutoPipeline
             }
 
             optionBuilder.SetDefaultOption(defaultOption);
-
             return context.AutoML().SweepableTrainer(
                 (context, option) =>
                 {
@@ -37,7 +40,7 @@ namespace MLNet.AutoPipeline
                 },
                 optionBuilder,
                 new string[] { featureColumnName },
-                PredictedLabel,
+                new string[] { PredictedLabel },
                 nameof(LinearSvmTrainer));
         }
 
@@ -67,7 +70,7 @@ namespace MLNet.AutoPipeline
                 },
                 optionBuilder,
                 new string[] { featureColumnName },
-                PredictedLabel,
+                new string[] { PredictedLabel },
                 nameof(LdSvmTrainer));
         }
 
@@ -96,7 +99,7 @@ namespace MLNet.AutoPipeline
                 },
                 optionBuilder,
                 new string[] { featureColumnName },
-                PredictedLabel,
+                new string[] { PredictedLabel },
                 nameof(FastForestBinaryTrainer));
         }
 
@@ -125,7 +128,7 @@ namespace MLNet.AutoPipeline
                 },
                 optionBuilder,
                 new string[] { featureColumnName },
-                PredictedLabel,
+                new string[] { PredictedLabel },
                 nameof(FastTreeBinaryTrainer));
         }
 
@@ -154,7 +157,7 @@ namespace MLNet.AutoPipeline
                 },
                 optionBuilder,
                 new string[] { featureColumnName },
-                PredictedLabel,
+                new string[] { PredictedLabel },
                 nameof(LightGbmBinaryTrainer));
         }
 
@@ -183,7 +186,7 @@ namespace MLNet.AutoPipeline
                 },
                 optionBuilder,
                 new string[] { featureColumnName },
-                PredictedLabel,
+                new string[] { PredictedLabel },
                 nameof(GamBinaryTrainer));
         }
 
@@ -212,7 +215,7 @@ namespace MLNet.AutoPipeline
                 },
                 optionBuilder,
                 new string[] { featureColumnName },
-                PredictedLabel,
+                new string[] { PredictedLabel },
                 nameof(SgdNonCalibratedTrainer));
         }
 
@@ -241,7 +244,7 @@ namespace MLNet.AutoPipeline
                 },
                 optionBuilder,
                 new string[] { featureColumnName },
-                PredictedLabel,
+                new string[] { PredictedLabel },
                 nameof(SgdCalibratedTrainer));
         }
 
@@ -270,7 +273,7 @@ namespace MLNet.AutoPipeline
                 },
                 optionBuilder,
                 new string[] { featureColumnName },
-                PredictedLabel,
+                new string[] { PredictedLabel },
                 nameof(SdcaNonCalibratedBinaryTrainer));
         }
 
@@ -299,7 +302,7 @@ namespace MLNet.AutoPipeline
                 },
                 optionBuilder,
                 new string[] { featureColumnName },
-                PredictedLabel,
+                new string[] { PredictedLabel },
                 nameof(SdcaLogisticRegressionBinaryTrainer));
         }
 
@@ -328,7 +331,7 @@ namespace MLNet.AutoPipeline
                 },
                 optionBuilder,
                 new string[] { featureColumnName },
-                PredictedLabel,
+                new string[] { PredictedLabel },
                 nameof(LbfgsLogisticRegressionBinaryTrainer));
         }
 
@@ -357,7 +360,7 @@ namespace MLNet.AutoPipeline
                 },
                 optionBuilder,
                 new string[] { featureColumnName },
-                PredictedLabel,
+                new string[] { PredictedLabel },
                 nameof(AveragedPerceptronTrainer));
         }
     }

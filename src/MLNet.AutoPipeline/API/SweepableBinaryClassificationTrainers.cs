@@ -11,7 +11,7 @@ namespace MLNet.AutoPipeline
     /// </summary>
     public class SweepableBinaryClassificationTrainers
     {
-        public SweepableBinaryClassificationTrainers(MLContext context)
+        internal SweepableBinaryClassificationTrainers(MLContext context)
         {
             this.Context = context;
         }

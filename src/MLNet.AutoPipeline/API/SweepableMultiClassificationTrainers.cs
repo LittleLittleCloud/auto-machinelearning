@@ -11,7 +11,7 @@ namespace MLNet.AutoPipeline
     /// </summary>
     public class SweepableMultiClassificationTrainers
     {
-        public SweepableMultiClassificationTrainers(MLContext context)
+        internal SweepableMultiClassificationTrainers(MLContext context)
         {
             this.Context = context;
         }

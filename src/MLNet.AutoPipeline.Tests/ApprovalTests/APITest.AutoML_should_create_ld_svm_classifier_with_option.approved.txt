@@ -1,6 +1,14 @@
 {
   "parameters": [
     {
+      "Name": "LabelColumnName",
+      "ValueText": "Label"
+    },
+    {
+      "Name": "FeatureColumnName",
+      "ValueText": "Features"
+    },
+    {
       "Name": "NumberOfIterations",
       "ValueText": "100"
     },

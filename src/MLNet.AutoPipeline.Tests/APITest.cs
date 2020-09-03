@@ -114,7 +114,7 @@ namespace MLNet.AutoPipeline.Test
                                 },
                                 optionBuilder,
                                 new string[] { "Features" },
-                                "Score",
+                                new string[] { "Score" },
                                 "CustomSdca");
 
             var parameterValues = optionBuilder.ValueGenerators.Select(x => x.CreateFromNormalized(0.5));
@@ -138,7 +138,7 @@ namespace MLNet.AutoPipeline.Test
                                 },
                                 optionBuilder,
                                 new string[] { "Features" },
-                                "Score",
+                                new string[] { "Score" },
                                 "CustomSdca");
             var ovaTrainer = context.AutoML().MultiClassification.OneVersusAll(binaryTrainer);
 
