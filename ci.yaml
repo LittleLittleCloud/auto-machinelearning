@@ -18,6 +18,10 @@ jobs:
       Release:
         _configuration: Release
   steps:
+    - script: init.cmd
+      displayName: initialize
+      condition: succeeded()
+      
     - task: DotNetCoreCLI@2
       inputs:
         command: 'restore'
