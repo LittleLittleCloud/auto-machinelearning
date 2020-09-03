@@ -4,7 +4,6 @@
 
 using Microsoft.ML;
 using Microsoft.ML.Data;
-using MLNet.AutoPipeline.Metric;
 using MLNet.Sweeper;
 using System;
 using System.Collections.Generic;
@@ -28,14 +27,9 @@ namespace MLNet.AutoPipeline
         public double TrainingTime { get; private set; }
 
         /// <summary>
-        /// Score metric name and value on validate dataset, this value is set by <see cref="Experiment.Option.EvaluationMetrics"/>.
+        /// Score metric name and value on validate dataset, this value is set by <see cref="Experiment.Option.EvaluateFunction"/>.
         /// </summary>
-        public Metric ScoreMetric { get; private set; }
-
-        /// <summary>
-        /// Evaluated metrics name and value in each sweeping, this value is set by <see cref="Experiment.Option.Metrics"/>.
-        /// </summary>
-        public IEnumerable<Metric> EvaluateMetrics { get; private set; }
+        public double EvaluateScore { get; private set; }
 
         /// <summary>
         /// Indicate optimize direction.
@@ -47,13 +41,12 @@ namespace MLNet.AutoPipeline
         /// </summary>
         internal SingleEstimatorSweepablePipeline SingleSweepablePipeline { get; private set; }
 
-        internal IterationInfo(SingleEstimatorSweepablePipeline singleweepablePipeline, ParameterSet parameters, double time, Metric score, IEnumerable<Metric> metrics, bool isMaximizing)
+        internal IterationInfo(SingleEstimatorSweepablePipeline singleweepablePipeline, ParameterSet parameters, double time, double evaluateScore, bool isMaximizing)
         {
             this.SingleSweepablePipeline = singleweepablePipeline;
             this.ParameterSet = parameters;
             this.TrainingTime = time;
-            this.ScoreMetric = score;
-            this.EvaluateMetrics = metrics;
+            this.EvaluateScore = evaluateScore;
             this.IsMetricMaximizing = isMaximizing;
         }
 
@@ -68,27 +61,27 @@ namespace MLNet.AutoPipeline
 
         public int CompareTo(IterationInfo obj)
         {
-            if (obj is null || obj?.ScoreMetric.Name != this.ScoreMetric.Name)
+            if (obj is null)
             {
                 return 1;
             }
 
             if (this.IsMetricMaximizing)
             {
-                return this.ScoreMetric.Score.CompareTo(obj.ScoreMetric.Score);
+                return this.EvaluateScore.CompareTo(obj.EvaluateScore);
             }
             else
             {
-                return obj.ScoreMetric.Score.CompareTo(this.ScoreMetric.Score);
+                return obj.EvaluateScore.CompareTo(this.EvaluateScore);
             }
         }
 
-        public static bool operator > (IterationInfo info1, IterationInfo info2)
+        public static bool operator >(IterationInfo info1, IterationInfo info2)
         {
             return info1.CompareTo(info2) == 1;
         }
 
-        public static bool operator < (IterationInfo info1, IterationInfo info2)
+        public static bool operator <(IterationInfo info1, IterationInfo info2)
         {
             return info1.CompareTo(info2) == -1;
         }
@@ -116,5 +109,4 @@ namespace MLNet.AutoPipeline
             public double Score { get; set; }
         }
     }
-
 }

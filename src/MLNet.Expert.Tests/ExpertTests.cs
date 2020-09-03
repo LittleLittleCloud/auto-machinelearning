@@ -6,7 +6,6 @@ using FluentAssertions;
 using Microsoft.ML;
 using Microsoft.ML.Data;
 using MLNet.AutoPipeline;
-using MLNet.AutoPipeline.Metric;
 using MLNet.Expert.AutoML;
 using System;
 using System.Linq;
@@ -70,7 +69,11 @@ namespace MLNet.Expert.Tests
             var option = new Classification.Option()
             {
                 BeamSearch = 3,
-                ScoreMetric = new MicroAccuracyMetric(),
+                EvaluateFunction = (MLContext context, IDataView data) =>
+                {
+                    return context.MulticlassClassification.Evaluate(data).MicroAccuracy;
+                },
+                IsMaximizing = true,
                 LabelColumn = "species",
                 MaximumTrainingTime = 60,
                 ClassificationExpertOption = classificationExpertOption,
@@ -128,7 +131,7 @@ namespace MLNet.Expert.Tests
             public void Report(IterationInfo value)
             {
                 this.output.WriteLine(value.ParameterSet?.ToString() ?? string.Empty);
-                this.output.WriteLine($"validate score: {value.ScoreMetric.Name}: {value.ScoreMetric.Score}");
+                this.output.WriteLine($"evaluate score: {value.EvaluateScore}");
                 this.output.WriteLine($"training time: {value.TrainingTime}");
             }
         }

@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Microsoft.ML;
+using Microsoft.ML.Runtime;
 
 namespace MLNet.AutoPipeline
 {
@@ -21,6 +22,7 @@ namespace MLNet.AutoPipeline
         /// <returns><see cref="AutoPipelineCatalog"/>.</returns>
         public static AutoPipelineCatalog AutoML(this MLContext context)
         {
+            Logger.Instance.Channel = (context as IChannelProvider).Start("AutoPipeline");
             return new AutoPipelineCatalog(context);
         }
     }
