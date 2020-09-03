@@ -76,6 +76,12 @@ namespace MLNet.AutoPipeline
             this.Channel?.Warning(sensitivity, fmt, args);
         }
 
+        // for test usage
+        internal Logger(IChannel channel)
+        {
+            this.Channel = channel;
+        }
+
         private Logger()
         {
         }

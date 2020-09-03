@@ -1,0 +1,40 @@
+{
+  "parameters": [
+    {
+      "Name": "LabelColumnName",
+      "ValueText": "Label"
+    },
+    {
+      "Name": "FeatureColumnName",
+      "ValueText": "Features"
+    },
+    {
+      "Name": "ExampleWeightColumnName",
+      "ValueText": null
+    },
+    {
+      "Name": "LossFunction",
+      "ValueText": "Microsoft.ML.Trainers.LogLoss",
+      "Value": {}
+    },
+    {
+      "Name": "L1Regularization",
+      "ValueText": "0.31622776"
+    },
+    {
+      "Name": "L2Regularization",
+      "ValueText": "0.031622775"
+    },
+    {
+      "Name": "MaximumNumberOfIterations",
+      "ValueText": "16"
+    }
+  ],
+  "name": "SdcaRegressionTrainer",
+  "input_column": [
+    "Features"
+  ],
+  "output_column": [
+    "Score"
+  ]
+}

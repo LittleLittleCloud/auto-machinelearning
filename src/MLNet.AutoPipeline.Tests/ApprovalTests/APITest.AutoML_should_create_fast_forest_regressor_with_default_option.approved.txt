@@ -9,19 +9,27 @@
       "ValueText": "Features"
     },
     {
-      "Name": "NumberOfIterations",
+      "Name": "ExampleWeightColumnName",
+      "ValueText": null
+    },
+    {
+      "Name": "NumberOfLeaves",
       "ValueText": "100"
     },
     {
-      "Name": "TreeDepth",
+      "Name": "NumberOfTrees",
+      "ValueText": "32"
+    },
+    {
+      "Name": "MinimumExampleCountPerLeaf",
       "ValueText": "10"
     }
   ],
-  "name": "LdSvmTrainer",
+  "name": "FastForestRegressionTrainer",
   "input_column": [
-    "feature"
+    "Features"
   ],
   "output_column": [
-    "PredictedLabel"
+    "Score"
   ]
 }

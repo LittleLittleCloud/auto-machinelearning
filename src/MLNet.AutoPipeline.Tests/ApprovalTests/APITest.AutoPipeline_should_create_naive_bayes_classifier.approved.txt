@@ -2,9 +2,9 @@
   "parameters": null,
   "name": "NaiveBayesMulticlassTrainer",
   "input_column": [
-    "label"
+    "feature"
   ],
   "output_column": [
-    "feature"
+    "PredictedLabel"
   ]
 }

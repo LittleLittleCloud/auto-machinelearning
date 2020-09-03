@@ -18,6 +18,8 @@ namespace MLNet.AutoPipeline
     /// </summary>
     public static class SweepableMultiClassificationTrainerExtension
     {
+        private const string PredictedLabel = "PredictedLabel";
+
         /// <summary>
         /// Create an <see cref="UnsweepableNode{SweepableBinaryClassificationTrainers}"/> where TTrainer is <see cref="NaiveBayesMulticlassTrainer"/> that can be used in <see cref="SweepablePipeline"/>.
         /// </summary>
@@ -30,11 +32,11 @@ namespace MLNet.AutoPipeline
         {
             var context = trainer.Context;
             var instance = context.MulticlassClassification.Trainers.NaiveBayes(labelColumnName, featureColumnName);
-            return Util.CreateUnSweepableNode(
+            return context.AutoML().UnsweepableTrainer(
                         instance,
                         estimatorName: nameof(NaiveBayesMulticlassTrainer),
-                        inputs: new string[] { labelColumnName },
-                        outputs: new string[] { featureColumnName });
+                        inputs: new string[] { featureColumnName },
+                        outputs: new string[] { PredictedLabel });
         }
 
         /// <summary>
@@ -55,22 +57,19 @@ namespace MLNet.AutoPipeline
                 optionBuilder = SdcaMaximumEntropyMulticlassTrainerSweepableOptions.Default;
             }
 
-            return Util.CreateSweepableNode(
-                                (option) =>
-                                {
-                                    if (defaultOption != null)
-                                    {
-                                        Util.CopyFieldsTo(defaultOption, option);
-                                    }
+            optionBuilder.SetDefaultOption(defaultOption);
 
+            return context.AutoML().SweepableTrainer(
+                                (context, option) =>
+                                {
                                     option.LabelColumnName = labelColumnName;
                                     option.FeatureColumnName = featureColumnName;
                                     return context.MulticlassClassification.Trainers.SdcaMaximumEntropy(option);
                                 },
                                 optionBuilder,
-                                estimatorName: nameof(SdcaMaximumEntropyMulticlassTrainer),
-                                inputs: new string[] { labelColumnName },
-                                outputs: new string[] { featureColumnName });
+                                new string[] { featureColumnName },
+                                new string[] { PredictedLabel },
+                                nameof(SdcaMaximumEntropyMulticlassTrainer));
         }
 
         /// <summary>
@@ -91,22 +90,19 @@ namespace MLNet.AutoPipeline
                 optionBuilder = SdcaNonCalibratedMulticlassTrainerSweepableOptions.Default;
             }
 
-            return Util.CreateSweepableNode(
-                                (option) =>
-                                {
-                                    if (defaultOption != null)
-                                    {
-                                        Util.CopyFieldsTo(defaultOption, option);
-                                    }
+            optionBuilder.SetDefaultOption(defaultOption);
 
+            return context.AutoML().SweepableTrainer(
+                                (context, option) =>
+                                {
                                     option.LabelColumnName = labelColumnName;
                                     option.FeatureColumnName = featureColumnName;
                                     return context.MulticlassClassification.Trainers.SdcaNonCalibrated(option);
                                 },
                                 optionBuilder,
-                                estimatorName: nameof(SdcaNonCalibratedMulticlassTrainer),
-                                inputs: new string[] { labelColumnName },
-                                outputs: new string[] { featureColumnName });
+                                trainerName: nameof(SdcaNonCalibratedMulticlassTrainer),
+                                inputs: new string[] { featureColumnName },
+                                outputs: new string[] { PredictedLabel });
         }
 
         /// <summary>
@@ -127,22 +123,19 @@ namespace MLNet.AutoPipeline
                 optionBuilder = LbfgsMaximumEntropyMulticlassTrainerSweepableOptions.Default;
             }
 
-            return Util.CreateSweepableNode(
-                                (option) =>
-                                {
-                                    if (defaultOption != null)
-                                    {
-                                        Util.CopyFieldsTo(defaultOption, option);
-                                    }
+            optionBuilder.SetDefaultOption(defaultOption);
 
+            return context.AutoML().SweepableTrainer(
+                                (context, option) =>
+                                {
                                     option.LabelColumnName = labelColumnName;
                                     option.FeatureColumnName = featureColumnName;
                                     return context.MulticlassClassification.Trainers.LbfgsMaximumEntropy(option);
                                 },
                                 optionBuilder,
-                                estimatorName: nameof(LbfgsMaximumEntropyMulticlassTrainer),
-                                inputs: new string[] { labelColumnName },
-                                outputs: new string[] { featureColumnName });
+                                trainerName: nameof(LbfgsMaximumEntropyMulticlassTrainer),
+                                inputs: new string[] { featureColumnName },
+                                outputs: new string[] { PredictedLabel });
         }
 
         /// <summary>
@@ -163,8 +156,10 @@ namespace MLNet.AutoPipeline
                 optionBuilder = LightGbmMulticlassTrainerSweepableOptions.Default;
             }
 
-            return Util.CreateSweepableNode(
-                                (option) =>
+            optionBuilder.SetDefaultOption(defaultOption);
+
+            return context.AutoML().SweepableTrainer(
+                                (context, option) =>
                                 {
                                     if (defaultOption != null)
                                     {
@@ -176,9 +171,9 @@ namespace MLNet.AutoPipeline
                                     return context.MulticlassClassification.Trainers.LightGbm(option);
                                 },
                                 optionBuilder,
-                                estimatorName: nameof(LightGbmMulticlassTrainer),
-                                inputs: new string[] { labelColumnName },
-                                outputs: new string[] { featureColumnName });
+                                trainerName: nameof(LightGbmMulticlassTrainer),
+                                inputs: new string[] { featureColumnName },
+                                outputs: new string[] { PredictedLabel });
         }
 
         /// <summary>
@@ -201,16 +196,16 @@ namespace MLNet.AutoPipeline
         {
             var context = trainer.Context;
 
-            return Util.CreateSweepableNode(
-                                (option) =>
+            return context.AutoML().SweepableTrainer(
+                                (context, option) =>
                                 {
                                     var estimator = node.EstimatorFactory(option);
                                     return context.MulticlassClassification.Trainers.OneVersusAll(estimator, labelColumnName, imputeMissingLabelsAsNegative, calibrator, maximumCalibrationExampleCount, useProbabilities);
                                 },
                                 node.OptionBuilder,
-                                estimatorName: node.EstimatorName + "Ova",
                                 inputs: node.InputColumns,
-                                outputs: node.OutputColumns);
+                                outputs: node.OutputColumns,
+                                trainerName: node.EstimatorName + "Ova");
         }
     }
 }

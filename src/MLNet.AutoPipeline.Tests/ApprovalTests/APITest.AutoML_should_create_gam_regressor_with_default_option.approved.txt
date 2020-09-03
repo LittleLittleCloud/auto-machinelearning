@@ -9,19 +9,27 @@
       "ValueText": "Features"
     },
     {
+      "Name": "ExampleWeightColumnName",
+      "ValueText": null
+    },
+    {
       "Name": "NumberOfIterations",
+      "ValueText": "2236"
+    },
+    {
+      "Name": "MaximumBinCountPerFeature",
       "ValueText": "100"
     },
     {
-      "Name": "TreeDepth",
-      "ValueText": "10"
+      "Name": "LearningRate",
+      "ValueText": "0.010000000000000004"
     }
   ],
-  "name": "LdSvmTrainer",
+  "name": "GamRegressionTrainer",
   "input_column": [
-    "feature"
+    "Features"
   ],
   "output_column": [
-    "PredictedLabel"
+    "Score"
   ]
 }

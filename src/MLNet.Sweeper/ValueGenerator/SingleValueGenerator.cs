@@ -49,7 +49,7 @@ namespace MLNet.Sweeper
             var sb = new StringBuilder();
             sb.AppendLine($"Parameter Name: {this.Name}");
             sb.AppendLine($"Parameter Type: {typeof(T).Name}");
-            sb.AppendLine($"Parameter Value: {this.value}");
+            sb.AppendLine($"Parameter Value: {this.value.RawValue}");
 
             return sb.ToString();
         }

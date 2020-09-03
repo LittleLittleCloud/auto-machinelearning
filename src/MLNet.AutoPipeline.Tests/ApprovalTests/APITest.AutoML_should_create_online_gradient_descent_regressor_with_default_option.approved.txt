@@ -1,0 +1,41 @@
+{
+  "parameters": [
+    {
+      "Name": "LabelColumnName",
+      "ValueText": "Label"
+    },
+    {
+      "Name": "FeatureColumnName",
+      "ValueText": "Features"
+    },
+    {
+      "Name": "LossFunction",
+      "ValueText": "Microsoft.ML.Trainers.LogLoss",
+      "Value": {}
+    },
+    {
+      "Name": "LearningRate",
+      "ValueText": "0.0031622776"
+    },
+    {
+      "Name": "DecreaseLearningRate",
+      "ValueText": "True",
+      "Value": true
+    },
+    {
+      "Name": "L2Regularization",
+      "ValueText": "0.031622775"
+    },
+    {
+      "Name": "NumberOfIterations",
+      "ValueText": "16"
+    }
+  ],
+  "name": "OnlineGradientDescentTrainer",
+  "input_column": [
+    "Features"
+  ],
+  "output_column": [
+    "Score"
+  ]
+}
