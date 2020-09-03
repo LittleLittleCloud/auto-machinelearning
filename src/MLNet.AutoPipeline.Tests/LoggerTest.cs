@@ -25,75 +25,86 @@ namespace MLNet.AutoPipeline.Test
         public void Logger_should_log_in_trace_level()
         {
             var context = new MLContext();
-            Logger.Instance.Channel = (context as IChannelProvider).Start("AutoPipeline");
+            var logger = new Logger((context as IChannelProvider).Start("AutoPipeline_trace"));
             var res = new List<string>();
             context.Log += (object sender, LoggingEventArgs e) =>
             {
-                res.Add(e.Message);
+                if (e.Source == "AutoPipeline_trace")
+                {
+                    res.Add(e.Message);
+                }
             };
 
-            Logger.Instance.Trace(MessageSensitivity.All, "Hello from AutoPipeline");
-            Logger.Instance.Trace(MessageSensitivity.UserData, "Hello from {0}", "AutoPipeline");
+            logger.Trace(MessageSensitivity.All, "Hello from AutoPipeline");
+            logger.Trace(MessageSensitivity.UserData, "Hello from {0}", "AutoPipeline");
 
             res.Count.Should().Be(2);
-            res[0].Should().Be("[Source=AutoPipeline, Kind=Trace] Hello from AutoPipeline");
-            res[1].Should().Be("[Source=AutoPipeline, Kind=Trace] Hello from AutoPipeline");
+            res[0].Should().Be("[Source=AutoPipeline_trace, Kind=Trace] Hello from AutoPipeline");
+            res[1].Should().Be("[Source=AutoPipeline_trace, Kind=Trace] Hello from AutoPipeline");
         }
 
         [Fact]
         public void Logger_should_log_in_warning_level()
         {
             var context = new MLContext();
-            Logger.Instance.Channel = (context as IChannelProvider).Start("AutoPipeline");
+            var logger = new Logger((context as IChannelProvider).Start("AutoPipeline_warning"));
             var res = new List<string>();
             context.Log += (object sender, LoggingEventArgs e) =>
             {
-                res.Add(e.Message);
+                if (e.Source == "AutoPipeline_warning")
+                {
+                    res.Add(e.Message);
+                }
             };
 
-            Logger.Instance.Warning(MessageSensitivity.All, "Hello from AutoPipeline");
-            Logger.Instance.Warning(MessageSensitivity.UserData, "Hello from {0}", "AutoPipeline");
+            logger.Warning(MessageSensitivity.All, "Hello from AutoPipeline");
+            logger.Warning(MessageSensitivity.UserData, "Hello from {0}", "AutoPipeline");
 
             res.Count.Should().Be(2);
-            res[0].Should().Be("[Source=AutoPipeline, Kind=Warning] Hello from AutoPipeline");
-            res[1].Should().Be("[Source=AutoPipeline, Kind=Warning] Hello from AutoPipeline");
+            res[0].Should().Be("[Source=AutoPipeline_warning, Kind=Warning] Hello from AutoPipeline");
+            res[1].Should().Be("[Source=AutoPipeline_warning, Kind=Warning] Hello from AutoPipeline");
         }
 
         [Fact]
         public void Logger_should_log_in_info_level()
         {
             var context = new MLContext();
-            Logger.Instance.Channel = (context as IChannelProvider).Start("AutoPipeline");
+            var logger = new Logger((context as IChannelProvider).Start("AutoPipeline_info"));
             var res = new List<string>();
             context.Log += (object sender, LoggingEventArgs e) =>
             {
-                res.Add(e.Message);
+                if (e.Source == "AutoPipeline_info")
+                {
+                    res.Add(e.Message);
+                }
             };
 
-            Logger.Instance.Info(MessageSensitivity.All, "Hello from AutoPipeline");
-            Logger.Instance.Info(MessageSensitivity.UserData, "Hello from {0}", "AutoPipeline");
+            logger.Info(MessageSensitivity.All, "Hello from AutoPipeline");
+            logger.Info(MessageSensitivity.UserData, "Hello from {0}", "AutoPipeline");
 
             res.Count.Should().Be(2);
-            res[0].Should().Be("[Source=AutoPipeline, Kind=Info] Hello from AutoPipeline");
-            res[1].Should().Be("[Source=AutoPipeline, Kind=Info] Hello from AutoPipeline");
+            res[0].Should().Be("[Source=AutoPipeline_info, Kind=Info] Hello from AutoPipeline");
+            res[1].Should().Be("[Source=AutoPipeline_info, Kind=Info] Hello from AutoPipeline");
         }
 
         [Fact]
         public void Logger_should_log_in_error_level()
         {
             var context = new MLContext();
-            Logger.Instance.Channel = (context as IChannelProvider).Start("AutoPipeline");
+            var logger = new Logger((context as IChannelProvider).Start("AutoPipeline_error"));
             var res = new List<string>();
             context.Log += (object sender, LoggingEventArgs e) =>
             {
-                this.Output.WriteLine(e.Message);
-                res.Add(e.Message);
+                if (e.Source == "AutoPipeline_error")
+                {
+                    res.Add(e.Message);
+                }
             };
 
-            Logger.Instance.Error(MessageSensitivity.UserData, "Hello from {0}", "AutoPipeline");
+            logger.Error(MessageSensitivity.UserData, "Hello from {0}", "AutoPipeline");
 
             res.Count.Should().Be(1);
-            res[0].Should().Be("[Source=AutoPipeline, Kind=Error] Hello from AutoPipeline");
+            res[0].Should().Be("[Source=AutoPipeline_error, Kind=Error] Hello from AutoPipeline");
         }
     }
 }
