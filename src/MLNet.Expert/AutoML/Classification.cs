@@ -4,7 +4,6 @@
 
 using Microsoft.ML;
 using MLNet.AutoPipeline;
-using MLNet.AutoPipeline.Metric;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -51,8 +50,7 @@ namespace MLNet.Expert.AutoML
             initState.Transformers.Add(columnPicker.LabelColumn, Util.CreateUnSweepableNode(this.context.Transforms.Conversion.MapValueToKey(this.option.LabelColumn, this.option.LabelColumn), estimatorName: "MapValueToKey") as INode);
             var experimentOption = new Experiment.Option()
             {
-                EvaluationMetrics = this.option.ScoreMetric,
-                Label = this.option.LabelColumn,
+                EvaluateFunction = this.option.EvaluateFunction,
                 ParameterSweeperIteration = 3,
             };
 
@@ -84,16 +82,16 @@ namespace MLNet.Expert.AutoML
                 }
 
                 IEnumerable<(AutoMLTrainingState, DataViewSchema.Column?)> candidates;
-                if (this.option.ScoreMetric.IsMaximizing)
+                if (this.option.IsMaximizing)
                 {
-                    candidates = this.history.OrderByDescending(x => x.Value.BestIteration.ScoreMetric.Score)
+                    candidates = this.history.OrderByDescending(x => x.Value.BestIteration.EvaluateScore)
                                              .Select(x => (x.Key, (DataViewSchema.Column?)columnPicker.SelectColumn(x.Key.Columns, 1).FirstOrDefault()))
                                              .Where(x => x.Item2 != null)
                                              .Take(this.option.BeamSearch);
                 }
                 else
                 {
-                    candidates = this.history.OrderByDescending(x => x.Value.BestIteration.ScoreMetric.Score)
+                    candidates = this.history.OrderByDescending(x => x.Value.BestIteration.EvaluateScore)
                                              .Select(x => (x.Key, (DataViewSchema.Column?)columnPicker.SelectColumn(x.Key.Columns, 1).FirstOrDefault()))
                                              .Where(x => x.Item2 != null)
                                              .Take(this.option.BeamSearch);
@@ -130,16 +128,16 @@ namespace MLNet.Expert.AutoML
 
         private ExperimentResult HandleExperimentResultAndReturn(Dictionary<AutoMLTrainingState, ExperimentResult> history)
         {
-            if (this.option.ScoreMetric.IsMaximizing)
+            if (this.option.IsMaximizing)
             {
-                return history.OrderByDescending(x => x.Value.BestIteration.ScoreMetric.Score)
+                return history.OrderByDescending(x => x.Value.BestIteration.EvaluateScore)
                                    .Take(1)
                                    .Select(x => x.Value)
                                    .First();
             }
             else
             {
-                return history.OrderByDescending(x => x.Value.BestIteration.ScoreMetric.Score)
+                return history.OrderByDescending(x => x.Value.BestIteration.EvaluateScore)
                    .Take(1)
                    .Select(x => x.Value)
                    .First();
@@ -176,17 +174,13 @@ namespace MLNet.Expert.AutoML
             return (state, experimentResult);
         }
 
-        public class Option
+        public class Option : Experiment.Option
         {
-            public double MaximumTrainingTime { get; set; }
-
             public string[] CatagoryColumns { get; set; } = new string[0];
 
             public string[] IgnoreColumns { get; set; } = new string[0];
 
             public string LabelColumn { get; set; }
-
-            public IMetric ScoreMetric { get; set; }
 
             public int BeamSearch { get; set; } = 3;
 

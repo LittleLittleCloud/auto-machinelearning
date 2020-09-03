@@ -4,7 +4,6 @@
 
 using Microsoft.ML;
 using Microsoft.ML.Runtime;
-using MLNet.AutoPipeline.Metric;
 using MLNet.Sweeper;
 using System;
 using System.Collections.Generic;
@@ -16,6 +15,8 @@ using System.Threading.Tasks;
 
 namespace MLNet.AutoPipeline
 {
+    public delegate double EvaluateFunction(MLContext context, IDataView dataView);
+
     public class Experiment
     {
         private Option option;
@@ -61,20 +62,11 @@ namespace MLNet.AutoPipeline
                         var val_eval = model.Transform(validate);
 
                         // evaluate
-                        var evaluateMetrics = new List<IterationInfo.Metric>();
-                        foreach (var metric in this.option.Metrics)
-                        {
-                            var score = metric.Score(this.context, val_eval, this.option.Label);
-                            evaluateMetrics.Add(new IterationInfo.Metric(metric.Name, score));
-                        }
-
-                        // score
-                        var validateScoreMetric = new IterationInfo.Metric(this.option.EvaluationMetrics.Name, this.option.EvaluationMetrics.Score(this.context, val_eval, this.option.Label));
-
-                        var iterationInfo = new IterationInfo(singleSweepablePipeline, parameterSet, stopWatch.Elapsed.TotalSeconds, validateScoreMetric, evaluateMetrics, this.option.EvaluationMetrics.IsMaximizing);
+                        var validateScoreMetric = this.option.EvaluateFunction(this.context, val_eval);
+                        var iterationInfo = new IterationInfo(singleSweepablePipeline, parameterSet, stopWatch.Elapsed.TotalSeconds, validateScoreMetric, this.option.IsMaximizing);
 
                         // update sweeper
-                        var runHistory = new RunResult(parameterSet, validateScoreMetric.Score, iterationInfo.IsMetricMaximizing);
+                        var runHistory = new RunResult(parameterSet, validateScoreMetric, this.option.IsMaximizing);
                         this.option.ParameterSweeper.AddRunHistory(runHistory);
 
                         // report
@@ -140,19 +132,14 @@ namespace MLNet.AutoPipeline
             public int PipelineSweeperIteration { get; set; } = 100;
 
             /// <summary>
-            /// Metric to optimize. This metric will be recorded in <see cref="IterationInfo.ScoreMetric"/> in each sweeping.
+            /// Inidcate whether the valudating score from <see cref="EvaluateFunction"/> should be maximize during training. Default to true.
             /// </summary>
-            public IMetric EvaluationMetrics { get; set; }
+            public bool IsMaximizing { get; set; } = true;
 
             /// <summary>
-            /// Metrics to be evaluate during training. These metrics will be recorded in <see cref="IterationInfo."/> 
+            /// Indicate how to evaluate validate score during training. The function must match <see cref="AutoPipeline.EvaluateFunction"/> signature.
             /// </summary>
-            public IEnumerable<IMetric> Metrics { get; set; } = new List<IMetric>();
-
-            /// <summary>
-            /// Label column name. Default is Label.
-            /// </summary>
-            public string Label { get; set; } = "Label";
+            public EvaluateFunction EvaluateFunction { get; set; }
 
             public double MaximumTrainingTime = 100;
         }
