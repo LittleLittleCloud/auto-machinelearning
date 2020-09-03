@@ -21,6 +21,7 @@ namespace MLNet.AutoPipeline
             this.mlContext = context;
             this.MultiClassification = new SweepableMultiClassificationTrainers(context);
             this.BinaryClassification = new SweepableBinaryClassificationTrainers(context);
+            this.Regression = new SweepableRegressionTrainers(context);
         }
 
         public SweepableBinaryClassificationTrainers BinaryClassification { get; private set; }
@@ -45,9 +46,9 @@ namespace MLNet.AutoPipeline
             where TTrain : IEstimator<ITransformer>
             where TOption : class
         {
-            Logger.Instance.Trace(Microsoft.ML.Runtime.MessageSensitivity.None, $"Create Sweepable trainer. Trainer name: {trainerName}, Input column(s): {string.Join(",", inputs)}, Output column(s): {string.Join(",", outputs)}");
+            Logger.Instance.Trace(Microsoft.ML.Runtime.MessageSensitivity.None, $"Create Sweepable trainer. Trainer name: {trainerName}, Input column(s): [{string.Join(",", inputs)}], Output column(s): [{string.Join(",", outputs)}]");
             Logger.Instance.Trace(Microsoft.ML.Runtime.MessageSensitivity.None, $"Sweepable option");
-            Logger.Instance.Trace(Microsoft.ML.Runtime.MessageSensitivity.None, optionBuilder.ToString());
+            Logger.Instance.Trace(Microsoft.ML.Runtime.MessageSensitivity.None, $"{Environment.NewLine}{optionBuilder}");
 
             Func<TOption, TTrain> factory = (option) =>
             {

@@ -331,6 +331,131 @@ namespace MLNet.AutoPipeline.Test
             var parameterset = new ParameterSet(parameterValue);
             Approvals.Verify(trainer.ToCodeGenNodeContract(parameterset));
         }
+
+        [Fact]
+        [UseApprovalSubdirectory("ApprovalTests")]
+        [UseReporter(typeof(DiffReporter))]
+        public void AutoML_should_create_light_gbm_regressor_with_default_option()
+        {
+            var context = new MLContext();
+            context.Log += this.Context_Log;
+            var optionSweeper = LightGbmRegressionTrainerSweepableOptions.Default;
+            var trainer = context.AutoML().Regression.LightGbm();
+            var parameterValue = optionSweeper.ValueGenerators.Select(x => x.CreateFromNormalized(0.5));
+            var parameterSet = new ParameterSet(parameterValue);
+
+            Approvals.Verify(trainer.ToCodeGenNodeContract(parameterSet));
+        }
+
+        [Fact]
+        [UseApprovalSubdirectory("ApprovalTests")]
+        [UseReporter(typeof(DiffReporter))]
+        public void AutoML_should_create_lbfgs_poisson_regressor_with_default_option()
+        {
+            var context = new MLContext();
+            context.Log += this.Context_Log;
+            var optionSweeper = LbfgsPoissonRegressionTrainerSweepableOptions.Default;
+            var trainer = context.AutoML().Regression.LbfgsPoissonRegression();
+            var parameterValue = optionSweeper.ValueGenerators.Select(x => x.CreateFromNormalized(0.5));
+            var parameterSet = new ParameterSet(parameterValue);
+
+            Approvals.Verify(trainer.ToCodeGenNodeContract(parameterSet));
+        }
+
+        [Fact]
+        [UseApprovalSubdirectory("ApprovalTests")]
+        [UseReporter(typeof(DiffReporter))]
+        public void AutoML_should_create_online_gradient_descent_regressor_with_default_option()
+        {
+            var context = new MLContext();
+            context.Log += this.Context_Log;
+            var optionSweeper = OnlineGradientDescentTrainerSweepableOptions.Default;
+            var trainer = context.AutoML().Regression.OnlineGradientDescent();
+            var parameterValue = optionSweeper.ValueGenerators.Select(x => x.CreateFromNormalized(0.5));
+            var parameterSet = new ParameterSet(parameterValue);
+
+            Approvals.Verify(trainer.ToCodeGenNodeContract(parameterSet));
+        }
+
+        [Fact]
+        [UseApprovalSubdirectory("ApprovalTests")]
+        [UseReporter(typeof(DiffReporter))]
+        public void AutoML_should_create_sdca_regressor_with_default_option()
+        {
+            var context = new MLContext();
+            context.Log += this.Context_Log;
+            var optionSweeper = SdcaRegressionTrainerSweepableOptions.Default;
+            var trainer = context.AutoML().Regression.Sdca();
+            var parameterValue = optionSweeper.ValueGenerators.Select(x => x.CreateFromNormalized(0.5));
+            var parameterSet = new ParameterSet(parameterValue);
+
+            Approvals.Verify(trainer.ToCodeGenNodeContract(parameterSet));
+        }
+
+        [Fact]
+        [UseApprovalSubdirectory("ApprovalTests")]
+        [UseReporter(typeof(DiffReporter))]
+        public void AutoML_should_create_fast_forest_regressor_with_default_option()
+        {
+            var context = new MLContext();
+            context.Log += this.Context_Log;
+            var optionSweeper = FastForestRegressionTrainerSweepableOptions.Default;
+            var trainer = context.AutoML().Regression.FastForest();
+            var parameterValue = optionSweeper.ValueGenerators.Select(x => x.CreateFromNormalized(0.5));
+            var parameterSet = new ParameterSet(parameterValue);
+
+            Approvals.Verify(trainer.ToCodeGenNodeContract(parameterSet));
+        }
+
+        [Fact]
+        [UseApprovalSubdirectory("ApprovalTests")]
+        [UseReporter(typeof(DiffReporter))]
+        public void AutoML_should_create_fast_tree_regressor_with_default_option()
+        {
+            var context = new MLContext();
+            context.Log += this.Context_Log;
+            var optionSweeper = FastTreeRegressionTrainerSweepableOptions.Default;
+            var trainer = context.AutoML().Regression.FastTree();
+            var parameterValue = optionSweeper.ValueGenerators.Select(x => x.CreateFromNormalized(0.5));
+            var parameterSet = new ParameterSet(parameterValue);
+
+            Approvals.Verify(trainer.ToCodeGenNodeContract(parameterSet));
+        }
+
+        [Fact]
+        [UseApprovalSubdirectory("ApprovalTests")]
+        [UseReporter(typeof(DiffReporter))]
+        public void AutoML_should_create_fast_tree_tweedie_regressor_with_default_option()
+        {
+            var context = new MLContext();
+            context.Log += this.Context_Log;
+            var optionSweeper = FastTreeTweedieTrainerSweepableOptions.Default;
+            var trainer = context.AutoML().Regression.FastTreeTweedie();
+            var parameterValue = optionSweeper.ValueGenerators.Select(x => x.CreateFromNormalized(0.5));
+            var parameterSet = new ParameterSet(parameterValue);
+
+            Approvals.Verify(trainer.ToCodeGenNodeContract(parameterSet));
+        }
+
+        [Fact]
+        [UseApprovalSubdirectory("ApprovalTests")]
+        [UseReporter(typeof(DiffReporter))]
+        public void AutoML_should_create_gam_regressor_with_default_option()
+        {
+            var context = new MLContext();
+            context.Log += this.Context_Log;
+            var optionSweeper = GamRegressionTrainerSweepableOptions.Default;
+            var trainer = context.AutoML().Regression.Gam();
+            var parameterValue = optionSweeper.ValueGenerators.Select(x => x.CreateFromNormalized(0.5));
+            var parameterSet = new ParameterSet(parameterValue);
+
+            Approvals.Verify(trainer.ToCodeGenNodeContract(parameterSet));
+        }
+
+        private void Context_Log(object sender, LoggingEventArgs e)
+        {
+            this.Output.WriteLine(e.Message);
+        }
     }
 
     public class CustomSdcaMaximumEntropyOptionBuilder : SweepableOption<SdcaMaximumEntropyMulticlassTrainer.Options>

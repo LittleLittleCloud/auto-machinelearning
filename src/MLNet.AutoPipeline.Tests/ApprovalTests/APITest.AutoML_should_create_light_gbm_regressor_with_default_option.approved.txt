@@ -1,0 +1,39 @@
+{
+  "parameters": [
+    {
+      "Name": "LabelColumnName",
+      "ValueText": "Label"
+    },
+    {
+      "Name": "FeatureColumnName",
+      "ValueText": "Features"
+    },
+    {
+      "Name": "ExampleWeightColumnName",
+      "ValueText": null
+    },
+    {
+      "Name": "NumberOfLeaves",
+      "ValueText": "100"
+    },
+    {
+      "Name": "MinimumExampleCountPerLeaf",
+      "ValueText": "10"
+    },
+    {
+      "Name": "LearningRate",
+      "ValueText": "0.010000000000000004"
+    },
+    {
+      "Name": "NumberOfIterations",
+      "ValueText": "141"
+    }
+  ],
+  "name": "LightGbmRegressionTrainer",
+  "input_column": [
+    "Features"
+  ],
+  "output_column": [
+    "Score"
+  ]
+}
