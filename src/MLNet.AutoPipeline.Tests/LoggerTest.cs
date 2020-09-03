@@ -86,15 +86,14 @@ namespace MLNet.AutoPipeline.Test
             var res = new List<string>();
             context.Log += (object sender, LoggingEventArgs e) =>
             {
+                this.Output.WriteLine(e.Message);
                 res.Add(e.Message);
             };
 
-            Logger.Instance.Error(MessageSensitivity.All, "Hello from AutoPipeline");
             Logger.Instance.Error(MessageSensitivity.UserData, "Hello from {0}", "AutoPipeline");
 
-            res.Count.Should().Be(2);
+            res.Count.Should().Be(1);
             res[0].Should().Be("[Source=AutoPipeline, Kind=Error] Hello from AutoPipeline");
-            res[1].Should().Be("[Source=AutoPipeline, Kind=Error] Hello from AutoPipeline");
         }
     }
 }
