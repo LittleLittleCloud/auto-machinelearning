@@ -4,7 +4,7 @@
 - Given a ML pipeline, find the best hyper-parameters for its transformers or trainers.
 - Given a dataset and a ML task, find the best pipeline for solving this task.
 
-[![Build Status](https://dev.azure.com/xiaoyuz0315/BigMiao/_apis/build/status/LittleLittleCloud.machinelearning-auto-pipeline-pr?branchName=master)](https://dev.azure.com/xiaoyuz0315/BigMiao/_build/latest?definitionId=1&branchName=master) ![Azure DevOps coverage](https://img.shields.io/azure-devops/coverage/xiaoyuz0315/BigMiao/1?color=green) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Build Status](https://dev.azure.com/xiaoyuz0315/BigMiao/_apis/build/status/LittleLittleCloud.auto-machinelearning?branchName=master)](https://dev.azure.com/xiaoyuz0315/BigMiao/_build/latest?definitionId=3&branchName=master) ![Azure DevOps coverage](https://img.shields.io/azure-devops/coverage/xiaoyuz0315/BigMiao/3?color=green) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ## Try it on Binder
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/LittleLittleCloud/MLNet-AutoPipeline-Examples/master)
