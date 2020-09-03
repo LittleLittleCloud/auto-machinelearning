@@ -9,36 +9,57 @@ pr:
     - feature/*
 
 jobs:
- 
 - job: Windows
   pool:
     vmImage: windows-latest
   strategy:
     maxParallel: 4
     matrix:
-      # only run debug in public builds
-      ${{ if ne(variables['SigningType'], 'real') }}:
-        Debug:
-          _configuration: Debug
       Release:
         _configuration: Release
   steps:
     - script: init.cmd
       displayName: initialize
       condition: succeeded()
-
-    - script: Build.cmd -Configuration $(_configuration) -Pack -BuildNumber $(BUILD.BUILDNUMBER) -BinaryLog
-      displayName: Build and Pack
+      
+    - task: DotNetCoreCLI@2
+      inputs:
+        command: 'restore'
+        feedsToUse: 'config'
+        nugetConfigPath: 'NuGet.config'
       condition: succeeded()
+      displayName: "Restore"
+
+    - task: DotNetCoreCLI@2
+      inputs:
+        command: 'custom'
+        custom: 'msbuild'
+        arguments: '-property:Configuration=$(_configuration)
+                    -property:BUILDNUMBER=release
+                    -bl:./artifacts/log/$(_configuration)/Build.binlog'
+      condition: succeeded()
+      displayName: Build
     
     - task: DotNetCoreCLI@2
       displayName: Test
       inputs:
         command: 'test'
-        nobuild: true
         publishTestResults: true
-        arguments: '--collect "Code coverage" --settings "CodeCoverage.runsettings"'
+        arguments: '--collect "Code coverage"
+                    --no-build
+                    -c $(_configuration)
+                    --settings "CodeCoverage.runsettings"'
         projects: '**/*.Tests.csproj'
+      condition: succeeded()
+      
+    - task: DotNetCoreCLI@2
+      inputs:
+        command: 'custom'
+        custom: 'pack'
+        arguments: '-c $(_configuration)
+                    --no-build
+                    -property:BUILDNUMBER=release'
+      displayName: Pack
       condition: succeeded()
 
     - script: Build.cmd -BuildDoc
@@ -53,19 +74,7 @@ jobs:
         ArtifactName: '$(_configuration) log folder'
         publishLocation: Container
       continueOnError: true
-      condition: failed()
-
-    # - task: PublishTestResults@2
-    #   inputs:
-    #     testResultsFormat: 'VSTest'
-    #     testRunner: 'VSTest'
-    #     testResultsFiles: '**/*.trx' 
-    #     searchFolder: '$(Build.SourcesDirectory)\artifacts\TestResults\$(_configuration)'
-    #     configuration: '$(_configuration)'
-    #     publishRunAttachments: true
-    #   continueOnError: true
-    #   displayName: Publish test results
-    #   condition: always()
+      condition: true
 
     - task: PublishBuildArtifacts@1
       inputs:
