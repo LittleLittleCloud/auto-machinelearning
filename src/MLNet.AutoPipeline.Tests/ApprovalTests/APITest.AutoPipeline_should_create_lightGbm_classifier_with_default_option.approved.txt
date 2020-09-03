@@ -23,9 +23,9 @@
   ],
   "name": "LightGbmMulticlassTrainer",
   "input_column": [
-    "label"
+    "feature"
   ],
   "output_column": [
-    "feature"
+    "PredictedLabel"
   ]
 }

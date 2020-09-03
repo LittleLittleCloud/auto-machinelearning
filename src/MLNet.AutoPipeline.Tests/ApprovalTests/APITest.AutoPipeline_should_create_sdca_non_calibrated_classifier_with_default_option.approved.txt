@@ -11,9 +11,9 @@
   ],
   "name": "SdcaNonCalibratedMulticlassTrainer",
   "input_column": [
-    "label"
+    "feature"
   ],
   "output_column": [
-    "feature"
+    "PredictedLabel"
   ]
 }

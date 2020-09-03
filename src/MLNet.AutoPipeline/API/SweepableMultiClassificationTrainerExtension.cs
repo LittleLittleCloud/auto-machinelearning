@@ -18,6 +18,8 @@ namespace MLNet.AutoPipeline
     /// </summary>
     public static class SweepableMultiClassificationTrainerExtension
     {
+        private const string PredictedLabel = "PredictedLabel";
+
         /// <summary>
         /// Create an <see cref="UnsweepableNode{SweepableBinaryClassificationTrainers}"/> where TTrainer is <see cref="NaiveBayesMulticlassTrainer"/> that can be used in <see cref="SweepablePipeline"/>.
         /// </summary>
@@ -33,8 +35,8 @@ namespace MLNet.AutoPipeline
             return context.AutoML().UnsweepableTrainer(
                         instance,
                         estimatorName: nameof(NaiveBayesMulticlassTrainer),
-                        inputs: new string[] { labelColumnName },
-                        outputs: new string[] { featureColumnName });
+                        inputs: new string[] { featureColumnName },
+                        outputs: new string[] { PredictedLabel });
         }
 
         /// <summary>
@@ -65,8 +67,8 @@ namespace MLNet.AutoPipeline
                                     return context.MulticlassClassification.Trainers.SdcaMaximumEntropy(option);
                                 },
                                 optionBuilder,
-                                new string[] { labelColumnName },
                                 new string[] { featureColumnName },
+                                new string[] { PredictedLabel },
                                 nameof(SdcaMaximumEntropyMulticlassTrainer));
         }
 
@@ -99,8 +101,8 @@ namespace MLNet.AutoPipeline
                                 },
                                 optionBuilder,
                                 trainerName: nameof(SdcaNonCalibratedMulticlassTrainer),
-                                inputs: new string[] { labelColumnName },
-                                outputs: new string[] { featureColumnName });
+                                inputs: new string[] { featureColumnName },
+                                outputs: new string[] { PredictedLabel });
         }
 
         /// <summary>
@@ -132,8 +134,8 @@ namespace MLNet.AutoPipeline
                                 },
                                 optionBuilder,
                                 trainerName: nameof(LbfgsMaximumEntropyMulticlassTrainer),
-                                inputs: new string[] { labelColumnName },
-                                outputs: new string[] { featureColumnName });
+                                inputs: new string[] { featureColumnName },
+                                outputs: new string[] { PredictedLabel });
         }
 
         /// <summary>
@@ -170,8 +172,8 @@ namespace MLNet.AutoPipeline
                                 },
                                 optionBuilder,
                                 trainerName: nameof(LightGbmMulticlassTrainer),
-                                inputs: new string[] { labelColumnName },
-                                outputs: new string[] { featureColumnName });
+                                inputs: new string[] { featureColumnName },
+                                outputs: new string[] { PredictedLabel });
         }
 
         /// <summary>
