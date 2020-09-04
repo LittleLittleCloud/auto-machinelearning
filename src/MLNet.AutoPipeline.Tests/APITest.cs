@@ -186,6 +186,10 @@ namespace MLNet.AutoPipeline.Test
 
             pipeline.Summary().Should().Be("SweepablePipeline([LightGbmMulticlassTrainer]=>[KeyToValueMappingEstimator])");
 
+            pipeline = context.AutoML().MultiClassification.LightGbm("species", "features")
+                      .Append(context.Transforms.Conversion.MapKeyToValue("species", "species"));
+
+            pipeline.Summary().Should().Be("SweepablePipeline([LightGbmMulticlassTrainer]=>[KeyToValueMappingEstimator])");
         }
 
         [Fact]
