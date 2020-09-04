@@ -49,8 +49,6 @@ namespace MLNet.AutoPipeline
 
         public IValueGenerator[] ValueGenerators { get => new List<IValueGenerator>().ToArray(); }
 
-        public NodeType NodeType => NodeType.Unsweeapble;
-
         public string[] InputColumns { get; private set; }
 
         public string[] OutputColumns { get; private set; }

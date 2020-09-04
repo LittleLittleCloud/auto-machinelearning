@@ -12,19 +12,6 @@ using Newtonsoft.Json;
 
 namespace MLNet.AutoPipeline
 {
-    public enum NodeType
-    {
-        /// <summary>
-        /// Sweepable node Type.
-        /// </summary>
-        Sweepable = 0,
-
-        /// <summary>
-        /// Unsweepable node type.
-        /// </summary>
-        Unsweeapble = 1,
-    }
-
     public interface INode
     {
         IEstimator<ITransformer> BuildFromParameterSet(ParameterSet parameters = null);
@@ -32,8 +19,6 @@ namespace MLNet.AutoPipeline
         TransformerScope Scope { get; }
 
         IValueGenerator[] ValueGenerators { get; }
-
-        NodeType NodeType { get; }
 
         string Summary();
 

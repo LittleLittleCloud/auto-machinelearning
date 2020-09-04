@@ -28,8 +28,6 @@ namespace MLNet.AutoPipeline.Test
 
         public IValueGenerator[] ValueGenerators => new List<IValueGenerator>().ToArray();
 
-        public NodeType NodeType => NodeType.Sweepable;
-
         public string[] InputColumns => throw new System.NotImplementedException();
 
         public string[] OutputColumns => throw new System.NotImplementedException();
