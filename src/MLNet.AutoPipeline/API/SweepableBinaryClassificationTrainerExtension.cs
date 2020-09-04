@@ -31,7 +31,7 @@ namespace MLNet.AutoPipeline
             }
 
             optionBuilder.SetDefaultOption(defaultOption);
-            return context.AutoML().SweepableTrainer(
+            return context.AutoML().CreateSweepableEstimator(
                 (context, option) =>
                 {
                     option.LabelColumnName = labelColumnName;
@@ -60,7 +60,7 @@ namespace MLNet.AutoPipeline
 
             optionBuilder.SetDefaultOption(defaultOption);
 
-            return context.AutoML().SweepableTrainer(
+            return context.AutoML().CreateSweepableEstimator(
                 (context, option) =>
                 {
                     option.LabelColumnName = labelColumnName;
@@ -89,7 +89,7 @@ namespace MLNet.AutoPipeline
             }
 
             optionBuilder.SetDefaultOption(defaultOption);
-            return context.AutoML().SweepableTrainer(
+            return context.AutoML().CreateSweepableEstimator(
                 (context, option) =>
                 {
                     option.LabelColumnName = labelColumnName;
@@ -118,7 +118,7 @@ namespace MLNet.AutoPipeline
             }
 
             optionBuilder.SetDefaultOption(defaultOption);
-            return context.AutoML().SweepableTrainer(
+            return context.AutoML().CreateSweepableEstimator(
                 (context, option) =>
                 {
                     option.LabelColumnName = labelColumnName;
@@ -147,7 +147,7 @@ namespace MLNet.AutoPipeline
             }
 
             optionBuilder.SetDefaultOption(defaultOption);
-            return context.AutoML().SweepableTrainer(
+            return context.AutoML().CreateSweepableEstimator(
                 (context, option) =>
                 {
                     option.LabelColumnName = labelColumnName;
@@ -176,7 +176,7 @@ namespace MLNet.AutoPipeline
             }
 
             optionBuilder.SetDefaultOption(defaultOption);
-            return context.AutoML().SweepableTrainer(
+            return context.AutoML().CreateSweepableEstimator(
                 (context, option) =>
                 {
                     option.LabelColumnName = labelColumnName;
@@ -205,7 +205,7 @@ namespace MLNet.AutoPipeline
             }
 
             optionBuilder.SetDefaultOption(defaultOption);
-            return context.AutoML().SweepableTrainer(
+            return context.AutoML().CreateSweepableEstimator(
                 (context, option) =>
                 {
                     option.LabelColumnName = labelColumnName;
@@ -234,7 +234,7 @@ namespace MLNet.AutoPipeline
             }
 
             optionBuilder.SetDefaultOption(defaultOption);
-            return context.AutoML().SweepableTrainer(
+            return context.AutoML().CreateSweepableEstimator(
                 (context, option) =>
                 {
                     option.LabelColumnName = labelColumnName;
@@ -263,7 +263,7 @@ namespace MLNet.AutoPipeline
             }
 
             optionBuilder.SetDefaultOption(defaultOption);
-            return context.AutoML().SweepableTrainer(
+            return context.AutoML().CreateSweepableEstimator(
                 (context, option) =>
                 {
                     option.LabelColumnName = labelColumnName;
@@ -292,7 +292,7 @@ namespace MLNet.AutoPipeline
             }
 
             optionBuilder.SetDefaultOption(defaultOption);
-            return context.AutoML().SweepableTrainer(
+            return context.AutoML().CreateSweepableEstimator(
                 (context, option) =>
                 {
                     option.LabelColumnName = labelColumnName;
@@ -321,7 +321,7 @@ namespace MLNet.AutoPipeline
             }
 
             optionBuilder.SetDefaultOption(defaultOption);
-            return context.AutoML().SweepableTrainer(
+            return context.AutoML().CreateSweepableEstimator(
                 (context, option) =>
                 {
                     option.LabelColumnName = labelColumnName;
@@ -350,7 +350,7 @@ namespace MLNet.AutoPipeline
             }
 
             optionBuilder.SetDefaultOption(defaultOption);
-            return context.AutoML().SweepableTrainer(
+            return context.AutoML().CreateSweepableEstimator(
                 (context, option) =>
                 {
                     option.LabelColumnName = labelColumnName;

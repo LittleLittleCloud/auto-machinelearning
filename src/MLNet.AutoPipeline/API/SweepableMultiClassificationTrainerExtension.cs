@@ -59,7 +59,7 @@ namespace MLNet.AutoPipeline
 
             optionBuilder.SetDefaultOption(defaultOption);
 
-            return context.AutoML().SweepableTrainer(
+            return context.AutoML().CreateSweepableEstimator(
                                 (context, option) =>
                                 {
                                     option.LabelColumnName = labelColumnName;
@@ -92,7 +92,7 @@ namespace MLNet.AutoPipeline
 
             optionBuilder.SetDefaultOption(defaultOption);
 
-            return context.AutoML().SweepableTrainer(
+            return context.AutoML().CreateSweepableEstimator(
                                 (context, option) =>
                                 {
                                     option.LabelColumnName = labelColumnName;
@@ -125,7 +125,7 @@ namespace MLNet.AutoPipeline
 
             optionBuilder.SetDefaultOption(defaultOption);
 
-            return context.AutoML().SweepableTrainer(
+            return context.AutoML().CreateSweepableEstimator(
                                 (context, option) =>
                                 {
                                     option.LabelColumnName = labelColumnName;
@@ -158,7 +158,7 @@ namespace MLNet.AutoPipeline
 
             optionBuilder.SetDefaultOption(defaultOption);
 
-            return context.AutoML().SweepableTrainer(
+            return context.AutoML().CreateSweepableEstimator(
                                 (context, option) =>
                                 {
                                     if (defaultOption != null)
@@ -196,7 +196,7 @@ namespace MLNet.AutoPipeline
         {
             var context = trainer.Context;
 
-            return context.AutoML().SweepableTrainer(
+            return context.AutoML().CreateSweepableEstimator(
                                 (context, option) =>
                                 {
                                     var estimator = node.EstimatorFactory(option);

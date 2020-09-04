@@ -42,11 +42,11 @@ namespace MLNet.AutoPipeline
         /// <param name="trainerName">trainer name.</param>
         /// <returns><see cref="SweepableNode{TNewTrain, TOption}"/>.</returns>
         public SweepableNode<TTrain, TOption>
-            SweepableTrainer<TTrain, TOption>(Func<MLContext, TOption, TTrain> trainerFactory, SweepableOption<TOption> optionBuilder, string[] inputs = null, string[] outputs = null, string trainerName = null)
+            CreateSweepableEstimator<TTrain, TOption>(Func<MLContext, TOption, TTrain> trainerFactory, SweepableOption<TOption> optionBuilder, string[] inputs = null, string[] outputs = null, string trainerName = null)
             where TTrain : IEstimator<ITransformer>
             where TOption : class
         {
-            Logger.Instance.Trace(Microsoft.ML.Runtime.MessageSensitivity.None, $"Create Sweepable trainer. Trainer name: {trainerName}, Input column(s): [{string.Join(",", inputs ?? new string[] { })}], Output column(s): [{string.Join(",", outputs ?? new string[] { })}]");
+            Logger.Instance.Trace(Microsoft.ML.Runtime.MessageSensitivity.None, $"Create Sweepable estiamtor. Estiamtor name: {trainerName}, Input column(s): [{string.Join(",", inputs ?? new string[] { })}], Output column(s): [{string.Join(",", outputs ?? new string[] { })}]");
             Logger.Instance.Trace(Microsoft.ML.Runtime.MessageSensitivity.None, $"Sweepable option");
             Logger.Instance.Trace(Microsoft.ML.Runtime.MessageSensitivity.None, $"{Environment.NewLine}{optionBuilder}");
 

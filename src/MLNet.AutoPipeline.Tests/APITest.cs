@@ -105,7 +105,7 @@ namespace MLNet.AutoPipeline.Test
         {
             var context = new MLContext();
             var optionBuilder = new CustomSdcaMaximumEntropyOptionBuilder();
-            var trainer = context.AutoML().SweepableTrainer(
+            var trainer = context.AutoML().CreateSweepableEstimator(
                                 (context, option) =>
                                 {
                                     option.LabelColumnName = "Label";
@@ -129,7 +129,7 @@ namespace MLNet.AutoPipeline.Test
         {
             var context = new MLContext();
             var optionBuilder = new CustomSdcaMaximumEntropyOptionBuilder();
-            var binaryTrainer = context.AutoML().SweepableTrainer(
+            var binaryTrainer = context.AutoML().CreateSweepableEstimator(
                                 (context, option) =>
                                 {
                                     option.LabelColumnName = "Label";
