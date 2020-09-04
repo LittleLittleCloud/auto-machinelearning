@@ -71,7 +71,7 @@ namespace MLNet.Expert.Tests
                 BeamSearch = 3,
                 EvaluateFunction = (MLContext context, IDataView data) =>
                 {
-                    return context.MulticlassClassification.Evaluate(data).MicroAccuracy;
+                    return context.MulticlassClassification.Evaluate(data, "iris").MicroAccuracy;
                 },
                 IsMaximizing = true,
                 LabelColumn = "species",

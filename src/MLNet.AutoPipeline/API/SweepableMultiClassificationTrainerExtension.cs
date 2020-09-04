@@ -32,7 +32,7 @@ namespace MLNet.AutoPipeline
         {
             var context = trainer.Context;
             var instance = context.MulticlassClassification.Trainers.NaiveBayes(labelColumnName, featureColumnName);
-            return context.AutoML().UnsweepableTrainer(
+            return context.AutoML().CreateUnsweepableEstimator(
                         instance,
                         estimatorName: nameof(NaiveBayesMulticlassTrainer),
                         inputs: new string[] { featureColumnName },

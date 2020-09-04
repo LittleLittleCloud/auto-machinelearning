@@ -12,7 +12,6 @@ using System.Text;
 
 namespace MLNet.AutoPipeline
 {
-
     internal class SingleEstimatorSweepablePipeline : ISweepable<EstimatorChain<ITransformer>>
     {
         private List<INode> nodes;

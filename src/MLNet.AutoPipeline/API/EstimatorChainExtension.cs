@@ -42,5 +42,16 @@ namespace MLNet.AutoPipeline
                         .Append(new UnsweepableNode<TLastTran>(estimator))
                         .Append(transformer);
         }
+
+        public static SweepablePipeline
+            Append<TLastTran>(
+                this INode<TLastTran> estimator,
+                INode transformer)
+            where TLastTran : IEstimator<ITransformer>
+        {
+            return new SweepablePipeline()
+                        .Append(estimator)
+                        .Append(transformer);
+        }
     }
 }

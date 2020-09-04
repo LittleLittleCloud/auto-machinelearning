@@ -173,6 +173,22 @@ namespace MLNet.AutoPipeline.Test
         }
 
         [Fact]
+        public void AutoML_should_create_sweepable_pipeline_from_INode_using_extension()
+        {
+            var context = new MLContext();
+            var pipeline = context.AutoML().CreateUnsweepableEstimator(context.Transforms.Conversion.MapKeyToValue("species", "species"))
+                                  .Append(context.AutoML().MultiClassification.LightGbm("species", "features"));
+
+            pipeline.Summary().Should().Be("SweepablePipeline([KeyToValueMappingEstimator]=>[LightGbmMulticlassTrainer])");
+
+            pipeline = context.AutoML().MultiClassification.LightGbm("species", "features")
+                                  .Append(context.AutoML().CreateUnsweepableEstimator(context.Transforms.Conversion.MapKeyToValue("species", "species")));
+
+            pipeline.Summary().Should().Be("SweepablePipeline([LightGbmMulticlassTrainer]=>[KeyToValueMappingEstimator])");
+
+        }
+
+        [Fact]
         [UseApprovalSubdirectory("ApprovalTests")]
         [UseReporter(typeof(DiffReporter))]
         public void AutoML_should_create_linear_svm_classifier_with_option()
