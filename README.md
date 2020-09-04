@@ -34,8 +34,10 @@ Then create an `Experiment` to sweep over `sweepablePipeline` to find the best p
 ```csharp
 var experimentOption = new Experiment.Option()
 {
-    ScoreMetric = new MicroAccuracyMetric(), // Use Micro Accuracy as score.
-    Label = "species", // dataset label name
+    EvaluateFunction = (MLContext context, IDataView data) =>
+                {
+                    return context.MulticlassClassification.Evaluate(data, "iris").MicroAccuracy;
+                }, // Use Micro Accuracy as evaluate metric.
 };
 
 var experiment = context.AutoML().CreateExperiment(estimatorChain, experimentOption)
@@ -47,9 +49,13 @@ Please visit [MLNet-AutoPipeline-Example](https://github.com/LittleLittleCloud/M
 
 ## Installation
 
-This project is still under developing, so no released package is available yet. However, you can get the latest build via our nightly feed by adding this URL to your NuGet.Config
+This project is still under developing, so no released package is available yet. However, you can get the prereleased version below.
 
-`https://pkgs.dev.azure.com/xiaoyuz0315/BigMiao/_packaging/MLNet-Auto-Pipeline%40Local/nuget/v3/index.json`
+|[auto-pipeline](https://dev.azure.com/xiaoyuz0315/BigMiao/_packaging?_a=feed&feed=MLNet-Auto-Pipeline%40Prerelease)|Pre-released|
+|-|-|
+|MLNet.AutoPipeline|[![MLNet.AutoPipeline package in MLNet-Auto-Pipeline@Prerelease feed in Azure Artifacts](https://feeds.dev.azure.com/xiaoyuz0315/1bf31d68-811d-4872-ae8b-cdd289c934f1/_apis/public/Packaging/Feeds/360eccf9-f423-4798-85f2-57d25eecbd49%40c1004200-b0de-4d5b-8208-7464f565e1a8/Packages/f14318be-ef42-4f8a-8930-76a801345968/Badge)](https://dev.azure.com/xiaoyuz0315/BigMiao/_packaging?_a=package&feed=360eccf9-f423-4798-85f2-57d25eecbd49%40c1004200-b0de-4d5b-8208-7464f565e1a8&package=f14318be-ef42-4f8a-8930-76a801345968&preferRelease=true)|
+|MLNet.Sweeper|[![MLNet.Sweeper package in MLNet-Auto-Pipeline@Prerelease feed in Azure Artifacts](https://feeds.dev.azure.com/xiaoyuz0315/1bf31d68-811d-4872-ae8b-cdd289c934f1/_apis/public/Packaging/Feeds/360eccf9-f423-4798-85f2-57d25eecbd49%40c1004200-b0de-4d5b-8208-7464f565e1a8/Packages/681d6c5b-20bd-4794-bbec-8fc8a54c6ea6/Badge)](https://dev.azure.com/xiaoyuz0315/BigMiao/_packaging?_a=package&feed=360eccf9-f423-4798-85f2-57d25eecbd49%40c1004200-b0de-4d5b-8208-7464f565e1a8&package=681d6c5b-20bd-4794-bbec-8fc8a54c6ea6&preferRelease=true)|
+|MLNet.Expert|[![MLNet.Expert package in MLNet-Auto-Pipeline feed in Azure Artifacts](https://feeds.dev.azure.com/xiaoyuz0315/1bf31d68-811d-4872-ae8b-cdd289c934f1/_apis/public/Packaging/Feeds/360eccf9-f423-4798-85f2-57d25eecbd49/Packages/7c3ea9b1-81eb-4ea6-8c9f-35fcbd890f45/Badge)](https://dev.azure.com/xiaoyuz0315/BigMiao/_packaging?_a=package&feed=360eccf9-f423-4798-85f2-57d25eecbd49&package=7c3ea9b1-81eb-4ea6-8c9f-35fcbd890f45&preferRelease=true)|
 
 ## Contributing
 We welcome contributions! Please see our [contribution guide](CONTRIBUTING.md)

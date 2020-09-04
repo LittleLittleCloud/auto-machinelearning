@@ -58,6 +58,8 @@ jobs:
         custom: 'pack'
         arguments: '-c $(_configuration)
                     --no-build
+                    -property:SymbolPackageFormat=snupkg
+                    -property:IncludeSymbols=true
                     -property:BUILDNUMBER=release'
       displayName: Pack
       condition: succeeded()

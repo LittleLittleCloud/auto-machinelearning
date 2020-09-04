@@ -48,8 +48,6 @@ namespace MLNet.AutoPipeline
 
         public IValueGenerator[] ValueGenerators { get; private set; }
 
-        public NodeType NodeType => NodeType.Sweepable;
-
         public string[] InputColumns { get; private set; }
 
         public string[] OutputColumns { get; private set; }

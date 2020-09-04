@@ -105,7 +105,7 @@ namespace MLNet.AutoPipeline.Test
         {
             var context = new MLContext();
             var optionBuilder = new CustomSdcaMaximumEntropyOptionBuilder();
-            var trainer = context.AutoML().SweepableTrainer(
+            var trainer = context.AutoML().CreateSweepableEstimator(
                                 (context, option) =>
                                 {
                                     option.LabelColumnName = "Label";
@@ -129,7 +129,7 @@ namespace MLNet.AutoPipeline.Test
         {
             var context = new MLContext();
             var optionBuilder = new CustomSdcaMaximumEntropyOptionBuilder();
-            var binaryTrainer = context.AutoML().SweepableTrainer(
+            var binaryTrainer = context.AutoML().CreateSweepableEstimator(
                                 (context, option) =>
                                 {
                                     option.LabelColumnName = "Label";
@@ -170,6 +170,22 @@ namespace MLNet.AutoPipeline.Test
             var parameterValues = pipeline.NodeGenerators[1].Nodes[0].ValueGenerators.Select(x => x.Name);
             pipeline.NodeGenerators.Count.Should().Be(2);
             parameterValues.Should().Equal(new string[] { "LearningRate", "NumberOfLeaves", "NumberOfIterations", "MinimumExampleCountPerLeaf", "ExampleWeightColumnName" });
+        }
+
+        [Fact]
+        public void AutoML_should_create_sweepable_pipeline_from_INode_using_extension()
+        {
+            var context = new MLContext();
+            var pipeline = context.AutoML().CreateUnsweepableEstimator(context.Transforms.Conversion.MapKeyToValue("species", "species"))
+                                  .Append(context.AutoML().MultiClassification.LightGbm("species", "features"));
+
+            pipeline.Summary().Should().Be("SweepablePipeline([KeyToValueMappingEstimator]=>[LightGbmMulticlassTrainer])");
+
+            pipeline = context.AutoML().MultiClassification.LightGbm("species", "features")
+                                  .Append(context.AutoML().CreateUnsweepableEstimator(context.Transforms.Conversion.MapKeyToValue("species", "species")));
+
+            pipeline.Summary().Should().Be("SweepablePipeline([LightGbmMulticlassTrainer]=>[KeyToValueMappingEstimator])");
+
         }
 
         [Fact]

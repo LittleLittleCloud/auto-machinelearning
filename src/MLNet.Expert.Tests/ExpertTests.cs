@@ -71,7 +71,7 @@ namespace MLNet.Expert.Tests
                 BeamSearch = 3,
                 EvaluateFunction = (MLContext context, IDataView data) =>
                 {
-                    return context.MulticlassClassification.Evaluate(data).MicroAccuracy;
+                    return context.MulticlassClassification.Evaluate(data, "iris").MicroAccuracy;
                 },
                 IsMaximizing = true,
                 LabelColumn = "species",
@@ -130,7 +130,7 @@ namespace MLNet.Expert.Tests
 
             public void Report(IterationInfo value)
             {
-                this.output.WriteLine(value.ParameterSet?.ToString() ?? string.Empty);
+                this.output.WriteLine(value.Parameters?.ToString() ?? string.Empty);
                 this.output.WriteLine($"evaluate score: {value.EvaluateScore}");
                 this.output.WriteLine($"training time: {value.TrainingTime}");
             }
