@@ -12,12 +12,11 @@ namespace MLNet.AutoPipeline
     public class ExperimentResult
     {
         private IList<IterationInfo> runHistories;
-        private IterationInfo bestTrainingRound;
         private static object _lock = new Object();
 
         public ITransformer BestModel { get; private set; }
 
-        public IterationInfo BestIteration { get => this.bestTrainingRound; }
+        public IterationInfo BestIteration { get; private set; }
 
         public double TrainingTime { get => this.runHistories.Select(x => x.TrainingTime).Sum(); }
 
@@ -41,9 +40,9 @@ namespace MLNet.AutoPipeline
             {
                 this.runHistories.Add(info);
 
-                if (this.bestTrainingRound is null || info > this.bestTrainingRound)
+                if (this.BestIteration is null || info > this.BestIteration)
                 {
-                    this.bestTrainingRound = info;
+                    this.BestIteration = info;
                     this.BestModel = model;
                 }
             }

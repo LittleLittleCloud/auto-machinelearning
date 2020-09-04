@@ -17,9 +17,9 @@ namespace MLNet.AutoPipeline
     public class IterationInfo : IComparable<IterationInfo>
     {
         /// <summary>
-        /// Parameters used in the current training round.
+        /// Parameters used in the current training round. This value is generated through <see cref="ISweeper.ProposeSweeps(ISweepable, int, IEnumerable{IRunResult})"/> from <see cref="Experiment.Option.ParameterSweeper"/>.
         /// </summary>
-        public ParameterSet ParameterSet { get; private set; }
+        public ParameterSet Parameters { get; private set; }
 
         /// <summary>
         /// Training time in seconds.
@@ -39,24 +39,24 @@ namespace MLNet.AutoPipeline
         /// <summary>
         /// <see cref="SingleSweepablePipeline"/> used in the current training round.
         /// </summary>
-        internal SingleEstimatorSweepablePipeline SingleSweepablePipeline { get; private set; }
+        public SingleEstimatorSweepablePipeline SingleSweepablePipeline { get; private set; }
 
         internal IterationInfo(SingleEstimatorSweepablePipeline singleweepablePipeline, ParameterSet parameters, double time, double evaluateScore, bool isMaximizing)
         {
             this.SingleSweepablePipeline = singleweepablePipeline;
-            this.ParameterSet = parameters;
+            this.Parameters = parameters;
             this.TrainingTime = time;
             this.EvaluateScore = evaluateScore;
             this.IsMetricMaximizing = isMaximizing;
         }
 
         /// <summary>
-        /// Restore untrained pipeline from <see cref="ParameterSet"/>.
+        /// Restore MLNet estimator chain from <see cref="Parameters"/>.
         /// </summary>
-        /// <returns></returns>
-        public EstimatorChain<ITransformer> BuildPipeline()
+        /// <returns><see cref="EstimatorChain{TLastTransformer}"/>.</returns>
+        public EstimatorChain<ITransformer> RestoreEstimatorChain()
         {
-            return this.SingleSweepablePipeline.BuildFromParameterSet(this.ParameterSet);
+            return this.SingleSweepablePipeline.BuildFromParameterSet(this.Parameters);
         }
 
         public int CompareTo(IterationInfo obj)

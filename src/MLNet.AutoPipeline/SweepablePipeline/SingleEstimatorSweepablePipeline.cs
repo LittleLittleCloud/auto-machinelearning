@@ -1,4 +1,4 @@
-﻿// <copyright file="SingleSweepablePipeline.cs" company="BigMiao">
+﻿// <copyright file="SingleEstimatorSweepablePipeline.cs" company="BigMiao">
 // Copyright (c) BigMiao. All rights reserved.
 // </copyright>
 
@@ -12,11 +12,11 @@ using System.Text;
 
 namespace MLNet.AutoPipeline
 {
-    internal class SingleEstimatorSweepablePipeline : ISweepable<EstimatorChain<ITransformer>>
+    public class SingleEstimatorSweepablePipeline : ISweepable<EstimatorChain<ITransformer>>
     {
         private List<INode> nodes;
 
-        public SingleEstimatorSweepablePipeline(List<INode> nodes)
+        internal SingleEstimatorSweepablePipeline(List<INode> nodes)
         {
             this.nodes = nodes;
         }
