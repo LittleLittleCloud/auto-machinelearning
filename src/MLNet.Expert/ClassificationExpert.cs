@@ -59,9 +59,9 @@ namespace MLNet.Expert
             }
         }
 
-        public IEnumerable<INode> Propose(string label, string feature)
+        public IEnumerable<SweepableEstimatorBase> Propose(string label, string feature)
         {
-            var nodes = new List<INode>();
+            var nodes = new List<SweepableEstimatorBase>();
             foreach (var creator in this.nodeFactories)
             {
                 nodes.Add(creator.CreateTrainer(this.context, label, feature));

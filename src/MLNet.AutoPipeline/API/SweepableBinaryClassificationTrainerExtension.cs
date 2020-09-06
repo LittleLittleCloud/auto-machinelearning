@@ -16,7 +16,7 @@ namespace MLNet.AutoPipeline
     {
         private const string PredictedLabel = "PredictedLabel";
 
-        public static SweepableNode<LinearSvmTrainer, LinearSvmTrainer.Options>
+        public static SweepableEstimator<LinearSvmTrainer, LinearSvmTrainer.Options>
             LinearSvm(
                 this SweepableBinaryClassificationTrainers trainer,
                 string labelColumnName = "Label",
@@ -44,7 +44,7 @@ namespace MLNet.AutoPipeline
                 nameof(LinearSvmTrainer));
         }
 
-        public static SweepableNode<LdSvmTrainer, LdSvmTrainer.Options>
+        public static SweepableEstimator<LdSvmTrainer, LdSvmTrainer.Options>
             LdSvm(
                 this SweepableBinaryClassificationTrainers trainer,
                 string labelColumnName = "Label",
@@ -74,7 +74,7 @@ namespace MLNet.AutoPipeline
                 nameof(LdSvmTrainer));
         }
 
-        public static SweepableNode<FastForestBinaryTrainer, FastForestBinaryTrainer.Options>
+        public static SweepableEstimator<FastForestBinaryTrainer, FastForestBinaryTrainer.Options>
             FastForest(
                 this SweepableBinaryClassificationTrainers trainer,
                 string labelColumnName = "Label",
@@ -103,7 +103,7 @@ namespace MLNet.AutoPipeline
                 nameof(FastForestBinaryTrainer));
         }
 
-        public static SweepableNode<FastTreeBinaryTrainer, FastTreeBinaryTrainer.Options>
+        public static SweepableEstimator<FastTreeBinaryTrainer, FastTreeBinaryTrainer.Options>
             FastTree(
                 this SweepableBinaryClassificationTrainers trainer,
                 string labelColumnName = "Label",
@@ -132,7 +132,7 @@ namespace MLNet.AutoPipeline
                 nameof(FastTreeBinaryTrainer));
         }
 
-        public static SweepableNode<LightGbmBinaryTrainer, LightGbmBinaryTrainer.Options>
+        public static SweepableEstimator<LightGbmBinaryTrainer, LightGbmBinaryTrainer.Options>
             LightGbm(
                 this SweepableBinaryClassificationTrainers trainer,
                 string labelColumnName = "Label",
@@ -161,7 +161,7 @@ namespace MLNet.AutoPipeline
                 nameof(LightGbmBinaryTrainer));
         }
 
-        public static SweepableNode<GamBinaryTrainer, GamBinaryTrainer.Options>
+        public static SweepableEstimator<GamBinaryTrainer, GamBinaryTrainer.Options>
             Gam(
                 this SweepableBinaryClassificationTrainers trainer,
                 string labelColumnName = "Label",
@@ -190,7 +190,7 @@ namespace MLNet.AutoPipeline
                 nameof(GamBinaryTrainer));
         }
 
-        public static SweepableNode<SgdNonCalibratedTrainer, SgdNonCalibratedTrainer.Options>
+        public static SweepableEstimator<SgdNonCalibratedTrainer, SgdNonCalibratedTrainer.Options>
             SgdNonCalibrated(
                 this SweepableBinaryClassificationTrainers trainer,
                 string labelColumnName = "Label",
@@ -219,7 +219,7 @@ namespace MLNet.AutoPipeline
                 nameof(SgdNonCalibratedTrainer));
         }
 
-        public static SweepableNode<SgdCalibratedTrainer, SgdCalibratedTrainer.Options>
+        public static SweepableEstimator<SgdCalibratedTrainer, SgdCalibratedTrainer.Options>
             SgdCalibrated(
                 this SweepableBinaryClassificationTrainers trainer,
                 string labelColumnName = "Label",
@@ -248,7 +248,7 @@ namespace MLNet.AutoPipeline
                 nameof(SgdCalibratedTrainer));
         }
 
-        public static SweepableNode<SdcaNonCalibratedBinaryTrainer, SdcaNonCalibratedBinaryTrainer.Options>
+        public static SweepableEstimator<SdcaNonCalibratedBinaryTrainer, SdcaNonCalibratedBinaryTrainer.Options>
             SdcaNonCalibrated(
                 this SweepableBinaryClassificationTrainers trainer,
                 string labelColumnName = "Label",
@@ -277,7 +277,7 @@ namespace MLNet.AutoPipeline
                 nameof(SdcaNonCalibratedBinaryTrainer));
         }
 
-        public static SweepableNode<SdcaLogisticRegressionBinaryTrainer, SdcaLogisticRegressionBinaryTrainer.Options>
+        public static SweepableEstimator<SdcaLogisticRegressionBinaryTrainer, SdcaLogisticRegressionBinaryTrainer.Options>
             SdcaLogisticRegression(
                 this SweepableBinaryClassificationTrainers trainer,
                 string labelColumnName = "Label",
@@ -306,7 +306,7 @@ namespace MLNet.AutoPipeline
                 nameof(SdcaLogisticRegressionBinaryTrainer));
         }
 
-        public static SweepableNode<LbfgsLogisticRegressionBinaryTrainer, LbfgsLogisticRegressionBinaryTrainer.Options>
+        public static SweepableEstimator<LbfgsLogisticRegressionBinaryTrainer, LbfgsLogisticRegressionBinaryTrainer.Options>
             LbfgsLogisticRegression(
                 this SweepableBinaryClassificationTrainers trainer,
                 string labelColumnName = "Label",
@@ -335,7 +335,7 @@ namespace MLNet.AutoPipeline
                 nameof(LbfgsLogisticRegressionBinaryTrainer));
         }
 
-        public static SweepableNode<AveragedPerceptronTrainer, AveragedPerceptronTrainer.Options>
+        public static SweepableEstimator<AveragedPerceptronTrainer, AveragedPerceptronTrainer.Options>
             AveragedPerceptron(
                 this SweepableBinaryClassificationTrainers trainer,
                 string labelColumnName = "Label",

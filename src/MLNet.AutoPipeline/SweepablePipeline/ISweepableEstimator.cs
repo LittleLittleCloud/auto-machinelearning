@@ -1,4 +1,4 @@
-﻿// <copyright file="INode.cs" company="BigMiao">
+﻿// <copyright file="ISweepableEstimator.cs" company="BigMiao">
 // Copyright (c) BigMiao. All rights reserved.
 // </copyright>
 
@@ -12,15 +12,9 @@ using Newtonsoft.Json;
 
 namespace MLNet.AutoPipeline
 {
-    public interface INode
+    public interface ISweepableEstimator
     {
-        IEstimator<ITransformer> BuildFromParameterSet(ParameterSet parameters = null);
-
         TransformerScope Scope { get; }
-
-        IValueGenerator[] ValueGenerators { get; }
-
-        string Summary();
 
         string EstimatorName { get; }
 
@@ -29,26 +23,20 @@ namespace MLNet.AutoPipeline
         string[] OutputColumns { get; }
     }
 
-    public interface INode<out TTrain> : INode
-        where TTrain : IEstimator<ITransformer>
-    {
-        new TTrain BuildFromParameterSet(ParameterSet parameters = null);
-    }
-
-    public interface ISweepableNode<out TTrain, TOption> : INode<TTrain>
+    public interface ISweepableEstimator<out TTrain, TOption> : ISweepableEstimator
         where TTrain : IEstimator<ITransformer>
         where TOption : class
     {
-        Func<TOption, TTrain> EstimatorFactory { get;  }
+        public Func<TOption, TTrain> EstimatorFactory { get; }
 
-        SweepableOption<TOption> OptionBuilder { get; }
+        public SweepableOption<TOption> OptionBuilder { get; }
     }
 
     [DataContract]
     internal class CodeGenNodeContract
     {
         [DataMember(Name = "parameters")]
-        public ParameterSet Parameters { get; set; }
+        public Parameters Parameters { get; set; }
 
         [DataMember(Name = "name", IsRequired = true)]
         public string EstimatorName { get; set; }
@@ -64,5 +52,4 @@ namespace MLNet.AutoPipeline
             return JsonConvert.SerializeObject(this, Formatting.Indented);
         }
     }
-
 }

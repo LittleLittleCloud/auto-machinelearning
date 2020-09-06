@@ -28,34 +28,34 @@ namespace MLNet.Expert.Tests
             var option = new NumericFeatureExpert.Option();
 
             var expert = new NumericFeatureExpert(context, option);
-            expert.Propose("test").Select(node => node.Summary())
-                  .Should().Contain("Node(NormalizeMeanVariance)")
+            expert.Propose("test").Select(node => node.ToString())
+                  .Should().Contain("NormalizeMeanVariance")
                   .And
-                  .Contain("Node(NormalizeMinMax)");
+                  .Contain("NormalizeMinMax");
         }
 
         [Fact]
         public void ClassificationExpert_should_propose_naiveBayes()
         {
             var expert = this.GetClassificationExpert();
-            expert.Propose("label", "feature").Select(node => node.Summary())
-                  .Should().Contain("Node(NaiveBayesMulticlassTrainer)");
+            expert.Propose("label", "feature").Select(node => node.ToString())
+                  .Should().Contain("NaiveBayesMulticlassTrainer(input_columns:[feature])(output_columns:[PredictedLabel])");
         }
 
         [Fact]
         public void ClassificationExpert_should_propose_lbfgsMaximumEntropy()
         {
             var expert = this.GetClassificationExpert();
-            expert.Propose("label", "feature").Select(node => node.Summary())
-                  .Should().Contain("SweepableNode(LbfgsMaximumEntropyMulticlassTrainer)");
+            expert.Propose("label", "feature").Select(node => node.ToString())
+                  .Should().Contain("LbfgsMaximumEntropyMulticlassTrainer(input_columns:[feature])(output_columns:[PredictedLabel])");
         }
 
         [Fact]
         public void ClassificationExpert_should_propose_lightGBM()
         {
             var expert = this.GetClassificationExpert();
-            expert.Propose("label", "feature").Select(node => node.Summary())
-                  .Should().Contain("SweepableNode(LightGbmMulticlassTrainer)");
+            expert.Propose("label", "feature").Select(node => node.ToString())
+                  .Should().Contain("LightGbmMulticlassTrainer(input_columns:[feature])(output_columns:[PredictedLabel])");
         }
 
         [Fact(Skip ="time consuming")]

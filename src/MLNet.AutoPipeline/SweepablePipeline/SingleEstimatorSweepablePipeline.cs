@@ -14,34 +14,32 @@ namespace MLNet.AutoPipeline
 {
     public class SingleEstimatorSweepablePipeline : ISweepable<EstimatorChain<ITransformer>>
     {
-        private List<INode> nodes;
-
-        internal SingleEstimatorSweepablePipeline(List<INode> nodes)
+        internal SingleEstimatorSweepablePipeline(List<SweepableEstimatorBase> estimators)
         {
-            this.nodes = nodes;
+            this.Estimators = estimators;
         }
 
         public IEnumerable<IValueGenerator> SweepableValueGenerators
         {
             get
             {
-                return this.nodes.Select(node => node.ValueGenerators).SelectMany(x => x).ToList();
+                return this.Estimators.Select(node => node.SweepableValueGenerators).SelectMany(x => x).ToList();
             }
         }
 
-        public List<INode> Nodes { get => this.nodes; }
+        public List<SweepableEstimatorBase> Estimators { get; private set; }
 
-        public EstimatorChain<ITransformer> BuildFromParameterSet(ParameterSet parameters)
+        public EstimatorChain<ITransformer> BuildFromParameterSet(Parameters parameters)
         {
             var pipeline = new EstimatorChain<ITransformer>();
-            for (int i = 0; i < this.nodes.Count; i++)
+            for (int i = 0; i < this.Estimators.Count; i++)
             {
-                if (this.nodes[i] == UnsweepableNode<IEstimator<ITransformer>>.EmptyNode)
+                if (this.Estimators[i] == SweepableEstimator<IEstimator<ITransformer>>.EmptyNode)
                 {
                     continue;
                 }
 
-                pipeline = pipeline.Append(this.nodes[i].BuildFromParameterSet(parameters), this.nodes[i].Scope);
+                pipeline = pipeline.Append(this.Estimators[i].BuildFromParameterSet(parameters), this.Estimators[i].Scope);
             }
 
             return pipeline;
@@ -49,7 +47,7 @@ namespace MLNet.AutoPipeline
 
         public override string ToString()
         {
-            return $"SweepablePipeline({string.Join("=>", this.nodes.Select(node => node.EstimatorName))})";
+            return $"SweepablePipeline({string.Join("=>", this.Estimators.Select(node => node.EstimatorName))})";
         }
     }
 }

@@ -18,6 +18,6 @@ namespace MLNet.Expert
         /// <param name="label">label column name.</param>
         /// <param name="feature">feature column name.</param>
         /// <returns></returns>
-        IEnumerable<INode> Propose(string label, string feature);
+        IEnumerable<SweepableEstimatorBase> Propose(string label, string feature);
     }
 }

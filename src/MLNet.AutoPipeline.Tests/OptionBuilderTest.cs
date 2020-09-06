@@ -36,7 +36,7 @@ namespace MLNet.AutoPipeline.Test
                 new DiscreteParameterValue("StringOption", "2"),
             };
 
-            var paramSet = new ParameterSet(input);
+            var paramSet = new Parameters(input);
 
             var option = builder.BuildFromParameterSet(paramSet);
             option.LongOption.Should().Equals(2);
@@ -104,7 +104,7 @@ namespace MLNet.AutoPipeline.Test
                 new DiscreteParameterValue("StringOption", "2"),
             };
 
-            var parameterSet = new ParameterSet(input);
+            var parameterSet = new Parameters(input);
             var option2 = optionBuilder.BuildFromParameterSet(parameterSet);
 
             option2.LongOption.Should().Equals(2);

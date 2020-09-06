@@ -16,21 +16,21 @@ namespace MLNet.Expert.AutoML
 {
     public class AutoMLTrainingState
     {
-        public AutoMLTrainingState(IEnumerable<INode> trainers)
+        public AutoMLTrainingState(IEnumerable<SweepableEstimatorBase> trainers)
         {
             this.Trainers = trainers;
             this.InputOutputColumnPairs = new List<InputOutputColumnPair>();
-            this.Transformers = new Dictionary<DataViewSchema.Column, INode>();
+            this.Transformers = new Dictionary<DataViewSchema.Column, SweepableEstimatorBase>();
         }
 
-        public AutoMLTrainingState(Dictionary<DataViewSchema.Column, INode> transformers, List<InputOutputColumnPair> inputOutputColumnPairs, IEnumerable<INode> trainers)
+        public AutoMLTrainingState(Dictionary<DataViewSchema.Column, SweepableEstimatorBase> transformers, List<InputOutputColumnPair> inputOutputColumnPairs, IEnumerable<SweepableEstimatorBase> trainers)
         {
             this.Trainers = trainers;
             this.Transformers = transformers;
             this.InputOutputColumnPairs = inputOutputColumnPairs;
         }
 
-        public Dictionary<DataViewSchema.Column, INode> Transformers { get; private set; }
+        public Dictionary<DataViewSchema.Column, SweepableEstimatorBase> Transformers { get; private set; }
 
         public List<DataViewSchema.Column> Columns
         {
@@ -39,6 +39,6 @@ namespace MLNet.Expert.AutoML
 
         public List<InputOutputColumnPair> InputOutputColumnPairs { get; private set; }
 
-        public IEnumerable<INode> Trainers { get; private set; }
+        public IEnumerable<SweepableEstimatorBase> Trainers { get; private set; }
     }
 }

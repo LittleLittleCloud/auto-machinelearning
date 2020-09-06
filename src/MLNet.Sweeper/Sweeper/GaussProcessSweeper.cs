@@ -14,18 +14,18 @@ namespace MLNet.Sweeper
     {
         private ISweeper _randomSweeper;
         private GaussProcessRegressor _regressor;
-        private HashSet<ParameterSet> _generated;
+        private HashSet<Parameters> _generated;
         private Option _option;
         private IList<IRunResult> _runHistory;
         private Random _rand = new Random();
         private IEnumerable<IValueGenerator> _valueGenerators;
 
-        public ParameterSet Current { get; private set; }
+        public Parameters Current { get; private set; }
 
         public GaussProcessSweeper(Option option)
         {
             this._option = option;
-            this._generated = new HashSet<ParameterSet>();
+            this._generated = new HashSet<Parameters>();
             this._runHistory = new List<IRunResult>();
             var randomSweeperOption = new UniformRandomSweeper.Option()
             {
@@ -49,7 +49,7 @@ namespace MLNet.Sweeper
             this._runHistory.Add(input);
         }
 
-        public IEnumerable<ParameterSet> ProposeSweeps(ISweepable sweepable, int maxSweeps = 100, IEnumerable<IRunResult> previousRuns = null)
+        public IEnumerable<Parameters> ProposeSweeps(ISweepable sweepable, int maxSweeps = 100, IEnumerable<IRunResult> previousRuns = null)
         {
             this._valueGenerators = sweepable.SweepableValueGenerators;
             if (previousRuns != null)
@@ -83,7 +83,7 @@ namespace MLNet.Sweeper
                     }
 
                     // Get K*N one-step sample from kBestParents.
-                    var candidates = new List<ParameterSet>();
+                    var candidates = new List<Parameters>();
                     foreach ( var parent in kBestParents)
                     {
                         var _candidates = this.GetOneMutationNeighbourhood(parent.ParameterSet);
@@ -118,7 +118,7 @@ namespace MLNet.Sweeper
             }
         }
 
-        private NDarray CreateNDarrayFromParamaterSet(IEnumerable<ParameterSet> parameterSets)
+        private NDarray CreateNDarrayFromParamaterSet(IEnumerable<Parameters> parameterSets)
         {
             NDarray res = null;
             foreach ( var paramterSet in parameterSets)
@@ -164,9 +164,9 @@ namespace MLNet.Sweeper
             return new GaussProcessSweeper(this._option);
         }
 
-        private ParameterSet[] GetOneMutationNeighbourhood(ParameterSet parent)
+        private Parameters[] GetOneMutationNeighbourhood(Parameters parent)
         {
-            var candicates = new List<ParameterSet>();
+            var candicates = new List<Parameters>();
             foreach (var valueGenerator in this._valueGenerators)
             {
                 var _candidates = parent.Clone();

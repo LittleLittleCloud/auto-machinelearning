@@ -1,4 +1,4 @@
-﻿// <copyright file="ParameterSet.cs" company="BigMiao">
+﻿// <copyright file="Parameters.cs" company="BigMiao">
 // Copyright (c) BigMiao. All rights reserved.
 // </copyright>
 
@@ -14,12 +14,12 @@ namespace MLNet.Sweeper
     /// A set of parameter values.
     /// The parameter set must be immutable.
     /// </summary>
-    public sealed class ParameterSet : IEquatable<ParameterSet>, IEnumerable<IParameterValue>
+    public sealed class Parameters : IEquatable<Parameters>, IEnumerable<IParameterValue>
     {
         private readonly Dictionary<string, IParameterValue> _parameterValues;
         private readonly int _hash;
 
-        public ParameterSet(IEnumerable<IParameterValue> parameters)
+        public Parameters(IEnumerable<IParameterValue> parameters)
         {
             this._parameterValues = new Dictionary<string, IParameterValue>();
             foreach (var parameter in parameters)
@@ -37,7 +37,7 @@ namespace MLNet.Sweeper
             }
         }
 
-        public ParameterSet(Dictionary<string, IParameterValue> paramValues, int hash)
+        public Parameters(Dictionary<string, IParameterValue> paramValues, int hash)
         {
             this._parameterValues = paramValues;
             this._hash = hash;
@@ -68,7 +68,7 @@ namespace MLNet.Sweeper
             }
         }
 
-        public bool Equals(ParameterSet other)
+        public bool Equals(Parameters other)
         {
             if (other == null || other._hash != this._hash || other._parameterValues.Count != this._parameterValues.Count)
             {
@@ -78,9 +78,9 @@ namespace MLNet.Sweeper
             return other._parameterValues.Values.All(pv => this.ContainsParamValue(pv));
         }
 
-        public ParameterSet Clone()
+        public Parameters Clone()
         {
-            return new ParameterSet(new Dictionary<string, IParameterValue>(this._parameterValues), this._hash);
+            return new Parameters(new Dictionary<string, IParameterValue>(this._parameterValues), this._hash);
         }
 
         public override string ToString()

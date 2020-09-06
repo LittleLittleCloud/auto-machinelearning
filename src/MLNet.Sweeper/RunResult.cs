@@ -11,7 +11,7 @@ namespace MLNet.Sweeper
     /// </summary>
     public sealed class RunResult : IRunResult<double>
     {
-        private readonly ParameterSet _parameterSet;
+        private readonly Parameters _parameterSet;
         private readonly double? _metricValue;
         private readonly bool _isMetricMaximizing;
 
@@ -21,16 +21,16 @@ namespace MLNet.Sweeper
         /// </summary>
         public bool IsMetricMaximizing => this._isMetricMaximizing;
 
-        public ParameterSet ParameterSet => this._parameterSet;
+        public Parameters ParameterSet => this._parameterSet;
 
-        public RunResult(ParameterSet parameterSet, double metricValue, bool isMetricMaximizing)
+        public RunResult(Parameters parameterSet, double metricValue, bool isMetricMaximizing)
         {
             this._parameterSet = parameterSet;
             this._metricValue = metricValue;
             this._isMetricMaximizing = isMetricMaximizing;
         }
 
-        public RunResult(ParameterSet parameterSet)
+        public RunResult(Parameters parameterSet)
         {
             this._parameterSet = parameterSet;
         }

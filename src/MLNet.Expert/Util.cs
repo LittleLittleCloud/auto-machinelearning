@@ -17,17 +17,17 @@ namespace MLNet.Expert
     {
         private static Random rng = new Random();
 
-        public static SweepableNode<TNewTrain, TOption> CreateSweepableNode<TNewTrain, TOption>(Func<TOption, TNewTrain> estimatorFactory, SweepableOption<TOption> optionBuilder, TransformerScope scope = TransformerScope.Everything, string estimatorName = null)
+        public static SweepableEstimator<TNewTrain, TOption> CreateSweepableNode<TNewTrain, TOption>(Func<TOption, TNewTrain> estimatorFactory, SweepableOption<TOption> optionBuilder, TransformerScope scope = TransformerScope.Everything, string estimatorName = null)
             where TNewTrain : IEstimator<ITransformer>
             where TOption : class
         {
-            return new SweepableNode<TNewTrain, TOption>(estimatorFactory, optionBuilder, scope, estimatorName);
+            return new SweepableEstimator<TNewTrain, TOption>(estimatorFactory, optionBuilder, scope, estimatorName);
         }
 
-        public static UnsweepableNode<TInstance> CreateUnSweepableNode<TInstance>(TInstance instance, TransformerScope scope = TransformerScope.Everything, string estimatorName = null)
+        public static SweepableEstimator<TInstance> CreateUnSweepableNode<TInstance>(TInstance instance, TransformerScope scope = TransformerScope.Everything, string estimatorName = null)
             where TInstance : IEstimator<ITransformer>
         {
-            return new UnsweepableNode<TInstance>(instance, scope, estimatorName);
+            return new SweepableEstimator<TInstance>(instance, scope, estimatorName);
         }
 
         public static void Shuffle<T>(this IList<T> list)

@@ -34,7 +34,7 @@ namespace MLNet.Expert.Trainers.Classification
             get => LbfgsMaximumEntropyBuilder.instance;
         }
 
-        public INode CreateTrainer(MLContext context, string label, string feature)
+        public SweepableEstimatorBase CreateTrainer(MLContext context, string label, string feature)
         {
             return context.AutoML().MultiClassification.LbfgsMaximumEntropy(label, feature);
         }

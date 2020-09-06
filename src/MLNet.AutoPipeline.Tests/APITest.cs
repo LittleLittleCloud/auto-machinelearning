@@ -45,7 +45,7 @@ namespace MLNet.AutoPipeline.Test
             var context = new MLContext();
             var trainer = context.AutoML().MultiClassification.SdcaMaximumEntropy("label", "feature");
             var parameterValues = SdcaMaximumEntropyMulticlassTrainerSweepableOptions.Default.ValueGenerators.Select(x => x.CreateFromNormalized(0.5));
-            var parameterset = new ParameterSet(parameterValues);
+            var parameterset = new Parameters(parameterValues);
             Approvals.Verify(trainer.ToCodeGenNodeContract(parameterset));
         }
 
@@ -58,7 +58,7 @@ namespace MLNet.AutoPipeline.Test
             var option = new CustomSdcaMaximumEntropyOptionBuilder();
             var trainer = context.AutoML().MultiClassification.SdcaMaximumEntropy("label", "feature", option);
             var parameterValues = option.ValueGenerators.Select(x => x.CreateFromNormalized(0.5));
-            var parameterset = new ParameterSet(parameterValues);
+            var parameterset = new Parameters(parameterValues);
             Approvals.Verify(trainer.ToCodeGenNodeContract(parameterset));
         }
 
@@ -70,7 +70,7 @@ namespace MLNet.AutoPipeline.Test
             var context = new MLContext();
             var trainer = context.AutoML().MultiClassification.SdcaNonCalibreated("label", "feature");
             var parameterValues = SdcaNonCalibratedMulticlassTrainerSweepableOptions.Default.ValueGenerators.Select(x => x.CreateFromNormalized(0.5));
-            var parameterset = new ParameterSet(parameterValues);
+            var parameterset = new Parameters(parameterValues);
             Approvals.Verify(trainer.ToCodeGenNodeContract(parameterset));
         }
 
@@ -82,7 +82,7 @@ namespace MLNet.AutoPipeline.Test
             var context = new MLContext();
             var trainer = context.AutoML().MultiClassification.LbfgsMaximumEntropy("label", "feature");
             var parameterValues = LbfgsMaximumEntropyMulticlassTrainerSweepableOptions.Default.ValueGenerators.Select(x => x.CreateFromNormalized(0.5));
-            var parameterset = new ParameterSet(parameterValues);
+            var parameterset = new Parameters(parameterValues);
             Approvals.Verify(trainer.ToCodeGenNodeContract(parameterset));
         }
 
@@ -94,7 +94,7 @@ namespace MLNet.AutoPipeline.Test
             var context = new MLContext();
             var trainer = context.AutoML().MultiClassification.LightGbm("label", "feature");
             var parameterValues = LightGbmMulticlassTrainerSweepableOptions.Default.ValueGenerators.Select(x => x.CreateFromNormalized(0.5));
-            var parameterset = new ParameterSet(parameterValues);
+            var parameterset = new Parameters(parameterValues);
             Approvals.Verify(trainer.ToCodeGenNodeContract(parameterset));
         }
 
@@ -118,7 +118,7 @@ namespace MLNet.AutoPipeline.Test
                                 "CustomSdca");
 
             var parameterValues = optionBuilder.ValueGenerators.Select(x => x.CreateFromNormalized(0.5));
-            var parameterset = new ParameterSet(parameterValues);
+            var parameterset = new Parameters(parameterValues);
             Approvals.Verify(trainer.ToCodeGenNodeContract(parameterset));
         }
 
@@ -143,7 +143,7 @@ namespace MLNet.AutoPipeline.Test
             var ovaTrainer = context.AutoML().MultiClassification.OneVersusAll(binaryTrainer);
 
             var parameterValues = optionBuilder.ValueGenerators.Select(x => x.CreateFromNormalized(0.5));
-            var parameterset = new ParameterSet(parameterValues);
+            var parameterset = new Parameters(parameterValues);
             Approvals.Verify(ovaTrainer.ToCodeGenNodeContract(parameterset));
         }
 
@@ -155,8 +155,8 @@ namespace MLNet.AutoPipeline.Test
                                   .Append(context.Transforms.Concatenate("features", new string[] { "sepal_length", "sepal_width", "petal_length", "petal_width" }))
                                   .Append(context.AutoML().MultiClassification.LightGbm("species", "features"));
 
-            var parameterValues = pipeline.NodeGenerators[2].Nodes[0].ValueGenerators.Select(x => x.Name);
-            pipeline.NodeGenerators.Count.Should().Be(3);
+            var parameterValues = pipeline.EstimatorGenerators[2].Estimators[0].SweepableValueGenerators.Select(x => x.Name);
+            pipeline.EstimatorGenerators.Count.Should().Be(3);
             parameterValues.Should().Equal(new string[] { "LearningRate", "NumberOfLeaves", "NumberOfIterations", "MinimumExampleCountPerLeaf", "ExampleWeightColumnName" });
         }
 
@@ -167,8 +167,8 @@ namespace MLNet.AutoPipeline.Test
             var pipeline = context.Transforms.Conversion.MapValueToKey("species", "species")
                                   .Append(context.AutoML().MultiClassification.LightGbm("species", "features"));
 
-            var parameterValues = pipeline.NodeGenerators[1].Nodes[0].ValueGenerators.Select(x => x.Name);
-            pipeline.NodeGenerators.Count.Should().Be(2);
+            var parameterValues = pipeline.EstimatorGenerators[1].Estimators[0].SweepableValueGenerators.Select(x => x.Name);
+            pipeline.EstimatorGenerators.Count.Should().Be(2);
             parameterValues.Should().Equal(new string[] { "LearningRate", "NumberOfLeaves", "NumberOfIterations", "MinimumExampleCountPerLeaf", "ExampleWeightColumnName" });
         }
 
@@ -179,17 +179,17 @@ namespace MLNet.AutoPipeline.Test
             var pipeline = context.AutoML().CreateUnsweepableEstimator(context.Transforms.Conversion.MapKeyToValue("species", "species"))
                                   .Append(context.AutoML().MultiClassification.LightGbm("species", "features"));
 
-            pipeline.Summary().Should().Be("SweepablePipeline([KeyToValueMappingEstimator]=>[LightGbmMulticlassTrainer])");
+            pipeline.ToString().Should().Be("SweepablePipeline([KeyToValueMappingEstimator]=>[LightGbmMulticlassTrainer])");
 
             pipeline = context.AutoML().MultiClassification.LightGbm("species", "features")
                                   .Append(context.AutoML().CreateUnsweepableEstimator(context.Transforms.Conversion.MapKeyToValue("species", "species")));
 
-            pipeline.Summary().Should().Be("SweepablePipeline([LightGbmMulticlassTrainer]=>[KeyToValueMappingEstimator])");
+            pipeline.ToString().Should().Be("SweepablePipeline([LightGbmMulticlassTrainer]=>[KeyToValueMappingEstimator])");
 
             pipeline = context.AutoML().MultiClassification.LightGbm("species", "features")
                       .Append(context.Transforms.Conversion.MapKeyToValue("species", "species"));
 
-            pipeline.Summary().Should().Be("SweepablePipeline([LightGbmMulticlassTrainer]=>[KeyToValueMappingEstimator])");
+            pipeline.ToString().Should().Be("SweepablePipeline([LightGbmMulticlassTrainer]=>[KeyToValueMappingEstimator])");
         }
 
         [Fact]
@@ -202,7 +202,7 @@ namespace MLNet.AutoPipeline.Test
             optionBuilder.ExampleWeightColumnName = ParameterFactory.CreateFromSingleValue("example");
             var trainer = context.AutoML().BinaryClassification.LinearSvm("label", "feature", optionBuilder);
             var parameterValue = optionBuilder.ValueGenerators.Select(x => x.CreateFromNormalized(0.5));
-            var parameterset = new ParameterSet(parameterValue);
+            var parameterset = new Parameters(parameterValue);
             Approvals.Verify(trainer.ToCodeGenNodeContract(parameterset));
         }
 
@@ -216,7 +216,7 @@ namespace MLNet.AutoPipeline.Test
             optionBuilder.ExampleWeightColumnName = ParameterFactory.CreateFromSingleValue("example");
             var trainer = context.AutoML().BinaryClassification.FastForest("label", "feature", optionBuilder);
             var parameterValue = optionBuilder.ValueGenerators.Select(x => x.CreateFromNormalized(0.5));
-            var parameterset = new ParameterSet(parameterValue);
+            var parameterset = new Parameters(parameterValue);
             Approvals.Verify(trainer.ToCodeGenNodeContract(parameterset));
         }
 
@@ -230,7 +230,7 @@ namespace MLNet.AutoPipeline.Test
             optionBuilder.ExampleWeightColumnName = ParameterFactory.CreateFromSingleValue("example");
             var trainer = context.AutoML().BinaryClassification.FastTree("label", "feature", optionBuilder);
             var parameterValue = optionBuilder.ValueGenerators.Select(x => x.CreateFromNormalized(0.5));
-            var parameterset = new ParameterSet(parameterValue);
+            var parameterset = new Parameters(parameterValue);
             Approvals.Verify(trainer.ToCodeGenNodeContract(parameterset));
         }
 
@@ -244,7 +244,7 @@ namespace MLNet.AutoPipeline.Test
             optionBuilder.ExampleWeightColumnName = ParameterFactory.CreateFromSingleValue("example");
             var trainer = context.AutoML().BinaryClassification.LightGbm("label", "feature", optionBuilder);
             var parameterValue = optionBuilder.ValueGenerators.Select(x => x.CreateFromNormalized(0.5));
-            var parameterset = new ParameterSet(parameterValue);
+            var parameterset = new Parameters(parameterValue);
             Approvals.Verify(trainer.ToCodeGenNodeContract(parameterset));
         }
 
@@ -257,7 +257,7 @@ namespace MLNet.AutoPipeline.Test
             var optionBuilder = LdSvmBinaryTrainerSweepableOptions.Default;
             var trainer = context.AutoML().BinaryClassification.LdSvm("label", "feature", optionBuilder);
             var parameterValue = optionBuilder.ValueGenerators.Select(x => x.CreateFromNormalized(0.5));
-            var parameterset = new ParameterSet(parameterValue);
+            var parameterset = new Parameters(parameterValue);
             Approvals.Verify(trainer.ToCodeGenNodeContract(parameterset));
         }
 
@@ -270,7 +270,7 @@ namespace MLNet.AutoPipeline.Test
             var optionBuilder = GamBinaryTrainerSweepableOptions.Default;
             var trainer = context.AutoML().BinaryClassification.Gam("label", "feature", optionBuilder);
             var parameterValue = optionBuilder.ValueGenerators.Select(x => x.CreateFromNormalized(0.5));
-            var parameterset = new ParameterSet(parameterValue);
+            var parameterset = new Parameters(parameterValue);
             Approvals.Verify(trainer.ToCodeGenNodeContract(parameterset));
         }
 
@@ -283,7 +283,7 @@ namespace MLNet.AutoPipeline.Test
             var optionBuilder = SgdNonCalibratedBinaryTrainerSweepableOptions.Default;
             var trainer = context.AutoML().BinaryClassification.SgdNonCalibrated("label", "feature", optionBuilder);
             var parameterValue = optionBuilder.ValueGenerators.Select(x => x.CreateFromNormalized(0.5));
-            var parameterset = new ParameterSet(parameterValue);
+            var parameterset = new Parameters(parameterValue);
             Approvals.Verify(trainer.ToCodeGenNodeContract(parameterset));
         }
 
@@ -296,7 +296,7 @@ namespace MLNet.AutoPipeline.Test
             var optionBuilder = SgdCalibratedBinaryTrainerSweepableOptions.Default;
             var trainer = context.AutoML().BinaryClassification.SgdCalibrated("label", "feature", optionBuilder);
             var parameterValue = optionBuilder.ValueGenerators.Select(x => x.CreateFromNormalized(0.5));
-            var parameterset = new ParameterSet(parameterValue);
+            var parameterset = new Parameters(parameterValue);
             Approvals.Verify(trainer.ToCodeGenNodeContract(parameterset));
         }
 
@@ -309,7 +309,7 @@ namespace MLNet.AutoPipeline.Test
             var optionBuilder = SdcaNonCalibratedBinaryTrainerSweepableOptions.Default;
             var trainer = context.AutoML().BinaryClassification.SdcaNonCalibrated("label", "feature", optionBuilder);
             var parameterValue = optionBuilder.ValueGenerators.Select(x => x.CreateFromNormalized(0.5));
-            var parameterset = new ParameterSet(parameterValue);
+            var parameterset = new Parameters(parameterValue);
             Approvals.Verify(trainer.ToCodeGenNodeContract(parameterset));
         }
 
@@ -322,7 +322,7 @@ namespace MLNet.AutoPipeline.Test
             var optionBuilder = SdcaLogisticRegressionBinaryTrainerSweepableOptions.Default;
             var trainer = context.AutoML().BinaryClassification.SdcaLogisticRegression("label", "feature", optionBuilder);
             var parameterValue = optionBuilder.ValueGenerators.Select(x => x.CreateFromNormalized(0.5));
-            var parameterset = new ParameterSet(parameterValue);
+            var parameterset = new Parameters(parameterValue);
             Approvals.Verify(trainer.ToCodeGenNodeContract(parameterset));
         }
 
@@ -335,7 +335,7 @@ namespace MLNet.AutoPipeline.Test
             var optionBuilder = LbfgsLogisticRegressionBinaryTrainerSweepableOptions.Default;
             var trainer = context.AutoML().BinaryClassification.LbfgsLogisticRegression("label", "feature", optionBuilder);
             var parameterValue = optionBuilder.ValueGenerators.Select(x => x.CreateFromNormalized(0.5));
-            var parameterset = new ParameterSet(parameterValue);
+            var parameterset = new Parameters(parameterValue);
             Approvals.Verify(trainer.ToCodeGenNodeContract(parameterset));
         }
 
@@ -348,7 +348,7 @@ namespace MLNet.AutoPipeline.Test
             var optionBuilder = AveragedPerceptronBinaryTrainerSweepableOptions.Default;
             var trainer = context.AutoML().BinaryClassification.AveragedPerceptron("label", "feature", optionBuilder);
             var parameterValue = optionBuilder.ValueGenerators.Select(x => x.CreateFromNormalized(0.5));
-            var parameterset = new ParameterSet(parameterValue);
+            var parameterset = new Parameters(parameterValue);
             Approvals.Verify(trainer.ToCodeGenNodeContract(parameterset));
         }
 
@@ -362,7 +362,7 @@ namespace MLNet.AutoPipeline.Test
             var optionSweeper = LightGbmRegressionTrainerSweepableOptions.Default;
             var trainer = context.AutoML().Regression.LightGbm();
             var parameterValue = optionSweeper.ValueGenerators.Select(x => x.CreateFromNormalized(0.5));
-            var parameterSet = new ParameterSet(parameterValue);
+            var parameterSet = new Parameters(parameterValue);
 
             Approvals.Verify(trainer.ToCodeGenNodeContract(parameterSet));
         }
@@ -377,7 +377,7 @@ namespace MLNet.AutoPipeline.Test
             var optionSweeper = LbfgsPoissonRegressionTrainerSweepableOptions.Default;
             var trainer = context.AutoML().Regression.LbfgsPoissonRegression();
             var parameterValue = optionSweeper.ValueGenerators.Select(x => x.CreateFromNormalized(0.5));
-            var parameterSet = new ParameterSet(parameterValue);
+            var parameterSet = new Parameters(parameterValue);
 
             Approvals.Verify(trainer.ToCodeGenNodeContract(parameterSet));
         }
@@ -392,7 +392,7 @@ namespace MLNet.AutoPipeline.Test
             var optionSweeper = OnlineGradientDescentTrainerSweepableOptions.Default;
             var trainer = context.AutoML().Regression.OnlineGradientDescent();
             var parameterValue = optionSweeper.ValueGenerators.Select(x => x.CreateFromNormalized(0.5));
-            var parameterSet = new ParameterSet(parameterValue);
+            var parameterSet = new Parameters(parameterValue);
 
             Approvals.Verify(trainer.ToCodeGenNodeContract(parameterSet));
         }
@@ -407,7 +407,7 @@ namespace MLNet.AutoPipeline.Test
             var optionSweeper = SdcaRegressionTrainerSweepableOptions.Default;
             var trainer = context.AutoML().Regression.Sdca();
             var parameterValue = optionSweeper.ValueGenerators.Select(x => x.CreateFromNormalized(0.5));
-            var parameterSet = new ParameterSet(parameterValue);
+            var parameterSet = new Parameters(parameterValue);
 
             Approvals.Verify(trainer.ToCodeGenNodeContract(parameterSet));
         }
@@ -422,7 +422,7 @@ namespace MLNet.AutoPipeline.Test
             var optionSweeper = FastForestRegressionTrainerSweepableOptions.Default;
             var trainer = context.AutoML().Regression.FastForest();
             var parameterValue = optionSweeper.ValueGenerators.Select(x => x.CreateFromNormalized(0.5));
-            var parameterSet = new ParameterSet(parameterValue);
+            var parameterSet = new Parameters(parameterValue);
 
             Approvals.Verify(trainer.ToCodeGenNodeContract(parameterSet));
         }
@@ -437,7 +437,7 @@ namespace MLNet.AutoPipeline.Test
             var optionSweeper = FastTreeRegressionTrainerSweepableOptions.Default;
             var trainer = context.AutoML().Regression.FastTree();
             var parameterValue = optionSweeper.ValueGenerators.Select(x => x.CreateFromNormalized(0.5));
-            var parameterSet = new ParameterSet(parameterValue);
+            var parameterSet = new Parameters(parameterValue);
 
             Approvals.Verify(trainer.ToCodeGenNodeContract(parameterSet));
         }
@@ -452,7 +452,7 @@ namespace MLNet.AutoPipeline.Test
             var optionSweeper = FastTreeTweedieTrainerSweepableOptions.Default;
             var trainer = context.AutoML().Regression.FastTreeTweedie();
             var parameterValue = optionSweeper.ValueGenerators.Select(x => x.CreateFromNormalized(0.5));
-            var parameterSet = new ParameterSet(parameterValue);
+            var parameterSet = new Parameters(parameterValue);
 
             Approvals.Verify(trainer.ToCodeGenNodeContract(parameterSet));
         }
@@ -467,7 +467,7 @@ namespace MLNet.AutoPipeline.Test
             var optionSweeper = GamRegressionTrainerSweepableOptions.Default;
             var trainer = context.AutoML().Regression.Gam();
             var parameterValue = optionSweeper.ValueGenerators.Select(x => x.CreateFromNormalized(0.5));
-            var parameterSet = new ParameterSet(parameterValue);
+            var parameterSet = new Parameters(parameterValue);
 
             Approvals.Verify(trainer.ToCodeGenNodeContract(parameterSet));
         }

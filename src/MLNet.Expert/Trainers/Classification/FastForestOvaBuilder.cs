@@ -36,7 +36,7 @@ namespace MLNet.Expert.Trainers.Classification
             get => FastForestOvaBuilder._instance;
         }
 
-        public INode CreateTrainer(MLContext context, string label, string feature)
+        public SweepableEstimatorBase CreateTrainer(MLContext context, string label, string feature)
         {
             var ovaNode = context.AutoML().MultiClassification.OneVersusAll(context.AutoML().BinaryClassification.FastForest(label, feature), label);
             return ovaNode;

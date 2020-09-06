@@ -47,7 +47,7 @@ namespace MLNet.Expert.AutoML
             // start
             var trainers = this.classificationExpert.Propose(this.option.LabelColumn, PipelineBuilder.FEATURECOLUMNNAME);
             var initState = new AutoMLTrainingState(trainers);
-            initState.Transformers.Add(columnPicker.LabelColumn, Util.CreateUnSweepableNode(this.context.Transforms.Conversion.MapValueToKey(this.option.LabelColumn, this.option.LabelColumn), estimatorName: "MapValueToKey") as INode);
+            initState.Transformers.Add(columnPicker.LabelColumn, Util.CreateUnSweepableNode(this.context.Transforms.Conversion.MapValueToKey(this.option.LabelColumn, this.option.LabelColumn), estimatorName: "MapValueToKey"));
             var experimentOption = new Experiment.Option()
             {
                 EvaluateFunction = this.option.EvaluateFunction,
@@ -151,7 +151,7 @@ namespace MLNet.Expert.AutoML
             DataViewSchema.Column column,
             ColumnPicker columnPicker,
             Experiment.Option experimentOption,
-            IEnumerable<INode> trainers,
+            IEnumerable<SweepableEstimatorBase> trainers,
             IProgress<IterationInfo> reporter = null,
             CancellationToken ct = default)
         {
@@ -163,9 +163,9 @@ namespace MLNet.Expert.AutoML
             var pipeline = PipelineBuilder.BuildPipelineFromStateWithNewColumn(this.context, currentState, column, expert, column.Name);
             var experiment = new Experiment(this.context, pipeline, experimentOption);
             var experimentResult = await experiment.TrainAsync(train, validate, reporter, ct);
-            var transformers = experimentResult.BestIteration.SingleSweepablePipeline.Nodes;
+            var transformers = experimentResult.BestIteration.SingleSweepablePipeline.Estimators;
 
-            var selectedTransformer = transformers[transformers.Count - 3];
+            var selectedTransformer = transformers[transformers.Count() - 3];
             var transforms = currentState.Transformers.Select(x => x).ToDictionary(x => x.Key, x => x.Value);
             transforms.Add(column, selectedTransformer);
             var inputOutputPair = currentState.InputOutputColumnPairs.Select(x => x).ToList();

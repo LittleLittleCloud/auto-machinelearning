@@ -17,17 +17,17 @@ namespace MLNet.AutoPipeline
     {
         private static Random rng = new Random();
 
-        public static SweepableNode<TNewTrain, TOption> CreateSweepableNode<TNewTrain, TOption>(Func<TOption, TNewTrain> estimatorFactory, SweepableOption<TOption> optionBuilder, TransformerScope scope = TransformerScope.Everything, string estimatorName = null, string[] inputs = null, string[] outputs = null)
+        public static SweepableEstimator<TNewTrain, TOption> CreateSweepableEstimator<TNewTrain, TOption>(Func<TOption, TNewTrain> estimatorFactory, SweepableOption<TOption> optionBuilder, TransformerScope scope = TransformerScope.Everything, string estimatorName = null, string[] inputs = null, string[] outputs = null)
             where TNewTrain : IEstimator<ITransformer>
             where TOption : class
         {
-            return new SweepableNode<TNewTrain, TOption>(estimatorFactory, optionBuilder, scope, estimatorName, inputs, outputs);
+            return new SweepableEstimator<TNewTrain, TOption>(estimatorFactory, optionBuilder, scope, estimatorName, inputs, outputs);
         }
 
-        public static UnsweepableNode<TInstance> CreateUnSweepableNode<TInstance>(TInstance instance, TransformerScope scope = TransformerScope.Everything, string estimatorName = null, string[] inputs = null, string[] outputs = null)
+        public static SweepableEstimator<TInstance> CreateSweepableEstimator<TInstance>(TInstance instance, TransformerScope scope = TransformerScope.Everything, string estimatorName = null, string[] inputs = null, string[] outputs = null)
             where TInstance : IEstimator<ITransformer>
         {
-            return new UnsweepableNode<TInstance>(instance, scope, estimatorName, inputs, outputs);
+            return new SweepableEstimator<TInstance>(instance, scope, estimatorName, inputs, outputs);
         }
 
         public static void Shuffle<T>(this IList<T> list)

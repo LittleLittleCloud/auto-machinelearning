@@ -27,7 +27,7 @@ namespace MLNet.Expert
             return pipeline;
         }
 
-        public static SweepablePipeline BuildPipelineFromColumns(MLContext context, IEnumerable<DataViewSchema.Column> columns, ColumnPicker columnPicker, IEnumerable<InputOutputColumnPair> inputOutputColumnPairs, INode[] trainers)
+        public static SweepablePipeline BuildPipelineFromColumns(MLContext context, IEnumerable<DataViewSchema.Column> columns, ColumnPicker columnPicker, IEnumerable<InputOutputColumnPair> inputOutputColumnPairs, SweepableEstimatorBase[] trainers)
         {
             Contract.Requires(columns!.Count() == inputOutputColumnPairs!.Count());
             var pipeline = new SweepablePipeline();
@@ -70,7 +70,7 @@ namespace MLNet.Expert
             return pipeline;
         }
 
-        private static INode BuildConcatFeaturesTransformer(MLContext context, IEnumerable<DataViewSchema.Column> columns, IEnumerable<InputOutputColumnPair> inputOutputColumnPairs, string featureColumnName = "Features")
+        private static SweepableEstimatorBase BuildConcatFeaturesTransformer(MLContext context, IEnumerable<DataViewSchema.Column> columns, IEnumerable<InputOutputColumnPair> inputOutputColumnPairs, string featureColumnName = "Features")
         {
             Contract.Requires(columns != null && inputOutputColumnPairs != null);
             var inputColumnNames = inputOutputColumnPairs.Select(x => x.InputColumnName);
@@ -82,7 +82,7 @@ namespace MLNet.Expert
 
             var outputColumnNames = inputOutputColumnPairs.Select(x => x.OutputColumnName);
             var concatFeaturesTransformer = context.Transforms.Concatenate(featureColumnName, outputColumnNames.ToArray());
-            return (INode)Util.CreateUnSweepableNode(concatFeaturesTransformer);
+            return Util.CreateUnSweepableNode(concatFeaturesTransformer);
         }
     }
 }

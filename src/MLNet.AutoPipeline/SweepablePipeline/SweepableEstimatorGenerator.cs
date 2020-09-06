@@ -1,4 +1,4 @@
-﻿// <copyright file="SweepableNodeGenerator.cs" company="BigMiao">
+﻿// <copyright file="SweepableEstimatorGenerator.cs" company="BigMiao">
 // Copyright (c) BigMiao. All rights reserved.
 // </copyright>
 
@@ -10,31 +10,31 @@ using System.Text;
 
 namespace MLNet.AutoPipeline
 {
-    internal class SweepableNodeGenerator : IDiscreteValueGenerator
+    internal class SweepableEstimatorGenerator : IDiscreteValueGenerator
     {
-        public SweepableNodeGenerator(string name, IEnumerable<INode> nodes)
+        public SweepableEstimatorGenerator(string name, IEnumerable<SweepableEstimatorBase> estimators)
         {
-            this.Nodes = nodes.ToList();
+            this.Estimators = estimators.ToList();
             this.ID = Guid.NewGuid().ToString("N");
             this.Name = name;
         }
 
-        public SweepableNodeGenerator(string name, INode node)
+        public SweepableEstimatorGenerator(string name, SweepableEstimatorBase estimator)
         {
-            this.Nodes = new List<INode>()
+            this.Estimators = new List<SweepableEstimatorBase>()
             {
-                node,
+                estimator,
             };
 
             this.ID = Guid.NewGuid().ToString("N");
             this.Name = name;
         }
 
-        public IParameterValue this[int i] => new DiscreteParameterValue(this.Name, this.Nodes[i], this.OneHotEncodeValue(this.Nodes[i]), this.ID);
+        public IParameterValue this[int i] => new DiscreteParameterValue(this.Name, this.Estimators[i], this.OneHotEncodeValue(this.Estimators[i]), this.ID);
 
-        public int Count => this.Nodes.Count();
+        public int Count => this.Estimators.Count();
 
-        public List<INode> Nodes { get; private set; }
+        public List<SweepableEstimatorBase> Estimators { get; private set; }
 
         public string Name { get; set; }
 
@@ -47,12 +47,12 @@ namespace MLNet.AutoPipeline
 
         public double[] OneHotEncodeValue(IParameterValue value)
         {
-            return this.OneHotEncodeValue(value.RawValue as INode);
+            return this.OneHotEncodeValue(value.RawValue as SweepableEstimatorBase);
         }
 
-        private double[] OneHotEncodeValue(INode node)
+        private double[] OneHotEncodeValue(SweepableEstimatorBase node)
         {
-            var index = this.Nodes.IndexOf(node);
+            var index = this.Estimators.IndexOf(node);
             if (index < 0)
             {
                 throw new Exception($"can't find value {node.EstimatorName}");

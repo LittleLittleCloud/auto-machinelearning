@@ -4,7 +4,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Dynamic;
 using System.Linq;
 using System.Text;
 using MLNet.Sweeper;
@@ -67,7 +66,7 @@ namespace MLNet.AutoPipeline
         /// </summary>
         /// <param name="parameters">a set of parameters used to build option.</param>
         /// <returns><paramref name="TOption"/>.</returns>
-        public TOption BuildFromParameterSet(ParameterSet parameters)
+        public TOption BuildFromParameterSet(Parameters parameters)
         {
             var option = this.CreateDefaultOption();
             foreach (var param in parameters)

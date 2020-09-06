@@ -16,6 +16,6 @@ namespace MLNet.Expert
         /// <param name="label">label column name.</param>
         /// <param name="feature">feature column name.</param>
         /// <returns></returns>
-        INode CreateTrainer(MLContext context, string label, string feature);
+        SweepableEstimatorBase CreateTrainer(MLContext context, string label, string feature);
     }
 }

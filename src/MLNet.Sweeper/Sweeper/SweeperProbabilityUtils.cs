@@ -84,7 +84,7 @@ namespace MLNet.Sweeper
             return Normalize(weights);
         }
 
-        public static float[] ParameterSetAsFloatArray(IHost host, IValueGenerator[] sweepParams, ParameterSet ps, bool expandCategoricals = true)
+        public static float[] ParameterSetAsFloatArray(IHost host, IValueGenerator[] sweepParams, Parameters ps, bool expandCategoricals = true)
         {
             var result = new List<float>();
 
@@ -140,7 +140,7 @@ namespace MLNet.Sweeper
             return result.ToArray();
         }
 
-        public static ParameterSet FloatArrayAsParameterSet(IHost host, IValueGenerator[] sweepParams, float[] array, bool expandedCategoricals = true)
+        public static Parameters FloatArrayAsParameterSet(IHost host, IValueGenerator[] sweepParams, float[] array, bool expandedCategoricals = true)
         {
             List<IParameterValue> parameters = new List<IParameterValue>();
             int currentArrayIndex = 0;
@@ -177,7 +177,7 @@ namespace MLNet.Sweeper
                 }
             }
 
-            return new ParameterSet(parameters);
+            return new Parameters(parameters);
         }
 
         /// <summary>

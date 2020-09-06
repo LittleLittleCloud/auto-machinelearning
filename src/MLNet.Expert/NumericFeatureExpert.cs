@@ -20,7 +20,7 @@ namespace MLNet.Expert
         private Option option;
         private IList<CreateNormalizer> NormalizerFactory;
 
-        private delegate INode CreateNormalizer(MLContext context, string input, string output);
+        private delegate SweepableEstimatorBase CreateNormalizer(MLContext context, string input, string output);
 
         public NumericFeatureExpert(MLContext context)
             : this(context, new Option())
@@ -49,9 +49,9 @@ namespace MLNet.Expert
             }
         }
 
-        public IEnumerable<INode> Propose(string inputColumn, string outputColumn)
+        public IEnumerable<SweepableEstimatorBase> Propose(string inputColumn, string outputColumn)
         {
-            var groupNode = new List<INode>();
+            var groupNode = new List<SweepableEstimatorBase>();
             foreach ( var creator in this.NormalizerFactory)
             {
                 groupNode.Add(creator(this.context, inputColumn, outputColumn));
@@ -60,7 +60,7 @@ namespace MLNet.Expert
             return groupNode;
         }
 
-        public IEnumerable<INode> Propose(string inputColumn)
+        public IEnumerable<SweepableEstimatorBase> Propose(string inputColumn)
         {
             return this.Propose(inputColumn, inputColumn);
         }
@@ -78,13 +78,13 @@ namespace MLNet.Expert
             public bool NormalizeMinMax { get; set; } = true;
         }
 
-        private INode CreateNormalizeMeanVariance(MLContext context, string input, string output)
+        private SweepableEstimatorBase CreateNormalizeMeanVariance(MLContext context, string input, string output)
         {
             var instance = context.Transforms.NormalizeMeanVariance(output, input);
             return Util.CreateUnSweepableNode(instance, estimatorName: "NormalizeMeanVariance");
         }
 
-        private INode CreateNormalizeMinMax(MLContext context, string input, string output)
+        private SweepableEstimatorBase CreateNormalizeMinMax(MLContext context, string input, string output)
         {
             var instance = context.Transforms.NormalizeMinMax(output, input);
             return Util.CreateUnSweepableNode(instance, estimatorName: "NormalizeMinMax");
