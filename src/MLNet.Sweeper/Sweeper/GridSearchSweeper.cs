@@ -31,7 +31,7 @@ namespace MLNet.Sweeper
         /// <param name="maxSweeps">max sweep iteration. If greater than the total grid points, the number of total grid points will be used instead.</param>
         /// <param name="previousRuns">previous run, which will be used to avoid proposing duplicate parameterset if provided.</param>
         /// <returns><see cref="IEnumerable{ParameterSet}"/>.</returns>
-        public override IEnumerable<Parameters> ProposeSweeps(ISweepable sweepable, int maxSweeps, IEnumerable<IRunResult> previousRuns = null)
+        public override IEnumerable<IDictionary<string, string>> ProposeSweeps(ISweepable sweepable, int maxSweeps, IEnumerable<IRunResult> previousRuns = null)
         {
             this.start = 0;
             this.basePerPipe = sweepable.SweepableValueGenerators.Select(x => x.Count).ToArray();

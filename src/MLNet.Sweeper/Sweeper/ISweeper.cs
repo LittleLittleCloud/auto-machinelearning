@@ -15,8 +15,8 @@ namespace MLNet.Sweeper
         /// The list of runs can be null if there were no previous runs.
         /// Some smart sweepers can take advantage of the metric(s) that the caller computes for previous runs.
         /// </summary>
-        /// <returns>ParameterSet.</returns>
-        IEnumerable<Parameters> ProposeSweeps(ISweepable sweepingSpace, int maxSweeps = 100, IEnumerable<IRunResult> previousRuns = null);
+        /// <returns><see cref="IDictionary{TKey, TValue}"/> where key is parameter name and value is parameter value (in string format).</returns>
+        IEnumerable<IDictionary<string, string>> ProposeSweeps(ISweepable sweepingSpace, int maxSweeps = 100, IEnumerable<IRunResult> previousRuns = null);
 
         /// <summary>
         /// Add run history to sweeper. The run history can be used to avoid duplicate sweeping or train smart sweepers.

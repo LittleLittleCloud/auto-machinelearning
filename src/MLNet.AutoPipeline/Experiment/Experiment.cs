@@ -48,13 +48,13 @@ namespace MLNet.AutoPipeline
             {
                 foreach (var pipelineConfig in this.option.PipelineSweeper.ProposeSweeps(this.sweepablePipeline, this.option.PipelineSweeperIteration))
                 {
-                    var singleSweepablePipeline = this.sweepablePipeline.BuildFromParameters(pipelineConfig.ParameterValues);
+                    var singleSweepablePipeline = this.sweepablePipeline.BuildFromParameters(pipelineConfig);
                     foreach (var parameterSet in this.option.ParameterSweeper.ProposeSweeps(singleSweepablePipeline, this.option.ParameterSweeperIteration))
                     {
                         var stopWatch = new Stopwatch();
                         stopWatch.Start();
 
-                        var pipeline = singleSweepablePipeline.BuildFromParameters(parameterSet.ParameterValues);
+                        var pipeline = singleSweepablePipeline.BuildFromParameters(parameterSet);
                         ct.ThrowIfCancellationRequested();
 
                         // train

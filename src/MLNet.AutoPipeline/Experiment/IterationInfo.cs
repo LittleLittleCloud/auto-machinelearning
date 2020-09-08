@@ -19,7 +19,7 @@ namespace MLNet.AutoPipeline
         /// <summary>
         /// Parameters used in the current training round. This value is generated through <see cref="ISweeper.ProposeSweeps(ISweepable, int, IEnumerable{IRunResult})"/> from <see cref="Experiment.Option.ParameterSweeper"/>.
         /// </summary>
-        public Parameters Parameters { get; private set; }
+        public IDictionary<string, string> Parameters { get; private set; }
 
         /// <summary>
         /// Training time in seconds.
@@ -41,7 +41,7 @@ namespace MLNet.AutoPipeline
         /// </summary>
         public SingleEstimatorSweepablePipeline SingleSweepablePipeline { get; private set; }
 
-        internal IterationInfo(SingleEstimatorSweepablePipeline singleweepablePipeline, Parameters parameters, double time, double evaluateScore, bool isMaximizing)
+        internal IterationInfo(SingleEstimatorSweepablePipeline singleweepablePipeline, IDictionary<string, string> parameters, double time, double evaluateScore, bool isMaximizing)
         {
             this.SingleSweepablePipeline = singleweepablePipeline;
             this.Parameters = parameters;
@@ -56,7 +56,7 @@ namespace MLNet.AutoPipeline
         /// <returns><see cref="EstimatorChain{TLastTransformer}"/>.</returns>
         public EstimatorChain<ITransformer> RestoreEstimatorChain()
         {
-            return this.SingleSweepablePipeline.BuildFromParameters(this.Parameters.ParameterValues);
+            return this.SingleSweepablePipeline.BuildFromParameters(this.Parameters);
         }
 
         public int CompareTo(IterationInfo obj)

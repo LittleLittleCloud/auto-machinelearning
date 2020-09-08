@@ -36,7 +36,7 @@ namespace MLNet.Sweeper
             this._options = options;
         }
 
-        public virtual IEnumerable<Parameters> ProposeSweeps(ISweepable sweepable, int maxSweeps, IEnumerable<IRunResult> previousRuns = null)
+        public virtual IEnumerable<IDictionary<string, string>> ProposeSweeps(ISweepable sweepable, int maxSweeps, IEnumerable<IRunResult> previousRuns = null)
         {
             Parameters candidate;
 
@@ -54,7 +54,7 @@ namespace MLNet.Sweeper
                         !this._generated.Contains(candidate))
                     {
                         this._generated.Add(candidate);
-                        yield return candidate;
+                        yield return candidate.ParameterValues;
 
                         break;
                     }

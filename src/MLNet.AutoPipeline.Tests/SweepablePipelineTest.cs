@@ -59,7 +59,7 @@ namespace MLNet.AutoPipeline.Test
             var sweeper = new GridSearchSweeper();
             foreach (var param in sweeper.ProposeSweeps(sweepablePipeline, 100))
             {
-                var singleEstimatorPipeline = sweepablePipeline.BuildFromParameters(param.ParameterValues);
+                var singleEstimatorPipeline = sweepablePipeline.BuildFromParameters(param);
                 res.AppendLine(singleEstimatorPipeline.ToString());
             }
 

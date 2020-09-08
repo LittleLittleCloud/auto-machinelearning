@@ -3,6 +3,8 @@
 // </copyright>
 
 using System;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace MLNet.Sweeper
 {
@@ -11,7 +13,7 @@ namespace MLNet.Sweeper
     /// </summary>
     public sealed class RunResult : IRunResult<double>
     {
-        private readonly Parameters _parameterSet;
+        private readonly IDictionary<string, string> _parameters;
         private readonly double? _metricValue;
         private readonly bool _isMetricMaximizing;
 
@@ -21,18 +23,13 @@ namespace MLNet.Sweeper
         /// </summary>
         public bool IsMetricMaximizing => this._isMetricMaximizing;
 
-        public Parameters ParameterSet => this._parameterSet;
+        public IDictionary<string, string> ParameterSet => this._parameters;
 
-        public RunResult(Parameters parameterSet, double metricValue, bool isMetricMaximizing)
+        public RunResult(IDictionary<string, string> parameters, double metricValue, bool isMetricMaximizing)
         {
-            this._parameterSet = parameterSet;
+            this._parameters = parameters;
             this._metricValue = metricValue;
             this._isMetricMaximizing = isMetricMaximizing;
-        }
-
-        public RunResult(Parameters parameterSet)
-        {
-            this._parameterSet = parameterSet;
         }
 
         public double MetricValue
@@ -62,5 +59,7 @@ namespace MLNet.Sweeper
         public bool HasMetricValue => this._metricValue != null;
 
         IComparable IRunResult.MetricValue => this.MetricValue;
+
+        Parameters IRunResult.ParameterSet => throw new NotImplementedException();
     }
 }

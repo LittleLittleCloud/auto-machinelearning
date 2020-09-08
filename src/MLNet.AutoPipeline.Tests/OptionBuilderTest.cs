@@ -55,7 +55,7 @@ namespace MLNet.AutoPipeline.Test
             foreach (var sweeperOutput in randomSweeper.ProposeSweeps(builder, maximum))
             {
                 maximum -= 1;
-                var option = builder.BuildFromParameters(sweeperOutput.ParameterValues);
+                var option = builder.BuildFromParameters(sweeperOutput);
                 option.LongOption
                       .Should()
                       .BeLessOrEqualTo(100)

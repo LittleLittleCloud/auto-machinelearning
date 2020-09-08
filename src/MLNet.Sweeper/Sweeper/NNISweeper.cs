@@ -6,6 +6,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.InteropServices.ComTypes;
 using System.Text;
 
 namespace MLNet.Sweeper
@@ -24,12 +25,12 @@ namespace MLNet.Sweeper
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Parameters> ProposeSweeps(ISweepable sweepingSpace, int maxSweeps = 100, IEnumerable<IRunResult> previousRuns = null)
+        public IEnumerable<IDictionary<string, string>> ProposeSweeps(ISweepable sweepingSpace, int maxSweeps = 100, IEnumerable<IRunResult> previousRuns = null)
         {
             using (var stream = new StreamReader(SearchSpaceJson))
             {
                 var json = stream.ReadToEnd();
-                var parameters = JsonConvert.DeserializeObject<Parameters>(json);
+                var parameters = JsonConvert.DeserializeObject<Dictionary<string, string>>(json);
                 yield return parameters;
             }
         }
