@@ -43,10 +43,6 @@ namespace MLNet.Sweeper
             this._hash = hash;
         }
 
-        protected Parameters(SerializationInfo info, StreamingContext context)
-        {
-        }
-
         public IEnumerator<IParameterValue> GetEnumerator()
         {
             return this._parameterValues.Values.GetEnumerator();
@@ -58,6 +54,20 @@ namespace MLNet.Sweeper
         }
 
         public int Count => this._parameterValues.Count;
+
+        public Dictionary<string, string> ParameterValues
+        {
+            get
+            {
+                var dict = new Dictionary<string, string>();
+                foreach (var val in this)
+                {
+                    dict.Add(val.Name, val.ValueText);
+                }
+
+                return dict;
+            }
+        }
 
         public IParameterValue this[string id]
         {

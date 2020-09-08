@@ -31,12 +31,8 @@ namespace MLNet.AutoPipeline
 
         public EstimatorChain<ITransformer> BuildFromParameters(IDictionary<string, string> parameters)
         {
-            throw new NotImplementedException();
-        }
-
-        public EstimatorChain<ITransformer> BuildFromParameterSet(Parameters parameters)
-        {
             var pipeline = new EstimatorChain<ITransformer>();
+
             for (int i = 0; i < this.Estimators.Count; i++)
             {
                 if (this.Estimators[i] == SweepableEstimator<IEstimator<ITransformer>>.EmptyNode)
@@ -44,7 +40,7 @@ namespace MLNet.AutoPipeline
                     continue;
                 }
 
-                pipeline = pipeline.Append(this.Estimators[i].BuildFromParameterSet(parameters), this.Estimators[i].Scope);
+                pipeline = pipeline.Append(this.Estimators[i].BuildFromParameters(parameters), this.Estimators[i].Scope);
             }
 
             return pipeline;

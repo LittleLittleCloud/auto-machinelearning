@@ -23,7 +23,7 @@ namespace MLNet.AutoPipeline.Test
             this.EstimatorName = name;
         }
 
-        public override IEstimator<ITransformer> BuildFromParameterSet(Parameters parameters)
+        public override IEstimator<ITransformer> BuildFromParameters(IDictionary<string, string> parameters)
         {
             throw new System.NotImplementedException();
         }

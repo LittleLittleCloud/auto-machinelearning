@@ -68,13 +68,21 @@ namespace MLNet.AutoPipeline
         /// <returns><paramref name="TOption"/>.</returns>
         public TOption BuildFromParameterSet(Parameters parameters)
         {
+            return this.BuildFromParameters(parameters.ParameterValues);
+        }
+
+        public TOption BuildFromParameters(IDictionary<string, string> parameters)
+        {
             var option = this.CreateDefaultOption();
-            foreach (var param in parameters)
+
+            foreach (var generator in this.ValueGenerators)
             {
-                if (this._ids.Contains(param.ID))
+                if (parameters.ContainsKey(generator.Name))
                 {
-                    var value = param.RawValue;
-                    typeof(TOption).GetField(param.Name)?.SetValue(option, value);
+                    var valueText = parameters[generator.Name];
+                    var rawValue = generator.CreateFromString(valueText).RawValue;
+
+                    typeof(TOption).GetField(generator.Name)?.SetValue(option, rawValue);
                 }
             }
 
@@ -214,11 +222,6 @@ namespace MLNet.AutoPipeline
         public static Parameter<T> CreateDiscreteParameter<T>(T objects)
         {
             return ParameterFactory.CreateDiscreteParameter(objects);
-        }
-
-        public TOption BuildFromParameters(IDictionary<string, string> parameters)
-        {
-            throw new NotImplementedException();
         }
     }
 }

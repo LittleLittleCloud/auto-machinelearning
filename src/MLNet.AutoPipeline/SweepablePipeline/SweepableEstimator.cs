@@ -43,11 +43,6 @@ namespace MLNet.AutoPipeline
             get => no_op;
         }
 
-        public override IEstimator<ITransformer> BuildFromParameterSet(Parameters parameters)
-        {
-            return this._instance;
-        }
-
         internal CodeGenNodeContract ToCodeGenNodeContract(Parameters parameters = null)
         {
             return new CodeGenNodeContract()
@@ -56,6 +51,11 @@ namespace MLNet.AutoPipeline
                 InputColumns = this.InputColumns ?? (new string[] { }),
                 OutputColumns = this.OutputColumns ?? new string[] { },
             };
+        }
+
+        public override IEstimator<ITransformer> BuildFromParameters(IDictionary<string, string> parameters)
+        {
+            return this._instance;
         }
     }
 
@@ -86,9 +86,9 @@ namespace MLNet.AutoPipeline
 
         public Func<TOption, TTrain> EstimatorFactory { get; private set; }
 
-        public override IEstimator<ITransformer> BuildFromParameterSet(Parameters parameters)
+        public override IEstimator<ITransformer> BuildFromParameters(IDictionary<string, string> parameters)
         {
-            var option = this.OptionBuilder.BuildFromParameterSet(parameters);
+            var option = this.OptionBuilder.BuildFromParameters(parameters);
             return this.EstimatorFactory(option);
         }
 

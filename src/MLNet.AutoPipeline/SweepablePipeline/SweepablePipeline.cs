@@ -65,30 +65,26 @@ namespace MLNet.AutoPipeline
             return $"SweepablePipeline({string.Join("=>", this.EstimatorGenerators.Select(builder => $"[{string.Join("|", builder.Values.Select(node => node.EstimatorName))}]"))})";
         }
 
-        public SingleEstimatorSweepablePipeline BuildFromParameterSet(Parameters parameters)
+        public SingleEstimatorSweepablePipeline BuildFromParameters(IDictionary<string, string> parameters)
         {
             var estimators = new List<SweepableEstimatorBase>();
 
             foreach (var generator in this.EstimatorGenerators)
             {
-                var param = parameters.Where(param => generator.ID == param.ID).FirstOrDefault();
-
                 // TODO
                 // Error Handling
-                if (param == null)
+                if (!parameters.ContainsKey(generator.Name))
                 {
                     throw new Exception("can't build SingleSweepablePipeline from SweepablePipeline");
                 }
 
-                estimators.Add(param.RawValue as SweepableEstimatorBase);
+                var valueText = parameters[generator.Name];
+                var estimator = generator.CreateFromString(valueText).RawValue;
+
+                estimators.Add(estimator as SweepableEstimatorBase);
             }
 
             return new SingleEstimatorSweepablePipeline(estimators);
-        }
-
-        public SingleEstimatorSweepablePipeline BuildFromParameters(IDictionary<string, string> parameters)
-        {
-            throw new NotImplementedException();
         }
     }
 }

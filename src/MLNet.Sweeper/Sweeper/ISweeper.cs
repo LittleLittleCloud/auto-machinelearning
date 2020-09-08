@@ -53,8 +53,6 @@ namespace MLNet.Sweeper
 
     internal interface ISweepable<out T> : ISweepable
     {
-        T BuildFromParameterSet(Parameters parameters);
-
         T BuildFromParameters(IDictionary<string, string> parameters);
     }
 }

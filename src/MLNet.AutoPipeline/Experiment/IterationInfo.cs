@@ -56,7 +56,7 @@ namespace MLNet.AutoPipeline
         /// <returns><see cref="EstimatorChain{TLastTransformer}"/>.</returns>
         public EstimatorChain<ITransformer> RestoreEstimatorChain()
         {
-            return this.SingleSweepablePipeline.BuildFromParameterSet(this.Parameters);
+            return this.SingleSweepablePipeline.BuildFromParameters(this.Parameters.ParameterValues);
         }
 
         public int CompareTo(IterationInfo obj)
