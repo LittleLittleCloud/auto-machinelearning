@@ -157,7 +157,7 @@ namespace MLNet.AutoPipeline.Test
 
             var parameterValues = pipeline.EstimatorGenerators[2].Values[0].SweepableValueGenerators.Select(x => x.Name);
             pipeline.EstimatorGenerators.Count.Should().Be(3);
-            parameterValues.Should().Equal(new string[] { "LearningRate", "NumberOfLeaves", "NumberOfIterations", "MinimumExampleCountPerLeaf", "ExampleWeightColumnName" });
+            parameterValues.Should().Equal(new string[] { "LearningRate", "NumberOfLeaves", "NumberOfIterations", "MinimumExampleCountPerLeaf" });
         }
 
         [Fact]
@@ -169,7 +169,7 @@ namespace MLNet.AutoPipeline.Test
 
             var parameterValues = pipeline.EstimatorGenerators[1].Values[0].SweepableValueGenerators.Select(x => x.Name);
             pipeline.EstimatorGenerators.Count.Should().Be(2);
-            parameterValues.Should().Equal(new string[] { "LearningRate", "NumberOfLeaves", "NumberOfIterations", "MinimumExampleCountPerLeaf", "ExampleWeightColumnName" });
+            parameterValues.Should().Equal(new string[] { "LearningRate", "NumberOfLeaves", "NumberOfIterations", "MinimumExampleCountPerLeaf" });
         }
 
         [Fact]
@@ -199,7 +199,6 @@ namespace MLNet.AutoPipeline.Test
         {
             var context = new MLContext();
             var optionBuilder = LinearSvmBinaryTrainerSweepableOptions.Default;
-            optionBuilder.ExampleWeightColumnName = ParameterFactory.CreateFromSingleValue("example");
             var trainer = context.AutoML().BinaryClassification.LinearSvm("label", "feature", optionBuilder);
             var parameterValue = optionBuilder.ValueGenerators.Select(x => x.CreateFromNormalized(0.5));
             var parameterset = new Parameters(parameterValue);
@@ -213,7 +212,6 @@ namespace MLNet.AutoPipeline.Test
         {
             var context = new MLContext();
             var optionBuilder = FastForestBinaryTrainerSweepableOptions.Default;
-            optionBuilder.ExampleWeightColumnName = ParameterFactory.CreateFromSingleValue("example");
             var trainer = context.AutoML().BinaryClassification.FastForest("label", "feature", optionBuilder);
             var parameterValue = optionBuilder.ValueGenerators.Select(x => x.CreateFromNormalized(0.5));
             var parameterset = new Parameters(parameterValue);
@@ -227,7 +225,6 @@ namespace MLNet.AutoPipeline.Test
         {
             var context = new MLContext();
             var optionBuilder = FastTreeBinaryTrainerSweepableOptions.Default;
-            optionBuilder.ExampleWeightColumnName = ParameterFactory.CreateFromSingleValue("example");
             var trainer = context.AutoML().BinaryClassification.FastTree("label", "feature", optionBuilder);
             var parameterValue = optionBuilder.ValueGenerators.Select(x => x.CreateFromNormalized(0.5));
             var parameterset = new Parameters(parameterValue);
@@ -241,7 +238,6 @@ namespace MLNet.AutoPipeline.Test
         {
             var context = new MLContext();
             var optionBuilder = LightGbmBinaryTrainerSweepableOptions.Default;
-            optionBuilder.ExampleWeightColumnName = ParameterFactory.CreateFromSingleValue("example");
             var trainer = context.AutoML().BinaryClassification.LightGbm("label", "feature", optionBuilder);
             var parameterValue = optionBuilder.ValueGenerators.Select(x => x.CreateFromNormalized(0.5));
             var parameterset = new Parameters(parameterValue);
@@ -484,7 +480,7 @@ namespace MLNet.AutoPipeline.Test
         public Parameter<float> L2Regularization = ParameterFactory.CreateFloatParameter(1E-4F, 20f, true, 20);
 
         [Parameter]
-        public Parameter<float> L1Regularization = ParameterFactory.CreateFromSingleValue(0.3f);
+        public Parameter<float> L1Regularization = ParameterFactory.CreateDiscreteParameter(0.3f);
 
         [Parameter]
         public Parameter<float> BiasLearningRate = ParameterFactory.CreateFloatParameter(1E-4F, 10f, true, 20);

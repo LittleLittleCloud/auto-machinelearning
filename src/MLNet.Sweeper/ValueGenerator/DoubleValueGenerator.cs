@@ -92,6 +92,17 @@ namespace MLNet.Sweeper
             return this._options.Min <= valueTyped.Value && valueTyped.Value <= this._options.Max;
         }
 
+        public IParameterValue CreateFromString(string valueText)
+        {
+            var value = double.Parse(valueText);
+            if (value < this._options.Min || value >= this._options.Max)
+            {
+                throw new Exception($"{valueText} is out of range.");
+            }
+
+            return new DoubleParameterValue(this._options.Name, value, this.ID);
+        }
+
         public class Option : NumericValueGeneratorOptionBase
         {
             public double Min;

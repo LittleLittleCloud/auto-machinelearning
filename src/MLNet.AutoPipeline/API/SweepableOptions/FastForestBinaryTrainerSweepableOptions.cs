@@ -11,13 +11,10 @@ namespace MLNet.AutoPipeline
         public static FastForestBinaryTrainerSweepableOptions Default = new FastForestBinaryTrainerSweepableOptions();
 
         [Parameter]
-        public Parameter<string> LabelColumnName = CreateFromSingleValue("Label");
+        public Parameter<string> LabelColumnName = CreateDiscreteParameter("Label");
 
         [Parameter]
-        public Parameter<string> FeatureColumnName = CreateFromSingleValue("Features");
-
-        [Parameter]
-        public Parameter<string> ExampleWeightColumnName = CreateFromSingleValue<string>(default);
+        public Parameter<string> FeatureColumnName = CreateDiscreteParameter("Features");
 
         [Parameter]
         public Parameter<int> NumberOfLeaves = CreateInt32Parameter(10, 1000, true);

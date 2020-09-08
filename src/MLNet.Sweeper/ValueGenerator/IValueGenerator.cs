@@ -17,6 +17,13 @@ namespace MLNet.Sweeper
         IParameterValue CreateFromNormalized(double normalizedValue);
 
         /// <summary>
+        /// create <see cref="IParameterValue"/> from value text.
+        /// </summary>
+        /// <param name="valueText">value in text format.</param>
+        /// <returns><see cref="IParameterValue"/>.</returns>
+        IParameterValue CreateFromString(string valueText);
+
+        /// <summary>
         /// Used mainly in grid sweepers, return the i-th distinct value for this parameter.
         /// </summary>
         IParameterValue this[int i] { get; }

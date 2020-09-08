@@ -14,13 +14,10 @@ namespace MLNet.AutoPipeline
         public static SdcaNonCalibratedBinaryTrainerSweepableOptions Default = new SdcaNonCalibratedBinaryTrainerSweepableOptions();
 
         [Parameter(nameof(SdcaNonCalibratedBinaryTrainer.Options.LabelColumnName))]
-        public Parameter<string> LabelColumnName = CreateFromSingleValue("Label");
+        public Parameter<string> LabelColumnName = CreateDiscreteParameter("Label");
 
         [Parameter(nameof(SdcaNonCalibratedBinaryTrainer.Options.FeatureColumnName))]
-        public Parameter<string> FeatureColumnName = CreateFromSingleValue("Features");
-
-        [Parameter(nameof(SdcaNonCalibratedBinaryTrainer.Options.ExampleWeightColumnName))]
-        public Parameter<string> ExampleWeightColumnName = CreateFromSingleValue<string>(default);
+        public Parameter<string> FeatureColumnName = CreateDiscreteParameter("Features");
 
         [Parameter(nameof(SdcaNonCalibratedBinaryTrainer.Options.LossFunction))]
         public Parameter<ISupportSdcaClassificationLoss> LossFunction = CreateDiscreteParameter<ISupportSdcaClassificationLoss>(new HingeLoss(), new LogLoss(), new SmoothedHingeLoss());

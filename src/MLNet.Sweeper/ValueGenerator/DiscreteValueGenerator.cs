@@ -88,6 +88,18 @@ namespace MLNet.Sweeper
             return sb.ToString();
         }
 
+        public IParameterValue CreateFromString(string valueText)
+        {
+            var value = this.Values.Where(val => valueText == val.ToString()).FirstOrDefault();
+
+            if (value == null)
+            {
+                throw new Exception($"can't find {valueText}");
+            }
+
+            return Utils.CreateObjectParameterValue(this._options.Name, value, this.OneHotEncodeValue(value), this.ID);
+        }
+
         public class Option<TValue> : ValueGeneratorOptionBase
         {
             public TValue[] Values = null;

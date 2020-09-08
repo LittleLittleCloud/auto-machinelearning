@@ -205,9 +205,15 @@ namespace MLNet.AutoPipeline
             return ParameterFactory.CreateDiscreteParameter<T>(objects);
         }
 
-        public static Parameter<T> CreateFromSingleValue<T>(T value)
+        /// <summary>
+        /// Create a sweepable parameter with discrete values.
+        /// </summary>
+        /// <typeparam name="T">type of values.</typeparam>
+        /// <param name="objects">discrete values.</param>
+        /// <returns><see cref="Parameter{T}"/>.</returns>
+        public static Parameter<T> CreateDiscreteParameter<T>(T objects)
         {
-            return ParameterFactory.CreateFromSingleValue<T>(value);
+            return ParameterFactory.CreateDiscreteParameter(objects);
         }
 
         public TOption BuildFromParameters(IDictionary<string, string> parameters)

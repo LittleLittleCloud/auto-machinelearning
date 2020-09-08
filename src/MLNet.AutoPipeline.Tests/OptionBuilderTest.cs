@@ -133,10 +133,10 @@ namespace MLNet.AutoPipeline.Test
         private class TestOptionBuilderWithParameterAttributeOnly : SweepableOption<TestOption>
         {
             [Parameter]
-            public Parameter<long> LongOption = ParameterFactory.CreateFromSingleValue(100L);
+            public Parameter<long> LongOption = ParameterFactory.CreateDiscreteParameter(100L);
 
             [Parameter(nameof(TestOption.FloatOption))]
-            public Parameter<float> Float_Option = ParameterFactory.CreateFromSingleValue(100f);
+            public Parameter<float> Float_Option = ParameterFactory.CreateDiscreteParameter(100f);
         }
 
         private class TestOptionBuilderWithSweepableAttributeOnly : SweepableOption<TestOption>

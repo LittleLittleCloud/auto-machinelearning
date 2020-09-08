@@ -92,11 +92,6 @@ namespace MLNet.AutoPipeline
 
             this.ValueGenerator = new DiscreteValueGenerator<T>(option);
         }
-
-        internal Parameter(T value)
-        {
-            this.ValueGenerator = new SingleValueGenerator<T>(null, value);
-        }
     }
 
     /// <summary>

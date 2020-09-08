@@ -11,13 +11,10 @@ namespace MLNet.AutoPipeline
         public static LbfgsPoissonRegressionTrainerSweepableOptions Default = new LbfgsPoissonRegressionTrainerSweepableOptions();
 
         [Parameter(nameof(LbfgsPoissonRegressionTrainer.Options.LabelColumnName))]
-        public Parameter<string> LabelColumnName = CreateFromSingleValue("Label");
+        public Parameter<string> LabelColumnName = CreateDiscreteParameter("Label");
 
         [Parameter(nameof(LbfgsPoissonRegressionTrainer.Options.FeatureColumnName))]
-        public Parameter<string> FeatureColumnName = CreateFromSingleValue("Features");
-
-        [Parameter(nameof(LbfgsPoissonRegressionTrainer.Options.ExampleWeightColumnName))]
-        public Parameter<string> ExampleWeightColumnName = CreateFromSingleValue<string>(default);
+        public Parameter<string> FeatureColumnName = CreateDiscreteParameter("Features");
 
         [Parameter(nameof(LbfgsPoissonRegressionTrainer.Options.L1Regularization))]
         public Parameter<float> L1Regularization = CreateFloatParameter(1e-3f, 100f, true);
@@ -32,6 +29,6 @@ namespace MLNet.AutoPipeline
         public Parameter<int> HistorySize = CreateInt32Parameter(5, 100, false);
 
         [Parameter(nameof(LbfgsPoissonRegressionTrainer.Options.EnforceNonNegativity))]
-        public Parameter<bool> EnforceNonNegativity = CreateFromSingleValue(false);
+        public Parameter<bool> EnforceNonNegativity = CreateDiscreteParameter(false);
     }
 }

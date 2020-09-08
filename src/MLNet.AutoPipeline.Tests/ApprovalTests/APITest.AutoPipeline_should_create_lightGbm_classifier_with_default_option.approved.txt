@@ -15,10 +15,6 @@
     {
       "Name": "MinimumExampleCountPerLeaf",
       "ValueText": "100"
-    },
-    {
-      "Name": "ExampleWeightColumnName",
-      "ValueText": null
     }
   ],
   "name": "LightGbmMulticlassTrainer",

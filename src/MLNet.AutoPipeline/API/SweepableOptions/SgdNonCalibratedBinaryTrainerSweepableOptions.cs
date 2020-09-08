@@ -14,13 +14,10 @@ namespace MLNet.AutoPipeline
         public static SgdNonCalibratedBinaryTrainerSweepableOptions Default = new SgdNonCalibratedBinaryTrainerSweepableOptions();
 
         [Parameter(nameof(SgdNonCalibratedTrainer.Options.LabelColumnName))]
-        public Parameter<string> LabelColumnName = CreateFromSingleValue("Label");
+        public Parameter<string> LabelColumnName = CreateDiscreteParameter("Label");
 
         [Parameter(nameof(SgdNonCalibratedTrainer.Options.FeatureColumnName))]
-        public Parameter<string> FeatureColumnName = CreateFromSingleValue("Features");
-
-        [Parameter(nameof(SgdNonCalibratedTrainer.Options.ExampleWeightColumnName))]
-        public Parameter<string> ExampleWeightColumnName = CreateFromSingleValue<string>(default);
+        public Parameter<string> FeatureColumnName = CreateDiscreteParameter("Features");
 
         [Parameter(nameof(SgdNonCalibratedTrainer.Options.LossFunction))]
         public Parameter<IClassificationLoss> LossFunction = CreateDiscreteParameter<IClassificationLoss>(new HingeLoss(), new ExpLoss(), new LogLoss(), new SmoothedHingeLoss());

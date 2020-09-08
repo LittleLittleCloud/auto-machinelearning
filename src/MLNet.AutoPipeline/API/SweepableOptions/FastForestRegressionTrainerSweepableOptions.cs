@@ -11,13 +11,10 @@ namespace MLNet.AutoPipeline
         public static FastForestRegressionTrainerSweepableOptions Default = new FastForestRegressionTrainerSweepableOptions();
 
         [Parameter(nameof(FastForestRegressionTrainer.Options.LabelColumnName))]
-        public Parameter<string> LabelColumnName = CreateFromSingleValue("Label");
+        public Parameter<string> LabelColumnName = CreateDiscreteParameter("Label");
 
         [Parameter(nameof(FastForestRegressionTrainer.Options.FeatureColumnName))]
-        public Parameter<string> FeatureColumnName = CreateFromSingleValue("Features");
-
-        [Parameter(nameof(FastForestRegressionTrainer.Options.ExampleWeightColumnName))]
-        public Parameter<string> ExampleWeightColumnName = CreateFromSingleValue<string>(default);
+        public Parameter<string> FeatureColumnName = CreateDiscreteParameter("Features");
 
         [Parameter(nameof(FastForestRegressionTrainer.Options.NumberOfLeaves))]
         public Parameter<int> NumberOfLeaves = CreateInt32Parameter(10, 1000, true);

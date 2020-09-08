@@ -11,13 +11,10 @@ namespace MLNet.AutoPipeline
         public static LbfgsLogisticRegressionBinaryTrainerSweepableOptions Default = new LbfgsLogisticRegressionBinaryTrainerSweepableOptions();
 
         [Parameter(nameof(LbfgsLogisticRegressionBinaryTrainer.Options.LabelColumnName))]
-        public Parameter<string> LabelColumnName = CreateFromSingleValue("Label");
+        public Parameter<string> LabelColumnName = CreateDiscreteParameter("Label");
 
         [Parameter(nameof(LbfgsLogisticRegressionBinaryTrainer.Options.FeatureColumnName))]
-        public Parameter<string> FeatureColumnName = CreateFromSingleValue("Features");
-
-        [Parameter(nameof(LbfgsLogisticRegressionBinaryTrainer.Options.ExampleWeightColumnName))]
-        public Parameter<string> ExampleWeightColumnName = CreateFromSingleValue<string>(default);
+        public Parameter<string> FeatureColumnName = CreateDiscreteParameter("Features");
 
         [Parameter(nameof(LbfgsLogisticRegressionBinaryTrainer.Options.L1Regularization))]
         public Parameter<float> L1Regularization = CreateFloatParameter(1e-3f, 100f, true);
@@ -35,6 +32,6 @@ namespace MLNet.AutoPipeline
         public Parameter<int> HistorySize = CreateInt32Parameter(5, 100, false);
 
         [Parameter(nameof(LbfgsLogisticRegressionBinaryTrainer.Options.EnforceNonNegativity))]
-        public Parameter<bool> EnforceNonNegativity = CreateFromSingleValue(false);
+        public Parameter<bool> EnforceNonNegativity = CreateDiscreteParameter(false);
     }
 }
