@@ -5,26 +5,40 @@
 using MLNet.Sweeper;
 using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 using System.Text;
 
 namespace MLNet.Sweeper
 {
-    internal class ObjectParameterValue : IParameterValue
+    public class ObjectParameterValue<TValue> : IDiscreteParameterValue<TValue>
     {
-        public ObjectParameterValue(string name, object value, string id = null)
+        public ObjectParameterValue(string name, TValue value, string id = null)
         {
             this.Name = name;
-            this.RawValue = value;
+            this.Value = value;
             this.ID = id ?? name;
+            this.OneHotEncode = new double[] { };
+        }
+
+        public ObjectParameterValue(string name, TValue value, double[] onehot, string id = null)
+        {
+            this.Name = name;
+            this.Value = value;
+            this.ID = id ?? name;
+            this.OneHotEncode = onehot;
         }
 
         public string Name { get; private set; }
 
         public string ValueText { get => this.RawValue?.ToString(); }
 
-        public object RawValue { get; private set; }
+        public object RawValue { get => this.Value; }
 
         public string ID { get; private set; }
+
+        public double[] OneHotEncode { get; private set; }
+
+        public TValue Value { get; private set; }
 
         public bool Equals(IParameterValue other)
         {

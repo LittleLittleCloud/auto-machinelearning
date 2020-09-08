@@ -30,7 +30,7 @@ namespace MLNet.AutoPipeline
             this.Name = name;
         }
 
-        public IParameterValue this[int i] => new DiscreteParameterValue(this.Name, this.Estimators[i], this.OneHotEncodeValue(this.Estimators[i]), this.ID);
+        public IParameterValue this[int i] => Utils.CreateObjectParameterValue(this.Name, this.Estimators[i], this.OneHotEncodeValue(this.Estimators[i]), this.ID);
 
         public int Count => this.Estimators.Count();
 

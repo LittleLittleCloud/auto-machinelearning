@@ -10,8 +10,7 @@
     },
     {
       "Name": "LossFunction",
-      "ValueText": "Microsoft.ML.Trainers.LogLoss",
-      "Value": {}
+      "ValueText": "Microsoft.ML.Trainers.LogLoss"
     },
     {
       "Name": "L2Regularization",

@@ -13,12 +13,12 @@ namespace MLNet.Sweeper
     /// </summary>
     public class SingleValueGenerator<T> : IValueGenerator
     {
-        private ObjectParameterValue value;
+        private ObjectParameterValue<T> value;
 
         public SingleValueGenerator(string name, T value)
         {
             this.ID = Guid.NewGuid().ToString("N");
-            this.value = new ObjectParameterValue(name, value, this.ID);
+            this.value = Utils.CreateObjectParameterValue(name, value, null, this.ID);
         }
 
         public IParameterValue this[int i]
@@ -39,7 +39,7 @@ namespace MLNet.Sweeper
         public string Name
         {
             get => this.value.Name;
-            set => this.value = new ObjectParameterValue(value, this.value.RawValue, this.ID);
+            set => this.value = Utils.CreateObjectParameterValue(value, this.value.Value, null, this.ID);
         }
 
         public string ID { get; private set; }

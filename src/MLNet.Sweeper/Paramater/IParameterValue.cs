@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 using System.Text;
 
 namespace MLNet.Sweeper
@@ -12,7 +13,7 @@ namespace MLNet.Sweeper
     /// Implementations of this interface must also override object.GetHashCode() and object.Equals(object) so they are consistent
     /// with IEquatable.Equals(IParameterValue).
     /// </summary>
-    public interface IParameterValue : IEquatable<IParameterValue>
+    public interface IParameterValue : IEquatable<IParameterValue>, ISerializable
     {
         string Name { get; }
 
@@ -38,5 +39,9 @@ namespace MLNet.Sweeper
     {
         [JsonIgnore]
         double[] OneHotEncode { get; }
+    }
+
+    public interface IDiscreteParameterValue<out TValue> : IParameterValue<TValue>, IDiscreteParameterValue
+    {
     }
 }

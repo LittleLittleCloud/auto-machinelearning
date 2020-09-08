@@ -96,7 +96,7 @@ namespace MLNet.Sweeper
                 // This holds the actual value for this parameter, chosen in this parameter set.
                 var pset = ps[sweepParam.ID];
 
-                var parameterDiscrete = sweepParam as DiscreteValueGenerator;
+                var parameterDiscrete = sweepParam as IDiscreteValueGenerator;
                 if (parameterDiscrete != null)
                 {
                     int hotIndex = -1;
@@ -146,7 +146,7 @@ namespace MLNet.Sweeper
             int currentArrayIndex = 0;
             for (int i = 0; i < sweepParams.Length; i++)
             {
-                var parameterDiscrete = sweepParams[i] as DiscreteValueGenerator;
+                var parameterDiscrete = sweepParams[i] as IDiscreteValueGenerator;
                 if (parameterDiscrete != null)
                 {
                     if (expandedCategoricals)
@@ -161,12 +161,12 @@ namespace MLNet.Sweeper
                             }
                         }
 
-                        parameters.Add(new DiscreteParameterValue(sweepParams[i].Name, parameterDiscrete[hotIndex].ValueText));
+                        parameters.Add(Utils.CreateObjectParameterValue(sweepParams[i].Name, parameterDiscrete[hotIndex].ValueText, null));
                         currentArrayIndex += parameterDiscrete.Count;
                     }
                     else
                     {
-                        parameters.Add(new DiscreteParameterValue(sweepParams[i].Name, parameterDiscrete[(int)array[currentArrayIndex]].ValueText));
+                        parameters.Add(Utils.CreateObjectParameterValue(sweepParams[i].Name, parameterDiscrete[(int)array[currentArrayIndex]].ValueText, null));
                         currentArrayIndex++;
                     }
                 }

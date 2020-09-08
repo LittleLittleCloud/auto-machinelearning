@@ -129,5 +129,10 @@ namespace MLNet.Sweeper
             var y = 1.0 - (((((a5 * t + a4) * t) + a3) * t + a2) * t + a1) * t * Math.Exp(-X * X);
             return sign * y;
         }
+
+        public static ObjectParameterValue<T> CreateObjectParameterValue<T>(string name, T value, double[] onehot, string id = null)
+        {
+            return new ObjectParameterValue<T>(name, value, onehot, id);
+        }
     }
 }

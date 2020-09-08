@@ -14,7 +14,8 @@ namespace MLNet.Sweeper
     /// A set of parameter values.
     /// The parameter set must be immutable.
     /// </summary>
-    public sealed class Parameters : IEquatable<Parameters>, IEnumerable<IParameterValue>
+    [Serializable]
+    public sealed class Parameters : IEquatable<Parameters>, IEnumerable<IParameterValue>, ISerializable
     {
         private readonly Dictionary<string, IParameterValue> _parameterValues;
         private readonly int _hash;
@@ -41,6 +42,12 @@ namespace MLNet.Sweeper
         {
             this._parameterValues = paramValues;
             this._hash = hash;
+        }
+
+        protected Parameters(SerializationInfo info, StreamingContext context)
+        {
+            var dic = new Dictionary<string, string>();
+            info.ge
         }
 
         public IEnumerator<IParameterValue> GetEnumerator()
@@ -91,6 +98,11 @@ namespace MLNet.Sweeper
         public override int GetHashCode()
         {
             return this._hash;
+        }
+
+        public void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            throw new NotImplementedException();
         }
 
         private bool ContainsParamValue(IParameterValue parameterValue)
