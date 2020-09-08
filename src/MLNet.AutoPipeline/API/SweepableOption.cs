@@ -77,9 +77,9 @@ namespace MLNet.AutoPipeline
 
             foreach (var generator in this.ValueGenerators)
             {
-                if (parameters.ContainsKey(generator.Name))
+                if (parameters.ContainsKey(generator.ID))
                 {
-                    var valueText = parameters[generator.Name];
+                    var valueText = parameters[generator.ID];
                     var rawValue = generator.CreateFromString(valueText).RawValue;
 
                     typeof(TOption).GetField(generator.Name)?.SetValue(option, rawValue);

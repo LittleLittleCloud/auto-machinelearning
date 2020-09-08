@@ -62,7 +62,7 @@ namespace MLNet.Sweeper
                 var dict = new Dictionary<string, string>();
                 foreach (var val in this)
                 {
-                    dict.Add(val.Name, val.ValueText);
+                    dict.Add(val.ID, val.ValueText);
                 }
 
                 return dict;

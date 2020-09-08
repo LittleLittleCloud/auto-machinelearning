@@ -17,6 +17,11 @@ namespace MLNet.AutoPipeline
     {
         private TTran _instance;
         private static SweepableEstimator<IEstimator<ITransformer>> no_op = new SweepableEstimator<IEstimator<ITransformer>>();
+        
+        public override IEstimator<ITransformer> BuildFromParameters(IDictionary<string, string> parameters)
+        {
+            return this._instance;
+        }
 
         internal SweepableEstimator(TTran instance, TransformerScope scope = TransformerScope.Everything, string estimatorName = null, string[] inputs = null, string[] outputs = null)
             : base(estimatorName, inputs, outputs, null, scope)
@@ -51,11 +56,6 @@ namespace MLNet.AutoPipeline
                 InputColumns = this.InputColumns ?? (new string[] { }),
                 OutputColumns = this.OutputColumns ?? new string[] { },
             };
-        }
-
-        public override IEstimator<ITransformer> BuildFromParameters(IDictionary<string, string> parameters)
-        {
-            return this._instance;
         }
     }
 
