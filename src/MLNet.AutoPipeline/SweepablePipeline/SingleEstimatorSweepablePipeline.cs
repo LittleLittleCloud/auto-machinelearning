@@ -29,6 +29,11 @@ namespace MLNet.AutoPipeline
 
         public List<SweepableEstimatorBase> Estimators { get; private set; }
 
+        public EstimatorChain<ITransformer> BuildFromParameters(IDictionary<string, string> parameters)
+        {
+            throw new NotImplementedException();
+        }
+
         public EstimatorChain<ITransformer> BuildFromParameterSet(Parameters parameters)
         {
             var pipeline = new EstimatorChain<ITransformer>();

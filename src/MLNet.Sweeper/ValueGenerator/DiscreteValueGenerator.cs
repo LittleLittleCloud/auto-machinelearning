@@ -67,7 +67,12 @@ namespace MLNet.Sweeper
             }
         }
 
-        public IParameterValue this[int i] => Utils.CreateObjectParameterValue(this._options.Name, this._options.Values[i], this.OneHotEncodeValue(this._options.Values[i]));
+        public TValue[] Values
+        {
+            get => this._options.Values;
+        }
+
+        public IParameterValue this[int i] => Utils.CreateObjectParameterValue(this._options.Name, this._options.Values[i], this.OneHotEncodeValue(this._options.Values[i]), this.ID);
 
         public int Count => this._options.Values.Length;
 

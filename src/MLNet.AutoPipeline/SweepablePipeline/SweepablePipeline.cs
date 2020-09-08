@@ -16,17 +16,23 @@ namespace MLNet.AutoPipeline
     {
         public IEnumerable<IValueGenerator> SweepableValueGenerators { get => this.EstimatorGenerators; }
 
-        internal IList<SweepableEstimatorGenerator> EstimatorGenerators { get; private set; }
+        internal IList<DiscreteValueGenerator<SweepableEstimatorBase>> EstimatorGenerators { get; private set; }
 
         public SweepablePipeline()
         {
-            this.EstimatorGenerators = new List<SweepableEstimatorGenerator>();
+            this.EstimatorGenerators = new List<DiscreteValueGenerator<SweepableEstimatorBase>>();
         }
 
         public SweepablePipeline Append(SweepableEstimatorBase estimator)
         {
             var i = this.EstimatorGenerators.Count();
-            this.EstimatorGenerators.Add(new SweepableEstimatorGenerator($"{nameof(SweepableEstimatorGenerator)}_{i}", estimator));
+            var option = new DiscreteValueGenerator<SweepableEstimatorBase>.Option<SweepableEstimatorBase>()
+            {
+                Values = new SweepableEstimatorBase[] { estimator },
+                Name = $"{nameof(SweepablePipeline)}_{i}",
+            };
+
+            this.EstimatorGenerators.Add(new DiscreteValueGenerator<SweepableEstimatorBase>(option));
 
             return this;
         }
@@ -34,7 +40,13 @@ namespace MLNet.AutoPipeline
         public SweepablePipeline Append(params SweepableEstimatorBase[] estimators)
         {
             var i = this.EstimatorGenerators.Count();
-            this.EstimatorGenerators.Add(new SweepableEstimatorGenerator($"{nameof(SweepableEstimatorGenerator)}_{i}", estimators));
+            var option = new DiscreteValueGenerator<SweepableEstimatorBase>.Option<SweepableEstimatorBase>()
+            {
+                Values = estimators,
+                Name = $"{nameof(SweepablePipeline)}_{i}",
+            };
+
+            this.EstimatorGenerators.Add(new DiscreteValueGenerator<SweepableEstimatorBase>(option));
 
             return this;
         }
@@ -50,7 +62,7 @@ namespace MLNet.AutoPipeline
 
         public override string ToString()
         {
-            return $"SweepablePipeline({string.Join("=>", this.EstimatorGenerators.Select(builder => $"[{string.Join("|", builder.Estimators.Select(node => node.EstimatorName))}]"))})";
+            return $"SweepablePipeline({string.Join("=>", this.EstimatorGenerators.Select(builder => $"[{string.Join("|", builder.Values.Select(node => node.EstimatorName))}]"))})";
         }
 
         public SingleEstimatorSweepablePipeline BuildFromParameterSet(Parameters parameters)
@@ -72,6 +84,11 @@ namespace MLNet.AutoPipeline
             }
 
             return new SingleEstimatorSweepablePipeline(estimators);
+        }
+
+        public SingleEstimatorSweepablePipeline BuildFromParameters(IDictionary<string, string> parameters)
+        {
+            throw new NotImplementedException();
         }
     }
 }

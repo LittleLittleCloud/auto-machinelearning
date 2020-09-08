@@ -209,5 +209,10 @@ namespace MLNet.AutoPipeline
         {
             return ParameterFactory.CreateFromSingleValue<T>(value);
         }
+
+        public TOption BuildFromParameters(IDictionary<string, string> parameters)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

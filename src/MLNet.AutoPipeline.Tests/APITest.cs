@@ -155,7 +155,7 @@ namespace MLNet.AutoPipeline.Test
                                   .Append(context.Transforms.Concatenate("features", new string[] { "sepal_length", "sepal_width", "petal_length", "petal_width" }))
                                   .Append(context.AutoML().MultiClassification.LightGbm("species", "features"));
 
-            var parameterValues = pipeline.EstimatorGenerators[2].Estimators[0].SweepableValueGenerators.Select(x => x.Name);
+            var parameterValues = pipeline.EstimatorGenerators[2].Values[0].SweepableValueGenerators.Select(x => x.Name);
             pipeline.EstimatorGenerators.Count.Should().Be(3);
             parameterValues.Should().Equal(new string[] { "LearningRate", "NumberOfLeaves", "NumberOfIterations", "MinimumExampleCountPerLeaf", "ExampleWeightColumnName" });
         }
@@ -167,7 +167,7 @@ namespace MLNet.AutoPipeline.Test
             var pipeline = context.Transforms.Conversion.MapValueToKey("species", "species")
                                   .Append(context.AutoML().MultiClassification.LightGbm("species", "features"));
 
-            var parameterValues = pipeline.EstimatorGenerators[1].Estimators[0].SweepableValueGenerators.Select(x => x.Name);
+            var parameterValues = pipeline.EstimatorGenerators[1].Values[0].SweepableValueGenerators.Select(x => x.Name);
             pipeline.EstimatorGenerators.Count.Should().Be(2);
             parameterValues.Should().Equal(new string[] { "LearningRate", "NumberOfLeaves", "NumberOfIterations", "MinimumExampleCountPerLeaf", "ExampleWeightColumnName" });
         }

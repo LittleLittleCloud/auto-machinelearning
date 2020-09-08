@@ -55,5 +55,10 @@ namespace MLNet.AutoPipeline
         }
 
         public abstract IEstimator<ITransformer> BuildFromParameterSet(Parameters parameters);
+
+        public IEstimator<ITransformer> BuildFromParameters(IDictionary<string, string> parameters)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

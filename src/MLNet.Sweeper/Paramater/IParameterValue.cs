@@ -13,7 +13,7 @@ namespace MLNet.Sweeper
     /// Implementations of this interface must also override object.GetHashCode() and object.Equals(object) so they are consistent
     /// with IEquatable.Equals(IParameterValue).
     /// </summary>
-    public interface IParameterValue : IEquatable<IParameterValue>, ISerializable
+    public interface IParameterValue : IEquatable<IParameterValue>
     {
         string Name { get; }
 
