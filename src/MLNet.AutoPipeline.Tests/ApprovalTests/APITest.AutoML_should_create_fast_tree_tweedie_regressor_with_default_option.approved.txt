@@ -27,6 +27,7 @@
   ],
   "name": "FastTreeTweedieTrainer",
   "input_column": [
+    "Label",
     "Features"
   ],
   "output_column": [

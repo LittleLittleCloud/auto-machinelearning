@@ -61,16 +61,6 @@ namespace MLNet.AutoPipeline
             }
         }
 
-        /// <summary>
-        /// Build option using <paramref name="parameters"/>.
-        /// </summary>
-        /// <param name="parameters">a set of parameters used to build option.</param>
-        /// <returns><paramref name="TOption"/>.</returns>
-        public TOption BuildFromParameterSet(Parameters parameters)
-        {
-            return this.BuildFromParameters(parameters.ParameterValues);
-        }
-
         public TOption BuildFromParameters(IDictionary<string, string> parameters)
         {
             var option = this.CreateDefaultOption();

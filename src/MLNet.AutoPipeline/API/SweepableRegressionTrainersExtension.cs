@@ -42,7 +42,7 @@ namespace MLNet.AutoPipeline
                     return context.Regression.Trainers.LightGbm(option);
                 },
                 optionSweeper,
-                new string[] { featureColumnName },
+                new string[] { labelColumnName, featureColumnName },
                 new string[] { Score },
                 nameof(LightGbmRegressionTrainer));
         }
@@ -73,7 +73,7 @@ namespace MLNet.AutoPipeline
                     return context.Regression.Trainers.LbfgsPoissonRegression(option);
                 },
                 optionSweeper,
-                new string[] { featureColumnName },
+                new string[] { labelColumnName, featureColumnName },
                 new string[] { Score },
                 nameof(LbfgsPoissonRegressionTrainer));
         }
@@ -104,7 +104,7 @@ namespace MLNet.AutoPipeline
                     return context.Regression.Trainers.OnlineGradientDescent(option);
                 },
                 optionSweeper,
-                new string[] { featureColumnName },
+                new string[] { labelColumnName, featureColumnName },
                 new string[] { Score },
                 nameof(OnlineGradientDescentTrainer));
         }
@@ -135,7 +135,7 @@ namespace MLNet.AutoPipeline
                     return context.Regression.Trainers.Sdca(option);
                 },
                 optionSweeper,
-                new string[] { featureColumnName },
+                new string[] { labelColumnName, featureColumnName },
                 new string[] { Score },
                 nameof(SdcaRegressionTrainer));
         }
@@ -166,7 +166,7 @@ namespace MLNet.AutoPipeline
                     return context.Regression.Trainers.FastForest(option);
                 },
                 optionSweeper,
-                new string[] { featureColumnName },
+                new string[] { labelColumnName, featureColumnName },
                 new string[] { Score },
                 nameof(FastForestRegressionTrainer));
         }
@@ -197,7 +197,7 @@ namespace MLNet.AutoPipeline
                     return context.Regression.Trainers.FastTree(option);
                 },
                 optionSweeper,
-                new string[] { featureColumnName },
+                new string[] { labelColumnName, featureColumnName },
                 new string[] { Score },
                 nameof(FastTreeRegressionTrainer));
         }
@@ -228,7 +228,7 @@ namespace MLNet.AutoPipeline
                     return context.Regression.Trainers.FastTreeTweedie(option);
                 },
                 optionSweeper,
-                new string[] { featureColumnName },
+                new string[] { labelColumnName, featureColumnName },
                 new string[] { Score },
                 nameof(FastTreeTweedieTrainer));
         }
@@ -259,7 +259,7 @@ namespace MLNet.AutoPipeline
                     return context.Regression.Trainers.Gam(option);
                 },
                 optionSweeper,
-                new string[] { featureColumnName },
+                new string[] { labelColumnName, featureColumnName },
                 new string[] { Score },
                 nameof(GamRegressionTrainer));
         }

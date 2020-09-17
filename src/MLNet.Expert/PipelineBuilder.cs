@@ -1,8 +1,12 @@
-﻿using Microsoft.ML;
+﻿// <copyright file="PipelineBuilder.cs" company="BigMiao">
+// Copyright (c) BigMiao. All rights reserved.
+// </copyright>
+
+using Microsoft.ML;
 using Microsoft.ML.Data;
 using Microsoft.ML.Transforms;
 using MLNet.AutoPipeline;
-using MLNet.Expert.AutoML;
+using MLNet.Expert.Extension;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
@@ -11,78 +15,156 @@ using System.Text;
 
 namespace MLNet.Expert
 {
+    public enum TaskType
+    {
+        BinaryClassification = 0,
+
+        MultiClassification = 1,
+
+        Regression = 2,
+    }
+
     public class PipelineBuilder
     {
-        public static string FEATURECOLUMNNAME = "features";
-
-        public static SweepablePipeline BuildPipelineFromState(MLContext context, AutoMLTrainingState state)
+        public PipelineBuilder(TaskType taskType, bool isAzureAttach = false, bool isUsingSingleFeatureTrainer = false)
         {
-            var pipeline = new SweepablePipeline();
-            pipeline.Append(state.Transformers.Values.ToArray());
-
-            var concatFeaturesTransformer = PipelineBuilder.BuildConcatFeaturesTransformer(context, state.Columns, state.InputOutputColumnPairs, PipelineBuilder.FEATURECOLUMNNAME);
-            pipeline.Append(concatFeaturesTransformer);
-
-            pipeline.Append(state.Trainers.ToArray());
-            return pipeline;
+            this.PipelineBuilderOption = new Option()
+            {
+                TaskType = taskType,
+                IsAzureAttach = isAzureAttach,
+                IsUsingSingleFeatureTrainer = isUsingSingleFeatureTrainer,
+            };
         }
 
-        public static SweepablePipeline BuildPipelineFromColumns(MLContext context, IEnumerable<DataViewSchema.Column> columns, ColumnPicker columnPicker, IEnumerable<InputOutputColumnPair> inputOutputColumnPairs, SweepableEstimatorBase[] trainers)
+        public Option PipelineBuilderOption { get; private set; }
+
+        public SweepablePipeline BuildPipeline(MLContext context, IEnumerable<Column> columns)
         {
-            Contract.Requires(columns!.Count() == inputOutputColumnPairs!.Count());
-            var pipeline = new SweepablePipeline();
+            var sweepablePipeline = new SweepablePipeline();
+
             foreach (var column in columns)
             {
-                var inputOutputColumnPair = inputOutputColumnPairs.Where(x => x.InputColumnName == column.Name).First();
-                var expert = columnPicker.GetColumnType(column) switch
+                switch (column.ColumnPurpose)
                 {
-                    ColumnType.Numeric => NumericFeatureExpert.GetDefaultNumericFeatureExpert(context),
-                    _ => throw new Exception("Expert not found"),
-                };
-
-                pipeline.Append(expert.Propose(column.Name, inputOutputColumnPair.OutputColumnName).ToArray());
+                    case ColumnPurpose.NumericFeature:
+                        sweepablePipeline.Append(this.GetSuggestedNumericColumnTransformers(context, column).ToArray());
+                        break;
+                    case ColumnPurpose.CategoricalFeature:
+                        sweepablePipeline.Append(this.GetSuggestedCatagoricalColumnTransformers(context, column).ToArray());
+                        break;
+                    case ColumnPurpose.Label:
+                        sweepablePipeline.Append(this.GetSuggestedLabelColumnTransformers(context, column).ToArray());
+                        break;
+                    default:
+                        break;
+                }
             }
 
-            var concatFeaturesTransformer = PipelineBuilder.BuildConcatFeaturesTransformer(context, columns, inputOutputColumnPairs, PipelineBuilder.FEATURECOLUMNNAME);
-            pipeline.Append(concatFeaturesTransformer);
-            pipeline.Append(trainers);
+            var featureColumns = columns.Where(c => c.ColumnPurpose == ColumnPurpose.CategoricalFeature
+                                                 || c.ColumnPurpose == ColumnPurpose.NumericFeature
+                                                 || c.ColumnPurpose == ColumnPurpose.TextFeature)
+                                        .Select(c => c.Name)
+                                        .ToArray();
 
-            return pipeline;
-        }
-
-        public static SweepablePipeline BuildPipelineFromStateWithNewColumn(MLContext context, AutoMLTrainingState state, DataViewSchema.Column column, ITransformExpert expert, string outputColumnName)
-        {
-            var pipeline = new SweepablePipeline();
-
-            pipeline.Append(state.Transformers.Values.ToArray());
-            pipeline.Append(expert.Propose(column.Name, outputColumnName).ToArray());
-
-            var inputOutputPair = state.InputOutputColumnPairs.ToList();
-            inputOutputPair.Add(new InputOutputColumnPair(outputColumnName, column.Name));
-
-            var columns = state.Columns.ToList();
-            columns.Add(column);
-
-            var concatFeaturesTransformer = PipelineBuilder.BuildConcatFeaturesTransformer(context, columns.ToArray(), inputOutputPair.ToArray(), PipelineBuilder.FEATURECOLUMNNAME);
-            pipeline.Append(concatFeaturesTransformer);
-
-            pipeline.Append(state.Trainers.ToArray());
-            return pipeline;
-        }
-
-        private static SweepableEstimatorBase BuildConcatFeaturesTransformer(MLContext context, IEnumerable<DataViewSchema.Column> columns, IEnumerable<InputOutputColumnPair> inputOutputColumnPairs, string featureColumnName = "Features")
-        {
-            Contract.Requires(columns != null && inputOutputColumnPairs != null);
-            var inputColumnNames = inputOutputColumnPairs.Select(x => x.InputColumnName);
-            var columnNames = columns.Select(c => c.Name);
-            foreach (var name in inputColumnNames)
+            if (this.PipelineBuilderOption.IsUsingSingleFeatureTrainer)
             {
-                Contract.Requires(columnNames.Contains(name), $"input column {name} not exist");
+                sweepablePipeline.Append(context.AutoML().Serializable().Transformer.Concatnate(featureColumns, "_FEATURE"));
+                var labelColumn = columns.Where(c => c.ColumnPurpose == ColumnPurpose.Label).First();
+                sweepablePipeline.Append(this.GetSuggestedSingleFeatureTrainers(context, labelColumn, "_FEATURE").ToArray());
             }
 
-            var outputColumnNames = inputOutputColumnPairs.Select(x => x.OutputColumnName);
-            var concatFeaturesTransformer = context.Transforms.Concatenate(featureColumnName, outputColumnNames.ToArray());
-            return Util.CreateUnSweepableNode(concatFeaturesTransformer);
+            return sweepablePipeline;
+        }
+
+        public IEnumerable<SweepableEstimatorBase> GetSuggestedNumericColumnTransformers(MLContext context, Column column)
+        {
+            return new SweepableEstimatorBase[]
+                    {
+                        context.AutoML().Serializable().Transformer.ReplaceMissingValues(column.Name, column.Name),
+                    };
+        }
+
+        public IEnumerable<SweepableEstimatorBase> GetSuggestedLabelColumnTransformers(MLContext context, Column column)
+        {
+            if (this.PipelineBuilderOption.TaskType == TaskType.MultiClassification)
+            {
+                return new SweepableEstimatorBase[]
+                {
+                    context.AutoML().Serializable().Transformer.Conversion.MapValueToKey(column.Name, column.Name),
+                };
+            }
+
+            return new SweepableEstimatorBase[0];
+        }
+
+        public IEnumerable<SweepableEstimatorBase> GetSuggestedCatagoricalColumnTransformers(MLContext context, Column column)
+        {
+            return new SweepableEstimatorBase[]
+                    {
+                        context.AutoML().Serializable().Transformer.Categorical.OneHotEncoding(column.Name, column.Name),
+                    };
+        }
+
+        public IEnumerable<SweepableEstimatorBase> GetSuggestedSingleFeatureTrainers(MLContext context, Column column, string featureColumnName)
+        {
+            switch (this.PipelineBuilderOption.TaskType)
+            {
+                case TaskType.BinaryClassification:
+                    var res = new List<SweepableEstimatorBase>();
+
+                    var linearSvmOption = LinearSvmBinaryTrainerSweepableOptions.Default;
+                    linearSvmOption.FeatureColumnName = ParameterFactory.CreateDiscreteParameter(featureColumnName);
+                    linearSvmOption.LabelColumnName = ParameterFactory.CreateDiscreteParameter(column.Name);
+                    res.Add(context.AutoML().Serializable().BinaryClassification.LinearSvm(linearSvmOption));
+
+                    var ldSvmOption = LdSvmBinaryTrainerSweepableOptions.Default;
+                    ldSvmOption.FeatureColumnName = ParameterFactory.CreateDiscreteParameter(featureColumnName);
+                    ldSvmOption.LabelColumnName = ParameterFactory.CreateDiscreteParameter(column.Name);
+                    res.Add(context.AutoML().Serializable().BinaryClassification.LdSvm(ldSvmOption));
+
+                    var ffOption = FastForestBinaryTrainerSweepableOptions.Default;
+                    ffOption.FeatureColumnName = ParameterFactory.CreateDiscreteParameter(featureColumnName);
+                    ffOption.LabelColumnName = ParameterFactory.CreateDiscreteParameter(column.Name);
+                    res.Add(context.AutoML().Serializable().BinaryClassification.FastForest(ffOption));
+
+                    var ftOption = FastTreeBinaryTrainerSweepableOptions.Default;
+                    ftOption.FeatureColumnName = ParameterFactory.CreateDiscreteParameter(featureColumnName);
+                    ftOption.LabelColumnName = ParameterFactory.CreateDiscreteParameter(column.Name);
+                    res.Add(context.AutoML().Serializable().BinaryClassification.FastTree(ftOption));
+
+                    var lightGbmOption = LightGbmBinaryTrainerSweepableOptions.Default;
+                    lightGbmOption.FeatureColumnName = ParameterFactory.CreateDiscreteParameter(featureColumnName);
+                    lightGbmOption.LabelColumnName = ParameterFactory.CreateDiscreteParameter(column.Name);
+                    res.Add(context.AutoML().Serializable().BinaryClassification.LightGbm(lightGbmOption));
+
+                    var gamOption = GamBinaryTrainerSweepableOptions.Default;
+                    gamOption.FeatureColumnName = ParameterFactory.CreateDiscreteParameter(featureColumnName);
+                    gamOption.LabelColumnName = ParameterFactory.CreateDiscreteParameter(column.Name);
+                    res.Add(context.AutoML().Serializable().BinaryClassification.Gam(gamOption));
+
+                    var sgdNonCalibratedOption = SgdNonCalibratedBinaryTrainerSweepableOptions.Default;
+                    sgdNonCalibratedOption.FeatureColumnName = ParameterFactory.CreateDiscreteParameter(featureColumnName);
+                    sgdNonCalibratedOption.LabelColumnName = ParameterFactory.CreateDiscreteParameter(column.Name);
+                    res.Add(context.AutoML().Serializable().BinaryClassification.SgdNonCalibrated(sgdNonCalibratedOption));
+
+                    var averagedPerceptronOption = AveragedPerceptronBinaryTrainerSweepableOptions.Default;
+                    averagedPerceptronOption.FeatureColumnName = ParameterFactory.CreateDiscreteParameter(featureColumnName);
+                    averagedPerceptronOption.LabelColumnName = ParameterFactory.CreateDiscreteParameter(column.Name);
+                    res.Add(context.AutoML().Serializable().BinaryClassification.AveragedPerceptron(averagedPerceptronOption));
+
+                    return res;
+                default:
+                    throw new NotImplementedException();
+            }
+        }
+
+        public class Option
+        {
+            public TaskType TaskType { get; set; }
+
+            public bool IsAzureAttach { get; set; }
+
+            public bool IsUsingSingleFeatureTrainer { get; set; }
         }
     }
 }

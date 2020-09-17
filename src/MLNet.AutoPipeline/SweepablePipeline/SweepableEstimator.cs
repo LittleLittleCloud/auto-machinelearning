@@ -9,6 +9,7 @@ using System.Linq;
 using Microsoft.ML;
 using Microsoft.ML.Data;
 using MLNet.Sweeper;
+using Newtonsoft.Json;
 
 namespace MLNet.AutoPipeline
 {

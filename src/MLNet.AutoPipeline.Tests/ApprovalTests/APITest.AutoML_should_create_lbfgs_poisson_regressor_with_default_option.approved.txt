@@ -31,6 +31,7 @@
   ],
   "name": "LbfgsPoissonRegressionTrainer",
   "input_column": [
+    "Label",
     "Features"
   ],
   "output_column": [

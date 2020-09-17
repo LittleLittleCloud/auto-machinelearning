@@ -30,6 +30,8 @@ namespace MLNet.AutoPipeline
 
         public SweepableRegressionTrainers Regression { get; private set; }
 
+        internal MLContext Context { get => this.mlContext; }
+
         /// <summary>
         /// Create a sweepable mlnet trainer using custom factory method that can be used in <see cref="SweepablePipeline"/>.
         /// </summary>

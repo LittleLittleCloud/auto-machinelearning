@@ -5,6 +5,7 @@
 using Microsoft.ML;
 using Microsoft.ML.Data;
 using MLNet.Sweeper;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,8 +15,10 @@ namespace MLNet.AutoPipeline
 {
     public class SweepablePipeline : ISweepable<SingleEstimatorSweepablePipeline>
     {
+        [JsonIgnore]
         public IEnumerable<IValueGenerator> SweepableValueGenerators { get => this.EstimatorGenerators; }
 
+        [JsonIgnore]
         internal IList<DiscreteValueGenerator<SweepableEstimatorBase>> EstimatorGenerators { get; private set; }
 
         public SweepablePipeline()
@@ -39,6 +42,11 @@ namespace MLNet.AutoPipeline
 
         public SweepablePipeline Append(params SweepableEstimatorBase[] estimators)
         {
+            if (estimators.Length == 0)
+            {
+                return this;
+            }
+
             var i = this.EstimatorGenerators.Count();
             var option = new DiscreteValueGenerator<SweepableEstimatorBase>.Option<SweepableEstimatorBase>()
             {

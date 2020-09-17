@@ -23,6 +23,7 @@
   ],
   "name": "FastForestRegressionTrainer",
   "input_column": [
+    "Label",
     "Features"
   ],
   "output_column": [

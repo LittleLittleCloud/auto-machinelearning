@@ -2,6 +2,7 @@
 // Copyright (c) BigMiao. All rights reserved.
 // </copyright>
 
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -76,6 +77,7 @@ namespace MLNet.Sweeper
 
         public int Count => this._options.Values.Length;
 
+        [JsonIgnore]
         public string ID { get; private set; }
 
         public override string ToString()

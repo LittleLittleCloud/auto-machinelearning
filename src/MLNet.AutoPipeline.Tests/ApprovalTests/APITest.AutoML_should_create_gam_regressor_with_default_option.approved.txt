@@ -23,6 +23,7 @@
   ],
   "name": "GamRegressionTrainer",
   "input_column": [
+    "Label",
     "Features"
   ],
   "output_column": [

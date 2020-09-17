@@ -27,6 +27,7 @@
   ],
   "name": "SdcaRegressionTrainer",
   "input_column": [
+    "Label",
     "Features"
   ],
   "output_column": [
