@@ -5,6 +5,7 @@
 using Microsoft.ML;
 using Microsoft.ML.Data;
 using MLNet.AutoPipeline;
+using MLNet.Expert.Contract;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
@@ -17,17 +18,17 @@ namespace MLNet.Expert
     {
         private static Random rng = new Random();
 
-        public static SweepableNode<TNewTrain, TOption> CreateSweepableNode<TNewTrain, TOption>(Func<TOption, TNewTrain> estimatorFactory, SweepableOption<TOption> optionBuilder, TransformerScope scope = TransformerScope.Everything, string estimatorName = null)
+        public static SweepableEstimator<TNewTrain, TOption> CreateSweepableNode<TNewTrain, TOption>(Func<TOption, TNewTrain> estimatorFactory, SweepableOption<TOption> optionBuilder, TransformerScope scope = TransformerScope.Everything, string estimatorName = null)
             where TNewTrain : IEstimator<ITransformer>
             where TOption : class
         {
-            return new SweepableNode<TNewTrain, TOption>(estimatorFactory, optionBuilder, scope, estimatorName);
+            return new SweepableEstimator<TNewTrain, TOption>(estimatorFactory, optionBuilder, scope, estimatorName);
         }
 
-        public static UnsweepableNode<TInstance> CreateUnSweepableNode<TInstance>(TInstance instance, TransformerScope scope = TransformerScope.Everything, string estimatorName = null)
+        public static SweepableEstimator<TInstance> CreateUnSweepableNode<TInstance>(TInstance instance, TransformerScope scope = TransformerScope.Everything, string estimatorName = null)
             where TInstance : IEstimator<ITransformer>
         {
-            return new UnsweepableNode<TInstance>(instance, scope, estimatorName);
+            return new SweepableEstimator<TInstance>(instance, scope, estimatorName);
         }
 
         public static void Shuffle<T>(this IList<T> list)
@@ -45,10 +46,86 @@ namespace MLNet.Expert
 
         public static IEnumerable<T> PickN<T>(this IEnumerable<T> list, int n)
         {
-            Contract.Requires(n >= 0 && n <= list.Count());
             var pickIndex = Enumerable.Range(0, list.Count()).ToList();
             pickIndex.Shuffle();
             return pickIndex.GetRange(0, n).Select(i => list.ToArray()[i]);
+        }
+
+        public static SweepablePipelineDataContract ToDataContract(this SweepablePipeline pipeline)
+        {
+            var estimatorContracts = new List<List<SweepableEstimatorDataContract>>();
+            var nodes = pipeline.EstimatorGenerators;
+
+            foreach (var node in nodes)
+            {
+                var estimators = new List<SweepableEstimatorDataContract>();
+                for (int i = 0; i != node.Count; ++i)
+                {
+                    var estimator = node[i].RawValue as SweepableEstimatorBase;
+                    var estimatorContract = new SweepableEstimatorDataContract()
+                    {
+                        EstimatorName = estimator.EstimatorName,
+                        InputColumns = estimator.InputColumns,
+                        OutputColumns = estimator.OutputColumns,
+                        Scope = estimator.Scope,
+                    };
+                    estimators.Add(estimatorContract);
+                }
+
+                estimatorContracts.Add(estimators);
+            }
+
+            return new SweepablePipelineDataContract()
+            {
+                Estimators = estimatorContracts,
+            };
+        }
+
+        public static SingleEstimatorSweepablePipelineDataContract ToDataContract(this SingleEstimatorSweepablePipeline pipeline)
+        {
+            var estimatorContracts = new List<SweepableEstimatorDataContract>();
+            var nodes = pipeline.Estimators;
+
+            foreach (var node in nodes)
+            {
+                var estimatorContract = new SweepableEstimatorDataContract()
+                {
+                    EstimatorName = node.EstimatorName,
+                    InputColumns = node.InputColumns,
+                    OutputColumns = node.OutputColumns,
+                    Scope = node.Scope,
+                };
+
+                estimatorContracts.Add(estimatorContract);
+            }
+
+            return new SingleEstimatorSweepablePipelineDataContract()
+            {
+                Estimators = estimatorContracts,
+            };
+        }
+
+        public static SweepablePipeline ToPipeline(this SweepablePipelineDataContract pipelineContract, MLContext context)
+        {
+            var sweepablePipeline = new SweepablePipeline();
+
+            foreach (var node in pipelineContract.Estimators)
+            {
+                sweepablePipeline.Append(node.Select(n => SweepableEstimatorFactory.CreateSweepableEstimator(context, n)).ToArray());
+            }
+
+            return sweepablePipeline;
+        }
+
+        public static SingleEstimatorSweepablePipeline ToPipeline(this SingleEstimatorSweepablePipelineDataContract pipelineContract, MLContext context)
+        {
+            var estimators = new List<SweepableEstimatorBase>();
+            foreach (var estimator in pipelineContract.Estimators)
+            {
+                estimators.Append(SweepableEstimatorFactory.CreateSweepableEstimator(context, estimator));
+            }
+
+            return new SingleEstimatorSweepablePipeline(estimators);
         }
     }
 }

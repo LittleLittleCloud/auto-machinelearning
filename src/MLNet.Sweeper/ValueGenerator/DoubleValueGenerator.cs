@@ -2,7 +2,6 @@
 // Copyright (c) BigMiao. All rights reserved.
 // </copyright>
 
-using MLNet.Sweeper.Paramater;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -91,6 +90,17 @@ namespace MLNet.Sweeper
         {
             var valueTyped = value as DoubleParameterValue;
             return this._options.Min <= valueTyped.Value && valueTyped.Value <= this._options.Max;
+        }
+
+        public IParameterValue CreateFromString(string valueText)
+        {
+            var value = double.Parse(valueText);
+            if (value < this._options.Min || value >= this._options.Max)
+            {
+                throw new Exception($"{valueText} is out of range.");
+            }
+
+            return new DoubleParameterValue(this._options.Name, value, this.ID);
         }
 
         public class Option : NumericValueGeneratorOptionBase

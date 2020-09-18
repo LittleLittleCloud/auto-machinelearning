@@ -13,6 +13,12 @@ namespace MLNet.AutoPipeline
     {
         public static LinearSvmBinaryTrainerSweepableOptions Default = new LinearSvmBinaryTrainerSweepableOptions();
 
+        [Parameter(nameof(LinearSvmTrainer.Options.LabelColumnName))]
+        public Parameter<string> LabelColumnName = CreateDiscreteParameter("Label");
+
+        [Parameter(nameof(LinearSvmTrainer.Options.FeatureColumnName))]
+        public Parameter<string> FeatureColumnName = CreateDiscreteParameter("Features");
+
         /// <summary>
         /// The number of boosting iterations. A new tree is created in each iteration, so this is equivalent to the number of trees.
         /// <para>Default sweeping configuration.</para>
@@ -41,11 +47,5 @@ namespace MLNet.AutoPipeline
         /// </summary>
         [Parameter]
         public Parameter<int> NumberOfIterations = CreateInt32Parameter(10, 1000, true, 20);
-
-        /// <summary>
-        /// The name of the example weight column.
-        /// </summary>
-        [Parameter]
-        public Parameter<string> ExampleWeightColumnName = CreateFromSingleValue<string>(default);
     }
 }

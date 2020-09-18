@@ -14,13 +14,10 @@ namespace MLNet.AutoPipeline
         public static SdcaLogisticRegressionBinaryTrainerSweepableOptions Default = new SdcaLogisticRegressionBinaryTrainerSweepableOptions();
 
         [Parameter(nameof(SdcaLogisticRegressionBinaryTrainer.Options.LabelColumnName))]
-        public Parameter<string> LabelColumnName = CreateFromSingleValue("Label");
+        public Parameter<string> LabelColumnName = CreateDiscreteParameter("Label");
 
         [Parameter(nameof(SdcaLogisticRegressionBinaryTrainer.Options.FeatureColumnName))]
-        public Parameter<string> FeatureColumnName = CreateFromSingleValue("Features");
-
-        [Parameter(nameof(SdcaLogisticRegressionBinaryTrainer.Options.ExampleWeightColumnName))]
-        public Parameter<string> ExampleWeightColumnName = CreateFromSingleValue<string>(default);
+        public Parameter<string> FeatureColumnName = CreateDiscreteParameter("Features");
 
         [Parameter(nameof(SdcaLogisticRegressionBinaryTrainer.Options.L1Regularization))]
         public Parameter<float> L1Regularization = CreateFloatParameter(1e-3f, 100f, true);

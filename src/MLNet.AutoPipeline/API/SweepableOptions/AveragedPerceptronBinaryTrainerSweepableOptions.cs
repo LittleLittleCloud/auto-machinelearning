@@ -14,10 +14,10 @@ namespace MLNet.AutoPipeline
         public static AveragedPerceptronBinaryTrainerSweepableOptions Default = new AveragedPerceptronBinaryTrainerSweepableOptions();
 
         [Parameter(nameof(AveragedPerceptronTrainer.Options.LabelColumnName))]
-        public Parameter<string> LabelColumnName = CreateFromSingleValue("Label");
+        public Parameter<string> LabelColumnName = CreateDiscreteParameter("Label");
 
         [Parameter(nameof(AveragedPerceptronTrainer.Options.FeatureColumnName))]
-        public Parameter<string> FeatureColumnName = CreateFromSingleValue("Features");
+        public Parameter<string> FeatureColumnName = CreateDiscreteParameter("Features");
 
         [Parameter(nameof(AveragedPerceptronTrainer.Options.LossFunction))]
         public Parameter<IClassificationLoss> LossFunction = CreateDiscreteParameter<IClassificationLoss>(new HingeLoss(), new ExpLoss(), new LogLoss(), new SmoothedHingeLoss());
@@ -32,6 +32,6 @@ namespace MLNet.AutoPipeline
         public Parameter<int> NumberOfIterations = CreateInt32Parameter(1, 256, true);
 
         [Parameter(nameof(AveragedPerceptronTrainer.Options.DecreaseLearningRate))]
-        public Parameter<bool> DecreaseLearningRate = CreateFromSingleValue(false);
+        public Parameter<bool> DecreaseLearningRate = CreateDiscreteParameter(false);
     }
 }

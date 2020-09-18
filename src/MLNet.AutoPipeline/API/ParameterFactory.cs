@@ -79,9 +79,9 @@ namespace MLNet.AutoPipeline
             return new Parameter<T>(objects);
         }
 
-        public static Parameter<T> CreateFromSingleValue<T>(T value)
+        public static Parameter<T> CreateDiscreteParameter<T>(T objects)
         {
-            return new Parameter<T>(value);
+            return new Parameter<T>(new T[] { objects });
         }
     }
 }

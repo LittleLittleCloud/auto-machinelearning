@@ -9,13 +9,8 @@
       "ValueText": "Features"
     },
     {
-      "Name": "ExampleWeightColumnName",
-      "ValueText": null
-    },
-    {
       "Name": "LossFunction",
-      "ValueText": "Microsoft.ML.Trainers.LogLoss",
-      "Value": {}
+      "ValueText": "Microsoft.ML.Trainers.LogLoss"
     },
     {
       "Name": "L1Regularization",
@@ -32,6 +27,7 @@
   ],
   "name": "SdcaRegressionTrainer",
   "input_column": [
+    "Label",
     "Features"
   ],
   "output_column": [

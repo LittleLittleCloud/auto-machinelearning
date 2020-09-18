@@ -10,8 +10,7 @@
     },
     {
       "Name": "LossFunction",
-      "ValueText": "Microsoft.ML.Trainers.LogLoss",
-      "Value": {}
+      "ValueText": "Microsoft.ML.Trainers.LogLoss"
     },
     {
       "Name": "LearningRate",
@@ -19,8 +18,7 @@
     },
     {
       "Name": "DecreaseLearningRate",
-      "ValueText": "True",
-      "Value": true
+      "ValueText": "True"
     },
     {
       "Name": "L2Regularization",
@@ -33,6 +31,7 @@
   ],
   "name": "OnlineGradientDescentTrainer",
   "input_column": [
+    "Label",
     "Features"
   ],
   "output_column": [

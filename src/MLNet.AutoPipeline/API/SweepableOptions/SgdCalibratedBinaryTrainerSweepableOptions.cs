@@ -14,13 +14,10 @@ namespace MLNet.AutoPipeline
         public static SgdCalibratedBinaryTrainerSweepableOptions Default = new SgdCalibratedBinaryTrainerSweepableOptions();
 
         [Parameter(nameof(SgdCalibratedTrainer.Options.LabelColumnName))]
-        public Parameter<string> LabelColumnName = CreateFromSingleValue("Label");
+        public Parameter<string> LabelColumnName = CreateDiscreteParameter("Label");
 
         [Parameter(nameof(SgdCalibratedTrainer.Options.FeatureColumnName))]
-        public Parameter<string> FeatureColumnName = CreateFromSingleValue("Features");
-
-        [Parameter(nameof(SgdCalibratedTrainer.Options.ExampleWeightColumnName))]
-        public Parameter<string> ExampleWeightColumnName = CreateFromSingleValue<string>(default);
+        public Parameter<string> FeatureColumnName = CreateDiscreteParameter("Features");
 
         [Parameter(nameof(SgdCalibratedTrainer.Options.NumberOfIterations))]
         public Parameter<int> NumberOfIterations = CreateInt32Parameter(5, 200, true);

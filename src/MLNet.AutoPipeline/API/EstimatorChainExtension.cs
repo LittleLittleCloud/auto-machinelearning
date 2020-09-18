@@ -16,7 +16,7 @@ namespace MLNet.AutoPipeline
         public static SweepablePipeline
             Append<TLastTrain>(
                 this EstimatorChain<TLastTrain> estimatorChain,
-                INode transformer)
+                SweepableEstimatorBase transformer)
             where TLastTrain : class, ITransformer
         {
             var estimators = estimatorChain.GetType().GetField("_estimators", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic).GetValue(estimatorChain) as IEstimator<ITransformer>[];
@@ -25,7 +25,7 @@ namespace MLNet.AutoPipeline
             var singleNodeChain = new SweepablePipeline();
             for (int i = 0; i != estimators.Length; ++i)
             {
-                var estimator = Util.CreateUnSweepableNode(estimators[i], scopes[i]);
+                var estimator = Util.CreateSweepableEstimator(estimators[i], scopes[i]);
                 singleNodeChain.Append(estimator);
             }
 
@@ -35,19 +35,18 @@ namespace MLNet.AutoPipeline
         public static SweepablePipeline
             Append<TLastTran>(
                 this TLastTran estimator,
-                INode transformer)
+                SweepableEstimatorBase transformer)
             where TLastTran : IEstimator<ITransformer>
         {
             return new SweepablePipeline()
-                        .Append(new UnsweepableNode<TLastTran>(estimator))
+                        .Append(new SweepableEstimator<TLastTran>(estimator))
                         .Append(transformer);
         }
 
         public static SweepablePipeline
-            Append<TLastTran>(
-                this INode<TLastTran> estimator,
-                INode transformer)
-            where TLastTran : IEstimator<ITransformer>
+            Append(
+                this SweepableEstimatorBase estimator,
+                SweepableEstimatorBase transformer)
         {
             return new SweepablePipeline()
                         .Append(estimator)
@@ -55,10 +54,9 @@ namespace MLNet.AutoPipeline
         }
 
         public static SweepablePipeline
-            Append<TLastTran, TNewTran>(
-                this INode<TLastTran> estimator,
+            Append<TNewTran>(
+                this SweepableEstimatorBase estimator,
                 TNewTran transformer)
-            where TLastTran : IEstimator<ITransformer>
             where TNewTran : IEstimator<ITransformer>
         {
             return new SweepablePipeline()

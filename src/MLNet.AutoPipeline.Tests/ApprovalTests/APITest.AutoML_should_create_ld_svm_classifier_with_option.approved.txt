@@ -19,6 +19,7 @@
   ],
   "name": "LdSvmTrainer",
   "input_column": [
+    "label",
     "feature"
   ],
   "output_column": [

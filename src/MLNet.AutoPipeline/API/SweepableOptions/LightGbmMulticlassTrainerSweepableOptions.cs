@@ -131,11 +131,5 @@ namespace MLNet.AutoPipeline
         /// </summary>
         [Parameter]
         public Parameter<int> MinimumExampleCountPerLeaf = CreateInt32Parameter(10, 1000, true, 20);
-
-        /// <summary>
-        /// The name of the example weight column.
-        /// </summary>
-        [Parameter]
-        public Parameter<string> ExampleWeightColumnName = CreateFromSingleValue<string>(default);
     }
 }

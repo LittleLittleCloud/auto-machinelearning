@@ -16,7 +16,7 @@ namespace MLNet.AutoPipeline
     {
         internal const string Score = "Score";
 
-        public static SweepableNode<LightGbmRegressionTrainer, LightGbmRegressionTrainer.Options>
+        public static SweepableEstimator<LightGbmRegressionTrainer, LightGbmRegressionTrainer.Options>
             LightGbm(
                 this SweepableRegressionTrainers trainers,
                 string labelColumnName = "Label",
@@ -42,12 +42,12 @@ namespace MLNet.AutoPipeline
                     return context.Regression.Trainers.LightGbm(option);
                 },
                 optionSweeper,
-                new string[] { featureColumnName },
+                new string[] { labelColumnName, featureColumnName },
                 new string[] { Score },
                 nameof(LightGbmRegressionTrainer));
         }
 
-        public static SweepableNode<LbfgsPoissonRegressionTrainer, LbfgsPoissonRegressionTrainer.Options>
+        public static SweepableEstimator<LbfgsPoissonRegressionTrainer, LbfgsPoissonRegressionTrainer.Options>
             LbfgsPoissonRegression(
                 this SweepableRegressionTrainers trainers,
                 string labelColumnName = "Label",
@@ -73,12 +73,12 @@ namespace MLNet.AutoPipeline
                     return context.Regression.Trainers.LbfgsPoissonRegression(option);
                 },
                 optionSweeper,
-                new string[] { featureColumnName },
+                new string[] { labelColumnName, featureColumnName },
                 new string[] { Score },
                 nameof(LbfgsPoissonRegressionTrainer));
         }
 
-        public static SweepableNode<OnlineGradientDescentTrainer, OnlineGradientDescentTrainer.Options>
+        public static SweepableEstimator<OnlineGradientDescentTrainer, OnlineGradientDescentTrainer.Options>
             OnlineGradientDescent(
                 this SweepableRegressionTrainers trainers,
                 string labelColumnName = "Label",
@@ -104,12 +104,12 @@ namespace MLNet.AutoPipeline
                     return context.Regression.Trainers.OnlineGradientDescent(option);
                 },
                 optionSweeper,
-                new string[] { featureColumnName },
+                new string[] { labelColumnName, featureColumnName },
                 new string[] { Score },
                 nameof(OnlineGradientDescentTrainer));
         }
 
-        public static SweepableNode<SdcaRegressionTrainer, SdcaRegressionTrainer.Options>
+        public static SweepableEstimator<SdcaRegressionTrainer, SdcaRegressionTrainer.Options>
             Sdca(
                 this SweepableRegressionTrainers trainers,
                 string labelColumnName = "Label",
@@ -135,12 +135,12 @@ namespace MLNet.AutoPipeline
                     return context.Regression.Trainers.Sdca(option);
                 },
                 optionSweeper,
-                new string[] { featureColumnName },
+                new string[] { labelColumnName, featureColumnName },
                 new string[] { Score },
                 nameof(SdcaRegressionTrainer));
         }
 
-        public static SweepableNode<FastForestRegressionTrainer, FastForestRegressionTrainer.Options>
+        public static SweepableEstimator<FastForestRegressionTrainer, FastForestRegressionTrainer.Options>
             FastForest(
                 this SweepableRegressionTrainers trainers,
                 string labelColumnName = "Label",
@@ -166,12 +166,12 @@ namespace MLNet.AutoPipeline
                     return context.Regression.Trainers.FastForest(option);
                 },
                 optionSweeper,
-                new string[] { featureColumnName },
+                new string[] { labelColumnName, featureColumnName },
                 new string[] { Score },
                 nameof(FastForestRegressionTrainer));
         }
 
-        public static SweepableNode<FastTreeRegressionTrainer, FastTreeRegressionTrainer.Options>
+        public static SweepableEstimator<FastTreeRegressionTrainer, FastTreeRegressionTrainer.Options>
             FastTree(
                 this SweepableRegressionTrainers trainers,
                 string labelColumnName = "Label",
@@ -197,12 +197,12 @@ namespace MLNet.AutoPipeline
                     return context.Regression.Trainers.FastTree(option);
                 },
                 optionSweeper,
-                new string[] { featureColumnName },
+                new string[] { labelColumnName, featureColumnName },
                 new string[] { Score },
                 nameof(FastTreeRegressionTrainer));
         }
 
-        public static SweepableNode<FastTreeTweedieTrainer, FastTreeTweedieTrainer.Options>
+        public static SweepableEstimator<FastTreeTweedieTrainer, FastTreeTweedieTrainer.Options>
             FastTreeTweedie(
                 this SweepableRegressionTrainers trainers,
                 string labelColumnName = "Label",
@@ -228,12 +228,12 @@ namespace MLNet.AutoPipeline
                     return context.Regression.Trainers.FastTreeTweedie(option);
                 },
                 optionSweeper,
-                new string[] { featureColumnName },
+                new string[] { labelColumnName, featureColumnName },
                 new string[] { Score },
                 nameof(FastTreeTweedieTrainer));
         }
 
-        public static SweepableNode<GamRegressionTrainer, GamRegressionTrainer.Options>
+        public static SweepableEstimator<GamRegressionTrainer, GamRegressionTrainer.Options>
             Gam(
                 this SweepableRegressionTrainers trainers,
                 string labelColumnName = "Label",
@@ -259,7 +259,7 @@ namespace MLNet.AutoPipeline
                     return context.Regression.Trainers.Gam(option);
                 },
                 optionSweeper,
-                new string[] { featureColumnName },
+                new string[] { labelColumnName, featureColumnName },
                 new string[] { Score },
                 nameof(GamRegressionTrainer));
         }

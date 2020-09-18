@@ -104,21 +104,15 @@ namespace MLNet.AutoPipeline
         public Parameter<int> HistorySize = CreateInt32Parameter(1, 1000, true, 20);
 
         /// <summary>
-        /// The name of the example weight column, default is null.
-        /// </summary>
-        [Parameter]
-        public Parameter<string> ExampleWeightColumnName = CreateFromSingleValue<string>(default);
-
-        /// <summary>
         /// Threshold for optimizer convergence, default is 1E-7F.
         /// </summary>
         [Parameter]
-        public Parameter<float> OptimizationTolerance = CreateFromSingleValue(1e-7f);
+        public Parameter<float> OptimizationTolerance = CreateDiscreteParameter(1e-7f);
 
         /// <summary>
         /// Enforce non-negative weights, default is false.
         /// </summary>
         [Parameter]
-        public Parameter<bool> EnforceNonNegativity = CreateFromSingleValue(false);
+        public Parameter<bool> EnforceNonNegativity = CreateDiscreteParameter(false);
     }
 }

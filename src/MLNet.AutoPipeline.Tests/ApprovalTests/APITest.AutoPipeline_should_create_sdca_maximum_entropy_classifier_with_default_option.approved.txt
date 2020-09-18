@@ -13,10 +13,6 @@
       "ValueText": "32"
     },
     {
-      "Name": "ExampleWeightColumnName",
-      "ValueText": null
-    },
-    {
       "Name": "OptimizationTolerance",
       "ValueText": "1E-07"
     },

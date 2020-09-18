@@ -4,10 +4,12 @@
 
 using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 using System.Text;
 
-namespace MLNet.Sweeper.Paramater
+namespace MLNet.Sweeper
 {
+    [Serializable]
     public sealed class DoubleParameterValue : IParameterValue<double>
     {
         public string Name { get; private set; }
@@ -16,7 +18,7 @@ namespace MLNet.Sweeper.Paramater
 
         public double Value { get; private set; }
 
-        public object RawValue { get; private set; }
+        public object RawValue { get => this.Value; }
 
         public string ID { get; private set; }
 
@@ -24,7 +26,6 @@ namespace MLNet.Sweeper.Paramater
         {
             this.Name = name;
             this.Value = value;
-            this.RawValue = value;
             this.ValueText = this.Value.ToString("R");
             this.ID = id ?? name;
         }
@@ -38,6 +39,11 @@ namespace MLNet.Sweeper.Paramater
         {
             var fpv = obj as DoubleParameterValue;
             return fpv != null && this.Name == fpv.Name && this.Value == fpv.Value;
+        }
+
+        public void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            throw new NotImplementedException();
         }
     }
 }

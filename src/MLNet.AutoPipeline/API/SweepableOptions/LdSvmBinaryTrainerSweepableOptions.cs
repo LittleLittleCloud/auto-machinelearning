@@ -14,10 +14,10 @@ namespace MLNet.AutoPipeline
         public static LdSvmBinaryTrainerSweepableOptions Default = new LdSvmBinaryTrainerSweepableOptions();
 
         [Parameter(nameof(LdSvmTrainer.Options.LabelColumnName))]
-        public Parameter<string> LabelColumnName = CreateFromSingleValue("Label");
+        public Parameter<string> LabelColumnName = CreateDiscreteParameter("Label");
 
         [Parameter(nameof(LdSvmTrainer.Options.FeatureColumnName))]
-        public Parameter<string> FeatureColumnName = CreateFromSingleValue("Features");
+        public Parameter<string> FeatureColumnName = CreateDiscreteParameter("Features");
 
         /// <summary>
         /// The number of boosting iterations. A new tree is created in each iteration, so this is equivalent to the number of trees.

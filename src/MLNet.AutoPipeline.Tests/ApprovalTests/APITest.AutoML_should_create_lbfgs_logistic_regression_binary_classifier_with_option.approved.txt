@@ -9,10 +9,6 @@
       "ValueText": "Features"
     },
     {
-      "Name": "ExampleWeightColumnName",
-      "ValueText": null
-    },
-    {
       "Name": "L1Regularization",
       "ValueText": "0.31622776"
     },
@@ -39,6 +35,7 @@
   ],
   "name": "LbfgsLogisticRegressionBinaryTrainer",
   "input_column": [
+    "label",
     "feature"
   ],
   "output_column": [

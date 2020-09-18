@@ -29,19 +29,17 @@ namespace MLNet.AutoPipeline.Test
         public void OptionBuilder_should_build_option_from_parameter_set()
         {
             var builder = new TestOptionBuilderWithSweepableAttributeOnly();
-            var input = new List<IParameterValue>()
+            var input = new Dictionary<string, string>()
             {
-                new LongParameterValue("LongOption", 2),
-                new FloatParameterValue("FloatOption", 2f),
-                new DiscreteParameterValue("StringOption", "2"),
+                { "LongOption", "2" },
+                { "FloatOption", "2" },
+                { "StringOption", "str2" },
             };
 
-            var paramSet = new ParameterSet(input);
-
-            var option = builder.BuildFromParameterSet(paramSet);
+            var option = builder.BuildFromParameters(input);
             option.LongOption.Should().Equals(2);
             option.FloatOption.Should().Equals(2f);
-            option.StringOption.Should().Equals("2");
+            option.StringOption.Should().Equals("str2");
         }
 
         [Fact]
@@ -57,7 +55,7 @@ namespace MLNet.AutoPipeline.Test
             foreach (var sweeperOutput in randomSweeper.ProposeSweeps(builder, maximum))
             {
                 maximum -= 1;
-                var option = builder.BuildFromParameterSet(sweeperOutput);
+                var option = builder.BuildFromParameters(sweeperOutput);
                 option.LongOption
                       .Should()
                       .BeLessOrEqualTo(100)
@@ -97,19 +95,18 @@ namespace MLNet.AutoPipeline.Test
             option1.LongOption.Should().Be(0);
             option1.StringOption.Should().Be("str1");
 
-            var input = new List<IParameterValue>()
+            var input = new Dictionary<string, string>()
             {
-                new LongParameterValue("LongOption", 2),
-                new FloatParameterValue("FloatOption", 2f),
-                new DiscreteParameterValue("StringOption", "2"),
+                { "LongOption", "2" },
+                { "FloatOption", "2" },
+                { "StringOption", "str2" },
             };
 
-            var parameterSet = new ParameterSet(input);
-            var option2 = optionBuilder.BuildFromParameterSet(parameterSet);
+            var option2 = optionBuilder.BuildFromParameters(input);
 
             option2.LongOption.Should().Equals(2);
             option2.FloatOption.Should().Equals(2f);
-            option2.StringOption.Should().Equals("2");
+            option2.StringOption.Should().Equals("str2");
         }
 
         [Fact]
@@ -133,10 +130,10 @@ namespace MLNet.AutoPipeline.Test
         private class TestOptionBuilderWithParameterAttributeOnly : SweepableOption<TestOption>
         {
             [Parameter]
-            public Parameter<long> LongOption = ParameterFactory.CreateFromSingleValue(100L);
+            public Parameter<long> LongOption = ParameterFactory.CreateDiscreteParameter(100L);
 
             [Parameter(nameof(TestOption.FloatOption))]
-            public Parameter<float> Float_Option = ParameterFactory.CreateFromSingleValue(100f);
+            public Parameter<float> Float_Option = ParameterFactory.CreateDiscreteParameter(100f);
         }
 
         private class TestOptionBuilderWithSweepableAttributeOnly : SweepableOption<TestOption>

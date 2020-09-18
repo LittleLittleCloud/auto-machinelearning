@@ -1,16 +1,21 @@
 {
   "parameters": [
     {
-      "Name": "NumberOfIterations",
-      "ValueText": "100"
+      "Name": "LabelColumnName",
+      "ValueText": "Label"
     },
     {
-      "Name": "ExampleWeightColumnName",
-      "ValueText": "example"
+      "Name": "FeatureColumnName",
+      "ValueText": "Features"
+    },
+    {
+      "Name": "NumberOfIterations",
+      "ValueText": "100"
     }
   ],
   "name": "LinearSvmTrainer",
   "input_column": [
+    "label",
     "feature"
   ],
   "output_column": [

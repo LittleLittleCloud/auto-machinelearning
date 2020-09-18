@@ -11,13 +11,10 @@ namespace MLNet.AutoPipeline
         public static FastTreeTweedieTrainerSweepableOptions Default = new FastTreeTweedieTrainerSweepableOptions();
 
         [Parameter(nameof(FastTreeTweedieTrainer.Options.LabelColumnName))]
-        public Parameter<string> LabelColumnName = CreateFromSingleValue("Label");
+        public Parameter<string> LabelColumnName = CreateDiscreteParameter("Label");
 
         [Parameter(nameof(FastTreeTweedieTrainer.Options.FeatureColumnName))]
-        public Parameter<string> FeatureColumnName = CreateFromSingleValue("Features");
-
-        [Parameter(nameof(FastTreeTweedieTrainer.Options.ExampleWeightColumnName))]
-        public Parameter<string> ExampleWeightColumnName = CreateFromSingleValue<string>(default);
+        public Parameter<string> FeatureColumnName = CreateDiscreteParameter("Features");
 
         [Parameter(nameof(FastTreeTweedieTrainer.Options.NumberOfLeaves))]
         public Parameter<int> NumberOfLeaves = CreateInt32Parameter(10, 1000, true);

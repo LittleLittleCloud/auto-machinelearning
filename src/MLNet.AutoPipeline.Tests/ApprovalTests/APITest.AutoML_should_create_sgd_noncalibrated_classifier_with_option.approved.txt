@@ -9,13 +9,8 @@
       "ValueText": "Features"
     },
     {
-      "Name": "ExampleWeightColumnName",
-      "ValueText": null
-    },
-    {
       "Name": "LossFunction",
-      "ValueText": "Microsoft.ML.Trainers.LogLoss",
-      "Value": {}
+      "ValueText": "Microsoft.ML.Trainers.LogLoss"
     },
     {
       "Name": "NumberOfIterations",
@@ -32,6 +27,7 @@
   ],
   "name": "SgdNonCalibratedTrainer",
   "input_column": [
+    "label",
     "feature"
   ],
   "output_column": [

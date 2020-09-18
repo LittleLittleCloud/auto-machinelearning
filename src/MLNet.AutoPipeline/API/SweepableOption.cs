@@ -4,7 +4,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Dynamic;
 using System.Linq;
 using System.Text;
 using MLNet.Sweeper;
@@ -62,20 +61,18 @@ namespace MLNet.AutoPipeline
             }
         }
 
-        /// <summary>
-        /// Build option using <paramref name="parameters"/>.
-        /// </summary>
-        /// <param name="parameters">a set of parameters used to build option.</param>
-        /// <returns><paramref name="TOption"/>.</returns>
-        public TOption BuildFromParameterSet(ParameterSet parameters)
+        public TOption BuildFromParameters(IDictionary<string, string> parameters)
         {
             var option = this.CreateDefaultOption();
-            foreach (var param in parameters)
+
+            foreach (var generator in this.ValueGenerators)
             {
-                if (this._ids.Contains(param.ID))
+                if (parameters.ContainsKey(generator.ID))
                 {
-                    var value = param.RawValue;
-                    typeof(TOption).GetField(param.Name)?.SetValue(option, value);
+                    var valueText = parameters[generator.ID];
+                    var rawValue = generator.CreateFromString(valueText).RawValue;
+
+                    typeof(TOption).GetField(generator.Name)?.SetValue(option, rawValue);
                 }
             }
 
@@ -206,9 +203,15 @@ namespace MLNet.AutoPipeline
             return ParameterFactory.CreateDiscreteParameter<T>(objects);
         }
 
-        public static Parameter<T> CreateFromSingleValue<T>(T value)
+        /// <summary>
+        /// Create a sweepable parameter with discrete values.
+        /// </summary>
+        /// <typeparam name="T">type of values.</typeparam>
+        /// <param name="objects">discrete values.</param>
+        /// <returns><see cref="Parameter{T}"/>.</returns>
+        public static Parameter<T> CreateDiscreteParameter<T>(T objects)
         {
-            return ParameterFactory.CreateFromSingleValue<T>(value);
+            return ParameterFactory.CreateDiscreteParameter(objects);
         }
     }
 }

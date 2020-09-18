@@ -9,10 +9,6 @@
       "ValueText": "Features"
     },
     {
-      "Name": "ExampleWeightColumnName",
-      "ValueText": "example"
-    },
-    {
       "Name": "NumberOfLeaves",
       "ValueText": "100"
     },
@@ -31,6 +27,7 @@
   ],
   "name": "FastTreeBinaryTrainer",
   "input_column": [
+    "label",
     "feature"
   ],
   "output_column": [

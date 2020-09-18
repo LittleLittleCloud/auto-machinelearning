@@ -30,6 +30,8 @@ namespace MLNet.AutoPipeline
 
         public SweepableRegressionTrainers Regression { get; private set; }
 
+        internal MLContext Context { get => this.mlContext; }
+
         /// <summary>
         /// Create a sweepable mlnet trainer using custom factory method that can be used in <see cref="SweepablePipeline"/>.
         /// </summary>
@@ -40,8 +42,8 @@ namespace MLNet.AutoPipeline
         /// <param name="inputs">input column names.</param>
         /// <param name="outputs">output column name.</param>
         /// <param name="trainerName">trainer name.</param>
-        /// <returns><see cref="SweepableNode{TNewTrain, TOption}"/>.</returns>
-        public SweepableNode<TTrain, TOption>
+        /// <returns><see cref="SweepableEstimator{TNewTrain, TOption}"/>.</returns>
+        public SweepableEstimator<TTrain, TOption>
             CreateSweepableEstimator<TTrain, TOption>(Func<MLContext, TOption, TTrain> trainerFactory, SweepableOption<TOption> optionBuilder, string[] inputs = null, string[] outputs = null, string trainerName = null)
             where TTrain : IEstimator<ITransformer>
             where TOption : class
@@ -55,7 +57,7 @@ namespace MLNet.AutoPipeline
                 return trainerFactory(this.mlContext, option);
             };
 
-            return Util.CreateSweepableNode(factory, optionBuilder, estimatorName: trainerName, inputs: inputs, outputs: outputs);
+            return Util.CreateSweepableEstimator(factory, optionBuilder, estimatorName: trainerName, inputs: inputs, outputs: outputs);
         }
 
         /// <summary>
@@ -66,13 +68,13 @@ namespace MLNet.AutoPipeline
         /// <param name="inputs">input column(s).</param>
         /// <param name="outputs">output column(s).</param>
         /// <param name="estimatorName">custom-defined estimator name.</param>
-        /// <returns><see cref="UnsweepableNode{TTrainer}"/>.</returns>
-        public UnsweepableNode<TTrain>
+        /// <returns><see cref="SweepableEstimator{TTrainer}"/>.</returns>
+        public SweepableEstimator<TTrain>
             CreateUnsweepableEstimator<TTrain>(TTrain instance, string[] inputs = null, string[] outputs = null, string estimatorName = null)
             where TTrain : IEstimator<ITransformer>
         {
             Logger.Instance.Trace(Microsoft.ML.Runtime.MessageSensitivity.None, $"Create Unsweepable estiamtor. Estimator name: {estimatorName}, Input column(s): {string.Join(",", inputs ?? new string[] { })}, Output column(s): {string.Join(",", outputs?? new string[] { })}");
-            return Util.CreateUnSweepableNode(instance, Microsoft.ML.Data.TransformerScope.Everything, estimatorName, inputs, outputs);
+            return Util.CreateSweepableEstimator(instance, Microsoft.ML.Data.TransformerScope.Everything, estimatorName, inputs, outputs);
         }
 
         public Experiment CreateExperiment(SweepablePipeline pipeline, Experiment.Option option = null)

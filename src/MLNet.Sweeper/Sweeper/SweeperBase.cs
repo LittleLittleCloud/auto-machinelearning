@@ -14,23 +14,21 @@ namespace MLNet.Sweeper
     /// </summary>
     public abstract class SweeperBase : ISweeper
     {
-        private HashSet<ParameterSet> _generated;
+        private HashSet<Parameters> _generated;
         protected IList<IRunResult> _history = new List<IRunResult>();
 
         private readonly SweeperOptionBase _options;
 
-        public ParameterSet Current { get; private set; }
-
         protected SweeperBase()
         {
             this._options = new SweeperOptionBase();
-            this._generated = new HashSet<ParameterSet>();
+            this._generated = new HashSet<Parameters>();
         }
 
         protected SweeperBase(SweeperOptionBase options, string name)
         {
             this._options = options;
-            this._generated = new HashSet<ParameterSet>();
+            this._generated = new HashSet<Parameters>();
         }
 
         protected SweeperBase(SweeperOptionBase options, IValueGenerator[] sweepParameters, string name)
@@ -38,9 +36,9 @@ namespace MLNet.Sweeper
             this._options = options;
         }
 
-        public virtual IEnumerable<ParameterSet> ProposeSweeps(ISweepable sweepable, int maxSweeps, IEnumerable<IRunResult> previousRuns = null)
+        public virtual IEnumerable<IDictionary<string, string>> ProposeSweeps(ISweepable sweepable, int maxSweeps, IEnumerable<IRunResult> previousRuns = null)
         {
-            ParameterSet candidate;
+            Parameters candidate;
 
             if (previousRuns != null)
             {
@@ -55,10 +53,8 @@ namespace MLNet.Sweeper
                     if (!AlreadyGenerated(candidate, this._history.Select(x => x.ParameterSet)) &&
                         !this._generated.Contains(candidate))
                     {
-
                         this._generated.Add(candidate);
-                        this.Current = candidate;
-                        yield return candidate;
+                        yield return candidate.ParameterValues;
 
                         break;
                     }
@@ -66,12 +62,12 @@ namespace MLNet.Sweeper
             }
         }
 
-        protected static bool AlreadyGenerated(ParameterSet paramSet, IEnumerable<ParameterSet> previousRuns)
+        protected static bool AlreadyGenerated(Parameters paramSet, IEnumerable<Parameters> previousRuns)
         {
             return previousRuns.Any(previousRun => previousRun.Equals(paramSet));
         }
 
-        protected abstract ParameterSet CreateParamSet(ISweepable sweepable);
+        protected abstract Parameters CreateParamSet(ISweepable sweepable);
 
         public virtual void AddRunHistory(IRunResult input)
         {

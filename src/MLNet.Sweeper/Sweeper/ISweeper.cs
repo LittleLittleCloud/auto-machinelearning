@@ -15,24 +15,14 @@ namespace MLNet.Sweeper
         /// The list of runs can be null if there were no previous runs.
         /// Some smart sweepers can take advantage of the metric(s) that the caller computes for previous runs.
         /// </summary>
-        /// <returns>ParameterSet.</returns>
-        IEnumerable<ParameterSet> ProposeSweeps(ISweepable sweepable, int maxSweeps = 100, IEnumerable<IRunResult> previousRuns = null);
-
-        ParameterSet Current { get; }
+        /// <returns><see cref="IDictionary{TKey, TValue}"/> where key is parameter name and value is parameter value (in string format).</returns>
+        IEnumerable<IDictionary<string, string>> ProposeSweeps(ISweepable sweepingSpace, int maxSweeps = 100, IEnumerable<IRunResult> previousRuns = null);
 
         /// <summary>
-        /// For trainable Sweeper.
+        /// Add run history to sweeper. The run history can be used to avoid duplicate sweeping or train smart sweepers.
         /// </summary>
-        /// <param name="input">Output of Sweeper.</param>
+        /// <param name="input">sweeping result.</param>
         void AddRunHistory(IRunResult input);
-    }
-
-    public interface ISweepResultEvaluator<in TResults>
-    {
-        /// <summary>
-        /// Return an IRunResult based on the results given as a TResults object.
-        /// </summary>
-        IRunResult GetRunResult(ParameterSet parameters, TResults results);
     }
 
     /// <summary>
@@ -43,7 +33,7 @@ namespace MLNet.Sweeper
     /// </summary>
     public interface IRunResult : IComparable<IRunResult>
     {
-        ParameterSet ParameterSet { get; }
+        Parameters ParameterSet { get; }
 
         IComparable MetricValue { get; }
 
@@ -63,6 +53,6 @@ namespace MLNet.Sweeper
 
     internal interface ISweepable<out T> : ISweepable
     {
-        T BuildFromParameterSet(ParameterSet parameters);
+        T BuildFromParameters(IDictionary<string, string> parameters);
     }
 }

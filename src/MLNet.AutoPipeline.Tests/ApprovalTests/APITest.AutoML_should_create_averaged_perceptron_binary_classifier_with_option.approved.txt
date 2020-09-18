@@ -10,8 +10,7 @@
     },
     {
       "Name": "LossFunction",
-      "ValueText": "Microsoft.ML.Trainers.LogLoss",
-      "Value": {}
+      "ValueText": "Microsoft.ML.Trainers.LogLoss"
     },
     {
       "Name": "L2Regularization",
@@ -32,6 +31,7 @@
   ],
   "name": "AveragedPerceptronTrainer",
   "input_column": [
+    "label",
     "feature"
   ],
   "output_column": [

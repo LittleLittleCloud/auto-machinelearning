@@ -199,13 +199,13 @@ namespace MLNet.Sweeper.Tests
         public void DiscreteValueGenerator_should_generate_value_from_normalize(object a, object b, object c, object d)
         {
             var objects = new object[] { a, b, c, d };
-            var option = new DiscreteValueGenerator.Option()
+            var option = new DiscreteValueGenerator<object>.Option<object>()
             {
                 Name = "discrete",
                 Values = objects,
             };
 
-            var generator = new DiscreteValueGenerator(option);
+            var generator = new DiscreteValueGenerator<object>(option);
 
             objects.Should().Contain(generator.CreateFromNormalized(0.5).RawValue);
             generator.Count.Should().Be(4);
@@ -215,15 +215,15 @@ namespace MLNet.Sweeper.Tests
         public void DiscreteValueGenerator_should_return_one_hot_encode()
         {
             var objects = new object[] { "a", 2, "c", 4 };
-            var option = new DiscreteValueGenerator.Option()
+            var option = new DiscreteValueGenerator<object>.Option<object>()
             {
                 Name = "discrete",
                 Values = objects,
             };
 
-            var generator = new DiscreteValueGenerator(option);
+            var generator = new DiscreteValueGenerator<object>(option);
 
-            generator.OneHotEncodeValue(new DiscreteParameterValue("val", objects[0])).Should().BeEquivalentTo(new int[] { 1, 0, 0, 0 });
+            generator.OneHotEncodeValue(new ObjectParameterValue<object>("val", objects[0])).Should().BeEquivalentTo(new int[] { 1, 0, 0, 0 });
         }
     }
 }

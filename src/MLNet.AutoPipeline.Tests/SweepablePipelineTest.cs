@@ -40,7 +40,7 @@ namespace MLNet.AutoPipeline.Test
                                   .Append(new MockTransformer())
                                   .Append(new MockEstimatorBuilder("mockEstimator"));
 
-            sweepablePipeline.Summary().Should().Be("SweepablePipeline([MockTransformer]=>[mockEstimator])");
+            sweepablePipeline.ToString().Should().Be("SweepablePipeline([MockTransformer]=>[mockEstimator])");
         }
 
         [Fact]
@@ -59,7 +59,7 @@ namespace MLNet.AutoPipeline.Test
             var sweeper = new GridSearchSweeper();
             foreach (var param in sweeper.ProposeSweeps(sweepablePipeline, 100))
             {
-                var singleEstimatorPipeline = sweepablePipeline.BuildFromParameterSet(param);
+                var singleEstimatorPipeline = sweepablePipeline.BuildFromParameters(param);
                 res.AppendLine(singleEstimatorPipeline.ToString());
             }
 

@@ -14,10 +14,10 @@ namespace MLNet.AutoPipeline
         public static OnlineGradientDescentTrainerSweepableOptions Default = new OnlineGradientDescentTrainerSweepableOptions();
 
         [Parameter(nameof(OnlineGradientDescentTrainer.Options.LabelColumnName))]
-        public Parameter<string> LabelColumnName = CreateFromSingleValue("Label");
+        public Parameter<string> LabelColumnName = CreateDiscreteParameter("Label");
 
         [Parameter(nameof(OnlineGradientDescentTrainer.Options.FeatureColumnName))]
-        public Parameter<string> FeatureColumnName = CreateFromSingleValue("Features");
+        public Parameter<string> FeatureColumnName = CreateDiscreteParameter("Features");
 
         [Parameter(nameof(OnlineGradientDescentTrainer.Options.LossFunction))]
         public Parameter<ISupportSdcaClassificationLoss> LossFunction = CreateDiscreteParameter<ISupportSdcaClassificationLoss>(new HingeLoss(), new LogLoss(), new SmoothedHingeLoss());

@@ -1,0 +1,142 @@
+{
+  "Estimators": [
+    [
+      {
+        "EstimatorName": "OneHotEncodingEstimator",
+        "InputColumns": [
+          "cat1"
+        ],
+        "OutputColumns": [
+          "cat1"
+        ],
+        "Scope": 7
+      }
+    ],
+    [
+      {
+        "EstimatorName": "MissingValueReplacingEstimator",
+        "InputColumns": [
+          "numeric1"
+        ],
+        "OutputColumns": [
+          "numeric1"
+        ],
+        "Scope": 7
+      }
+    ],
+    [
+      {
+        "EstimatorName": "ColumnConcatenatingEstimator",
+        "InputColumns": [
+          "cat1",
+          "numeric1"
+        ],
+        "OutputColumns": [
+          "_FEATURE"
+        ],
+        "Scope": 7
+      }
+    ],
+    [
+      {
+        "EstimatorName": "LinearSvmTrainer",
+        "InputColumns": [
+          "label",
+          "_FEATURE"
+        ],
+        "OutputColumns": [
+          "PredictedLabel"
+        ],
+        "Scope": 7
+      },
+      {
+        "EstimatorName": "LdSvmTrainer",
+        "InputColumns": [
+          "label",
+          "_FEATURE"
+        ],
+        "OutputColumns": [
+          "PredictedLabel"
+        ],
+        "Scope": 7
+      },
+      {
+        "EstimatorName": "FastForestBinaryTrainer",
+        "InputColumns": [
+          "label",
+          "_FEATURE"
+        ],
+        "OutputColumns": [
+          "PredictedLabel"
+        ],
+        "Scope": 7
+      },
+      {
+        "EstimatorName": "FastTreeBinaryTrainer",
+        "InputColumns": [
+          "label",
+          "_FEATURE"
+        ],
+        "OutputColumns": [
+          "PredictedLabel"
+        ],
+        "Scope": 7
+      },
+      {
+        "EstimatorName": "LightGbmBinaryTrainer",
+        "InputColumns": [
+          "label",
+          "_FEATURE"
+        ],
+        "OutputColumns": [
+          "PredictedLabel"
+        ],
+        "Scope": 7
+      },
+      {
+        "EstimatorName": "GamBinaryTrainer",
+        "InputColumns": [
+          "label",
+          "_FEATURE"
+        ],
+        "OutputColumns": [
+          "PredictedLabel"
+        ],
+        "Scope": 7
+      },
+      {
+        "EstimatorName": "SgdNonCalibratedTrainer",
+        "InputColumns": [
+          "label",
+          "_FEATURE"
+        ],
+        "OutputColumns": [
+          "PredictedLabel"
+        ],
+        "Scope": 7
+      },
+      {
+        "EstimatorName": "SgdCalibratedTrainer",
+        "InputColumns": [
+          "label",
+          "_FEATURE"
+        ],
+        "OutputColumns": [
+          "PredictedLabel"
+        ],
+        "Scope": 7
+      },
+      {
+        "EstimatorName": "AveragedPerceptronTrainer",
+        "InputColumns": [
+          "label",
+          "_FEATURE"
+        ],
+        "OutputColumns": [
+          "PredictedLabel"
+        ],
+        "Scope": 7
+      }
+    ]
+  ]
+}

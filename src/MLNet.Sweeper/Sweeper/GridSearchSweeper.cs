@@ -25,13 +25,13 @@ namespace MLNet.Sweeper
         }
 
         /// <summary>
-        /// Propose parameter sets that can be used by <see cref="ISweepable{T}.BuildFromParameterSet(ParameterSet)"/>.
+        /// Propose parameter sets that can be used by <see cref="ISweepable{T}.BuildFromParameterSet(Parameters)"/>.
         /// </summary>
         /// <param name="sweepable">objects that implement <see cref="ISweepable"/>.</param>
         /// <param name="maxSweeps">max sweep iteration. If greater than the total grid points, the number of total grid points will be used instead.</param>
         /// <param name="previousRuns">previous run, which will be used to avoid proposing duplicate parameterset if provided.</param>
         /// <returns><see cref="IEnumerable{ParameterSet}"/>.</returns>
-        public override IEnumerable<ParameterSet> ProposeSweeps(ISweepable sweepable, int maxSweeps, IEnumerable<IRunResult> previousRuns = null)
+        public override IEnumerable<IDictionary<string, string>> ProposeSweeps(ISweepable sweepable, int maxSweeps, IEnumerable<IRunResult> previousRuns = null)
         {
             this.start = 0;
             this.basePerPipe = sweepable.SweepableValueGenerators.Select(x => x.Count).ToArray();
@@ -53,11 +53,11 @@ namespace MLNet.Sweeper
             return base.ProposeSweeps(sweepable, maxSweeps, previousRuns);
         }
 
-        protected override ParameterSet CreateParamSet(ISweepable sweepable)
+        protected override Parameters CreateParamSet(ISweepable sweepable)
         {
             var indexs = this.GetSelectedIndexForEachPipe();
             this.start += 1;
-            return new ParameterSet(sweepable.SweepableValueGenerators.Select((param, i) => param[indexs[i]]));
+            return new Parameters(sweepable.SweepableValueGenerators.Select((param, i) => param[indexs[i]]));
         }
 
         private int[] GetSelectedIndexForEachPipe()

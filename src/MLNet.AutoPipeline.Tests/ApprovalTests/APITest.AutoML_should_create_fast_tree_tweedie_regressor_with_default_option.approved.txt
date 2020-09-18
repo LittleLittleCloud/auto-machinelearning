@@ -9,10 +9,6 @@
       "ValueText": "Features"
     },
     {
-      "Name": "ExampleWeightColumnName",
-      "ValueText": null
-    },
-    {
       "Name": "NumberOfLeaves",
       "ValueText": "100"
     },
@@ -31,6 +27,7 @@
   ],
   "name": "FastTreeTweedieTrainer",
   "input_column": [
+    "Label",
     "Features"
   ],
   "output_column": [

@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 using System.Text;
 
 namespace MLNet.Sweeper
@@ -38,5 +39,9 @@ namespace MLNet.Sweeper
     {
         [JsonIgnore]
         double[] OneHotEncode { get; }
+    }
+
+    public interface IDiscreteParameterValue<out TValue> : IParameterValue<TValue>, IDiscreteParameterValue
+    {
     }
 }

@@ -9,10 +9,6 @@
       "ValueText": "Features"
     },
     {
-      "Name": "ExampleWeightColumnName",
-      "ValueText": null
-    },
-    {
       "Name": "NumberOfLeaves",
       "ValueText": "100"
     },
@@ -27,6 +23,7 @@
   ],
   "name": "FastForestRegressionTrainer",
   "input_column": [
+    "Label",
     "Features"
   ],
   "output_column": [

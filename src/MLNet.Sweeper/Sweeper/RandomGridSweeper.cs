@@ -36,9 +36,9 @@ namespace MLNet.Sweeper
             return new RandomGridSweeper(this._option);
         }
 
-        protected override ParameterSet CreateParamSet(ISweepable sweepable)
+        protected override Parameters CreateParamSet(ISweepable sweepable)
         {
-            return new ParameterSet(sweepable.SweepableValueGenerators.Select(sweepParameter => sweepParameter[this._rand.Next(sweepParameter.Count)]));
+            return new Parameters(sweepable.SweepableValueGenerators.Select(sweepParameter => sweepParameter[this._rand.Next(sweepParameter.Count)]));
         }
 
         public sealed class Option : SweeperOptionBase

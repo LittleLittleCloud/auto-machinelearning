@@ -11,13 +11,10 @@ namespace MLNet.AutoPipeline
         public static GamRegressionTrainerSweepableOptions Default = new GamRegressionTrainerSweepableOptions();
 
         [Parameter(nameof(GamRegressionTrainer.Options.LabelColumnName))]
-        public Parameter<string> LabelColumnName = CreateFromSingleValue("Label");
+        public Parameter<string> LabelColumnName = CreateDiscreteParameter("Label");
 
         [Parameter(nameof(GamRegressionTrainer.Options.FeatureColumnName))]
-        public Parameter<string> FeatureColumnName = CreateFromSingleValue("Features");
-
-        [Parameter(nameof(GamRegressionTrainer.Options.ExampleWeightColumnName))]
-        public Parameter<string> ExampleWeightColumnName = CreateFromSingleValue<string>(default);
+        public Parameter<string> FeatureColumnName = CreateDiscreteParameter("Features");
 
         [Parameter(nameof(GamRegressionTrainer.Options.NumberOfIterations))]
         public Parameter<int> NumberOfIterations = CreateInt32Parameter(100, 50000, true);

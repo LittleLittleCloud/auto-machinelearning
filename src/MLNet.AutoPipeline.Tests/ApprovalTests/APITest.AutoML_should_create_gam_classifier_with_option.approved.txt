@@ -9,10 +9,6 @@
       "ValueText": "Features"
     },
     {
-      "Name": "ExampleWeightColumnName",
-      "ValueText": null
-    },
-    {
       "Name": "NumberOfIterations",
       "ValueText": "2236"
     },
@@ -27,6 +23,7 @@
   ],
   "name": "GamBinaryTrainer",
   "input_column": [
+    "label",
     "feature"
   ],
   "output_column": [

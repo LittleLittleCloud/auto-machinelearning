@@ -14,13 +14,10 @@ namespace MLNet.AutoPipeline
         public static LightGbmBinaryTrainerSweepableOptions Default = new LightGbmBinaryTrainerSweepableOptions();
 
         [Parameter(nameof(LightGbmBinaryTrainer.Options.LabelColumnName))]
-        public Parameter<string> LabelColumnName = CreateFromSingleValue("Label");
+        public Parameter<string> LabelColumnName = CreateDiscreteParameter("Label");
 
         [Parameter(nameof(LightGbmBinaryTrainer.Options.FeatureColumnName))]
-        public Parameter<string> FeatureColumnName = CreateFromSingleValue("Features");
-
-        [Parameter(nameof(LightGbmBinaryTrainer.Options.ExampleWeightColumnName))]
-        public Parameter<string> ExampleWeightColumnName = CreateFromSingleValue<string>(default);
+        public Parameter<string> FeatureColumnName = CreateDiscreteParameter("Features");
 
         [Parameter(nameof(LightGbmBinaryTrainer.Options.NumberOfLeaves))]
         public Parameter<int> NumberOfLeaves = CreateInt32Parameter(10, 1000, true);
