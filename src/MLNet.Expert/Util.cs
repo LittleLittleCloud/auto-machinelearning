@@ -81,6 +81,30 @@ namespace MLNet.Expert
             };
         }
 
+        public static SingleEstimatorSweepablePipelineDataContract ToDataContract(this SingleEstimatorSweepablePipeline pipeline)
+        {
+            var estimatorContracts = new List<SweepableEstimatorDataContract>();
+            var nodes = pipeline.Estimators;
+
+            foreach (var node in nodes)
+            {
+                var estimatorContract = new SweepableEstimatorDataContract()
+                {
+                    EstimatorName = node.EstimatorName,
+                    InputColumns = node.InputColumns,
+                    OutputColumns = node.OutputColumns,
+                    Scope = node.Scope,
+                };
+
+                estimatorContracts.Add(estimatorContract);
+            }
+
+            return new SingleEstimatorSweepablePipelineDataContract()
+            {
+                Estimators = estimatorContracts,
+            };
+        }
+
         public static SweepablePipeline ToPipeline(this SweepablePipelineDataContract pipelineContract, MLContext context)
         {
             var sweepablePipeline = new SweepablePipeline();
@@ -91,6 +115,17 @@ namespace MLNet.Expert
             }
 
             return sweepablePipeline;
+        }
+
+        public static SingleEstimatorSweepablePipeline ToPipeline(this SingleEstimatorSweepablePipelineDataContract pipelineContract, MLContext context)
+        {
+            var estimators = new List<SweepableEstimatorBase>();
+            foreach (var estimator in pipelineContract.Estimators)
+            {
+                estimators.Append(SweepableEstimatorFactory.CreateSweepableEstimator(context, estimator));
+            }
+
+            return new SingleEstimatorSweepablePipeline(estimators);
         }
     }
 }
