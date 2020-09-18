@@ -111,46 +111,15 @@ namespace MLNet.Expert
             {
                 case TaskType.BinaryClassification:
                     var res = new List<SweepableEstimatorBase>();
-
-                    var linearSvmOption = LinearSvmBinaryTrainerSweepableOptions.Default;
-                    linearSvmOption.FeatureColumnName = ParameterFactory.CreateDiscreteParameter(featureColumnName);
-                    linearSvmOption.LabelColumnName = ParameterFactory.CreateDiscreteParameter(column.Name);
-                    res.Add(context.AutoML().Serializable().BinaryClassification.LinearSvm(linearSvmOption));
-
-                    var ldSvmOption = LdSvmBinaryTrainerSweepableOptions.Default;
-                    ldSvmOption.FeatureColumnName = ParameterFactory.CreateDiscreteParameter(featureColumnName);
-                    ldSvmOption.LabelColumnName = ParameterFactory.CreateDiscreteParameter(column.Name);
-                    res.Add(context.AutoML().Serializable().BinaryClassification.LdSvm(ldSvmOption));
-
-                    var ffOption = FastForestBinaryTrainerSweepableOptions.Default;
-                    ffOption.FeatureColumnName = ParameterFactory.CreateDiscreteParameter(featureColumnName);
-                    ffOption.LabelColumnName = ParameterFactory.CreateDiscreteParameter(column.Name);
-                    res.Add(context.AutoML().Serializable().BinaryClassification.FastForest(ffOption));
-
-                    var ftOption = FastTreeBinaryTrainerSweepableOptions.Default;
-                    ftOption.FeatureColumnName = ParameterFactory.CreateDiscreteParameter(featureColumnName);
-                    ftOption.LabelColumnName = ParameterFactory.CreateDiscreteParameter(column.Name);
-                    res.Add(context.AutoML().Serializable().BinaryClassification.FastTree(ftOption));
-
-                    var lightGbmOption = LightGbmBinaryTrainerSweepableOptions.Default;
-                    lightGbmOption.FeatureColumnName = ParameterFactory.CreateDiscreteParameter(featureColumnName);
-                    lightGbmOption.LabelColumnName = ParameterFactory.CreateDiscreteParameter(column.Name);
-                    res.Add(context.AutoML().Serializable().BinaryClassification.LightGbm(lightGbmOption));
-
-                    var gamOption = GamBinaryTrainerSweepableOptions.Default;
-                    gamOption.FeatureColumnName = ParameterFactory.CreateDiscreteParameter(featureColumnName);
-                    gamOption.LabelColumnName = ParameterFactory.CreateDiscreteParameter(column.Name);
-                    res.Add(context.AutoML().Serializable().BinaryClassification.Gam(gamOption));
-
-                    var sgdNonCalibratedOption = SgdNonCalibratedBinaryTrainerSweepableOptions.Default;
-                    sgdNonCalibratedOption.FeatureColumnName = ParameterFactory.CreateDiscreteParameter(featureColumnName);
-                    sgdNonCalibratedOption.LabelColumnName = ParameterFactory.CreateDiscreteParameter(column.Name);
-                    res.Add(context.AutoML().Serializable().BinaryClassification.SgdNonCalibrated(sgdNonCalibratedOption));
-
-                    var averagedPerceptronOption = AveragedPerceptronBinaryTrainerSweepableOptions.Default;
-                    averagedPerceptronOption.FeatureColumnName = ParameterFactory.CreateDiscreteParameter(featureColumnName);
-                    averagedPerceptronOption.LabelColumnName = ParameterFactory.CreateDiscreteParameter(column.Name);
-                    res.Add(context.AutoML().Serializable().BinaryClassification.AveragedPerceptron(averagedPerceptronOption));
+                    res.Add(context.AutoML().Serializable().BinaryClassification.LinearSvm(column.Name, featureColumnName));
+                    res.Add(context.AutoML().Serializable().BinaryClassification.LdSvm(column.Name, featureColumnName));
+                    res.Add(context.AutoML().Serializable().BinaryClassification.FastForest(column.Name, featureColumnName));
+                    res.Add(context.AutoML().Serializable().BinaryClassification.FastTree(column.Name, featureColumnName));
+                    res.Add(context.AutoML().Serializable().BinaryClassification.LightGbm(column.Name, featureColumnName));
+                    res.Add(context.AutoML().Serializable().BinaryClassification.Gam(column.Name, featureColumnName));
+                    res.Add(context.AutoML().Serializable().BinaryClassification.SgdNonCalibrated(column.Name, featureColumnName));
+                    res.Add(context.AutoML().Serializable().BinaryClassification.SgdCalibrated(column.Name, featureColumnName));
+                    res.Add(context.AutoML().Serializable().BinaryClassification.AveragedPerceptron(column.Name, featureColumnName));
 
                     return res;
                 default:

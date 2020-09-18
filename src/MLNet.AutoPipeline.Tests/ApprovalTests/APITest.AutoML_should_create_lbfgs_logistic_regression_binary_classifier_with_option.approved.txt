@@ -35,6 +35,7 @@
   ],
   "name": "LbfgsLogisticRegressionBinaryTrainer",
   "input_column": [
+    "label",
     "feature"
   ],
   "output_column": [

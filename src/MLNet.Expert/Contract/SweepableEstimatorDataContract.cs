@@ -8,25 +8,25 @@ using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Text;
 
-namespace MLNet.AutoPipeline
+namespace MLNet.Expert.Contract
 {
     [DataContract]
     public class SweepableEstimatorDataContract
     {
         [DataMember]
-        public string EstimatorName { get; protected set; }
+        public string EstimatorName { get; set; }
 
         // TODO
         // use dictionary instead of string array.
         [DataMember]
-        public string[] InputColumns { get; protected set; }
+        public string[] InputColumns { get; set; }
 
         // TODO
         // use dictionary instead of string array.
         [DataMember]
-        public string[] OutputColumns { get; protected set; }
+        public string[] OutputColumns { get; set; }
 
         [DataMember]
-        public TransformerScope Scope { get; protected set; }
+        public TransformerScope Scope { get; set; }
     }
 }

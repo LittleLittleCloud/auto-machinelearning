@@ -39,7 +39,7 @@ namespace MLNet.AutoPipeline
                     return context.BinaryClassification.Trainers.LinearSvm(option);
                 },
                 optionBuilder,
-                new string[] { featureColumnName },
+                new string[] { labelColumnName, featureColumnName },
                 new string[] { PredictedLabel },
                 nameof(LinearSvmTrainer));
         }
@@ -69,7 +69,7 @@ namespace MLNet.AutoPipeline
                     return context.BinaryClassification.Trainers.LdSvm(option);
                 },
                 optionBuilder,
-                new string[] { featureColumnName },
+                new string[] { labelColumnName, featureColumnName },
                 new string[] { PredictedLabel },
                 nameof(LdSvmTrainer));
         }
@@ -98,7 +98,7 @@ namespace MLNet.AutoPipeline
                     return context.BinaryClassification.Trainers.FastForest(option);
                 },
                 optionBuilder,
-                new string[] { featureColumnName },
+                new string[] { labelColumnName, featureColumnName },
                 new string[] { PredictedLabel },
                 nameof(FastForestBinaryTrainer));
         }
@@ -127,7 +127,7 @@ namespace MLNet.AutoPipeline
                     return context.BinaryClassification.Trainers.FastTree(option);
                 },
                 optionBuilder,
-                new string[] { featureColumnName },
+                new string[] { labelColumnName, featureColumnName },
                 new string[] { PredictedLabel },
                 nameof(FastTreeBinaryTrainer));
         }
@@ -156,7 +156,7 @@ namespace MLNet.AutoPipeline
                     return context.BinaryClassification.Trainers.LightGbm(option);
                 },
                 optionBuilder,
-                new string[] { featureColumnName },
+                new string[] { labelColumnName, featureColumnName },
                 new string[] { PredictedLabel },
                 nameof(LightGbmBinaryTrainer));
         }
@@ -185,7 +185,7 @@ namespace MLNet.AutoPipeline
                     return context.BinaryClassification.Trainers.Gam(option);
                 },
                 optionBuilder,
-                new string[] { featureColumnName },
+                new string[] { labelColumnName, featureColumnName },
                 new string[] { PredictedLabel },
                 nameof(GamBinaryTrainer));
         }
@@ -214,7 +214,7 @@ namespace MLNet.AutoPipeline
                     return context.BinaryClassification.Trainers.SgdNonCalibrated(option);
                 },
                 optionBuilder,
-                new string[] { featureColumnName },
+                new string[] { labelColumnName, featureColumnName },
                 new string[] { PredictedLabel },
                 nameof(SgdNonCalibratedTrainer));
         }
@@ -243,7 +243,7 @@ namespace MLNet.AutoPipeline
                     return context.BinaryClassification.Trainers.SgdCalibrated(option);
                 },
                 optionBuilder,
-                new string[] { featureColumnName },
+                new string[] { labelColumnName, featureColumnName },
                 new string[] { PredictedLabel },
                 nameof(SgdCalibratedTrainer));
         }
@@ -272,7 +272,7 @@ namespace MLNet.AutoPipeline
                     return context.BinaryClassification.Trainers.SdcaNonCalibrated(option);
                 },
                 optionBuilder,
-                new string[] { featureColumnName },
+                new string[] { labelColumnName, featureColumnName },
                 new string[] { PredictedLabel },
                 nameof(SdcaNonCalibratedBinaryTrainer));
         }
@@ -301,7 +301,7 @@ namespace MLNet.AutoPipeline
                     return context.BinaryClassification.Trainers.SdcaLogisticRegression(option);
                 },
                 optionBuilder,
-                new string[] { featureColumnName },
+                new string[] { labelColumnName, featureColumnName },
                 new string[] { PredictedLabel },
                 nameof(SdcaLogisticRegressionBinaryTrainer));
         }
@@ -330,7 +330,7 @@ namespace MLNet.AutoPipeline
                     return context.BinaryClassification.Trainers.LbfgsLogisticRegression(option);
                 },
                 optionBuilder,
-                new string[] { featureColumnName },
+                new string[] { labelColumnName, featureColumnName },
                 new string[] { PredictedLabel },
                 nameof(LbfgsLogisticRegressionBinaryTrainer));
         }
@@ -359,7 +359,7 @@ namespace MLNet.AutoPipeline
                     return context.BinaryClassification.Trainers.AveragedPerceptron(option);
                 },
                 optionBuilder,
-                new string[] { featureColumnName },
+                new string[] { labelColumnName, featureColumnName },
                 new string[] { PredictedLabel },
                 nameof(AveragedPerceptronTrainer));
         }

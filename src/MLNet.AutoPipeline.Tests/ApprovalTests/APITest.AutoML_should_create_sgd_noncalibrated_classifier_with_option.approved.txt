@@ -27,6 +27,7 @@
   ],
   "name": "SgdNonCalibratedTrainer",
   "input_column": [
+    "label",
     "feature"
   ],
   "output_column": [

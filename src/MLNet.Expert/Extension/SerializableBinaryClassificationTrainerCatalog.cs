@@ -19,66 +19,75 @@ namespace MLNet.Expert
 
         public MLContext Context { get; private set; }
 
-        public SweepableEstimatorBase LinearSvm(LinearSvmBinaryTrainerSweepableOptions option)
+        public SweepableEstimatorBase LinearSvm(string label, string feature)
         {
-            var label = option.LabelColumnName.ValueGenerator[0].ValueText;
-            var feature = option.FeatureColumnName.ValueGenerator[0].ValueText;
+            var option = LinearSvmBinaryTrainerSweepableOptions.Default;
+            option.FeatureColumnName = ParameterFactory.CreateDiscreteParameter(feature);
+            option.LabelColumnName = ParameterFactory.CreateDiscreteParameter(label);
             return this.Context.AutoML().BinaryClassification.LinearSvm(label, feature, option);
         }
 
-        public SweepableEstimatorBase LdSvm(LdSvmBinaryTrainerSweepableOptions option)
+        public SweepableEstimatorBase LdSvm(string label, string feature)
         {
-            var label = option.LabelColumnName.ValueGenerator[0].ValueText;
-            var feature = option.FeatureColumnName.ValueGenerator[0].ValueText;
+            var option = LdSvmBinaryTrainerSweepableOptions.Default;
+            option.FeatureColumnName = ParameterFactory.CreateDiscreteParameter(feature);
+            option.LabelColumnName = ParameterFactory.CreateDiscreteParameter(label);
             return this.Context.AutoML().BinaryClassification.LdSvm(label, feature, option);
         }
 
-        public SweepableEstimatorBase FastForest(FastForestBinaryTrainerSweepableOptions option)
+        public SweepableEstimatorBase FastForest(string label, string feature)
         {
-            var label = option.LabelColumnName.ValueGenerator[0].ValueText;
-            var feature = option.FeatureColumnName.ValueGenerator[0].ValueText;
+            var option = FastForestBinaryTrainerSweepableOptions.Default;
+            option.FeatureColumnName = ParameterFactory.CreateDiscreteParameter(feature);
+            option.LabelColumnName = ParameterFactory.CreateDiscreteParameter(label);
             return this.Context.AutoML().BinaryClassification.FastForest(label, feature, option);
         }
 
-        public SweepableEstimatorBase FastTree(FastTreeBinaryTrainerSweepableOptions option)
+        public SweepableEstimatorBase FastTree(string label, string feature)
         {
-            var label = option.LabelColumnName.ValueGenerator[0].ValueText;
-            var feature = option.FeatureColumnName.ValueGenerator[0].ValueText;
+            var option = FastTreeBinaryTrainerSweepableOptions.Default;
+            option.FeatureColumnName = ParameterFactory.CreateDiscreteParameter(feature);
+            option.LabelColumnName = ParameterFactory.CreateDiscreteParameter(label);
             return this.Context.AutoML().BinaryClassification.FastTree(label, feature, option);
         }
 
-        public SweepableEstimatorBase LightGbm(LightGbmBinaryTrainerSweepableOptions option)
+        public SweepableEstimatorBase LightGbm(string label, string feature)
         {
-            var label = option.LabelColumnName.ValueGenerator[0].ValueText;
-            var feature = option.FeatureColumnName.ValueGenerator[0].ValueText;
+            var option = LightGbmBinaryTrainerSweepableOptions.Default;
+            option.FeatureColumnName = ParameterFactory.CreateDiscreteParameter(feature);
+            option.LabelColumnName = ParameterFactory.CreateDiscreteParameter(label);
             return this.Context.AutoML().BinaryClassification.LightGbm(label, feature, option);
         }
 
-        public SweepableEstimatorBase Gam(GamBinaryTrainerSweepableOptions option)
+        public SweepableEstimatorBase Gam(string label, string feature)
         {
-            var label = option.LabelColumnName.ValueGenerator[0].ValueText;
-            var feature = option.FeatureColumnName.ValueGenerator[0].ValueText;
+            var option = GamBinaryTrainerSweepableOptions.Default;
+            option.FeatureColumnName = ParameterFactory.CreateDiscreteParameter(feature);
+            option.LabelColumnName = ParameterFactory.CreateDiscreteParameter(label);
             return this.Context.AutoML().BinaryClassification.Gam(label, feature, option);
         }
 
-        public SweepableEstimatorBase SgdNonCalibrated(SgdNonCalibratedBinaryTrainerSweepableOptions option)
+        public SweepableEstimatorBase SgdNonCalibrated(string label, string feature)
         {
-            var label = option.LabelColumnName.ValueGenerator[0].ValueText;
-            var feature = option.FeatureColumnName.ValueGenerator[0].ValueText;
+            var option = SgdNonCalibratedBinaryTrainerSweepableOptions.Default;
+            option.FeatureColumnName = ParameterFactory.CreateDiscreteParameter(feature);
+            option.LabelColumnName = ParameterFactory.CreateDiscreteParameter(label);
             return this.Context.AutoML().BinaryClassification.SgdNonCalibrated(label, feature, option);
         }
 
-        public SweepableEstimatorBase SgdCalibrated(SgdCalibratedBinaryTrainerSweepableOptions option)
+        public SweepableEstimatorBase SgdCalibrated(string label, string feature)
         {
-            var label = option.LabelColumnName.ValueGenerator[0].ValueText;
-            var feature = option.FeatureColumnName.ValueGenerator[0].ValueText;
+            var option = SgdCalibratedBinaryTrainerSweepableOptions.Default;
+            option.FeatureColumnName = ParameterFactory.CreateDiscreteParameter(feature);
+            option.LabelColumnName = ParameterFactory.CreateDiscreteParameter(label);
             return this.Context.AutoML().BinaryClassification.SgdCalibrated(label, feature, option);
         }
 
-        public SweepableEstimatorBase AveragedPerceptron(AveragedPerceptronBinaryTrainerSweepableOptions option)
+        public SweepableEstimatorBase AveragedPerceptron(string label, string feature)
         {
-            var label = option.LabelColumnName.ValueGenerator[0].ValueText;
-            var feature = option.FeatureColumnName.ValueGenerator[0].ValueText;
+            var option = AveragedPerceptronBinaryTrainerSweepableOptions.Default;
+            option.FeatureColumnName = ParameterFactory.CreateDiscreteParameter(feature);
+            option.LabelColumnName = ParameterFactory.CreateDiscreteParameter(label);
             return this.Context.AutoML().BinaryClassification.AveragedPerceptron(label, feature, option);
         }
     }

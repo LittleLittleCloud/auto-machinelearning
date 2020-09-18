@@ -9,6 +9,7 @@ using FluentAssertions;
 using Microsoft.ML;
 using Microsoft.ML.Data;
 using MLNet.AutoPipeline;
+using MLNet.Expert;
 using Newtonsoft.Json;
 using System.Linq;
 using Xunit;
@@ -39,11 +40,12 @@ namespace MLNet.Expert.Tests
             var pb = new PipelineBuilder(TaskType.BinaryClassification, false, true);
             var pipeline = pb.BuildPipeline(context, columns);
 
-            var json = JsonConvert.SerializeObject(pipeline, Formatting.Indented);
+            var pipelineDataContract = pipeline.ToDataContract();
+            var json = JsonConvert.SerializeObject(pipelineDataContract, Formatting.Indented);
             Approvals.Verify(json);
-
-            var restorePipeline = JsonConvert.DeserializeObject<SweepablePipeline>(json);
-            Approvals.Verify(JsonConvert.SerializeObject(restorePipeline, Formatting.Indented));
+            var restoredPipeline = pipelineDataContract.ToPipeline(context);
+            var restoredJson = JsonConvert.SerializeObject(restoredPipeline.ToDataContract(), Formatting.Indented);
+            restoredJson.Should().Be(json);
         }
     }
 }

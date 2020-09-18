@@ -5,6 +5,7 @@
 using Microsoft.ML;
 using Microsoft.ML.Data;
 using MLNet.AutoPipeline;
+using MLNet.Expert.Contract;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
@@ -45,10 +46,51 @@ namespace MLNet.Expert
 
         public static IEnumerable<T> PickN<T>(this IEnumerable<T> list, int n)
         {
-            Contract.Requires(n >= 0 && n <= list.Count());
             var pickIndex = Enumerable.Range(0, list.Count()).ToList();
             pickIndex.Shuffle();
             return pickIndex.GetRange(0, n).Select(i => list.ToArray()[i]);
+        }
+
+        public static SweepablePipelineDataContract ToDataContract(this SweepablePipeline pipeline)
+        {
+            var estimatorContracts = new List<List<SweepableEstimatorDataContract>>();
+            var nodes = pipeline.EstimatorGenerators;
+
+            foreach (var node in nodes)
+            {
+                var estimators = new List<SweepableEstimatorDataContract>();
+                for (int i = 0; i != node.Count; ++i)
+                {
+                    var estimator = node[i].RawValue as SweepableEstimatorBase;
+                    var estimatorContract = new SweepableEstimatorDataContract()
+                    {
+                        EstimatorName = estimator.EstimatorName,
+                        InputColumns = estimator.InputColumns,
+                        OutputColumns = estimator.OutputColumns,
+                        Scope = estimator.Scope,
+                    };
+                    estimators.Add(estimatorContract);
+                }
+
+                estimatorContracts.Add(estimators);
+            }
+
+            return new SweepablePipelineDataContract()
+            {
+                Estimators = estimatorContracts,
+            };
+        }
+
+        public static SweepablePipeline ToPipeline(this SweepablePipelineDataContract pipelineContract, MLContext context)
+        {
+            var sweepablePipeline = new SweepablePipeline();
+
+            foreach (var node in pipelineContract.Estimators)
+            {
+                sweepablePipeline.Append(node.Select(n => SweepableEstimatorFactory.CreateSweepableEstimator(context, n)).ToArray());
+            }
+
+            return sweepablePipeline;
         }
     }
 }

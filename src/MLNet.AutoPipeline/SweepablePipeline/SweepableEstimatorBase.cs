@@ -15,7 +15,7 @@ namespace MLNet.AutoPipeline
     /// Abstract class for estimators in <see cref="SweepablePipeline"/> and <see cref="SingleEstimatorSweepablePipeline"/>.
     /// </summary>
     /// <typeparam name="TTran">transformer.</typeparam>
-    public abstract class SweepableEstimatorBase : SweepableEstimatorDataContract, ISweepable<IEstimator<ITransformer>>, ISweepableEstimator
+    public abstract class SweepableEstimatorBase : ISweepable<IEstimator<ITransformer>>, ISweepableEstimator
     {
         public SweepableEstimatorBase(string estimatorName, string[] inputColumns, string[] outputColumns, IEnumerable<IValueGenerator> sweepableValueGenerators, TransformerScope scope = TransformerScope.Everything)
         {
@@ -25,6 +25,18 @@ namespace MLNet.AutoPipeline
             this.SweepableValueGenerators = sweepableValueGenerators;
             this.Scope = scope;
         }
+
+        public string EstimatorName { get; protected set; }
+
+        // TODO
+        // use dictionary instead of string array.
+        public string[] InputColumns { get; protected set; }
+
+        // TODO
+        // use dictionary instead of string array.
+        public string[] OutputColumns { get; protected set; }
+
+        public TransformerScope Scope { get; protected set; }
 
         public IEnumerable<IValueGenerator> SweepableValueGenerators { get; protected set; }
 

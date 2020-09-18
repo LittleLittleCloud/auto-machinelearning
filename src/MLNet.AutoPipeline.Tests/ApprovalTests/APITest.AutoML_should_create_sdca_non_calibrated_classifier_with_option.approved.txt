@@ -27,6 +27,7 @@
   ],
   "name": "SdcaNonCalibratedBinaryTrainer",
   "input_column": [
+    "label",
     "feature"
   ],
   "output_column": [
