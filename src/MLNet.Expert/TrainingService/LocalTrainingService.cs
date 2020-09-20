@@ -71,10 +71,6 @@ namespace MLNet.Expert
 
             public int MaximumTrainingTime = 100;
 
-            public bool IsAzureAttach = false;
-
-            public bool IsNNITraining = false;
-
             public string Label;
         }
     }
