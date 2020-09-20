@@ -71,7 +71,7 @@ namespace MLNet.Expert
 
             if (this.bestIterations.Count() == 0)
             {
-                throw new Exception("No complete iteration found, please try to extend the training time")
+                throw new Exception("No complete iteration found, please try to extend the training time");
             }
 
             return this.bestIterations.Values.Max();
