@@ -23,6 +23,7 @@ namespace MLNet.AutoPipeline
         private MLContext context;
         private SweepablePipeline sweepablePipeline;
         private double timeLeft;
+        private Logger logger = Logger.Instance;
 
         public Experiment(MLContext context, SweepablePipeline pipeline, Option option)
         {
@@ -43,48 +44,33 @@ namespace MLNet.AutoPipeline
         public async Task<ExperimentResult> TrainAsync(IDataView train, IDataView validate, IProgress<IterationInfo> reporter = null, CancellationToken ct = default)
         {
             var experimentResult = new ExperimentResult();
-
-            await Task.Run(() =>
+            var trainingServiceOption = new SinglePipelineTrainingService.Option()
             {
-                foreach (var pipelineConfig in this.option.PipelineSweeper.ProposeSweeps(this.sweepablePipeline, this.option.PipelineSweeperIteration))
+                ParameterSweeper = this.option.ParameterSweeper,
+                EvaluationMetric = this.option.EvaluateFunction,
+                Metrics = this.option.Metrics,
+                IsMaximizng = this.option.IsMaximizing,
+                ParameterSweepingIteration = this.option.ParameterSweeperIteration,
+            };
+
+            foreach (var pipelineConfig in this.option.PipelineSweeper.ProposeSweeps(this.sweepablePipeline, this.option.PipelineSweeperIteration))
+            {
+                var singleSweepablePipeline = this.sweepablePipeline.BuildFromParameters(pipelineConfig);
+                var trainingService = new SinglePipelineTrainingService(this.context, singleSweepablePipeline, trainingServiceOption);
+                var bestIteration = await trainingService.StartTrainingAsync(train, validate, ct, reporter);
+                this.timeLeft -= bestIteration.TrainingTime;
+                var bestModel = bestIteration.Model;
+                if (this.timeLeft < 0)
                 {
-                    var singleSweepablePipeline = this.sweepablePipeline.BuildFromParameters(pipelineConfig);
-                    foreach (var parameterSet in this.option.ParameterSweeper.ProposeSweeps(singleSweepablePipeline, this.option.ParameterSweeperIteration))
-                    {
-                        var stopWatch = new Stopwatch();
-                        stopWatch.Start();
-
-                        var pipeline = singleSweepablePipeline.BuildFromParameters(parameterSet);
-                        ct.ThrowIfCancellationRequested();
-
-                        // train
-                        var model = pipeline.Fit(train);
-                        var val_eval = model.Transform(validate);
-
-                        // evaluate
-                        var validateScoreMetric = this.option.EvaluateFunction(this.context, val_eval);
-                        var iterationInfo = new IterationInfo(singleSweepablePipeline, parameterSet, stopWatch.Elapsed.TotalSeconds, validateScoreMetric, this.option.IsMaximizing);
-
-                        // update sweeper
-                        var runHistory = new RunResult(parameterSet, validateScoreMetric, this.option.IsMaximizing);
-                        this.option.ParameterSweeper.AddRunHistory(runHistory);
-
-                        // report
-                        experimentResult.AddRunHistory(iterationInfo, model);
-                        reporter.Report(iterationInfo);
-
-                        stopWatch.Stop();
-                        this.timeLeft -= stopWatch.Elapsed.TotalSeconds;
-                        if (this.timeLeft < 0)
-                        {
-                            return;
-                        }
-                    }
-
-                    // TODO
-                    // Add Run history to this.option.PipelineSweeper.
+                    this.logger.Trace(MessageSensitivity.All, "experiment time out");
+                    break;
                 }
-            });
+
+                experimentResult.AddRunHistory(bestIteration, bestModel);
+
+                // TODO
+                // Add Run history to this.option.PipelineSweeper.
+            }
 
             return experimentResult;
         }
@@ -140,6 +126,8 @@ namespace MLNet.AutoPipeline
             /// Indicate how to evaluate validate score during training. The function must match <see cref="AutoPipeline.EvaluateFunction"/> signature.
             /// </summary>
             public EvaluateFunction EvaluateFunction { get; set; }
+
+            public EvaluateFunction[] Metrics { get; set; }
 
             public double MaximumTrainingTime = 100;
         }

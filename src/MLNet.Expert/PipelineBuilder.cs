@@ -6,7 +6,6 @@ using Microsoft.ML;
 using Microsoft.ML.Data;
 using Microsoft.ML.Transforms;
 using MLNet.AutoPipeline;
-using MLNet.Expert.Extension;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
