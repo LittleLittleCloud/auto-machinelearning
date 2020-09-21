@@ -7,6 +7,7 @@ using Microsoft.ML.Trainers;
 using Microsoft.ML.Trainers.FastTree;
 using Microsoft.ML.Trainers.LightGbm;
 using Microsoft.ML.Transforms;
+using Microsoft.ML.Transforms.Text;
 using MLNet.AutoPipeline;
 using MLNet.Expert.Contract;
 using MLNet.Sweeper;
@@ -79,6 +80,10 @@ namespace MLNet.Expert.Serializable
                     return this.Context.AutoML().Serializable().Transformer.ReplaceMissingValues(input, output);
                 case nameof(ColumnConcatenatingEstimator):
                     return this.Context.AutoML().Serializable().Transformer.Concatnate(estimator.InputColumns, output);
+                case nameof(TextFeaturizingEstimator):
+                    return this.Context.AutoML().Serializable().Transformer.Text.FeaturizeText(input, output);
+                case nameof(SerializableTextCatalog.FeaturizeTextWithWordEmbedding):
+                    return this.Context.AutoML().Serializable().Transformer.Text.FeaturizeTextWithWordEmbedding(input, output);
                 default:
                     throw new Exception($"{estimator.EstimatorName} can't be created through SweepabeEstimatorFactory");
             }

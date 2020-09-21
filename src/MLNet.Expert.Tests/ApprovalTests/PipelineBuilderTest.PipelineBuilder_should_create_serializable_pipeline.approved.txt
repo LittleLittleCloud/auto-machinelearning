@@ -26,10 +26,33 @@
     ],
     [
       {
+        "EstimatorName": "TextFeaturizingEstimator",
+        "InputColumns": [
+          "text1"
+        ],
+        "OutputColumns": [
+          "text1"
+        ],
+        "Scope": 7
+      },
+      {
+        "EstimatorName": "FeaturizeTextWithWordEmbedding",
+        "InputColumns": [
+          "text1"
+        ],
+        "OutputColumns": [
+          "text1"
+        ],
+        "Scope": 7
+      }
+    ],
+    [
+      {
         "EstimatorName": "ColumnConcatenatingEstimator",
         "InputColumns": [
           "cat1",
-          "numeric1"
+          "numeric1",
+          "text1"
         ],
         "OutputColumns": [
           "_FEATURE"
