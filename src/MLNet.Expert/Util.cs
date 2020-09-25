@@ -111,7 +111,7 @@ namespace MLNet.Expert
 
             foreach (var node in pipelineContract.Estimators)
             {
-                sweepablePipeline.Append(node.Select(n => SweepableEstimatorFactory.CreateSweepableEstimator(context, n)).ToArray());
+                sweepablePipeline.Append(node.Select(n => context.AutoML().Serializable().Factory.CreateSweepableEstimator(n)).ToArray());
             }
 
             return sweepablePipeline;
@@ -122,7 +122,7 @@ namespace MLNet.Expert
             var estimators = new List<SweepableEstimatorBase>();
             foreach (var estimator in pipelineContract.Estimators)
             {
-                estimators.Append(SweepableEstimatorFactory.CreateSweepableEstimator(context, estimator));
+                estimators.Append(context.AutoML().Serializable().Factory.CreateSweepableEstimator(estimator));
             }
 
             return new SingleEstimatorSweepablePipeline(estimators);

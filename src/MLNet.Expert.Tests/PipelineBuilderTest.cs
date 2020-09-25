@@ -34,6 +34,7 @@ namespace MLNet.Expert.Tests
             {
                 new Column("cat1", ColumnType.Catagorical, ColumnPurpose.CategoricalFeature),
                 new Column("numeric1", ColumnType.Numeric, ColumnPurpose.NumericFeature),
+                new Column("text1", ColumnType.Numeric, ColumnPurpose.TextFeature),
                 new Column("label", ColumnType.Catagorical, ColumnPurpose.Label),
             };
 

@@ -7,17 +7,17 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace MLNet.Expert.Extension
+namespace MLNet.Expert
 {
     internal static class AutoMLExtension
     {
-        private static Dictionary<AutoPipelineCatalog, SerializableEstimatorCatalog> cache = new Dictionary<AutoPipelineCatalog, SerializableEstimatorCatalog>();
+        private static Dictionary<AutoPipelineCatalog, SerializableCatalog> cache = new Dictionary<AutoPipelineCatalog, SerializableCatalog>();
 
-        public static SerializableEstimatorCatalog Serializable(this AutoPipelineCatalog autoPipelineCatalog)
+        public static SerializableCatalog Serializable(this AutoPipelineCatalog autoPipelineCatalog)
         {
             if (!cache.ContainsKey(autoPipelineCatalog))
             {
-                cache.Add(autoPipelineCatalog, new SerializableEstimatorCatalog(autoPipelineCatalog.Context));
+                cache.Add(autoPipelineCatalog, new SerializableCatalog(autoPipelineCatalog.Context));
             }
 
             return cache[autoPipelineCatalog];

@@ -31,6 +31,10 @@ namespace MLNet.AutoPipeline
         /// </summary>
         public double EvaluateScore { get; private set; }
 
+        public double[] Metrics { get; private set; }
+
+        public ITransformer Model { get; }
+
         /// <summary>
         /// Indicate optimize direction.
         /// </summary>
@@ -41,13 +45,15 @@ namespace MLNet.AutoPipeline
         /// </summary>
         public SingleEstimatorSweepablePipeline SingleSweepablePipeline { get; private set; }
 
-        internal IterationInfo(SingleEstimatorSweepablePipeline singleweepablePipeline, IDictionary<string, string> parameters, double time, double evaluateScore, bool isMaximizing)
+        internal IterationInfo(SingleEstimatorSweepablePipeline singleweepablePipeline, IDictionary<string, string> parameters, double time, double evaluateScore, bool isMaximizing, double[] metrics = null, ITransformer model = null)
         {
             this.SingleSweepablePipeline = singleweepablePipeline;
             this.Parameters = parameters;
             this.TrainingTime = time;
             this.EvaluateScore = evaluateScore;
             this.IsMetricMaximizing = isMaximizing;
+            this.Metrics = metrics ?? new double[0];
+            this.Model = model;
         }
 
         /// <summary>

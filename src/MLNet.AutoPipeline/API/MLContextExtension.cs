@@ -15,6 +15,8 @@ namespace MLNet.AutoPipeline
     /// </summary>
     public static class MLContextExtension
     {
+        private static Dictionary<MLContext, AutoPipelineCatalog> cache = new Dictionary<MLContext, AutoPipelineCatalog>();
+
         /// <summary>
         /// Extension method for creating <see cref="AutoPipelineCatalog"/>.
         /// </summary>
@@ -22,8 +24,13 @@ namespace MLNet.AutoPipeline
         /// <returns><see cref="AutoPipelineCatalog"/>.</returns>
         public static AutoPipelineCatalog AutoML(this MLContext context)
         {
-            Logger.Instance.Channel = (context as IChannelProvider).Start("AutoPipeline");
-            return new AutoPipelineCatalog(context);
+            if (!cache.ContainsKey(context))
+            {
+                Logger.Instance.Channel = (context as IChannelProvider).Start("AutoPipeline");
+                cache.Add(context, new AutoPipelineCatalog(context));
+            }
+
+            return cache[context];
         }
     }
 }

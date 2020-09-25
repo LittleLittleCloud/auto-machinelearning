@@ -468,6 +468,16 @@ namespace MLNet.AutoPipeline.Test
             Approvals.Verify(trainer.ToCodeGenNodeContract(parameterSet));
         }
 
+        [Fact]
+        public void AutoMLCatalog_should_only_create_once()
+        {
+            var context = new MLContext();
+            context.Log += this.Context_Log;
+            var autoMLCatalog = context.AutoML();
+            var autoMLCatalog2 = context.AutoML();
+            autoMLCatalog.Should().Equals(autoMLCatalog2);
+        }
+
         private void Context_Log(object sender, LoggingEventArgs e)
         {
             this.Output.WriteLine(e.Message);

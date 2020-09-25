@@ -9,7 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace MLNet.Expert.Extension
+namespace MLNet.Expert
 {
     internal class SerializableTransformerCatalog
     {
@@ -18,11 +18,14 @@ namespace MLNet.Expert.Extension
             this.Context = context;
             this.Categorical = new SerializableCategoricalCatalog(context);
             this.Conversion = new SerializableConversionCatalog(context);
+            this.Text = new SerializableTextCatalog(context);
         }
 
         public SerializableCategoricalCatalog Categorical { get; private set; }
 
         public SerializableConversionCatalog Conversion { get; private set; }
+
+        public SerializableTextCatalog Text { get; }
 
         public MLContext Context { get; private set; }
 

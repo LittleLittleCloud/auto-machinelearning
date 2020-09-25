@@ -6,7 +6,6 @@ using Microsoft.ML;
 using Microsoft.ML.Data;
 using Microsoft.ML.Transforms;
 using MLNet.AutoPipeline;
-using MLNet.Expert.Extension;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
@@ -52,6 +51,9 @@ namespace MLNet.Expert
                     case ColumnPurpose.CategoricalFeature:
                         sweepablePipeline.Append(this.GetSuggestedCatagoricalColumnTransformers(context, column).ToArray());
                         break;
+                    case ColumnPurpose.TextFeature:
+                        sweepablePipeline.Append(this.GetSuggestedTextColumnTransformers(context, column).ToArray());
+                        break;
                     case ColumnPurpose.Label:
                         sweepablePipeline.Append(this.GetSuggestedLabelColumnTransformers(context, column).ToArray());
                         break;
@@ -95,6 +97,15 @@ namespace MLNet.Expert
             }
 
             return new SweepableEstimatorBase[0];
+        }
+
+        public IEnumerable<SweepableEstimatorBase> GetSuggestedTextColumnTransformers(MLContext context, Column column)
+        {
+            return new SweepableEstimatorBase[]
+            {
+                context.AutoML().Serializable().Transformer.Text.FeaturizeText(column.Name, column.Name),
+                context.AutoML().Serializable().Transformer.Text.FeaturizeTextWithWordEmbedding(column.Name, column.Name),
+            };
         }
 
         public IEnumerable<SweepableEstimatorBase> GetSuggestedCatagoricalColumnTransformers(MLContext context, Column column)
