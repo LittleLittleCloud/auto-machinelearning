@@ -2,6 +2,7 @@
 // Copyright (c) BigMiao. All rights reserved.
 // </copyright>
 
+using BenchmarkDotNet.Running;
 using System;
 
 namespace MLNet.Benchmark
@@ -10,7 +11,7 @@ namespace MLNet.Benchmark
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            BenchmarkRunner.Run(typeof(Program).Assembly);
         }
     }
 }

@@ -41,11 +41,11 @@ namespace MLNet.Expert
                                                 option.KeepDiacritics,
                                                 option.KeepPunctuations,
                                                 option.KeepNumbers)
-                                            .Append(context.Transforms.Text.TokenizeIntoWords(outputColumn, inputColumn))
-                                            .Append(context.Transforms.Text.RemoveDefaultStopWords(outputColumn, inputColumn))
+                                            .Append(context.Transforms.Text.TokenizeIntoWords(outputColumn, outputColumn))
+                                            .Append(context.Transforms.Text.RemoveDefaultStopWords(outputColumn, outputColumn))
                                             .Append(context.Transforms.Text.ApplyWordEmbedding(
                                                 option.OutputColumnName,
-                                                option.InputColumnName,
+                                                option.OutputColumnName,
                                                 option.ModelKind));
                                     },
                                     option,

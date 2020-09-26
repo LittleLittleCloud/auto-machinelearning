@@ -2,6 +2,7 @@
 // Copyright (c) BigMiao. All rights reserved.
 // </copyright>
 
+using Microsoft.ML;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -9,8 +10,16 @@ using System.Text;
 
 namespace MLNet.Benchmark
 {
-    internal abstract class BenchmarkTestBase
+    public abstract class BenchmarkTestBase
     {
+        protected void Context_Log(object sender, LoggingEventArgs e)
+        {
+            if (e.Source == "AutoPipeline")
+            {
+                Console.WriteLine(e.Message);
+            }
+        }
+
         /// <summary>
         /// Get relative path of <paramref name="fileName"/> from TestData Folder.
         /// </summary>

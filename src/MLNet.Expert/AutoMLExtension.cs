@@ -9,11 +9,18 @@ using System.Text;
 
 namespace MLNet.Expert
 {
-    internal static class AutoMLExtension
+    public static class AutoMLExtension
     {
         private static Dictionary<AutoPipelineCatalog, SerializableCatalog> cache = new Dictionary<AutoPipelineCatalog, SerializableCatalog>();
 
-        public static SerializableCatalog Serializable(this AutoPipelineCatalog autoPipelineCatalog)
+        public static Experiment CreateBinaryClassificationExperiment(this AutoPipelineCatalog autoPipelineCatalog, IEnumerable<Column> columns, Experiment.Option option)
+        {
+            var pipelineBuilder = new PipelineBuilder(TaskType.BinaryClassification, false, true);
+            var sweepablePipeline = pipelineBuilder.BuildPipeline(autoPipelineCatalog.Context, columns);
+            return autoPipelineCatalog.Context.AutoML().CreateExperiment(sweepablePipeline, option);
+        }
+
+        internal static SerializableCatalog Serializable(this AutoPipelineCatalog autoPipelineCatalog)
         {
             if (!cache.ContainsKey(autoPipelineCatalog))
             {
