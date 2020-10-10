@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <RootNamespace>nni_lib</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="nni-manager\**" />
+    <EmbeddedResource Remove="nni-manager\**" />
+    <None Remove="nni-manager\**" />
+  </ItemGroup>
+
+</Project>
