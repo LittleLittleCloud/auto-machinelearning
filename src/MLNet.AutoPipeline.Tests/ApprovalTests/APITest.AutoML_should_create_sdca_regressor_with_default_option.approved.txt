@@ -15,6 +15,14 @@
     {
       "Name": "MaximumNumberOfIterations",
       "ValueText": "16"
+    },
+    {
+      "Name": "LabelColumnName",
+      "ValueText": "Label"
+    },
+    {
+      "Name": "FeatureColumnName",
+      "ValueText": "Features"
     }
   ],
   "name": "SdcaRegressionTrainer",

@@ -30,10 +30,10 @@ namespace MLNet.Sweeper
             }
         }
 
-        public DiscreteValueGenerator(Option<TValue> options)
+        public DiscreteValueGenerator(Option<TValue> options, string id = null)
         {
             this._options = options;
-            this.ID = Guid.NewGuid().ToString("N");
+            this.ID = id ?? Guid.NewGuid().ToString("N");
         }
 
         public IParameterValue CreateFromNormalized(double normalizedValue)

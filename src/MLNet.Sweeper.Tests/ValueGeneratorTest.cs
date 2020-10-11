@@ -225,5 +225,19 @@ namespace MLNet.Sweeper.Tests
 
             generator.OneHotEncodeValue(new ObjectParameterValue<object>("val", objects[0])).Should().BeEquivalentTo(new int[] { 1, 0, 0, 0 });
         }
+
+        [Fact]
+        public void DiscreteValueGenerator_should_create_value_from_string_when_type_is_string_and_contrain_only_one_value()
+        {
+            var generator = new DiscreteValueGenerator<string>(new DiscreteValueGenerator<string>.Option<string>()
+            {
+                Values = new string[]
+                {
+                    "test",
+                },
+            });
+
+            generator.CreateFromString("test").ValueText.Should().Be("test");
+        }
     }
 }

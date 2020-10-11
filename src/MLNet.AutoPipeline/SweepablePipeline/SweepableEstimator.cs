@@ -64,7 +64,7 @@ namespace MLNet.AutoPipeline
         where TOption : class
     {
         internal SweepableEstimator(Func<TOption, TTrain> estimatorFactory, SweepableOption<TOption> optionBuilder, TransformerScope scope = TransformerScope.Everything, string estimatorName = null, string[] inputs = null, string[] outputs = null)
-            : base(estimatorName, inputs, outputs, optionBuilder.SweepableValueGenerators, scope)
+            : base(estimatorName, inputs, outputs, optionBuilder.ValueGenerators, scope)
         {
             this.EstimatorFactory = estimatorFactory;
             this.OptionBuilder = optionBuilder;
@@ -94,7 +94,7 @@ namespace MLNet.AutoPipeline
 
         internal CodeGenNodeContract ToCodeGenNodeContract(Parameters parameters)
         {
-            var valueGeneratorIds = this.SweepableValueGenerators.Select(x => x.ID).ToImmutableHashSet();
+            var valueGeneratorIds = this.ValueGenerators.Select(x => x.ID).ToImmutableHashSet();
             var selectedParams = parameters.Where(x => valueGeneratorIds.Contains(x.ID));
             return new CodeGenNodeContract()
             {

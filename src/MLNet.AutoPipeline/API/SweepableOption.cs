@@ -19,7 +19,11 @@ namespace MLNet.AutoPipeline
 
         private TOption defaultOption = null;
 
-        public IEnumerable<IValueGenerator> SweepableValueGenerators { get => this.GetValueGenerators(); }
+        public IEnumerable<IValueGenerator> ValueGenerators { get => this.GetValueGenerators(); }
+
+        internal Dictionary<string, IParameter> SweepableParameters { get => this.GetSweepableParameterValue(); }
+
+        internal Dictionary<string, IParameter> SingleParameters { get => this.GetSingleParameterValue(); }
 
         public SweepableOption()
         {
@@ -36,27 +40,14 @@ namespace MLNet.AutoPipeline
             var assem = typeof(TOption).Assembly;
             var option = assem.CreateInstance(typeof(TOption).FullName) as TOption;
 
-            var paramaters = this.GetType().GetFields(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic)
-                     .Where(x => Attribute.GetCustomAttribute(x, typeof(ParameterAttribute)) != null)
-                     .Where(x => !(x.GetValue(this) is IParameter));
-
-            foreach (var parameter in paramaters)
-            {
-                var parameterAttribute = Attribute.GetCustomAttribute(parameter, typeof(ParameterAttribute)) as ParameterAttribute;
-                var parameterName = parameterAttribute.Name ?? parameter.Name;
-                var destFieldType = option.GetType().GetField(parameterName)?.FieldType;
-                if (parameter.FieldType == destFieldType)
-                {
-                    option.GetType().GetField(parameterName).SetValue(option, parameter.GetValue(this));
-                }
-            }
-
-            // set up sweepable parameters
-            foreach (var generator in this.SweepableValueGenerators)
+            foreach (var generator in this.ValueGenerators)
             {
                 var param = generator.CreateFromNormalized(0);
                 var value = param.RawValue;
-                option.GetType().GetField(param.Name)?.SetValue(option, value);
+                if (value.GetType() == option.GetType().GetField(param.Name)?.FieldType)
+                {
+                    option.GetType().GetField(param.Name)?.SetValue(option, value);
+                }
             }
 
             // use field in defaultOption
@@ -80,7 +71,7 @@ namespace MLNet.AutoPipeline
         {
             var option = this.CreateDefaultOption();
 
-            foreach (var generator in this.SweepableValueGenerators)
+            foreach (var generator in this.ValueGenerators)
             {
                 this.logger.Trace(
                         Microsoft.ML.Runtime.MessageSensitivity.All,
@@ -104,7 +95,7 @@ namespace MLNet.AutoPipeline
             var sb = new StringBuilder();
             sb.AppendLine($"Type of option: {typeof(TOption).Name}");
             sb.AppendLine();
-            foreach (var value in this.SweepableValueGenerators)
+            foreach (var value in this.ValueGenerators)
             {
                 sb.AppendLine(value.ToString());
             }
@@ -114,6 +105,8 @@ namespace MLNet.AutoPipeline
 
         private Dictionary<string, IParameter> GetSweepableParameterValue()
         {
+            // TODO
+            // use className.fieldName to replace GUID ID.
             var paramaters = this.GetType().GetFields(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic)
                      .Where(x => Attribute.GetCustomAttribute(x, typeof(ParameterAttribute)) != null)
                      .Where(x => x.GetValue(this) is IParameter);
@@ -145,12 +138,49 @@ namespace MLNet.AutoPipeline
             return paramatersDictionary;
         }
 
+        private Dictionary<string, IParameter> GetSingleParameterValue()
+        {
+            var paramaters = this.GetType().GetFields(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic)
+                     .Where(x => Attribute.GetCustomAttribute(x, typeof(ParameterAttribute)) != null)
+                     .Where(x => !(x.GetValue(this) is IParameter));
+
+            var paramatersDictionary = new Dictionary<string, IParameter>();
+
+            foreach (var param in paramaters)
+            {
+                var paramaterAttribute = Attribute.GetCustomAttribute(param, typeof(ParameterAttribute)) as ParameterAttribute;
+                var paramValue = param.GetValue(this);
+                var parameter = new Parameter<object>(new object[] { paramValue }, $"{this.GetType().Name}.{param.Name}");
+                if (paramValue == null)
+                {
+                    // TODO: add warning for wrong parameter type.
+                    continue;
+                }
+
+                if (paramaterAttribute.Name != null)
+                {
+                    parameter.ValueGenerator.Name = paramaterAttribute.Name;
+                }
+                else
+                {
+                    parameter.ValueGenerator.Name = param.Name;
+                }
+
+                paramatersDictionary.Add(param.Name, parameter);
+            }
+
+            return paramatersDictionary;
+        }
+
         private IValueGenerator[] GetValueGenerators()
         {
-            var valueGenerators = this.GetSweepableParameterValue().Select(kv =>
-            {
-                return kv.Value.ValueGenerator;
-            }).ToArray();
+            var valueGenerators = this.SweepableParameters
+                                      .Concat(this.SingleParameters)
+                                      .Select(kv =>
+                                        {
+                                            return kv.Value.ValueGenerator;
+                                        })
+                                      .ToArray();
 
             foreach (var valueGenerator in valueGenerators)
             {

@@ -15,7 +15,7 @@ namespace MLNet.AutoPipeline
 {
     public class SweepablePipeline : ISweepable<SingleEstimatorSweepablePipeline>
     {
-        public IEnumerable<IValueGenerator> SweepableValueGenerators { get => this.EstimatorGenerators; }
+        public IEnumerable<IValueGenerator> ValueGenerators { get => this.EstimatorGenerators; }
 
         internal IList<DiscreteValueGenerator<SweepableEstimatorBase>> EstimatorGenerators { get; private set; }
 

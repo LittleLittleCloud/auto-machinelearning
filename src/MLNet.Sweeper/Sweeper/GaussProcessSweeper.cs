@@ -51,7 +51,7 @@ namespace MLNet.Sweeper
 
         public IEnumerable<IDictionary<string, string>> ProposeSweeps(ISweepable sweepable, int maxSweeps = 100, IEnumerable<IRunResult> previousRuns = null)
         {
-            this._valueGenerators = sweepable.SweepableValueGenerators;
+            this._valueGenerators = sweepable.ValueGenerators;
             if (previousRuns != null)
             {
                 foreach ( var history in previousRuns)

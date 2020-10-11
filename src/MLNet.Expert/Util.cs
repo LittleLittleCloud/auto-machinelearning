@@ -105,7 +105,6 @@ namespace MLNet.Expert
             };
         }
 
-        // TODO: add test case
         public static SweepablePipeline ToPipeline(this SweepablePipelineDataContract pipelineContract, MLContext context)
         {
             var sweepablePipeline = new SweepablePipeline();
@@ -118,7 +117,6 @@ namespace MLNet.Expert
             return sweepablePipeline;
         }
 
-        // TODO: add test case
         public static SingleEstimatorSweepablePipeline ToPipeline(this SingleEstimatorSweepablePipelineDataContract pipelineContract, MLContext context)
         {
             var estimators = new List<SweepableEstimatorBase>();

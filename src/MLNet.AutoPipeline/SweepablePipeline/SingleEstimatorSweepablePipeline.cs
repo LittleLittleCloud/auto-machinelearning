@@ -22,11 +22,11 @@ namespace MLNet.AutoPipeline
             this.Estimators = estimators;
         }
 
-        public IEnumerable<IValueGenerator> SweepableValueGenerators
+        public IEnumerable<IValueGenerator> ValueGenerators
         {
             get
             {
-                return this.Estimators.Select(node => node.SweepableValueGenerators)
+                return this.Estimators.Select(node => node.ValueGenerators)
                                       .Where(generators => generators != null)
                                       .SelectMany(x => x)
                                       .ToList();

@@ -28,10 +28,10 @@ namespace MLNet.Sweeper
             }
         }
 
-        public DoubleValueGenerator(Option options)
+        public DoubleValueGenerator(Option options, string id = null)
         {
             this._options = options;
-            this.ID = Guid.NewGuid().ToString("N");
+            this.ID = id ?? Guid.NewGuid().ToString("N");
         }
 
         public IParameterValue CreateFromNormalized(double normalizedValue)

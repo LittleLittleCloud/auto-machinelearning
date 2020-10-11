@@ -22,7 +22,7 @@ namespace MLNet.AutoPipeline
             this.EstimatorName = estimatorName;
             this.InputColumns = inputColumns;
             this.OutputColumns = outputColumns;
-            this.SweepableValueGenerators = sweepableValueGenerators;
+            this.ValueGenerators = sweepableValueGenerators;
             this.Scope = scope;
         }
 
@@ -38,7 +38,7 @@ namespace MLNet.AutoPipeline
 
         public TransformerScope Scope { get; protected set; }
 
-        public IEnumerable<IValueGenerator> SweepableValueGenerators { get; protected set; }
+        public IEnumerable<IValueGenerator> ValueGenerators { get; protected set; }
 
         public override string ToString()
         {
