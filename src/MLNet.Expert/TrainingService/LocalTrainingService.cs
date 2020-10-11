@@ -69,7 +69,7 @@ namespace MLNet.Expert
 
             public int ParameterSweepingIteration = 100;
 
-            public int MaximumTrainingTime = 100;
+            public double MaximumTrainingTime = 100;
 
             public string Label;
         }

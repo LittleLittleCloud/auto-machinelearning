@@ -79,12 +79,12 @@ namespace MLNet.AutoPipeline
             {
                 // TODO
                 // Error Handling
-                if (!parameters.ContainsKey(generator.ID))
+                if (!parameters.ContainsKey(generator.Name))
                 {
                     throw new Exception("can't build SingleSweepablePipeline from SweepablePipeline");
                 }
 
-                var valueText = parameters[generator.ID];
+                var valueText = parameters[generator.Name];
                 var estimator = generator.CreateFromString(valueText).RawValue;
 
                 estimators.Add(estimator as SweepableEstimatorBase);

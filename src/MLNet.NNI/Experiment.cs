@@ -1,4 +1,8 @@
-﻿using System;
+﻿using Microsoft.ML;
+using MLNet.AutoPipeline;
+using MLNet.Expert;
+using MLNet.Sweeper;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -14,18 +18,35 @@ namespace Nni
 {
     class Experiment
     {
-        public Experiment(string trialClassName, string tunerName, string searchSpace)
-        {
-            this.trialClassName = trialClassName;
-            this.tunerName = tunerName;
-            this.searchSpace = searchSpace;
+        private TrainingManager.Option option;
+        private SweepablePipeline pipeline;
+        private MLContext context;
 
-            Debug.Assert(tunerName == "Random");
+        public Experiment(MLContext context, TrainingManager.Option option, SweepablePipeline pipeline, string trainDataPath)
+        {
+            this.option = option;
+            this.pipeline = pipeline;
+            this.context = context;
+            this.searchSpace = "-0.5,0.5";
+            this.tunerName = "Random";
         }
 
         public async Task<(string, double)[]> Run(int trialNum, int port = 8080)
         {
-            RunTunerBackground();
+            var pipelineSweeper = this.context.AutoML().Serializable().Factory.CreateSweeper(this.option.PipelineSweeper);
+            var parameterSweeper = this.context.AutoML().Serializable().Factory.CreateSweeper(this.option.ParameterSweeper);
+            var localOption = new LocalTrainingService.Option()
+            {
+                ParameterSweeper = this.option.ParameterSweeper,
+                ParameterSweepingIteration = this.option.ParameterSweepingIteration,
+                EvaluationMetric = this.option.EvaluationMetric,
+                IsMaximizng = this.option.IsMaximizng,
+                Label = this.option.Label,
+                MaximumTrainingTime = this.option.MaximumTrainingTime,
+                Metrics = this.option.Metrics,
+            };
+
+            this.RunTunerBackground(this.pipeline, pipelineSweeper, parameterSweeper, localOption);
             await Launch(trialNum, port);
             while (await CheckStatus() == "RUNNING")
                 await Task.Delay(5000);
@@ -34,10 +55,10 @@ namespace Nni
             return ret;
         }
 
-        public void RunTunerBackground()
+        public void RunTunerBackground(SweepablePipeline pipeline, ISweeper pipelineSweeper, ISweeper parameterSweeper, LocalTrainingService.Option option)
         {
-            var tuner = new RandomTuner();
             var pipe = new NamedPipeServerStream(HardCode.CsPipePath, PipeDirection.InOut);
+            var tuner = new NniTuner(pipeline, pipelineSweeper, parameterSweeper, option);
             dispatcher = new Nni.Dispatcher(tuner, pipe);
             dispatcher.Run();
         }

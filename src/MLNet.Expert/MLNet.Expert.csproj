@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <InternalsVisibleTo Include="MLNet.Expert.Tests" />
+    <InternalsVisibleTo Include="nni-lib" />
   </ItemGroup>
 
   <ItemGroup>

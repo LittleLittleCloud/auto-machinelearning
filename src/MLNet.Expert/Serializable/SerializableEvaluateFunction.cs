@@ -24,6 +24,9 @@ namespace MLNet.Expert.Serializable
             return context.BinaryClassification.Evaluate(eval, label).Accuracy;
         };
 
-
+        public EvaluateFunctionWithLabel RSquare = (MLContext context, IDataView eval, string label) =>
+        {
+            return context.Regression.Evaluate(eval, labelColumnName: label, scoreColumnName: "Score").RSquared;
+        };
     }
 }

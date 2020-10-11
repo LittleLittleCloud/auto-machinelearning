@@ -18,7 +18,7 @@ namespace MLNet.AutoPipeline
     {
         private TTran _instance;
         private static SweepableEstimator<IEstimator<ITransformer>> no_op = new SweepableEstimator<IEstimator<ITransformer>>();
-        
+
         public override IEstimator<ITransformer> BuildFromParameters(IDictionary<string, string> parameters)
         {
             return this._instance;
@@ -28,7 +28,6 @@ namespace MLNet.AutoPipeline
             : base(estimatorName, inputs, outputs, null, scope)
         {
             this._instance = instance;
-
             if (estimatorName == null)
             {
                 this.EstimatorName = instance.ToString().Split('.').Last();

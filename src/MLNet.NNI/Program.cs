@@ -1,8 +1,17 @@
 ﻿using System;
 using System.Threading.Tasks;
-
+using Newtonsoft.Json;
+using MLNet.Expert;
 using System.IO.Pipes;
 using System.Text;
+using System.Text.Json.Serialization;
+using Microsoft.ML;
+using MLNet.AutoPipeline;
+using nni_lib;
+using MLNet.Sweeper;
+using MLNet.Expert.Serializable;
+using System.Collections.Generic;
+using Nni;
 
 class Program
 {
@@ -10,13 +19,29 @@ class Program
     {
         if (args.Length == 0) {
             // Configure trial class, tuner, and search space to create experiment
-            string trialClassName = "NaiveExample.NaiveTrial";
-            string searchSpace = "-0.5,0.5";  // naive search space for POV, "min,max"
-            string tuner = "Random";
-            var exp = new Nni.Experiment(trialClassName, tuner, searchSpace);
+            var context = new MLContext();
+            var trainingManagerOption = new TrainingManager.Option()
+            {
+                ParameterSweeper = nameof(RandomGridSweeper),
+                PipelineSweepingIteration = 3,
+                ParameterSweepingIteration = 10,
+                PipelineSweeper = nameof(GridSearchSweeper),
+                EvaluationMetric = nameof(SerializableEvaluateFunction.RSquare),
+                IsAzureAttach = false,
+                IsNNITraining = true,
+                TaskType = TaskType.Regression,
+                Label = "petal_width",
+            };
+
+            var pipeline = context.AutoML().Serializable().Transforms.Concatnate(new[] { "sepal_length", "sepal_width", "petal_length" }, "features")
+                                  .Append(
+                                    context.AutoML().Serializable().Regression.LightGbm("petal_width", "feature"),
+                                    context.AutoML().Serializable().Regression.Sdca("petal_width", "feature"));
+
+            var exp = new Nni.Experiment(context, trainingManagerOption, pipeline, "iris.csv");
 
             // Select number of trials to run
-            int trialNum = 5;
+            int trialNum = trainingManagerOption.PipelineSweepingIteration * trainingManagerOption.ParameterSweepingIteration;
             var result = await exp.Run(trialNum);
 
             // Print result
@@ -28,10 +53,12 @@ class Program
             }
 
         } else if (args[0] == "--trial") {
-            Nni.TrialRuntime.Run(args[1]);
+            Nni.TrialRuntime.Run();
 
         } else if (args[0] == "--debug") {
             Console.WriteLine("[debug]");
         }
+
     }
+
 }

@@ -65,5 +65,10 @@ namespace MLNet.AutoPipeline
                 }
             }
         }
+
+        internal static string PrettyPrintDictionary(IDictionary<string, string> keyValuePairs)
+        {
+            return string.Join(",", keyValuePairs.Select(kv => $"{kv.Key}={kv.Value}"));
+        }
     }
 }

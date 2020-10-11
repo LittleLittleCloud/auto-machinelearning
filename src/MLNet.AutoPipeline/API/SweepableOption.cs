@@ -13,7 +13,9 @@ namespace MLNet.AutoPipeline
     public abstract class SweepableOption<TOption> : ISweepable<TOption>
         where TOption : class
     {
+        private Logger logger = Logger.Instance;
         private readonly HashSet<string> _ids = new HashSet<string>();
+        private string loggerPrefix = "SweepableOption";
 
         private TOption defaultOption = null;
 
@@ -67,11 +69,16 @@ namespace MLNet.AutoPipeline
 
             foreach (var generator in this.ValueGenerators)
             {
-                if (parameters.ContainsKey(generator.ID))
+                this.logger.Trace(
+                        Microsoft.ML.Runtime.MessageSensitivity.All,
+                        $"[{this.loggerPrefix}]: generator name: {generator.Name}");
+                if (parameters.ContainsKey(generator.Name))
                 {
-                    var valueText = parameters[generator.ID];
+                    var valueText = parameters[generator.Name];
                     var rawValue = generator.CreateFromString(valueText).RawValue;
-
+                    this.logger.Trace(
+                        Microsoft.ML.Runtime.MessageSensitivity.All,
+                        $"[{this.loggerPrefix}]: set {valueText} to field {generator.Name}");
                     typeof(TOption).GetField(generator.Name)?.SetValue(option, rawValue);
                 }
             }

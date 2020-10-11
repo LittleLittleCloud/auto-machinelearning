@@ -11,6 +11,7 @@
     <RunSettingsFilePath>$(MSBuildThisFileDirectory)\CodeCoverage.runsettings</RunSettingsFilePath>
     <Author>BigMiao</Author>
     <Owner>BigMiao</Owner>
+    <SignAssembly>true</SignAssembly>
 
     <Major>0</Major>
     <Minor>9</Minor>

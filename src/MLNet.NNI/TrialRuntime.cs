@@ -1,9 +1,18 @@
-﻿using System;
+﻿using Microsoft.ML;
+using MLNet.AutoPipeline;
+using MLNet.Expert;
+using Newtonsoft.Json;
+using nni_lib;
+using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace Nni
 {
@@ -14,13 +23,43 @@ namespace Nni
 
     class TrialRuntime
     {
-        public static void Run(string trialClassName)
+        public static void Run()
         {
-            var trialType = Type.GetType(trialClassName);
-            Debug.Assert(typeof(ITrial).IsAssignableFrom(trialType), $"{trialClassName} is not ITrial");
-            var trial = (Nni.ITrial)Activator.CreateInstance(trialType);
+            try
+            {
+                var context = new MLContext();
+                context.Log += Context_Log;
+                var json = GetParameters();
+                var trailParameter = JsonConvert.DeserializeObject<TrailParameter>(json);
+                var option = trailParameter.Option;
+                Console.WriteLine(option.Label);
+                Console.WriteLine(JsonConvert.SerializeObject(trailParameter.Pipeline));
+                var pipeline = trailParameter.Pipeline.ToPipeline(context);
+                var parameters = trailParameter.Parameters;
+                var trainDataPath = trailParameter.TrainDataPath;
+                var testDataPath = trailParameter.TestDataPath;
+                var train = context.Data.LoadFromTextFile<Iris>(trainDataPath, hasHeader: true, separatorChar: ',');
+                var test = context.Data.LoadFromTextFile<Iris>(testDataPath, hasHeader: true, separatorChar: ',');
+                var estiamtorChain = pipeline.BuildFromParameters(parameters);
+                var model = estiamtorChain.Fit(train);
+                var eval = model.Transform(test);
+                Console.WriteLine(string.Join(",", eval.Preview(1).Schema.Select(column => column.Name)));
+                Console.WriteLine(pipeline.ToString());
+                var score = context.AutoML().Serializable().Factory.CreateEvaluateFunction(option.EvaluationMetric)(context, eval, option.Label);
+                ReportResult(score);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                Console.WriteLine(e.StackTrace);
+                throw e;
+            }
 
-            ReportResult(trial.Run(GetParameters()));
+        }
+
+        private static void Context_Log(object sender, LoggingEventArgs e)
+        {
+            Console.WriteLine(e.Message);
         }
 
         public static string GetParameters()
@@ -96,5 +135,16 @@ namespace Nni
 
         [JsonPropertyName("value")]
         public string Value { get; set; }
+    }
+
+    class Reporter : IProgress<IterationInfo>
+    {
+        public static Reporter Instance = new Reporter();
+        public void Report(IterationInfo value)
+        {
+            Console.WriteLine(value.Parameters);
+            Console.WriteLine($"validate score: {value.EvaluateScore}");
+            Console.WriteLine($"training time: {value.TrainingTime}");
+        }
     }
 }

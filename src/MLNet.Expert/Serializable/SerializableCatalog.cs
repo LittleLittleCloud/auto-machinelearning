@@ -17,7 +17,7 @@ namespace MLNet.Expert
             this.BinaryClassification = new SerializableBinaryClassificationTrainerCatalog(context);
             this.MultiClassification = new SerializableMultiClassificationTrainerCatalog(context);
             this.Regression = new SerializableRegressionTrainerCatalog(context);
-            this.Transformer = new SerializableTransformerCatalog(context);
+            this.Transforms = new SerializableTransformerCatalog(context);
             this.Sweeper = new SerializableSweeperCatalog(context);
             this.EvaluationFunction = new SerializableEvaluateFunction(context);
             this.Factory = new FactoryCatalog(context);
@@ -29,7 +29,7 @@ namespace MLNet.Expert
 
         public SerializableRegressionTrainerCatalog Regression { get; }
 
-        public SerializableTransformerCatalog Transformer { get; }
+        public SerializableTransformerCatalog Transforms { get; }
 
         public SerializableSweeperCatalog Sweeper { get; }
 

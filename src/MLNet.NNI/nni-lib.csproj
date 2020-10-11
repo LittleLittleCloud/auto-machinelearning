@@ -12,4 +12,14 @@
     <None Remove="nni-manager\**" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\MLNet.Expert\MLNet.Expert.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="iris.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

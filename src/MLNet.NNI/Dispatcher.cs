@@ -13,7 +13,6 @@ namespace Nni
 {
     interface ITuner
     {
-        void UpdateSearchSpace(string searchSpace);
         string GenerateParameters(int parameterId);
         void ReceiveTrialResult(int parameterId, double metric);
         void TrialEnd(int parameterId);
@@ -45,14 +44,15 @@ namespace Nni
 
         protected void UpdateSearchSpace(string data)
         {
-            tuner.UpdateSearchSpace(data);
+            // do nothing
+            Console.WriteLine($"Seach space: {data}");
         }
 
         protected void RequestTrialJobs(string data)
         {
             int num = Int32.Parse(data);
             for (int i = 0; i < num; i++) {
-                string parameter = tuner.GenerateParameters(currentParameterId);
+                string parameter = tuner.GenerateParameters(this.currentParameterId);
                 var newTrialData = new NewTrialJobCommandData
                 {
                     ParameterId = currentParameterId,
@@ -92,9 +92,6 @@ namespace Nni
 
         private void SendCommand(string command, string data)
         {
-            Console.WriteLine($"command: {command}");
-            Console.WriteLine($"data: {data}");
-
             int length = Encoding.UTF8.GetBytes(data).Length;
             string message = command + length.ToString("D14") + data;
             byte[] buffer = Encoding.UTF8.GetBytes(message);
