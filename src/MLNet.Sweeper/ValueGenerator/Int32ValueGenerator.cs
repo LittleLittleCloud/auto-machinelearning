@@ -93,7 +93,7 @@ namespace MLNet.Sweeper
         public IParameterValue CreateFromString(string valueText)
         {
             var value = int.Parse(valueText);
-            if (value < this._options.Min || value >= this._options.Max)
+            if (value < this._options.Min || value > this._options.Max)
             {
                 throw new Exception($"{valueText} is out of range.");
             }

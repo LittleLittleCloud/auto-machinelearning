@@ -23,7 +23,10 @@ namespace MLNet.AutoPipeline
         {
             get
             {
-                return this.Estimators.Select(node => node.SweepableValueGenerators).SelectMany(x => x).ToList();
+                return this.Estimators.Select(node => node.SweepableValueGenerators)
+                                      .Where(generators => generators != null)
+                                      .SelectMany(x => x)
+                                      .ToList();
             }
         }
 

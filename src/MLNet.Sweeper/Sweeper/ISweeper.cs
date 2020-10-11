@@ -33,7 +33,7 @@ namespace MLNet.Sweeper
     /// </summary>
     public interface IRunResult : IComparable<IRunResult>
     {
-        Parameters ParameterSet { get; }
+        IDictionary<string, string> ParameterSet { get; }
 
         IComparable MetricValue { get; }
 

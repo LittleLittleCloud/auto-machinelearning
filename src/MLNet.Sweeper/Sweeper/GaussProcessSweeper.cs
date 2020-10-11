@@ -85,7 +85,12 @@ namespace MLNet.Sweeper
                     var candidates = new List<IDictionary<string, string>>();
                     foreach ( var parent in kBestParents)
                     {
-                        var _candidates = this.GetOneMutationNeighbourhood(parent.ParameterSet);
+                        var parameter = new Parameters(parent.ParameterSet.Select(kv =>
+                        {
+                            var generator = this._valueGenerators.Where(g => g.Name == kv.Key).FirstOrDefault();
+                            return generator.CreateFromString(kv.Value);
+                        }));
+                        var _candidates = this.GetOneMutationNeighbourhood(parameter);
                         candidates.AddRange(_candidates);
                     }
 
@@ -94,7 +99,7 @@ namespace MLNet.Sweeper
                     candidates.AddRange(random_sample);
 
                     // prepare train data
-                    var X_train = this.CreateNDarrayFromParamaters(this._runHistory.Select(history => history.ParameterSet.ParameterValues));
+                    var X_train = this.CreateNDarrayFromParamaters(this._runHistory.Select(history => history.ParameterSet));
                     var y_train = np.array(this._runHistory.Select(x => x.IsMetricMaximizing ? (double)x.MetricValue : -(double)x.MetricValue).ToArray()).reshape(-1, 1);
                     var X_sample = this.CreateNDarrayFromParamaters(candidates);
 
@@ -168,7 +173,7 @@ namespace MLNet.Sweeper
                     var next = 1e-2 * Utils.Normal() + norm;
                     while (true)
                     {
-                        if (next >0 || next < 1)
+                        if (next > 0 || next < 1)
                         {
                             break;
                         }
