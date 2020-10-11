@@ -1,14 +1,6 @@
 {
   "parameters": [
     {
-      "Name": "LabelColumnName",
-      "ValueText": "Label"
-    },
-    {
-      "Name": "FeatureColumnName",
-      "ValueText": "Features"
-    },
-    {
       "Name": "LossFunction",
       "ValueText": "Microsoft.ML.Trainers.LogLoss"
     },

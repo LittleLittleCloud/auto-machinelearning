@@ -19,9 +19,7 @@ namespace MLNet.AutoPipeline
 
         private TOption defaultOption = null;
 
-        public IValueGenerator[] ValueGenerators { get => this.GetValueGenerators(); }
-
-        public IEnumerable<IValueGenerator> SweepableValueGenerators { get => this.ValueGenerators; }
+        public IEnumerable<IValueGenerator> SweepableValueGenerators { get => this.GetValueGenerators(); }
 
         public SweepableOption()
         {
@@ -38,8 +36,23 @@ namespace MLNet.AutoPipeline
             var assem = typeof(TOption).Assembly;
             var option = assem.CreateInstance(typeof(TOption).FullName) as TOption;
 
+            var paramaters = this.GetType().GetFields(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic)
+                     .Where(x => Attribute.GetCustomAttribute(x, typeof(ParameterAttribute)) != null)
+                     .Where(x => !(x.GetValue(this) is IParameter));
+
+            foreach (var parameter in paramaters)
+            {
+                var parameterAttribute = Attribute.GetCustomAttribute(parameter, typeof(ParameterAttribute)) as ParameterAttribute;
+                var parameterName = parameterAttribute.Name ?? parameter.Name;
+                var destFieldType = option.GetType().GetField(parameterName)?.FieldType;
+                if (parameter.FieldType == destFieldType)
+                {
+                    option.GetType().GetField(parameterName).SetValue(option, parameter.GetValue(this));
+                }
+            }
+
             // set up sweepable parameters
-            foreach (var generator in this.ValueGenerators)
+            foreach (var generator in this.SweepableValueGenerators)
             {
                 var param = generator.CreateFromNormalized(0);
                 var value = param.RawValue;
@@ -67,7 +80,7 @@ namespace MLNet.AutoPipeline
         {
             var option = this.CreateDefaultOption();
 
-            foreach (var generator in this.ValueGenerators)
+            foreach (var generator in this.SweepableValueGenerators)
             {
                 this.logger.Trace(
                         Microsoft.ML.Runtime.MessageSensitivity.All,
@@ -78,7 +91,7 @@ namespace MLNet.AutoPipeline
                     var rawValue = generator.CreateFromString(valueText).RawValue;
                     this.logger.Trace(
                         Microsoft.ML.Runtime.MessageSensitivity.All,
-                        $"[{this.loggerPrefix}]: set {valueText} to field {generator.Name}");
+                        $"[{this.loggerPrefix}]: set field {generator.Name} to {valueText}");
                     typeof(TOption).GetField(generator.Name)?.SetValue(option, rawValue);
                 }
             }
@@ -91,7 +104,7 @@ namespace MLNet.AutoPipeline
             var sb = new StringBuilder();
             sb.AppendLine($"Type of option: {typeof(TOption).Name}");
             sb.AppendLine();
-            foreach (var value in this.ValueGenerators)
+            foreach (var value in this.SweepableValueGenerators)
             {
                 sb.AppendLine(value.ToString());
             }

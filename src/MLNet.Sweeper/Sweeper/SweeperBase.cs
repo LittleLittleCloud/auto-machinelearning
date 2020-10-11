@@ -62,9 +62,9 @@ namespace MLNet.Sweeper
             }
         }
 
-        protected static bool AlreadyGenerated(Parameters paramSet, IEnumerable<Parameters> previousRuns)
+        protected static bool AlreadyGenerated(Parameters paramSet, IEnumerable<IDictionary<string, string>> previousRuns)
         {
-            return previousRuns.Any(previousRun => previousRun.Equals(paramSet));
+            return previousRuns.Any(previousRun => previousRun.Equals(paramSet.ParameterValues));
         }
 
         protected abstract Parameters CreateParamSet(ISweepable sweepable);

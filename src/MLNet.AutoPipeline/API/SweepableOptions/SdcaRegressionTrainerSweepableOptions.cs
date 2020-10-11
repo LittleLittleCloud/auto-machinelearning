@@ -14,10 +14,10 @@ namespace MLNet.AutoPipeline
         public static SdcaRegressionTrainerSweepableOptions Default = new SdcaRegressionTrainerSweepableOptions();
 
         [Parameter(nameof(SdcaRegressionTrainer.Options.LabelColumnName))]
-        public Parameter<string> LabelColumnName = CreateDiscreteParameter("Label");
+        public string LabelColumnName = "Label";
 
         [Parameter(nameof(SdcaRegressionTrainer.Options.FeatureColumnName))]
-        public Parameter<string> FeatureColumnName = CreateDiscreteParameter("Features");
+        public string FeatureColumnName = "Features";
 
         [Parameter(nameof(SdcaRegressionTrainer.Options.LossFunction))]
         public Parameter<ISupportSdcaClassificationLoss> LossFunction = CreateDiscreteParameter<ISupportSdcaClassificationLoss>(new HingeLoss(), new LogLoss(), new SmoothedHingeLoss());

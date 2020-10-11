@@ -22,16 +22,16 @@ namespace MLNet.Expert
         public SweepableEstimatorBase LightGbm(string label, string feature)
         {
             var option = LightGbmRegressionTrainerSweepableOptions.Default;
-            option.FeatureColumnName = ParameterFactory.CreateDiscreteParameter(feature);
-            option.LabelColumnName = ParameterFactory.CreateDiscreteParameter(label);
+            option.FeatureColumnName = feature;
+            option.LabelColumnName = label;
             return this.Context.AutoML().Regression.LightGbm(label, feature, option);
         }
 
         public SweepableEstimatorBase Sdca(string label, string feature)
         {
             var option = SdcaRegressionTrainerSweepableOptions.Default;
-            option.FeatureColumnName = ParameterFactory.CreateDiscreteParameter(feature);
-            option.LabelColumnName = ParameterFactory.CreateDiscreteParameter(label);
+            option.FeatureColumnName = feature;
+            option.LabelColumnName = label;
             return this.Context.AutoML().Regression.Sdca(label, feature, option);
         }
     }

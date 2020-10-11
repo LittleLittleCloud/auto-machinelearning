@@ -26,6 +26,7 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MLNet.CodeGenerator.Tests", "src\MLNet.CodeGenerator.Tests\MLNet.CodeGenerator.Tests.csproj", "{AF479EE4-A359-4166-84F0-426CE6B12EC2}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "nni-lib", "src\MLNet.NNI\nni-lib.csproj", "{A21552E5-CF75-4B74-926D-4F26A5CCE6CB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MLNet.Benchmark", "src\MLNet.Benchmark\MLNet.Benchmark.csproj", "{D83E5666-F9D9-42A3-83E5-0D65CE0E771D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -69,6 +70,10 @@ Global
 		{A21552E5-CF75-4B74-926D-4F26A5CCE6CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A21552E5-CF75-4B74-926D-4F26A5CCE6CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A21552E5-CF75-4B74-926D-4F26A5CCE6CB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D83E5666-F9D9-42A3-83E5-0D65CE0E771D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D83E5666-F9D9-42A3-83E5-0D65CE0E771D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D83E5666-F9D9-42A3-83E5-0D65CE0E771D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D83E5666-F9D9-42A3-83E5-0D65CE0E771D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

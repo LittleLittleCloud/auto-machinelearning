@@ -59,7 +59,5 @@ namespace MLNet.Sweeper
         public bool HasMetricValue => this._metricValue != null;
 
         IComparable IRunResult.MetricValue => this.MetricValue;
-
-        Parameters IRunResult.ParameterSet => throw new NotImplementedException();
     }
 }

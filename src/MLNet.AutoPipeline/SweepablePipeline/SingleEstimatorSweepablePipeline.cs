@@ -27,8 +27,9 @@ namespace MLNet.AutoPipeline
             get
             {
                 return this.Estimators.Select(node => node.SweepableValueGenerators)
-                                      .Where(valueGenerators => valueGenerators != null)
-                                      .SelectMany(x => x).ToList();
+                                      .Where(generators => generators != null)
+                                      .SelectMany(x => x)
+                                      .ToList();
             }
         }
 

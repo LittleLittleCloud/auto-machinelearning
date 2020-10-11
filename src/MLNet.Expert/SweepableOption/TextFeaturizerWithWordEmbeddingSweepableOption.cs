@@ -13,8 +13,11 @@ namespace MLNet.Expert
     internal class TextFeaturizerWithWordEmbeddingSweepableOption : SweepableOption<TextFeaturizerWithWordEmbeddingSweepableOption>
     {
         public static TextFeaturizerWithWordEmbeddingSweepableOption Default = new TextFeaturizerWithWordEmbeddingSweepableOption();
+
+        [Parameter]
         public string OutputColumnName = "txt";
 
+        [Parameter]
         public string InputColumnName = "SentimentText";
 
         public TextNormalizingEstimator.CaseMode CaseMode;

@@ -23,8 +23,8 @@ class Program
             var trainingManagerOption = new TrainingManager.Option()
             {
                 ParameterSweeper = nameof(RandomGridSweeper),
-                PipelineSweepingIteration = 3,
-                ParameterSweepingIteration = 10,
+                PipelineSweepingIteration = 2,
+                ParameterSweepingIteration = 3,
                 PipelineSweeper = nameof(GridSearchSweeper),
                 EvaluationMetric = nameof(SerializableEvaluateFunction.RSquare),
                 IsAzureAttach = false,
@@ -33,7 +33,7 @@ class Program
                 Label = "petal_width",
             };
 
-            var pipeline = context.AutoML().Serializable().Transforms.Concatnate(new[] { "sepal_length", "sepal_width", "petal_length" }, "features")
+            var pipeline = context.AutoML().Serializable().Transforms.Concatnate(new[] { "sepal_length", "sepal_width", "petal_length" }, "feature")
                                   .Append(
                                     context.AutoML().Serializable().Regression.LightGbm("petal_width", "feature"),
                                     context.AutoML().Serializable().Regression.Sdca("petal_width", "feature"));

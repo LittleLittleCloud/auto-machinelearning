@@ -27,8 +27,8 @@ namespace Nni
             this.option = option;
             this.pipeline = pipeline;
             this.context = context;
-            this.searchSpace = "-0.5,0.5";
-            this.tunerName = "Random";
+            this.searchSpace = "blablablablabla";
+            this.tunerName = "GridSearch + RandomGridSearch";
         }
 
         public async Task<(string, double)[]> Run(int trialNum, int port = 8080)
@@ -58,7 +58,7 @@ namespace Nni
         public void RunTunerBackground(SweepablePipeline pipeline, ISweeper pipelineSweeper, ISweeper parameterSweeper, LocalTrainingService.Option option)
         {
             var pipe = new NamedPipeServerStream(HardCode.CsPipePath, PipeDirection.InOut);
-            var tuner = new NniTuner(pipeline, pipelineSweeper, parameterSweeper, option);
+            var tuner = new NniTuner(pipeline, pipelineSweeper, this.option.PipelineSweepingIteration, parameterSweeper, option);
             dispatcher = new Nni.Dispatcher(tuner, pipe);
             dispatcher.Run();
         }

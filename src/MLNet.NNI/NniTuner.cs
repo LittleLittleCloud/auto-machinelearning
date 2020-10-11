@@ -14,20 +14,32 @@ namespace Nni {
         private ISweeper pipelineSweeper;
         private ISweeper parameterSweeper;
         private ISweepable<SingleEstimatorSweepablePipeline> pipeline;
-        private Dictionary<int, IDictionary<string, string>> generatedParameters;
         private List<IRunResult> pipelineRunHistory;
         private string trainDataPath = Path.GetFullPath("iris.csv");
         private string testDataPath = Path.GetFullPath("iris.csv");
+        private int pipelineSweeperIter;
+        private int parameterSweeperIter;
+        private List<(SingleEstimatorSweepablePipelineDataContract, IDictionary<string, string>)> generateParameters = new List<(SingleEstimatorSweepablePipelineDataContract, IDictionary<string, string>)>();
         private LocalTrainingService.Option option;
 
-        public NniTuner(ISweepable<SingleEstimatorSweepablePipeline> pipeline, ISweeper pipelineSweeper, ISweeper parameterSweeper, LocalTrainingService.Option option)
+        public NniTuner(ISweepable<SingleEstimatorSweepablePipeline> pipeline, ISweeper pipelineSweeper, int pipelineSweeperIteration, ISweeper parameterSweeper, LocalTrainingService.Option option)
         {
             this.pipeline = pipeline;
             this.pipelineSweeper = pipelineSweeper;
             this.parameterSweeper = parameterSweeper;
             this.pipelineRunHistory = new List<IRunResult>();
             this.option = option;
-            this.generatedParameters = new Dictionary<int, IDictionary<string, string>>();
+            this.parameterSweeperIter = option.ParameterSweepingIteration;
+            this.pipelineSweeperIter = pipelineSweeperIteration;
+            foreach (var param1 in this.pipelineSweeper.ProposeSweeps(this.pipeline, this.pipelineSweeperIter))
+            {
+                var singleEstiamtorPipeline = this.pipeline.BuildFromParameters(param1);
+                foreach (var param2 in this.parameterSweeper.ProposeSweeps(singleEstiamtorPipeline, this.parameterSweeperIter))
+                {
+                    this.generateParameters.Add((singleEstiamtorPipeline.ToDataContract(), param2));
+                }
+            }
+
             Console.WriteLine($"[NniTuner] Initialized");
         }
 
@@ -35,16 +47,12 @@ namespace Nni {
         {
             try
             {
-                var parameter = this.pipelineSweeper.ProposeSweeps(this.pipeline, 1).First();
-                var singleEstiamtroPipeline = this.pipeline.BuildFromParameters(parameter);
-                var hyperParameter = this.parameterSweeper.ProposeSweeps(singleEstiamtroPipeline, 1).First();
-                this.generatedParameters.Add(parameterId, parameter);
-                Console.WriteLine($"[NniTuner] Generated pipeline parameter #{parameterId} : {string.Join(";", parameter.Select(kv => $"{kv.Key}:{kv.Value}"))}");
-                Console.WriteLine($"[NniTuner] Generated hyper Parameter #{parameterId} : {string.Join(";", hyperParameter.Select(kv => $"{kv.Key}:{kv.Value}"))}");
+                (var contract, var param) = this.generateParameters[parameterId];
+                Console.WriteLine($"[NniTuner] Generated hyper Parameter #{parameterId} : {string.Join(";", param.Select(kv => $"{kv.Key}:{kv.Value}"))}");
                 var trailParameter = new TrailParameter()
                 {
-                    Parameters = hyperParameter,
-                    Pipeline = singleEstiamtroPipeline.ToDataContract(),
+                    Parameters = param,
+                    Pipeline = contract,
                     TrainDataPath = this.trainDataPath,
                     TestDataPath = this.testDataPath,
                     Option = this.option,
@@ -62,7 +70,7 @@ namespace Nni {
 
         public void ReceiveTrialResult(int parameterId, double metric)
         {
-            var param = this.generatedParameters[parameterId];
+            var param = this.generateParameters[parameterId].Item2;
             this.pipelineRunHistory.Add(new RunResult(param, metric, true));
             Console.WriteLine($"[RandomTuner] Received Result #{parameterId} : {metric}");
         }

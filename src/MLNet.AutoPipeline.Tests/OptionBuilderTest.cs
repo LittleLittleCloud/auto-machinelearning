@@ -118,6 +118,27 @@ namespace MLNet.AutoPipeline.Test
             Approvals.Verify(optionBuilder);
         }
 
+        [Fact]
+        public void SweepableTestOption_should_use_matching_field_to_create_default_option()
+        {
+            var option = new SweepableTestOption();
+            option.LongOption = 100f;
+            option.FloatOption = 100f;
+            option.StringOption = "123";
+
+            // long option should still be 1L, because the type of LongOption in SweepableTestOption
+            // is float, which doesn't match with TestOption.
+            option.CreateDefaultOption().LongOption.Should().Be(1);
+
+            // float option should still be 100f, because the type of FloatOption in SweepableTestOption
+            // is float, which matches with TestOption.
+            option.CreateDefaultOption().FloatOption.Should().Be(100f);
+
+            // string option should still be empty, even the type and field name match with stringoption, the name
+            // in Parameter attribute doesn't match.
+            option.CreateDefaultOption().StringOption.Should().Be(string.Empty);
+        }
+
         private class TestOption
         {
             public long LongOption = 1;
@@ -146,6 +167,18 @@ namespace MLNet.AutoPipeline.Test
 
             [Parameter]
             public Parameter<string> StringOption = ParameterFactory.CreateDiscreteParameter("str1", "str2", "str3", "str4");
+        }
+
+        private class SweepableTestOption : SweepableOption<TestOption>
+        {
+            [Parameter]
+            public float LongOption = 1f;
+
+            [Parameter]
+            public float FloatOption = 1f;
+
+            [Parameter(nameof(FloatOption))]
+            public string StringOption;
         }
     }
 }

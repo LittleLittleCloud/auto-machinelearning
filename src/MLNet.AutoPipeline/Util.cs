@@ -58,9 +58,9 @@ namespace MLNet.AutoPipeline
 
             foreach (var field in sourceField)
             {
-                if (destField.Any(x => x.Name == field.Name))
+                if (destField.Any(x => x.Name == field.Name && x.FieldType == field.FieldType))
                 {
-                    var p = destField.First(x => x.Name == field.Name);
+                    var p = destField.First(x => x.Name == field.Name && x.FieldType == field.FieldType);
                     p.SetValue(dest, field.GetValue(source));
                 }
             }
