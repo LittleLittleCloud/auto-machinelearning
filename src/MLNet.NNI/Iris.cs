@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace nni_lib
+namespace MLNet.NNI
 {
     public class Iris
     {

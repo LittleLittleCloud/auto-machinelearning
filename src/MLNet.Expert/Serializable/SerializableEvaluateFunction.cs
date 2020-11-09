@@ -8,10 +8,10 @@ using System;
 
 namespace MLNet.Expert.Serializable
 {
+    public delegate double EvaluateFunctionWithLabel(MLContext context, IDataView dataView, string label);
+
     internal class SerializableEvaluateFunction
     {
-        public delegate double EvaluateFunctionWithLabel(MLContext context, IDataView dataView, string label);
-
         public SerializableEvaluateFunction(MLContext context)
         {
             this.Context = context;

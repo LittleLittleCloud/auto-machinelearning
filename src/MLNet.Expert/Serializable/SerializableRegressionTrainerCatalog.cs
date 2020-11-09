@@ -34,5 +34,21 @@ namespace MLNet.Expert
             option.LabelColumnName = label;
             return this.Context.AutoML().Regression.Sdca(label, feature, option);
         }
+
+        public SweepableEstimatorBase Gam(string label, string feature)
+        {
+            var option = GamRegressionTrainerSweepableOptions.Default;
+            option.FeatureColumnName = ParameterFactory.CreateDiscreteParameter<string>(feature);
+            option.LabelColumnName = ParameterFactory.CreateDiscreteParameter<string>(label);
+            return this.Context.AutoML().Regression.Gam(label, feature, option);
+        }
+
+        public SweepableEstimatorBase LbfgsPoissonRegression(string label, string feature)
+        {
+            var option = LbfgsPoissonRegressionTrainerSweepableOptions.Default;
+            option.FeatureColumnName = ParameterFactory.CreateDiscreteParameter<string>(feature);
+            option.LabelColumnName = ParameterFactory.CreateDiscreteParameter<string>(label);
+            return this.Context.AutoML().Regression.LbfgsPoissonRegression(label, feature, option);
+        }
     }
 }

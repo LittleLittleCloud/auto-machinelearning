@@ -1,20 +1,21 @@
 ﻿using Microsoft.ML;
 using MLNet.AutoPipeline;
 using MLNet.Expert;
+using MLNet.Expert.Contract;
 using Newtonsoft.Json;
-using nni_lib;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using JsonSerializer = System.Text.Json.JsonSerializer;
 
-namespace Nni
+namespace MLNet.NNI
 {
     interface ITrial
     {
@@ -27,26 +28,37 @@ namespace Nni
         {
             try
             {
+                var stopWatch = new Stopwatch();
+                stopWatch.Start();
                 var context = new MLContext();
                 context.Log += Context_Log;
                 var json = GetParameters();
                 var trailParameter = JsonConvert.DeserializeObject<TrailParameter>(json);
-                var option = trailParameter.Option;
-                Console.WriteLine(option.Label);
+                var outputFolder = trailParameter.OutputFolder;
                 Console.WriteLine(JsonConvert.SerializeObject(trailParameter.Pipeline));
                 var pipeline = trailParameter.Pipeline.ToPipeline(context);
                 var parameters = trailParameter.Parameters;
                 var trainDataPath = trailParameter.TrainDataPath;
                 var testDataPath = trailParameter.TestDataPath;
-                var train = context.Data.LoadFromTextFile<Iris>(trainDataPath, hasHeader: true, separatorChar: ',');
-                var test = context.Data.LoadFromTextFile<Iris>(testDataPath, hasHeader: true, separatorChar: ',');
+                var train = context.Data.LoadFromBinary(trainDataPath);
+                var test = context.Data.LoadFromBinary(testDataPath);
                 var estiamtorChain = pipeline.BuildFromParameters(parameters);
                 var model = estiamtorChain.Fit(train);
                 var eval = model.Transform(test);
                 Console.WriteLine(string.Join(",", eval.Preview(1).Schema.Select(column => column.Name)));
                 Console.WriteLine(pipeline.ToString());
-                var score = context.AutoML().Serializable().Factory.CreateEvaluateFunction(option.EvaluationMetric)(context, eval, option.Label);
-                ReportResult(score);
+                var modelPath = Path.Combine(outputFolder, _parameterId + ".zip");
+                context.Model.Save(model, train.Schema, modelPath);
+                var score = context.AutoML().Serializable().Factory.CreateEvaluateFunction(trailParameter.EvaluateFunction)(context, eval, trailParameter.Label);
+                stopWatch.Stop();
+                var metrics = new Dictionary<string, double>();
+                metrics.Add(trailParameter.EvaluateFunction, score);
+                ReportResult(
+                    (Dictionary<string, string>)parameters,
+                    metrics,
+                    stopWatch.ElapsedMilliseconds,
+                    modelPath,
+                    trailParameter.Pipeline);
             }
             catch (Exception e)
             {
@@ -54,7 +66,6 @@ namespace Nni
                 Console.WriteLine(e.StackTrace);
                 throw e;
             }
-
         }
 
         private static void Context_Log(object sender, LoggingEventArgs e)
@@ -71,20 +82,35 @@ namespace Nni
             return param.GetProperty("parameters").GetString();
         }
 
-        public static void ReportResult(double result)
+        public static void ReportResult(
+                    Dictionary<string, string> parameters,
+                    Dictionary<string, double> metrics,
+                    float duration,
+                    string modelPath,
+                    SingleEstimatorSweepablePipelineDataContract pipelineContract)
         {
             Init();
 
-            var metric = new TrialMetric
+            var trailResult = new TrialResult()
+            {
+                Metrics = metrics,
+                Parameters = parameters,
+                Duration = duration,
+                ModelPath = modelPath,
+                PipelineContract = pipelineContract,
+            };
+
+            var value = JsonConvert.SerializeObject(trailResult);
+            var metric = new TrailMetric
             {
                 ParameterId = _parameterId,
                 TrialJobId = _trialJobId,
                 Type = "FINAL",
                 Sequence = 0,
-                Value = result.ToString()
+                Value = Uri.EscapeDataString(value),
             };
 
-            string data = JsonSerializer.Serialize(metric) + '\n';
+            string data = JsonConvert.SerializeObject(metric) + '\n';
             string len = Encoding.ASCII.GetBytes(data).Length.ToString("D6");
             string msg = "ME" + len + data;
 
@@ -119,32 +145,35 @@ namespace Nni
         }
     }
 
-    class TrialMetric
+    public class TrialResult
     {
-        [JsonPropertyName("parameter_id")]
-        public int ParameterId { get; set; }
+        public Dictionary<string, double> Metrics { get; set; }
 
-        [JsonPropertyName("trial_job_id")]
-        public string TrialJobId { get; set; }
+        public Dictionary<string, string> Parameters { get; set; }
 
-        [JsonPropertyName("type")]
-        public string Type { get; set; }
+        public SingleEstimatorSweepablePipelineDataContract PipelineContract { get; set; }
 
-        [JsonPropertyName("sequence")]
-        public int Sequence { get; set; }
+        public string ModelPath { get; set; }
 
-        [JsonPropertyName("value")]
-        public string Value { get; set; }
+        public float Duration { get; set; }
     }
 
-    class Reporter : IProgress<IterationInfo>
+    [DataContract]
+    public class TrailMetric
     {
-        public static Reporter Instance = new Reporter();
-        public void Report(IterationInfo value)
-        {
-            Console.WriteLine(value.Parameters);
-            Console.WriteLine($"validate score: {value.EvaluateScore}");
-            Console.WriteLine($"training time: {value.TrainingTime}");
-        }
+        [DataMember(Name = "parameter_id")]
+        public int ParameterId { get; set; }
+
+        [DataMember(Name = "trial_job_id")]
+        public string TrialJobId { get; set; }
+
+        [DataMember(Name = "type")]
+        public string Type { get; set; }
+
+        [DataMember(Name = "sequence")]
+        public int Sequence { get; set; }
+
+        [DataMember(Name = "value")]
+        public string Value { get; set; }
     }
 }

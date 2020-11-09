@@ -37,11 +37,19 @@ namespace MLNet.Expert.Serializable
                 case nameof(LightGbmRegressionTrainer):
                     var label = estimator.InputColumns[0];
                     var feature = estimator.InputColumns[1];
-                    return this.Context.AutoML().Regression.LightGbm(label, feature);
+                    return this.Context.AutoML().Serializable().Regression.LightGbm(label, feature);
                 case nameof(SdcaRegressionTrainer):
                     label = estimator.InputColumns[0];
                     feature = estimator.InputColumns[1];
-                    return this.Context.AutoML().Regression.Sdca(label, feature);
+                    return this.Context.AutoML().Serializable().Regression.Sdca(label, feature);
+                case nameof(GamRegressionTrainer):
+                    label = estimator.InputColumns[0];
+                    feature = estimator.InputColumns[1];
+                    return this.Context.AutoML().Serializable().Regression.Gam(label, feature);
+                case nameof(LbfgsPoissonRegressionTrainer):
+                    label = estimator.InputColumns[0];
+                    feature = estimator.InputColumns[1];
+                    return this.Context.AutoML().Serializable().Regression.LbfgsPoissonRegression(label, feature);
                 case nameof(LinearSvmTrainer):
                     label = estimator.InputColumns[0];
                     feature = estimator.InputColumns[1];

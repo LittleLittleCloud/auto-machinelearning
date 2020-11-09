@@ -7,11 +7,12 @@ using System.Text;
 using System.Text.Json.Serialization;
 using Microsoft.ML;
 using MLNet.AutoPipeline;
-using nni_lib;
 using MLNet.Sweeper;
 using MLNet.Expert.Serializable;
 using System.Collections.Generic;
-using Nni;
+using System.IO;
+using System.Linq;
+using MLNet.NNI;
 
 class Program
 {
@@ -20,45 +21,54 @@ class Program
         if (args.Length == 0) {
             // Configure trial class, tuner, and search space to create experiment
             var context = new MLContext();
-            var trainingManagerOption = new TrainingManager.Option()
+            var trainingManagerOption = new NniExperiment.Option()
             {
                 ParameterSweeper = nameof(RandomGridSweeper),
-                PipelineSweepingIteration = 2,
-                ParameterSweepingIteration = 3,
+                PipelineSweeperIteration = 2,
+                ParameterSweeperIteration = 10,
                 PipelineSweeper = nameof(GridSearchSweeper),
-                EvaluationMetric = nameof(SerializableEvaluateFunction.RSquare),
-                IsAzureAttach = false,
-                IsNNITraining = true,
+                EvaluateFunction = nameof(SerializableEvaluateFunction.RSquare),
                 TaskType = TaskType.Regression,
                 Label = "petal_width",
+                TrainPath = Path.Combine(HardCode.BasePath, "train.bin"),
+                TestPath = Path.Combine(HardCode.BasePath, "test.bin"),
+                ModelOutputFolder = Path.Combine(Path.GetTempPath(), "AutoML-NNI"),
             };
 
             var pipeline = context.AutoML().Serializable().Transforms.Concatnate(new[] { "sepal_length", "sepal_width", "petal_length" }, "feature")
                                   .Append(
-                                    context.AutoML().Serializable().Regression.LightGbm("petal_width", "feature"),
-                                    context.AutoML().Serializable().Regression.Sdca("petal_width", "feature"));
+                                    context.AutoML().Serializable().Regression.Gam("petal_width", "feature"),
+                                    context.AutoML().Serializable().Regression.LbfgsPoissonRegression("petal_width", "feature"));
 
-            var exp = new Nni.Experiment(context, trainingManagerOption, pipeline, "iris.csv");
+            var train = context.Data.LoadFromTextFile<Iris>("iris.csv", hasHeader: true, separatorChar: ',');
+            var test = context.Data.LoadFromTextFile<Iris>("iris.csv", hasHeader: true, separatorChar: ',');
 
-            // Select number of trials to run
-            int trialNum = trainingManagerOption.PipelineSweepingIteration * trainingManagerOption.ParameterSweepingIteration;
-            var result = await exp.Run(trialNum);
-
-            // Print result
-            Console.WriteLine("=== Experiment Result ===");
-            foreach (var kv in result)
+            using (var exp = new NniExperiment(pipeline, trainingManagerOption))
             {
-                (string parameter, double metric) = kv;
-                Console.WriteLine($"Parameter: {parameter}  Result: {metric}");
+                await exp.StartTrainingAsync(context, train, test, Reporter.Instance);
             }
 
         } else if (args[0] == "--trial") {
-            Nni.TrialRuntime.Run();
+            TrialRuntime.Run();
 
         } else if (args[0] == "--debug") {
             Console.WriteLine("[debug]");
         }
 
+    }
+
+    class Reporter : IProgress<TrailMetric>
+    {
+        public static Reporter Instance = new Reporter();
+        public void Report(TrailMetric value)
+        {
+            var json = Uri.UnescapeDataString(value.Value);
+            var trailResult = JsonConvert.DeserializeObject<TrialResult>(json);
+            Console.WriteLine($"validate metric: {string.Join(",", trailResult.Metrics.Select(kv => $"{kv.Key}={kv.Value}"))}");
+            Console.WriteLine($"training time: {trailResult.Duration}");
+            Console.WriteLine($"model path: {trailResult.ModelPath}");
+
+        }
     }
 
 }

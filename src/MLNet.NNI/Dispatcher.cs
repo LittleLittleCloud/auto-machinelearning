@@ -1,35 +1,52 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.IO.Pipes;
-
 using System;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
 using System.Text.Json;
-using System.Text.Json.Serialization;
+using MLNet.Sweeper;
+using System.Runtime.Serialization;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
+using System.Threading;
 
-namespace Nni
+namespace MLNet.NNI
 {
     interface ITuner
     {
+        event EventHandler<OutputEventArgs> OutputHandler;
+        event EventHandler<TrailMetric> TrailMetricHandler;
         string GenerateParameters(int parameterId);
-        void ReceiveTrialResult(int parameterId, double metric);
+        void ReceiveTrialResult(TrailMetric metric);
         void TrialEnd(int parameterId);
     }
 
     class Dispatcher
     {
+        private JsonSerializerSettings jsonSerializerSettings;
+
         public Dispatcher(ITuner tuner, NamedPipeServerStream pipe)
         {
             this.pipe = pipe;
             this.tuner = tuner;
+            var contractResolver = new DefaultContractResolver
+            {
+                NamingStrategy = new CamelCaseNamingStrategy(),
+            };
+
+            this.jsonSerializerSettings = new JsonSerializerSettings
+            {
+                ContractResolver = contractResolver,
+            };
         }
 
-        public async Task Run()
+        public async Task RunAsync(CancellationToken ct = default)
         {
             await pipe.WaitForConnectionAsync();
             while (true) {
+                ct.ThrowIfCancellationRequested();
                 (string command, string data) = await ReceiveCommand();
                 if (command == null || command == "TE")  // EOF or terminate
                     break;
@@ -60,7 +77,7 @@ namespace Nni
                     Parameters = parameter,
                     ParameterIndex = 0
                 };
-                string json = JsonSerializer.Serialize(newTrialData, jsonOptions);
+                string json = JsonConvert.SerializeObject(newTrialData, this.jsonSerializerSettings);
                 SendCommand("TR", json);
                 currentParameterId += 1;
                 parameters.Add(parameter);
@@ -69,8 +86,8 @@ namespace Nni
 
         protected void ReportMetricData(string data)
         {
-            var metric = JsonSerializer.Deserialize<ReportMetricDataCommandData>(data, jsonOptions);
-            tuner.ReceiveTrialResult(metric.ParameterId, Double.Parse(metric.Value));
+            var metric = JsonConvert.DeserializeObject<TrailMetric>(data, this.jsonSerializerSettings);
+            tuner.ReceiveTrialResult(metric);
         }
 
         protected void TrialEnd(string data)
@@ -79,11 +96,6 @@ namespace Nni
             int paramId = JsonDocument.Parse(paramData).RootElement.GetProperty("parameter_id").GetInt32();
             tuner.TrialEnd(paramId);
         }
-
-        private static JsonSerializerOptions jsonOptions = new JsonSerializerOptions
-        {
-            PropertyNamingPolicy = JsonNamingPolicy.CamelCase
-        };
 
         private int currentParameterId = 0;
         private ITuner tuner;
@@ -141,22 +153,29 @@ namespace Nni
         }
     }
 
+    [DataContract]
     class NewTrialJobCommandData
     {
-        [JsonPropertyName("parameter_id")]
+        [DataMember(Name ="parameter_id")]
         public int ParameterId { get; set; }
-        [JsonPropertyName("parameter_source")]
+
+        [DataMember(Name = "parameter_source")]
         public string ParameterSource { get; set; }
+
+        [DataMember(Name ="parameters")]
         public string Parameters { get; set; }  // FIXME
-        [JsonPropertyName("parameter_index")]
+
+        [DataMember(Name = "parameter_index")]
         public int ParameterIndex { get; set; }
     }
 
+    [DataContract]
     class ReportMetricDataCommandData
     {
-        [JsonPropertyName("parameter_id")]
+        [DataMember(Name = "parameter_id")]
         public int ParameterId { get; set; }
-        [JsonPropertyName("trial_job_id")]
+
+        [DataMember(Name = "trial_job_id")]
         public string TrialJobId { get; set; }
         public string Type { get; set; }
         public int Sequence { get; set; }
