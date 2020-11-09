@@ -10,7 +10,7 @@ namespace MLNet.NNI
         public static string NodePath = Path.Combine(ManagerPath, "node.exe");
         public static string NniManagerPath = Path.Combine(ManagerPath, "dist");
         public static string TrialDir = @"C:\Users\xiaoyuz\source\repos\machinelearning-auto-pipeline\src\MLNet.NNI\";
-        public static string ExePath = Path.Combine(BasePath, "nni-lib.exe");
+        public static string ExePath = $"dotnet {Path.Combine(BasePath, "nni-lib.dll")}";
         public static string TrialCommand = $"{ExePath} --trial ";
         public static string CsPipePath = @"nni-pipe";
         public static string NodePipePath = $"\\\\.\\pipe\\{CsPipePath}";

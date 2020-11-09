@@ -6,7 +6,6 @@
     <RootNamespace>nni_lib</RootNamespace>
     <IsPackable>true</IsPackable>
     <SignAssembly>true</SignAssembly>
-    <PackAsTool>true</PackAsTool>
   </PropertyGroup>
 
   <ItemGroup>

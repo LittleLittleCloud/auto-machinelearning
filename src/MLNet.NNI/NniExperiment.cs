@@ -82,7 +82,7 @@ namespace MLNet.NNI
 
         public async Task StopAsync()
         {
-            this.proc.Kill(true);
+            this.proc.Kill();
             await this.dispatcherTask;
         }
 
@@ -147,16 +147,16 @@ namespace MLNet.NNI
             this.WriteLine("Starting NNI experiment...");
             var startInfo = new ProcessStartInfo(HardCode.NodePath)
             {
-                ArgumentList =
-                {
-                    "--max-old-space-size=4096",
-                    Path.Join(HardCode.NniManagerPath, "main.js"),
-                    "--port", port.ToString(),
-                    "--mode", "local",
-                    "--start_mode", "new",
-                    "--log_level", "debug",
-                    "--dispatcher_pipe", HardCode.NodePipePath,
-                },
+                Arguments = string.Join(" ", new []
+                        {
+                            "--max-old-space-size=4096",
+                            Path.Combine(HardCode.NniManagerPath, "main.js"),
+                            "--port", port.ToString(),
+                            "--mode", "local",
+                            "--start_mode", "new",
+                            "--log_level", "debug",
+                            "--dispatcher_pipe", HardCode.NodePipePath,
+                        }),
             };
             this.proc = Process.Start(startInfo);
 

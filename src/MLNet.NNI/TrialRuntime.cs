@@ -3,6 +3,7 @@ using MLNet.AutoPipeline;
 using MLNet.Expert;
 using MLNet.Expert.Contract;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -12,8 +13,6 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 using System.Text;
-using System.Text.Json;
-using System.Text.Json.Serialization;
 
 namespace MLNet.NNI
 {
@@ -76,10 +75,10 @@ namespace MLNet.NNI
         public static string GetParameters()
         {
             Init();
-            string paramStr = File.ReadAllText(Path.Join(_sysDir, "parameter.cfg"));
-            var param = JsonDocument.Parse(paramStr).RootElement;
-            _parameterId = param.GetProperty("parameter_id").GetInt32();
-            return param.GetProperty("parameters").GetString();
+            string paramStr = File.ReadAllText(Path.Combine(_sysDir, "parameter.cfg"));
+            var param = JToken.Parse(paramStr).Root;
+            _parameterId = (int)param.SelectToken("parameter_id");
+            return (string)param.SelectToken("parameters");
         }
 
         public static void ReportResult(
@@ -114,9 +113,9 @@ namespace MLNet.NNI
             string len = Encoding.ASCII.GetBytes(data).Length.ToString("D6");
             string msg = "ME" + len + data;
 
-            string metricDir = Path.Join(_sysDir, ".nni");
+            string metricDir = Path.Combine(_sysDir, ".nni");
             Directory.CreateDirectory(metricDir);
-            string path = Path.Join(metricDir, "metrics");
+            string path = Path.Combine(metricDir, "metrics");
 
             using (var stream = new StreamWriter(path))
             {

@@ -5,12 +5,12 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
-using System.Text.Json;
 using MLNet.Sweeper;
 using System.Runtime.Serialization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System.Threading;
+using Newtonsoft.Json.Linq;
 
 namespace MLNet.NNI
 {
@@ -92,8 +92,8 @@ namespace MLNet.NNI
 
         protected void TrialEnd(string data)
         {
-            string paramData = JsonDocument.Parse(data).RootElement.GetProperty("hyper_params").GetString();
-            int paramId = JsonDocument.Parse(paramData).RootElement.GetProperty("parameter_id").GetInt32();
+            string paramData = (string)JToken.Parse(data).SelectToken("hyper_params");
+            int paramId = (int)JToken.Parse(paramData).SelectToken("parameter_id");
             tuner.TrialEnd(paramId);
         }
 
