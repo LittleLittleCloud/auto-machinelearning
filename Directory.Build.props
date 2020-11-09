@@ -15,7 +15,7 @@
 
     <Major>0</Major>
     <Minor>10</Minor>
-    <Patch>5</Patch>
+    <Patch>6</Patch>
     <VersionPrefix>$(Major).$(Minor).$(Patch)</VersionPrefix>
     <VersionSuffix Condition="'$(BUILDNUMBER)'!=''">v$(BUILDNUMBER)</VersionSuffix>
     <VersionSuffix Condition="'$(BUILDNUMBER)'==''">dev</VersionSuffix>
