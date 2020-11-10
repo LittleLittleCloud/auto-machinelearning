@@ -118,10 +118,10 @@ namespace MLNet.Expert
 
         public IEnumerable<SweepableEstimatorBase> GetSuggestedSingleFeatureTrainers(MLContext context, Column column, string featureColumnName)
         {
+            var res = new List<SweepableEstimatorBase>();
             switch (this.PipelineBuilderOption.TaskType)
             {
                 case TaskType.BinaryClassification:
-                    var res = new List<SweepableEstimatorBase>();
                     res.Add(context.AutoML().Serializable().BinaryClassification.LinearSvm(column.Name, featureColumnName));
                     res.Add(context.AutoML().Serializable().BinaryClassification.LdSvm(column.Name, featureColumnName));
                     res.Add(context.AutoML().Serializable().BinaryClassification.FastForest(column.Name, featureColumnName));
@@ -131,6 +131,11 @@ namespace MLNet.Expert
                     res.Add(context.AutoML().Serializable().BinaryClassification.SgdNonCalibrated(column.Name, featureColumnName));
                     res.Add(context.AutoML().Serializable().BinaryClassification.SgdCalibrated(column.Name, featureColumnName));
                     res.Add(context.AutoML().Serializable().BinaryClassification.AveragedPerceptron(column.Name, featureColumnName));
+
+                    return res;
+                case TaskType.Regression:
+                    res.Add(context.AutoML().Serializable().Regression.Gam(column.Name, featureColumnName));
+                    res.Add(context.AutoML().Serializable().Regression.LbfgsPoissonRegression(column.Name, featureColumnName));
 
                     return res;
                 default:
