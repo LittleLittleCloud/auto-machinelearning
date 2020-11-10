@@ -82,7 +82,7 @@ namespace MLNet.NNI
 
         public async Task StopAsync()
         {
-            this.proc.Kill();
+            this.proc?.Kill();
             await this.dispatcherTask;
         }
 
@@ -93,7 +93,7 @@ namespace MLNet.NNI
             GC.SuppressFinalize(this);
         }
 
-        private async Task<(string, double)[]> RunAsync(MLContext context, int trialNum, int port = 8080, IProgress<TrailMetric> reporter = null, CancellationToken ct = default)
+        private async Task RunAsync(MLContext context, int trialNum, int port = 8080, IProgress<TrailMetric> reporter = null, CancellationToken ct = default)
         {
             this.dispatcherTask = this.RunTunerBackground(context, reporter);
             await this.LaunchAsync(trialNum, port);
@@ -102,10 +102,6 @@ namespace MLNet.NNI
                 ct.ThrowIfCancellationRequested();
                 await Task.Delay(50);
             }
-
-            var ret = await this.GetResultsAsync();
-            await this.StopAsync();
-            return ret;
         }
 
         private Task RunTunerBackground(MLContext context, IProgress<TrailMetric> reporter = null, CancellationToken ct = default)
