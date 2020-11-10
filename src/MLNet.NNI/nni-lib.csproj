@@ -1,9 +1,10 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFrameworks>net472;netcoreapp3.1</TargetFrameworks>
     <RootNamespace>nni_lib</RootNamespace>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
     <IsPackable>true</IsPackable>
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
@@ -12,6 +13,10 @@
     <Compile Remove="nni-manager\**" />
     <EmbeddedResource Remove="nni-manager\**" />
     <None Remove="nni-manager\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Net.Http" Version="4.3.4" />
   </ItemGroup>
 
   <ItemGroup>

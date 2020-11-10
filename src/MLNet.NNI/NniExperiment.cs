@@ -153,6 +153,7 @@ namespace MLNet.NNI
                             "--log_level", "debug",
                             "--dispatcher_pipe", HardCode.NodePipePath,
                         }),
+                CreateNoWindow = true,
             };
             this.proc = Process.Start(startInfo);
 
