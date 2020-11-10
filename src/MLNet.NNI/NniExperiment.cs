@@ -153,8 +153,10 @@ namespace MLNet.NNI
                             "--log_level", "debug",
                             "--dispatcher_pipe", HardCode.NodePipePath,
                         }),
-                CreateNoWindow = true,
             };
+
+            startInfo.UseShellExecute = false;
+            startInfo.CreateNoWindow = true;
             this.proc = Process.Start(startInfo);
 
             this.host = $"http://localhost:{port}/api/v1/nni";
@@ -226,7 +228,7 @@ namespace MLNet.NNI
             var trialConfig = new TrialConfig
             {
                 Command = HardCode.TrialCommand,
-                CodeDir = HardCode.TrialDir,
+                CodeDir = HardCode.BasePath,
                 GpuNum = 0,
             };
 
@@ -240,7 +242,7 @@ namespace MLNet.NNI
 
             ClusterConfigKV[] clusterConfigs =
             {
-                new ClusterConfigKV { Key = "codeDir", Value = HardCode.TrialDir },
+                new ClusterConfigKV { Key = "codeDir", Value = HardCode.BasePath },
                 new ClusterConfigKV { Key = "command", Value = HardCode.TrialCommand + trialClassName },
             };
 

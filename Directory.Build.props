@@ -15,7 +15,7 @@
 
     <Major>0</Major>
     <Minor>10</Minor>
-    <Patch>10</Patch>
+    <Patch>11</Patch>
     <VersionPrefix>$(Major).$(Minor).$(Patch)</VersionPrefix>
     <VersionSuffix Condition="'$(BUILDNUMBER)'!=''">v$(BUILDNUMBER)</VersionSuffix>
     <VersionSuffix Condition="'$(BUILDNUMBER)'==''">dev</VersionSuffix>
@@ -32,8 +32,8 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <UnstableMLNetVersion>0.17.0</UnstableMLNetVersion>
-    <StableMLNetVersion>1.5.0</StableMLNetVersion>
+    <UnstableMLNetVersion>0.17.2</UnstableMLNetVersion>
+    <StableMLNetVersion>1.5.2</StableMLNetVersion>
   </PropertyGroup>
 
   <ItemGroup>
