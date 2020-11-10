@@ -95,7 +95,7 @@ namespace MLNet.NNI
 
         private async Task RunAsync(MLContext context, int trialNum, int port = 8080, IProgress<TrailMetric> reporter = null, CancellationToken ct = default)
         {
-            this.dispatcherTask = this.RunTunerBackground(context, reporter);
+            this.dispatcherTask = this.RunTunerBackground(context, reporter, ct);
             await this.LaunchAsync(trialNum, port);
             while (await this.CheckStatusAsync() == "RUNNING")
             {
@@ -318,7 +318,6 @@ namespace MLNet.NNI
                 this.disposedValue = true;
             }
         }
-
     }
 
     class TrialConfig {

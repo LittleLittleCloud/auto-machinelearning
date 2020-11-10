@@ -46,7 +46,11 @@ namespace MLNet.NNI
         {
             await pipe.WaitForConnectionAsync();
             while (true) {
-                ct.ThrowIfCancellationRequested();
+                if (ct.IsCancellationRequested)
+                {
+                    return;
+                }
+
                 (string command, string data) = await ReceiveCommand();
                 if (command == null || command == "TE")  // EOF or terminate
                     break;
