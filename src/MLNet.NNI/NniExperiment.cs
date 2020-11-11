@@ -12,6 +12,7 @@ using System.Diagnostics.Contracts;
 using System.IO;
 using System.IO.Pipes;
 using System.Net.Http;
+using System.Net.NetworkInformation;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Threading;
@@ -60,9 +61,9 @@ namespace MLNet.NNI
 
         public event EventHandler<OutputEventArgs> OutputHandler;
 
-        public event EventHandler<TrailMetric> TrialMetricHandler;
+        public event EventHandler<TrialMetric> TrialMetricHandler;
 
-        public async Task StartTrainingAsync(MLContext context, IDataView train, IDataView test, IProgress<TrailMetric> reporter = null, CancellationToken ct = default)
+        public async Task StartTrainingAsync(MLContext context, IDataView train, IDataView test, IProgress<TrialMetric> reporter = null, CancellationToken ct = default)
         {
             // save train and test file
             using (var stream = new FileStream(this.option.TrainPath, FileMode.Create))
@@ -83,7 +84,11 @@ namespace MLNet.NNI
         public async Task StopAsync()
         {
             this.proc?.Kill();
-            await this.dispatcherTask;
+
+            if (this.dispatcherTask != null)
+            {
+                await this.dispatcherTask;
+            }
         }
 
         public void Dispose()
@@ -93,18 +98,18 @@ namespace MLNet.NNI
             GC.SuppressFinalize(this);
         }
 
-        private async Task RunAsync(MLContext context, int trialNum, int port = 8080, IProgress<TrailMetric> reporter = null, CancellationToken ct = default)
+        private async Task RunAsync(MLContext context, int trialNum, int port = 8080, IProgress<TrialMetric> reporter = null, CancellationToken ct = default)
         {
             this.dispatcherTask = this.RunTunerBackground(context, reporter, ct);
             await this.LaunchAsync(trialNum, port);
-            while (await this.CheckStatusAsync() == "RUNNING")
+            while (await this.CheckStatusAsync() != "DONE")
             {
                 ct.ThrowIfCancellationRequested();
                 await Task.Delay(50);
             }
         }
 
-        private Task RunTunerBackground(MLContext context, IProgress<TrailMetric> reporter = null, CancellationToken ct = default)
+        private Task RunTunerBackground(MLContext context, IProgress<TrialMetric> reporter = null, CancellationToken ct = default)
         {
             var pipe = new NamedPipeServerStream(HardCode.CsPipePath, PipeDirection.InOut);
             var tuner = new NniTuner(
@@ -118,7 +123,7 @@ namespace MLNet.NNI
                             this.option.TestPath,
                             this.option.EvaluateFunction);
             tuner.TrailMetricHandler += this.Tuner_TrialMetricHandler;
-            tuner.TrailMetricHandler += (object sender, TrailMetric e) =>
+            tuner.TrailMetricHandler += (object sender, TrialMetric e) =>
             {
                 reporter?.Report(e);
             };
@@ -133,7 +138,7 @@ namespace MLNet.NNI
             this.OutputHandler?.Invoke(sender, e);
         }
 
-        private void Tuner_TrialMetricHandler(object sender, TrailMetric e)
+        private void Tuner_TrialMetricHandler(object sender, TrialMetric e)
         {
             this.TrialMetricHandler?.Invoke(sender, e);
         }
@@ -141,6 +146,17 @@ namespace MLNet.NNI
         private async Task LaunchAsync(int trialNum, int port)
         {
             this.WriteLine("Starting NNI experiment...");
+            var ipGlobalProperties = IPGlobalProperties.GetIPGlobalProperties();
+            var tcpConnInfoArray = ipGlobalProperties.GetActiveTcpListeners();
+
+            foreach (var tcpi in tcpConnInfoArray)
+            {
+                if (tcpi.Port == port)
+                {
+                    throw new Exception($"Port {port} is in use!");
+                }
+            }
+
             var startInfo = new ProcessStartInfo(HardCode.NodePath)
             {
                 Arguments = string.Join(" ", new []
@@ -157,10 +173,8 @@ namespace MLNet.NNI
 
             startInfo.UseShellExecute = false;
             startInfo.CreateNoWindow = true;
-            this.proc = Process.Start(startInfo);
-
             this.host = $"http://localhost:{port}/api/v1/nni";
-
+            this.proc = Process.Start(startInfo);
             this.WriteLine("Waiting REST API online...");
             while (await this.CheckStatusAsync() == null)
             {
@@ -250,7 +264,7 @@ namespace MLNet.NNI
             {
                 AuthorName = "ML.NET",
                 ExperimentName = "Model Builder",
-                TrialConcurrency = 1,
+                TrialConcurrency = 4,
                 MaxExecDuration = 999999,
                 MaxTrialNum = trialNum,
                 SearchSpace = this.searchSpace,

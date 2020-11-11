@@ -17,9 +17,9 @@ namespace MLNet.NNI
     interface ITuner
     {
         event EventHandler<OutputEventArgs> OutputHandler;
-        event EventHandler<TrailMetric> TrailMetricHandler;
+        event EventHandler<TrialMetric> TrailMetricHandler;
         string GenerateParameters(int parameterId);
-        void ReceiveTrialResult(TrailMetric metric);
+        void ReceiveTrialResult(TrialMetric metric);
         void TrialEnd(int parameterId);
     }
 
@@ -45,16 +45,28 @@ namespace MLNet.NNI
         public async Task RunAsync(CancellationToken ct = default)
         {
             await pipe.WaitForConnectionAsync();
+
             while (true) {
                 if (ct.IsCancellationRequested)
                 {
                     return;
                 }
 
-                (string command, string data) = await ReceiveCommand();
-                if (command == null || command == "TE")  // EOF or terminate
+                try
+                {
+                    (string command, string data) = await ReceiveCommand();
+                    if (command == null || command == "TE")  // EOF or terminate
+                        break;
+                    HandleCommand(command, data);
+                }
+                catch (IOException)
+                {
                     break;
-                HandleCommand(command, data);
+                }
+                catch (Exception)
+                {
+                    throw;
+                }
             }
         }
 
@@ -90,7 +102,7 @@ namespace MLNet.NNI
 
         protected void ReportMetricData(string data)
         {
-            var metric = JsonConvert.DeserializeObject<TrailMetric>(data, this.jsonSerializerSettings);
+            var metric = JsonConvert.DeserializeObject<TrialMetric>(data, this.jsonSerializerSettings);
             tuner.ReceiveTrialResult(metric);
         }
 

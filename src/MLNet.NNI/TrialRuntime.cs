@@ -30,11 +30,9 @@ namespace MLNet.NNI
                 var stopWatch = new Stopwatch();
                 stopWatch.Start();
                 var context = new MLContext();
-                context.Log += Context_Log;
                 var json = GetParameters();
                 var trailParameter = JsonConvert.DeserializeObject<TrailParameter>(json);
                 var outputFolder = trailParameter.OutputFolder;
-                Console.WriteLine(JsonConvert.SerializeObject(trailParameter.Pipeline));
                 var pipeline = trailParameter.Pipeline.ToPipeline(context);
                 var parameters = trailParameter.Parameters;
                 var trainDataPath = trailParameter.TrainDataPath;
@@ -44,8 +42,6 @@ namespace MLNet.NNI
                 var estiamtorChain = pipeline.BuildFromParameters(parameters);
                 var model = estiamtorChain.Fit(train);
                 var eval = model.Transform(test);
-                Console.WriteLine(string.Join(",", eval.Preview(1).Schema.Select(column => column.Name)));
-                Console.WriteLine(pipeline.ToString());
                 var modelPath = Path.Combine(outputFolder, _parameterId + ".zip");
                 context.Model.Save(model, train.Schema, modelPath);
                 var score = context.AutoML().Serializable().Factory.CreateEvaluateFunction(trailParameter.EvaluateFunction)(context, eval, trailParameter.Label);
@@ -65,11 +61,6 @@ namespace MLNet.NNI
                 Console.WriteLine(e.StackTrace);
                 throw e;
             }
-        }
-
-        private static void Context_Log(object sender, LoggingEventArgs e)
-        {
-            Console.WriteLine(e.Message);
         }
 
         public static string GetParameters()
@@ -100,7 +91,7 @@ namespace MLNet.NNI
             };
 
             var value = JsonConvert.SerializeObject(trailResult);
-            var metric = new TrailMetric
+            var metric = new TrialMetric
             {
                 ParameterId = _parameterId,
                 TrialJobId = _trialJobId,
@@ -158,7 +149,7 @@ namespace MLNet.NNI
     }
 
     [DataContract]
-    public class TrailMetric
+    public class TrialMetric
     {
         [DataMember(Name = "parameter_id")]
         public int ParameterId { get; set; }
@@ -174,5 +165,16 @@ namespace MLNet.NNI
 
         [DataMember(Name = "value")]
         public string Value { get; set; }
+
+        public TrialResult GetTrialResult()
+        {
+            if (this.Value == null)
+            {
+                return null;
+            }
+
+            var json = Uri.UnescapeDataString(this.Value);
+            return JsonConvert.DeserializeObject<TrialResult>(json);
+        }
     }
 }

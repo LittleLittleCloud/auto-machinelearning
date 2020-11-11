@@ -56,10 +56,10 @@ class Program
 
     }
 
-    class Reporter : IProgress<TrailMetric>
+    class Reporter : IProgress<TrialMetric>
     {
         public static Reporter Instance = new Reporter();
-        public void Report(TrailMetric value)
+        public void Report(TrialMetric value)
         {
             var json = Uri.UnescapeDataString(value.Value);
             var trailResult = JsonConvert.DeserializeObject<TrialResult>(json);

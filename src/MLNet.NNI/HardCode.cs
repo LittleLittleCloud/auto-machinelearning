@@ -8,8 +8,7 @@ namespace MLNet.NNI
         public static string CsPipePath = @"nni-pipe";
         public static string ManagerPath = @"C:\Users\xiaoyuz\source\repos\nni\nni-manager";
         public static string OutputFolder = BasePath;
-
-        public static string BasePath { get => Path.GetDirectoryName(typeof(HardCode).Assembly.Location); }
+        public static string BasePath = Path.GetDirectoryName(typeof(HardCode).Assembly.Location);
 
         public static string NodePath { get => Path.Combine(ManagerPath, "node.exe"); }
 

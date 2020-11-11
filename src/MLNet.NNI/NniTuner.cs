@@ -58,7 +58,7 @@ namespace MLNet.NNI
             this.WriteLine($"[NniTuner] Initialized");
         }
 
-        public event EventHandler<TrailMetric> TrailMetricHandler;
+        public event EventHandler<TrialMetric> TrailMetricHandler;
 
         public event EventHandler<OutputEventArgs> OutputHandler;
 
@@ -89,7 +89,7 @@ namespace MLNet.NNI
             }
         }
 
-        public void ReceiveTrialResult(TrailMetric metric)
+        public void ReceiveTrialResult(TrialMetric metric)
         {
             var json = Uri.UnescapeDataString(metric.Value);
             var trailResult = JsonConvert.DeserializeObject<TrialResult>(json);
