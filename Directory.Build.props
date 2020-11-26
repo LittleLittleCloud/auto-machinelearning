@@ -15,7 +15,7 @@
 
     <Major>0</Major>
     <Minor>10</Minor>
-    <Patch>12</Patch>
+    <Patch>13</Patch>
     <VersionPrefix>$(Major).$(Minor).$(Patch)</VersionPrefix>
     <VersionSuffix Condition="'$(BUILDNUMBER)'!=''">v$(BUILDNUMBER)</VersionSuffix>
     <VersionSuffix Condition="'$(BUILDNUMBER)'==''">dev</VersionSuffix>
@@ -36,6 +36,20 @@
     <StableMLNetVersion>1.5.2</StableMLNetVersion>
   </PropertyGroup>
 
+  <PropertyGroup>
+  <!-- Internal visible to model builder -->
+    <ModelBuilderPublicKey>002400000480000094000000060200000024000052534131000400000100010007d1fa57c4aed9f0a32e84aa0faefd0de9e8fd6aec8f87fb03766c834c99921eb23be79ad9d5dcc1dd9ad236132102900b723cf980957fc4e177108fc607774f29e8320e92ea05ece4e821c0a5efe8f1645c4c0c93c1ab99285d622caa652c1dfad63d745d6f2de5f17e5eaf0fc4963d261c8a12436518206dc093344d5ad293</ModelBuilderPublicKey>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <InternalsVisibleToModelBuilder Include="Microsoft.ML.ModelBuilder" />
+    <InternalsVisibleToModelBuilder Include="Microsoft.ML.ModelBuilder.AutoMLService" />
+    <InternalsVisibleToModelBuilder Include="Microsoft.ML.ModelBuilder.AutoMLService.Gpu" />
+    <InternalsVisibleToModelBuilder Include="Microsoft.ML.ModelBuilder.AutoMLService.Tests" />
+    <InternalsVisibleToModelBuilder Include="Microsoft.ML.NNI" />
+    <InternalsVisibleToModelBuilder Include="Microsoft.ML.NNI.Tests" />
+  </ItemGroup>
+
   <ItemGroup>
     <PackageReference Condition="'$(MSBuildProjectExtension)' == '.csproj'"
         Include="StyleCop.Analyzers" Version="1.1.118" PrivateAssets="All" />
@@ -53,6 +67,13 @@
     <ItemGroup Condition="'@(InternalsVisibleTo->Count())' &gt; 0">
       <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
         <_Parameter1>%(InternalsVisibleTo.Identity), PublicKey=$(PublicKey)</_Parameter1>
+      </AssemblyAttribute>
+    </ItemGroup>
+
+    <!-- Handle InternalsVisibleToModelBuilder -->
+    <ItemGroup Condition="'@(InternalsVisibleToModelBuilder->Count())' &gt; 0">
+      <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+        <_Parameter1>%(InternalsVisibleToModelBuilder.Identity), PublicKey=$(ModelBuilderPublicKey)</_Parameter1>
       </AssemblyAttribute>
     </ItemGroup>
 
