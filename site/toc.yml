@@ -3,5 +3,8 @@
 - name: Articles
   href: articles/
   homepage: articles/recommendation.md
+- name: To ZhuZhu
+  href: articles/
+  homepage: articles/message.md
 - name: API Documentation
   href: api/
