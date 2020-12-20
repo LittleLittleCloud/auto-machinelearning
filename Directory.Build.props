@@ -47,6 +47,8 @@
     <InternalsVisibleToModelBuilder Include="Microsoft.ML.ModelBuilder.AutoMLService.Gpu" />
     <InternalsVisibleToModelBuilder Include="Microsoft.ML.ModelBuilder.AutoMLService.Tests" />
     <InternalsVisibleToModelBuilder Include="Microsoft.ML.NNI" />
+    <InternalsVisibleToModelBuilder Include="Microsoft.ML.ModelBuilder.SerializablePipeline" />
+    <InternalsVisibleToModelBuilder Include="Microsoft.ML.ModelBuilder.SerializablePipeline.Tests" />
     <InternalsVisibleToModelBuilder Include="Microsoft.ML.NNI.Tests" />
   </ItemGroup>
 
