@@ -48,7 +48,7 @@ namespace MLNet.Sweeper
 
     public interface ISweepable
     {
-        IEnumerable<IValueGenerator> SweepableValueGenerators { get; }
+        IEnumerable<IValueGenerator> ValueGenerators { get; }
     }
 
     internal interface ISweepable<out T> : ISweepable

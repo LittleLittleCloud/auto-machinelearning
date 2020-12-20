@@ -1,14 +1,6 @@
 {
   "parameters": [
     {
-      "Name": "LabelColumnName",
-      "ValueText": "Label"
-    },
-    {
-      "Name": "FeatureColumnName",
-      "ValueText": "Features"
-    },
-    {
       "Name": "LossFunction",
       "ValueText": "Microsoft.ML.Trainers.LogLoss"
     },
@@ -23,6 +15,14 @@
     {
       "Name": "MaximumNumberOfIterations",
       "ValueText": "16"
+    },
+    {
+      "Name": "LabelColumnName",
+      "ValueText": "Label"
+    },
+    {
+      "Name": "FeatureColumnName",
+      "ValueText": "Features"
     }
   ],
   "name": "SdcaRegressionTrainer",

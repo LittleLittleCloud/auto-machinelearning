@@ -14,16 +14,19 @@ namespace MLNet.AutoPipeline
 {
     public class SingleEstimatorSweepablePipeline : ISweepable<EstimatorChain<ITransformer>>
     {
+        private Logger logger = Logger.Instance;
+        private string loggerPrefix = nameof(SingleEstimatorSweepablePipeline);
+
         internal SingleEstimatorSweepablePipeline(List<SweepableEstimatorBase> estimators)
         {
             this.Estimators = estimators;
         }
 
-        public IEnumerable<IValueGenerator> SweepableValueGenerators
+        public IEnumerable<IValueGenerator> ValueGenerators
         {
             get
             {
-                return this.Estimators.Select(node => node.SweepableValueGenerators)
+                return this.Estimators.Select(node => node.ValueGenerators)
                                       .Where(generators => generators != null)
                                       .SelectMany(x => x)
                                       .ToList();
@@ -34,8 +37,11 @@ namespace MLNet.AutoPipeline
 
         public EstimatorChain<ITransformer> BuildFromParameters(IDictionary<string, string> parameters)
         {
-            var pipeline = new EstimatorChain<ITransformer>();
+            this.logger.Trace(
+                Microsoft.ML.Runtime.MessageSensitivity.All,
+                $"[{this.loggerPrefix}]: Build from parameters: {Util.PrettyPrintDictionary(parameters)}");
 
+            var pipeline = new EstimatorChain<ITransformer>();
             for (int i = 0; i < this.Estimators.Count; i++)
             {
                 if (this.Estimators[i] == SweepableEstimator<IEstimator<ITransformer>>.EmptyNode)

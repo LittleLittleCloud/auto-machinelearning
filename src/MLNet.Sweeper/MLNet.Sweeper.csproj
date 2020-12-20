@@ -15,6 +15,7 @@
   <ItemGroup>
     <InternalsVisibleTo Include="MLNet.AutoPipeline" />
     <InternalsVisibleTo Include="MLNet.AutoPipeline.Tests" />
+    <InternalsVisibleTo Include="nni-lib" />
   </ItemGroup>
 
 </Project>

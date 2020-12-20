@@ -1,0 +1,16 @@
+﻿{
+    "Estimators": [
+        {
+            "EstimatorName": "ColumnConcatenatingEstimator",
+            "InputColumns": [ "sepal_length", "sepal_width", "petal_length" ],
+            "OutputColumns": [ "feature" ],
+            "Scope": 7
+        },
+        {
+            "EstimatorName": "SdcaRegressionTrainer",
+            "InputColumns": [ "petal_width", "feature" ],
+            "OutputColumns": [ "Score" ],
+            "Scope": 7
+        }
+    ]
+}

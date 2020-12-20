@@ -1,0 +1,117 @@
+{
+  "Estimators": [
+    [
+      {
+        "EstimatorName": "OneHotEncodingEstimator",
+        "InputColumns": [
+          "vendor_id"
+        ],
+        "OutputColumns": [
+          "vendor_id"
+        ],
+        "Scope": 7
+      }
+    ],
+    [
+      {
+        "EstimatorName": "OneHotEncodingEstimator",
+        "InputColumns": [
+          "rate_code"
+        ],
+        "OutputColumns": [
+          "rate_code"
+        ],
+        "Scope": 7
+      }
+    ],
+    [
+      {
+        "EstimatorName": "MissingValueReplacingEstimator",
+        "InputColumns": [
+          "passenger_count"
+        ],
+        "OutputColumns": [
+          "passenger_count"
+        ],
+        "Scope": 7
+      }
+    ],
+    [
+      {
+        "EstimatorName": "MissingValueReplacingEstimator",
+        "InputColumns": [
+          "trip_time"
+        ],
+        "OutputColumns": [
+          "trip_time"
+        ],
+        "Scope": 7
+      }
+    ],
+    [
+      {
+        "EstimatorName": "MissingValueReplacingEstimator",
+        "InputColumns": [
+          "trip_distance"
+        ],
+        "OutputColumns": [
+          "trip_distance"
+        ],
+        "Scope": 7
+      }
+    ],
+    [
+      {
+        "EstimatorName": "MissingValueReplacingEstimator",
+        "InputColumns": [
+          "payment_type"
+        ],
+        "OutputColumns": [
+          "payment_type"
+        ],
+        "Scope": 7
+      }
+    ],
+    [
+      {
+        "EstimatorName": "ColumnConcatenatingEstimator",
+        "InputColumns": [
+          "vendor_id",
+          "rate_code",
+          "passenger_count",
+          "trip_time",
+          "trip_distance",
+          "payment_type"
+        ],
+        "OutputColumns": [
+          "_FEATURE"
+        ],
+        "Scope": 7
+      }
+    ],
+    [
+      {
+        "EstimatorName": "GamRegressionTrainer",
+        "InputColumns": [
+          "fare_amount",
+          "_FEATURE"
+        ],
+        "OutputColumns": [
+          "Score"
+        ],
+        "Scope": 7
+      },
+      {
+        "EstimatorName": "LbfgsPoissonRegressionTrainer",
+        "InputColumns": [
+          "fare_amount",
+          "_FEATURE"
+        ],
+        "OutputColumns": [
+          "Score"
+        ],
+        "Scope": 7
+      }
+    ]
+  ]
+}

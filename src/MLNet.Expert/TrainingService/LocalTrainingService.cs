@@ -34,8 +34,8 @@ namespace MLNet.Expert
             // TODO check schema
             var option = new SinglePipelineTrainingService.Option()
             {
-                IsMaximizng = this.option.IsMaximizng,
-                ParameterSweepingIteration = this.option.ParameterSweepingIteration,
+                IsMaximizng = this.option.IsMaximizing,
+                ParameterSweepingIteration = this.option.ParameterSweeperIteration,
                 ParameterSweeper = this.context.AutoML().Serializable().Factory.CreateSweeper(this.option.ParameterSweeper),
                 EvaluationMetric = this.CreateEvaluateFunction(this.option.EvaluationMetric),
                 Metrics = this.option.Metrics.Select(metric => this.CreateEvaluateFunction(metric)).ToArray(),
@@ -63,13 +63,13 @@ namespace MLNet.Expert
 
             public string EvaluationMetric;
 
-            public bool IsMaximizng;
+            public bool IsMaximizing;
 
             public string[] Metrics;
 
-            public int ParameterSweepingIteration = 100;
+            public int ParameterSweeperIteration = 100;
 
-            public int MaximumTrainingTime = 100;
+            public double MaximumTrainingTime = 100;
 
             public string Label;
         }

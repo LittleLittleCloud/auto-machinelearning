@@ -37,7 +37,19 @@ namespace MLNet.Expert.Serializable
                 case nameof(LightGbmRegressionTrainer):
                     var label = estimator.InputColumns[0];
                     var feature = estimator.InputColumns[1];
-                    return this.Context.AutoML().Regression.LightGbm(label, feature);
+                    return this.Context.AutoML().Serializable().Regression.LightGbm(label, feature);
+                case nameof(SdcaRegressionTrainer):
+                    label = estimator.InputColumns[0];
+                    feature = estimator.InputColumns[1];
+                    return this.Context.AutoML().Serializable().Regression.Sdca(label, feature);
+                case nameof(GamRegressionTrainer):
+                    label = estimator.InputColumns[0];
+                    feature = estimator.InputColumns[1];
+                    return this.Context.AutoML().Serializable().Regression.Gam(label, feature);
+                case nameof(LbfgsPoissonRegressionTrainer):
+                    label = estimator.InputColumns[0];
+                    feature = estimator.InputColumns[1];
+                    return this.Context.AutoML().Serializable().Regression.LbfgsPoissonRegression(label, feature);
                 case nameof(LinearSvmTrainer):
                     label = estimator.InputColumns[0];
                     feature = estimator.InputColumns[1];
@@ -75,15 +87,17 @@ namespace MLNet.Expert.Serializable
                     feature = estimator.InputColumns[1];
                     return this.Context.AutoML().Serializable().BinaryClassification.AveragedPerceptron(label, feature);
                 case nameof(OneHotEncodingEstimator):
-                    return this.Context.AutoML().Serializable().Transformer.Categorical.OneHotEncoding(input, output);
+                    return this.Context.AutoML().Serializable().Transforms.Categorical.OneHotEncoding(input, output);
                 case nameof(MissingValueReplacingEstimator):
-                    return this.Context.AutoML().Serializable().Transformer.ReplaceMissingValues(input, output);
+                    return this.Context.AutoML().Serializable().Transforms.ReplaceMissingValues(input, output);
                 case nameof(ColumnConcatenatingEstimator):
-                    return this.Context.AutoML().Serializable().Transformer.Concatnate(estimator.InputColumns, output);
+                    return this.Context.AutoML().Serializable().Transforms.Concatnate(estimator.InputColumns, output);
                 case nameof(TextFeaturizingEstimator):
-                    return this.Context.AutoML().Serializable().Transformer.Text.FeaturizeText(input, output);
+                    return this.Context.AutoML().Serializable().Transforms.Text.FeaturizeText(input, output);
                 case nameof(SerializableTextCatalog.FeaturizeTextWithWordEmbedding):
-                    return this.Context.AutoML().Serializable().Transformer.Text.FeaturizeTextWithWordEmbedding(input, output);
+                    return this.Context.AutoML().Serializable().Transforms.Text.FeaturizeTextWithWordEmbedding(input, output);
+                case nameof(ValueToKeyMappingEstimator):
+                    return this.Context.AutoML().Serializable().Transforms.Conversion.MapValueToKey(input, output);
                 default:
                     throw new Exception($"{estimator.EstimatorName} can't be created through SweepabeEstimatorFactory");
             }
@@ -110,6 +124,8 @@ namespace MLNet.Expert.Serializable
                 // use reflection
                 case nameof(SerializableEvaluateFunction.Accuracy):
                     return this.Context.AutoML().Serializable().EvaluationFunction.Accuracy;
+                case nameof(SerializableEvaluateFunction.RSquare):
+                    return this.Context.AutoML().Serializable().EvaluationFunction.RSquare;
                 default:
                     throw new Exception($"{name} can't be created through SerializableEvaluateFunction");
             };

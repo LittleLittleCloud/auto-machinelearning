@@ -14,10 +14,10 @@ namespace MLNet.AutoPipeline
         public static LightGbmRegressionTrainerSweepableOptions Default = new LightGbmRegressionTrainerSweepableOptions();
 
         [Parameter(nameof(LightGbmRegressionTrainer.Options.LabelColumnName))]
-        public Parameter<string> LabelColumnName = CreateDiscreteParameter("Label");
+        public string LabelColumnName = "Label";
 
         [Parameter(nameof(LightGbmRegressionTrainer.Options.FeatureColumnName))]
-        public Parameter<string> FeatureColumnName = CreateDiscreteParameter("Features");
+        public string FeatureColumnName = "Features";
 
         [Parameter(nameof(LightGbmRegressionTrainer.Options.NumberOfLeaves))]
         public Parameter<int> NumberOfLeaves = CreateInt32Parameter(10, 1000, true);

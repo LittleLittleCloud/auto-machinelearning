@@ -70,7 +70,7 @@ namespace MLNet.Expert
 
             if (this.PipelineBuilderOption.IsUsingSingleFeatureTrainer)
             {
-                sweepablePipeline.Append(context.AutoML().Serializable().Transformer.Concatnate(featureColumns, "_FEATURE"));
+                sweepablePipeline.Append(context.AutoML().Serializable().Transforms.Concatnate(featureColumns, "_FEATURE"));
                 var labelColumn = columns.Where(c => c.ColumnPurpose == ColumnPurpose.Label).First();
                 sweepablePipeline.Append(this.GetSuggestedSingleFeatureTrainers(context, labelColumn, "_FEATURE").ToArray());
             }
@@ -82,7 +82,7 @@ namespace MLNet.Expert
         {
             return new SweepableEstimatorBase[]
                     {
-                        context.AutoML().Serializable().Transformer.ReplaceMissingValues(column.Name, column.Name),
+                        context.AutoML().Serializable().Transforms.ReplaceMissingValues(column.Name, column.Name),
                     };
         }
 
@@ -92,7 +92,7 @@ namespace MLNet.Expert
             {
                 return new SweepableEstimatorBase[]
                 {
-                    context.AutoML().Serializable().Transformer.Conversion.MapValueToKey(column.Name, column.Name),
+                    context.AutoML().Serializable().Transforms.Conversion.MapValueToKey(column.Name, column.Name),
                 };
             }
 
@@ -103,8 +103,8 @@ namespace MLNet.Expert
         {
             return new SweepableEstimatorBase[]
             {
-                context.AutoML().Serializable().Transformer.Text.FeaturizeText(column.Name, column.Name),
-                context.AutoML().Serializable().Transformer.Text.FeaturizeTextWithWordEmbedding(column.Name, column.Name),
+                context.AutoML().Serializable().Transforms.Text.FeaturizeText(column.Name, column.Name),
+                context.AutoML().Serializable().Transforms.Text.FeaturizeTextWithWordEmbedding(column.Name, column.Name),
             };
         }
 
@@ -112,16 +112,16 @@ namespace MLNet.Expert
         {
             return new SweepableEstimatorBase[]
                     {
-                        context.AutoML().Serializable().Transformer.Categorical.OneHotEncoding(column.Name, column.Name),
+                        context.AutoML().Serializable().Transforms.Categorical.OneHotEncoding(column.Name, column.Name),
                     };
         }
 
         public IEnumerable<SweepableEstimatorBase> GetSuggestedSingleFeatureTrainers(MLContext context, Column column, string featureColumnName)
         {
+            var res = new List<SweepableEstimatorBase>();
             switch (this.PipelineBuilderOption.TaskType)
             {
                 case TaskType.BinaryClassification:
-                    var res = new List<SweepableEstimatorBase>();
                     res.Add(context.AutoML().Serializable().BinaryClassification.LinearSvm(column.Name, featureColumnName));
                     res.Add(context.AutoML().Serializable().BinaryClassification.LdSvm(column.Name, featureColumnName));
                     res.Add(context.AutoML().Serializable().BinaryClassification.FastForest(column.Name, featureColumnName));
@@ -131,6 +131,11 @@ namespace MLNet.Expert
                     res.Add(context.AutoML().Serializable().BinaryClassification.SgdNonCalibrated(column.Name, featureColumnName));
                     res.Add(context.AutoML().Serializable().BinaryClassification.SgdCalibrated(column.Name, featureColumnName));
                     res.Add(context.AutoML().Serializable().BinaryClassification.AveragedPerceptron(column.Name, featureColumnName));
+
+                    return res;
+                case TaskType.Regression:
+                    res.Add(context.AutoML().Serializable().Regression.Gam(column.Name, featureColumnName));
+                    res.Add(context.AutoML().Serializable().Regression.LbfgsPoissonRegression(column.Name, featureColumnName));
 
                     return res;
                 default:

@@ -1,0 +1,33 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFrameworks>net472;netcoreapp3.1</TargetFrameworks>
+    <RootNamespace>nni_lib</RootNamespace>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <IsPackable>true</IsPackable>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="nni-manager\**" />
+    <EmbeddedResource Remove="nni-manager\**" />
+    <None Remove="nni-manager\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Memory" Version="4.5.3" />
+    <PackageReference Include="System.Net.Http" Version="4.3.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MLNet.Expert\MLNet.Expert.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="iris.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>

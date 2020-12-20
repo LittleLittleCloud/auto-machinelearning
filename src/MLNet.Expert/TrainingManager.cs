@@ -85,9 +85,9 @@ namespace MLNet.Expert
                 {
                     ParameterSweeper = this.option.ParameterSweeper,
                     EvaluationMetric = this.option.EvaluationMetric,
-                    IsMaximizng = this.option.IsMaximizng,
+                    IsMaximizing = this.option.IsMaximizng,
                     Metrics = this.option.Metrics,
-                    ParameterSweepingIteration = this.option.ParameterSweepingIteration,
+                    ParameterSweeperIteration = this.option.ParameterSweepingIteration,
                     Label = this.option.Label,
                 };
                 return new LocalTrainingService(this.context, pipeline, option);

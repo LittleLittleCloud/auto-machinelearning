@@ -83,14 +83,14 @@ namespace MLNet.AutoPipeline
             this.ValueGenerator = new DoubleValueGenerator(option);
         }
 
-        internal Parameter(T[] candidates)
+        internal Parameter(T[] candidates, string id = null)
         {
             var option = new DiscreteValueGenerator<T>.Option<T>()
             {
                 Values = candidates,
             };
 
-            this.ValueGenerator = new DiscreteValueGenerator<T>(option);
+            this.ValueGenerator = new DiscreteValueGenerator<T>(option, id);
         }
     }
 

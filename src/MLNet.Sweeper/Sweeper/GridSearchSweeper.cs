@@ -34,10 +34,10 @@ namespace MLNet.Sweeper
         public override IEnumerable<IDictionary<string, string>> ProposeSweeps(ISweepable sweepable, int maxSweeps, IEnumerable<IRunResult> previousRuns = null)
         {
             this.start = 0;
-            this.basePerPipe = sweepable.SweepableValueGenerators.Select(x => x.Count).ToArray();
+            this.basePerPipe = sweepable.ValueGenerators.Select(x => x.Count).ToArray();
             long accumulateCount = 1;
-            this.accumulateCountPerBase = Enumerable.Repeat(0L, sweepable.SweepableValueGenerators.Count()).ToArray();
-            for (int i = 0; i != sweepable.SweepableValueGenerators.Count(); ++i)
+            this.accumulateCountPerBase = Enumerable.Repeat(0L, sweepable.ValueGenerators.Count()).ToArray();
+            for (int i = 0; i != sweepable.ValueGenerators.Count(); ++i)
             {
                 this.accumulateCountPerBase[i] = accumulateCount;
                 accumulateCount *= this.basePerPipe[i];
@@ -57,7 +57,7 @@ namespace MLNet.Sweeper
         {
             var indexs = this.GetSelectedIndexForEachPipe();
             this.start += 1;
-            return new Parameters(sweepable.SweepableValueGenerators.Select((param, i) => param[indexs[i]]));
+            return new Parameters(sweepable.ValueGenerators.Select((param, i) => param[indexs[i]]));
         }
 
         private int[] GetSelectedIndexForEachPipe()

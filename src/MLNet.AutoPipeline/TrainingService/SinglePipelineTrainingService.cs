@@ -27,7 +27,7 @@ namespace MLNet.AutoPipeline
             this.context = context;
             this.option = option;
             this.Pipeline = pipeline;
-            this.id2Name = pipeline.SweepableValueGenerators.Select(x => new KeyValuePair<string, string>(x.ID, x.Name)).ToDictionary(kv => kv.Key, kv => kv.Value);
+            this.id2Name = pipeline.ValueGenerators.Select(x => new KeyValuePair<string, string>(x.ID, x.Name)).ToDictionary(kv => kv.Key, kv => kv.Value);
         }
 
         public SingleEstimatorSweepablePipeline Pipeline { get; }

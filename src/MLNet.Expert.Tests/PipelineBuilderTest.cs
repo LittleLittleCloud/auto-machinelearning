@@ -48,5 +48,29 @@ namespace MLNet.Expert.Tests
             var restoredJson = JsonConvert.SerializeObject(restoredPipeline.ToDataContract(), Formatting.Indented);
             restoredJson.Should().Be(json);
         }
+
+        [Fact]
+        [UseApprovalSubdirectory("ApprovalTests")]
+        [UseReporter(typeof(DiffReporter))]
+        public void PipelineBuilder_taxi_fare_regression_test()
+        {
+            var context = new MLContext();
+            var columns = new Column[]
+            {
+                new Column("vendor_id", ColumnType.Catagorical, ColumnPurpose.CategoricalFeature),
+                new Column("rate_code", ColumnType.Catagorical, ColumnPurpose.CategoricalFeature),
+                new Column("passenger_count", ColumnType.Numeric, ColumnPurpose.NumericFeature),
+                new Column("trip_time", ColumnType.Numeric, ColumnPurpose.NumericFeature),
+                new Column("trip_distance", ColumnType.Numeric, ColumnPurpose.NumericFeature),
+                new Column("payment_type", ColumnType.Numeric, ColumnPurpose.NumericFeature),
+                new Column("fare_amount", ColumnType.Catagorical, ColumnPurpose.Label),
+            };
+
+            var pb = new PipelineBuilder(TaskType.Regression, false, true);
+            var pipeline = pb.BuildPipeline(context, columns);
+            var pipelineDataContract = pipeline.ToDataContract();
+            var json = JsonConvert.SerializeObject(pipelineDataContract, Formatting.Indented);
+            Approvals.Verify(json);
+        }
     }
 }
